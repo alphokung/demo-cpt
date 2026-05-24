@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 :root {
   /* Color Palette */
@@ -464,33 +465,20 @@ body {
   width: 100%;
 }
 
-/* Desktop Sidebar Grid layout configuration */
+/* Desktop Single-Column Layout configuration */
 @media (min-width: 1024px) {
   body {
     background-color: var(--neutral-98);
   }
   
   .app-container {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-  
-  .sidebar {
     display: flex;
     flex-direction: column;
-    background-color: var(--background-neutral-lighter);
-    border-right: 1px solid var(--stroke-neutral-default);
-    padding: var(--spacing-3xl) var(--spacing-xl);
-    height: 100%;
-    overflow-y: auto;
+    min-height: 100vh;
   }
 
   .main-layout {
-    height: 100vh;
-    overflow-y: auto;
+    min-height: 100vh;
     background-color: var(--canvas-default);
   }
 }
@@ -561,10 +549,62 @@ main {
   margin-bottom: var(--spacing-xs);
   width: fit-content;
   transition: color 0.2s;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  }
 }
 
 .back-nav:hover {
   color: var(--foreground-primary-default);
+}
+
+/* Page Header layout (Back button + Title block inline) */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xl);
+  
+  .btn-back-circle {
+    flex-shrink: 0;
+    margin-top: var(--spacing-xxs);
+  }
+}
+
+/* Circular back button styling */
+.btn-back-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--neutral-100);
+  border: 1px solid var(--stroke-neutral-default);
+  color: var(--foreground-neutral-default);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  align-self: flex-start;
+
+  &:hover {
+    background-color: var(--neutral-94);
+    color: var(--foreground-primary-default);
+    border-color: var(--stroke-primary-lighter);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .material-symbols-outlined {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+  }
 }
 
 .back-nav svg {
@@ -594,10 +634,7 @@ main {
   margin-top: var(--spacing-xs);
 }
 
-.title-block-detail {
-  border-bottom: 2px dashed var(--stroke-neutral-default);
-  padding-bottom: var(--spacing-xl);
-  margin-bottom: 0;
+.title-block {
 }
 
 .section-title-container {
@@ -778,18 +815,19 @@ main {
   background: linear-gradient(135deg, #05263d, #0d3856);
   color: var(--neutral-100);
   border: none;
-  padding: var(--spacing-2xl);
+  padding: var(--spacing-lg) var(--spacing-2xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .gauge-container {
   position: relative;
-  width: 140px;
-  height: 140px;
-  margin-bottom: var(--spacing-lg);
+  width: 84px;
+  height: 84px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .gauge-svg {
@@ -801,13 +839,13 @@ main {
 .gauge-bg {
   fill: none;
   stroke: rgba(255,255,255,0.1);
-  stroke-width: 12;
+  stroke-width: 9;
 }
 
 .gauge-fill {
   fill: none;
   stroke: var(--primary-40);
-  stroke-width: 12;
+  stroke-width: 9;
   stroke-dasharray: 402;
   stroke-dashoffset: 402;
   stroke-linecap: round;
@@ -826,21 +864,21 @@ main {
 }
 
 .gauge-value {
-  font-size: var(--font-size-display-m);
+  font-size: 26px;
   font-weight: var(--font-weight-700);
   line-height: 1;
 }
 
 .gauge-max {
-  font-size: var(--font-size-label-s);
+  font-size: 9.5px;
   color: var(--secondary-80);
-  margin-top: var(--spacing-xxs);
+  margin-top: 2px;
 }
 
 .points-gauge-title {
-  font-size: var(--font-size-title-s);
+  font-size: 13.5px;
   color: var(--secondary-70);
-  margin-top: var(--spacing-xs);
+  margin-top: 0;
 }
 
 /* Points deduction log items */
@@ -1104,6 +1142,12 @@ main {
   width: 100%;
   white-space: nowrap;
 
+  .material-symbols-outlined {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    flex-shrink: 0;
+  }
+
   &:disabled {
     background-color: var(--button-background-disabled) !important;
     color: var(--button-foreground-disabled) !important;
@@ -1179,6 +1223,10 @@ main {
     min-height: 36px;
     font-size: var(--font-size-body-m);
     padding: var(--spacing-sm) var(--spacing-lg);
+
+    .material-symbols-outlined {
+      font-size: 16px;
+    }
   }
 }
 
@@ -1236,7 +1284,7 @@ main {
 }
 
 /* Tickets cards container list */
-.ticket-list-container {
+.ticket-list-container, .points-logs-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
@@ -1244,7 +1292,7 @@ main {
 
 /* Grid tickets layout on desktop */
 @media (min-width: 1024px) {
-  .ticket-list-container {
+  .ticket-list-container, .points-logs-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
@@ -1378,14 +1426,14 @@ main {
 .desktop-split-layout {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3xl);
+  gap: var(--spacing-xl);
 }
 
 @media (min-width: 1024px) {
   .desktop-split-layout {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: var(--spacing-4xl);
+    gap: var(--spacing-2xl);
     align-items: start;
   }
 }
@@ -1520,81 +1568,7 @@ main {
 
 /* Unused legacy QR layout removed */
 
-/* Developer Tester widget */
-.tester-widget {
-  background-color: var(--background-neutral-lighter);
-  border: 1px solid var(--stroke-neutral-default);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
-  margin-top: var(--spacing-3xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
 
-.tester-title {
-  font-size: var(--font-size-label-m);
-  font-weight: var(--font-weight-700);
-  color: var(--foreground-neutral-lighter);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tester-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--font-size-body-m);
-}
-
-/* Switch controller */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--neutral-80);
-  transition: .3s;
-  border-radius: 24px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .3s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--primary-30-base);
-}
-
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
 
 /* Custom styles for QR Code Payment Modal to match high-fidelity mockup */
 .modal-content-payment {

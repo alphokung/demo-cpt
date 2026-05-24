@@ -11,65 +11,22 @@
 </head>
 <body>
   <div class="app-container">
-    <!-- Desktop Left Sidebar (Visible on Desktop only) -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <div class="sidebar-logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <div class="sidebar-logo-text">
-          <span class="logo-main">ตรวจสอบใบสั่งจราจร</span>
-          <span class="logo-sub">ระบบใบสั่งจราจร</span>
-        </div>
-      </div>
-      
-      <nav class="sidebar-menu">
-        <a href="index.html" class="sidebar-menu-item active" id="menu-tickets">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="9" y1="9" x2="15" y2="9"></line>
-            <line x1="9" y1="13" x2="15" y2="13"></line>
-            <line x1="9" y1="17" x2="15" y2="17"></line>
-          </svg>
-          ข้อมูลใบสั่งจราจร
-        </a>
-        <a href="points.html" class="sidebar-menu-item" id="menu-points">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          ตรวจสอบคะแนนการขับขี่
-        </a>
-      </nav>
-
-      <div class="sidebar-user">
-        <div class="user-avatar">ข</div>
-        <div class="user-info">
-          <span class="user-name">คุณขับขี่ เดินทางปลอดภัย</span>
-          <span class="user-points">คะแนนคงเหลือ: 7 / 12</span>
-        </div>
-      </div>
-    </aside>
-
     <!-- Scrollable Main Content Layout -->
     <div class="main-layout">
       <!-- Main Content (Mobile top header has been completely removed) -->
       <main class="detail-main-scroll">
-        <!-- Global Back Navigation (for mobile and desktop) -->
-        <a href="index.html" class="back-nav">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          ย้อนกลับ
-        </a>
-
-        <!-- Title Block -->
-        <div class="title-block-detail">
-          <h2 class="text-header">รายละเอียดใบสั่งจราจร</h2>
-          <p class="text-subheader">รายละเอียดใบสั่งจราจรของคุณ</p>
+        <!-- Page Header -->
+        <div class="page-header">
+          <!-- Circular Back Button -->
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+  
+          <!-- Title Block -->
+          <div class="title-block">
+            <h2 class="text-header">รายละเอียดใบสั่งจราจร</h2>
+            <p class="text-subheader">รายละเอียดใบสั่งจราจรของคุณ</p>
+          </div>
         </div>
 
         <!-- Ticket Overview Summary Card (Standalone Full-Width Card) -->
@@ -86,117 +43,98 @@
           </div>
         </div>
 
-        <div class="card detail-main-card">
-          <div class="desktop-split-layout">
-            <!-- Left Column (Overview & Ticket details) -->
-            <div style="display: flex; flex-direction: column; gap: var(--spacing-3xl);">
-              <!-- Details List -->
-              <div>
-                <div class="section-title-container">
-                  <div class="section-bar"></div>
-                  <h3 class="section-title">รายละเอียดใบสั่ง</h3>
+        <div class="desktop-split-layout">
+          <!-- Left Column Card (Overview & Ticket details) -->
+          <div class="card detail-main-card">
+            <!-- Details List -->
+            <div>
+              <div class="section-title-container">
+                <div class="section-bar"></div>
+                <h3 class="section-title">รายละเอียดใบสั่ง</h3>
+              </div>
+              
+              <div class="details-list">
+                <div class="details-item">
+                  <span class="details-label">วันที่ออกใบสั่ง:</span>
+                  <span id="detail-issue-date" class="details-value">-</span>
                 </div>
                 
-                <div class="details-list">
-                  <div class="details-item">
-                    <span class="details-label">วันที่ออกใบสั่ง:</span>
-                    <span id="detail-issue-date" class="details-value">-</span>
-                  </div>
+                <div class="details-item">
+                  <span class="details-label">ชื่อเจ้าของ:</span>
+                  <span id="detail-owner-name" class="details-value">-</span>
+                </div>
+                
+                <div class="details-item">
+                  <span class="details-label">ทะเบียนรถ:</span>
+                  <span id="detail-license-plate" class="details-value">-</span>
+                </div>
+                
+                <div class="details-item">
+                  <span class="details-label">วันที่เกิดเหตุ:</span>
+                  <span id="detail-offense-date" class="details-value">-</span>
+                </div>
+                
+                <div class="details-item">
+                  <span class="details-label">สถานที่เกิดเหตุ:</span>
+                  <span id="detail-offense-location" class="details-value">-</span>
+                </div>
+                
+                <div class="details-item">
+                  <span class="details-label">ออกใบสั่งโดย:</span>
+                  <span id="detail-issued-by" class="details-value">-</span>
+                </div>
+                
+                <div class="details-item">
+                  <span class="details-label">สถานะ:</span>
+                  <span id="detail-status" class="details-value">-</span>
+                  <span id="detail-status-sub" class="details-subvalue"></span>
                   
-                  <div class="details-item">
-                    <span class="details-label">ชื่อเจ้าของ:</span>
-                    <span id="detail-owner-name" class="details-value">-</span>
-                  </div>
-                  
-                  <div class="details-item">
-                    <span class="details-label">ทะเบียนรถ:</span>
-                    <span id="detail-license-plate" class="details-value">-</span>
-                  </div>
-                  
-                  <div class="details-item">
-                    <span class="details-label">วันที่เกิดเหตุ:</span>
-                    <span id="detail-offense-date" class="details-value">-</span>
-                  </div>
-                  
-                  <div class="details-item">
-                    <span class="details-label">สถานที่เกิดเหตุ:</span>
-                    <span id="detail-offense-location" class="details-value">-</span>
-                  </div>
-                  
-                  <div class="details-item">
-                    <span class="details-label">ออกใบสั่งโดย:</span>
-                    <span id="detail-issued-by" class="details-value">-</span>
-                  </div>
-                  
-                  <div class="details-item">
-                    <span class="details-label">สถานะ:</span>
-                    <span id="detail-status" class="details-value">-</span>
-                    <span id="detail-status-sub" class="details-subvalue"></span>
-                    
-                    <!-- Warning Letter Button -->
-                    <button id="btn-warning-letter" class="btn btn-tertiary-outline btn-small" style="margin-top: var(--spacing-md); display: none; color: var(--foreground-negative-default); border-color: var(--danger-40); gap: var(--spacing-sm); width: fit-content;" onclick="openWarningModal()">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                      </svg>
-                      ดูหนังสือเตือนแจ้งให้ชำระค่าปรับ
-                    </button>
-                  </div>
+                  <!-- Warning Letter Button -->
+                  <button id="btn-warning-letter" class="btn btn-tertiary-outline btn-small" style="margin-top: var(--spacing-md); display: none; color: var(--foreground-negative-default); border-color: var(--danger-40); gap: var(--spacing-sm); width: fit-content;" onclick="openWarningModal()">
+                    <span class="material-symbols-outlined">description</span>
+                    ดูหนังสือเตือนแจ้งให้ชำระค่าปรับ
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column Card (Offenses & Actions) -->
+          <div class="card detail-main-card" style="display: flex; flex-direction: column; gap: var(--spacing-3xl);">
+            <!-- Offenses Section -->
+            <div>
+              <div class="section-title-container">
+                <div class="section-bar"></div>
+                <h3 class="section-title">ข้อหา</h3>
+              </div>
+              
+              <div class="card card-flat" style="padding: 0;">
+                <div id="offenses-container" class="offenses-list">
+                  <!-- Will be populated by JS -->
+                </div>
+                <div class="offenses-total">
+                  <span>รวมค่าปรับ</span>
+                  <span id="offenses-total-fine">- บาท</span>
                 </div>
               </div>
             </div>
 
-            <!-- Right Column (Offenses & Actions) -->
-            <div style="display: flex; flex-direction: column; gap: var(--spacing-3xl);">
-              <!-- Offenses Section -->
-              <div>
-                <div class="section-title-container">
-                  <div class="section-bar"></div>
-                  <h3 class="section-title">ข้อหา</h3>
-                </div>
-                
-                <div class="card card-flat" style="padding: 0;">
-                  <div id="offenses-container" class="offenses-list">
-                    <!-- Will be populated by JS -->
-                  </div>
-                  <div class="offenses-total">
-                    <span>รวมค่าปรับ</span>
-                    <span id="offenses-total-fine">- บาท</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Sticky Footer Actions (Mobile footer, desktop flow layout) -->
-              <div id="sticky-footer" class="sticky-footer">
-                <button id="btn-pay-fine" class="btn btn-primary" style="background-color: var(--secondary-20); color: white;" onclick="openPaymentModal()">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <rect x="7" y="7" width="3" height="3"></rect>
-                    <rect x="14" y="7" width="3" height="3"></rect>
-                    <rect x="7" y="14" width="3" height="3"></rect>
-                    <rect x="14" y="14" width="3" height="3"></rect>
-                  </svg>
-                  ชำระค่าปรับ
+            <!-- Sticky Footer Actions (Mobile footer, desktop flow layout) -->
+            <div id="sticky-footer" class="sticky-footer">
+              <button id="btn-pay-fine" class="btn btn-primary" style="background-color: var(--secondary-20); color: white;" onclick="openPaymentModal()">
+                <span class="material-symbols-outlined">qr_code</span>
+                ชำระค่าปรับ
+              </button>
+              
+              <div class="footer-row">
+                <button class="btn btn-tertiary-outline" onclick="openPhotoModal()">
+                  <span class="material-symbols-outlined">photo_camera</span>
+                  ภาพการกระทำผิด
                 </button>
-                
-                <div class="footer-row">
-                  <button class="btn btn-tertiary-outline" onclick="openPhotoModal()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                      <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    ภาพการกระทำผิด
-                  </button>
-                  <button class="btn btn-tertiary-outline" onclick="openContactModal()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    ติดต่อโรงพัก
-                  </button>
-                </div>
+                <button class="btn btn-tertiary-outline" onclick="openContactModal()">
+                  <span class="material-symbols-outlined">call</span>
+                  ติดต่อโรงพัก
+                </button>
               </div>
             </div>
           </div>
@@ -259,9 +197,7 @@
 
         <!-- Description -->
         <p class="contact-modal-description">
-          คุณสามารถติดต่อโรงพักได้ตามช่องทางต่อไปนี้<br>
-          หากต้องการโต้แย้งข้อกล่าวหา สามารถกดที่ปุ่ม<br>
-          โต้แย้งข้อกล่าวหา
+          คุณสามารถติดต่อโรงพักได้ตามช่องทางต่อไปนี้
         </p>
 
         <!-- Dynamic Stack of Contact buttons -->
@@ -274,16 +210,6 @@
 
           <!-- LINE Contact Button -->
           <a href="https://line.me/R/ti/p/%40Police" target="_blank" class="btn btn-primary contact-stack-btn contact-btn-blue">LINE ID: @ Police</a>
-
-          <!-- Dispute Button (White pill, dark outline) -->
-          <button class="btn btn-outline-pill" onclick="disputeTicket()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            โต้แย้งข้อกล่าวหา
-          </button>
         </div>
       </div>
     </div>
@@ -318,117 +244,7 @@
       </div>
     </div>
 
-    <!-- Modal: QR Code Payment -->
-    <div id="modal-payment" class="modal-overlay" onclick="closeModal('modal-payment')">
-      <div class="modal-content modal-content-payment" onclick="event.stopPropagation()">
-        <!-- Header Banner -->
-        <div class="qr-header-banner">
-          <div class="qr-banner-logo">
-            <svg viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 30px; width: auto;">
-              <!-- Logo Symbol (White background rounded square) -->
-              <rect width="40" height="40" rx="10" fill="#ffffff" />
-              <!-- Logo Symbol Details (hollow space filled with dark blue) -->
-              <rect x="6" y="6" width="12" height="12" fill="#0c3664" rx="1.5" />
-              <rect x="22" y="6" width="12" height="12" fill="#0c3664" rx="1.5" />
-              <rect x="6" y="22" width="12" height="12" fill="#0c3664" rx="1.5" />
-              <!-- Bottom right green arrow -->
-              <path d="M22 22 H34 V34 Z" fill="#00a76e" />
-              <!-- Inner white dot in the green arrow -->
-              <rect x="25" y="25" width="4" height="4" fill="#ffffff" />
-              
-              <!-- Logo Text -->
-              <text x="52" y="16" font-family="'Inter', 'Anuphan', sans-serif" font-weight="900" font-size="14" fill="#ffffff" letter-spacing="0.5">THAI QR</text>
-              <text x="52" y="32" font-family="'Inter', 'Anuphan', sans-serif" font-weight="900" font-size="14" fill="#ffffff" letter-spacing="0.5">PAYMENT</text>
-            </svg>
-          </div>
-          <button class="qr-banner-close" onclick="closeModal('modal-payment')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
 
-        <!-- The White Card Wrapper inside Modal -->
-        <div class="qr-card">
-          <!-- Content Body -->
-          <div class="qr-modal-body">
-            <!-- PromptPay logo container -->
-            <div class="promptpay-logo-container">
-              <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 32px; width: auto;">
-                <!-- Border -->
-                <rect x="0.5" y="0.5" width="119" height="39" rx="4" stroke="#0b305f" stroke-width="1.5" fill="white" />
-                <!-- Top line / background for พร้อมเพย์ -->
-                <line x1="20" y1="12" x2="100" y2="12" stroke="#0b305f" stroke-width="0.75" />
-                <rect x="35" y="6" width="50" height="12" fill="white" />
-                <text x="60" y="14" font-family="'Anuphan', sans-serif" font-weight="600" font-size="8.5" fill="#0b305f" text-anchor="middle">พร้อมเพย์</text>
-                <!-- PromptPay text -->
-                <text x="60" y="32" font-family="'Inter', 'Anuphan', sans-serif" font-weight="800" font-size="14.5" text-anchor="middle">
-                  <tspan fill="#0b305f">Prompt</tspan><tspan fill="#005ea6">Pay</tspan>
-                </text>
-              </svg>
-            </div>
-
-            <!-- QR Code Image Box -->
-            <div class="qr-code-box">
-              <svg class="qr-code-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="5" y="5" width="25" height="25" fill="#000" />
-                <rect x="7" y="7" width="21" height="21" fill="#fff" />
-                <rect x="11" y="11" width="13" height="13" fill="#000" />
-                
-                <rect x="70" y="5" width="25" height="25" fill="#000" />
-                <rect x="72" y="7" width="21" height="21" fill="#fff" />
-                <rect x="76" y="11" width="13" height="13" fill="#000" />
-                
-                <rect x="5" y="70" width="25" height="25" fill="#000" />
-                <rect x="7" y="72" width="21" height="21" fill="#fff" />
-                <rect x="11" y="76" width="13" height="13" fill="#000" />
-                
-                <rect x="40" y="10" width="10" height="5" fill="#000" />
-                <rect x="50" y="15" width="5" height="15" fill="#000" />
-                <rect x="35" y="25" width="10" height="10" fill="#000" />
-                <rect x="15" y="40" width="10" height="15" fill="#000" />
-                <rect x="35" y="45" width="20" height="10" fill="#000" />
-                <rect x="65" y="40" width="10" height="10" fill="#000" />
-                <rect x="80" y="35" width="15" height="5" fill="#000" />
-                <rect x="45" y="60" width="15" height="15" fill="#000" />
-                <rect x="70" y="65" width="20" height="10" fill="#000" />
-                <rect x="75" y="80" width="15" height="15" fill="#000" />
-                <rect x="40" y="85" width="20" height="5" fill="#000" />
-                <rect x="25" y="60" width="5" height="10" fill="#000" />
-              </svg>
-            </div>
-
-            <!-- Dynamic Payment Details -->
-            <div class="qr-payment-info-block">
-              <div id="payment-modal-amount-display" class="qr-amount-text">- บาท</div>
-              <div id="payment-modal-ref-display" class="qr-ref-text">เลขที่ใบสั่ง: -</div>
-              <div id="payment-modal-date-display" class="qr-info-text">วันที่ออกใบสั่ง: -</div>
-              <div id="payment-modal-plate-display" class="qr-info-text">ทะเบียนรถ: -</div>
-              
-              <p class="qr-help-text">
-                คุณสามารถชำระเงินค่าใบสั่งจราจร ด้วยคิวอาร์โค้ดนี้<br>
-                ผ่านแอปพลิเคชันธนาคาร<br>
-                ที่รองรับการชำระเงินด้วยคิวอาร์โค้ด
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Button Container (Outside the white card wrapper) -->
-        <div class="qr-action-container">
-          <button class="btn btn-primary qr-action-btn" onclick="simulatePaymentSuccess()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <path d="M3 14h7v7H3z"></path>
-            </svg>
-            บันทึกคิวอาร์โค้ด เพื่อจ่ายค่าปรับ
-          </button>
-        </div>
-      </div>
-    </div>
       </div>
     </div>
   </div>
@@ -461,10 +277,6 @@
     const offensesTotalFine = document.getElementById('offenses-total-fine');
 
     const btnPayFine = document.getElementById('btn-pay-fine');
-    const paymentModalAmountDisplay = document.getElementById('payment-modal-amount-display');
-    const paymentModalRefDisplay = document.getElementById('payment-modal-ref-display');
-    const paymentModalDateDisplay = document.getElementById('payment-modal-date-display');
-    const paymentModalPlateDisplay = document.getElementById('payment-modal-plate-display');
 
     let currentTicket = null;
 
@@ -563,11 +375,6 @@
       });
       offensesContainer.innerHTML = offensesHTML;
       offensesTotalFine.textContent = `${currentTicket.fine.toLocaleString()} บาท`;
-
-      paymentModalAmountDisplay.textContent = currentTicket.fine.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' บาท';
-      paymentModalRefDisplay.textContent = 'เลขที่ใบสั่ง: ' + currentTicket.ticketNumber;
-      paymentModalDateDisplay.textContent = 'วันที่ออกใบสั่ง: ' + currentTicket.issueDate;
-      paymentModalPlateDisplay.textContent = 'ทะเบียนรถ: ' + currentTicket.licensePlate;
     }
 
     function openModal(id) {
@@ -591,25 +398,10 @@
       openModal('modal-contact');
     }
 
-    function disputeTicket() {
-      alert('ระบบจะนำท่านไปยังฟอร์มยื่นคำร้องโต้แย้งข้อกล่าวหาจราจร เพื่อกรอกข้อมูลและแนบหลักฐานการโต้แย้ง');
-    }
+
 
     function openPaymentModal() {
-      openModal('modal-payment');
-    }
-
-    function simulatePaymentSuccess() {
-      closeModal('modal-payment');
-      
-      const now = new Date();
-      const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-      const thaiYear = now.getFullYear() + 543;
-      const formattedDate = `ชำระผ่าน PromptPay วันที่ ${now.getDate()} ${thaiMonths[now.getMonth()]} ${thaiYear}`;
-
-      DB.updateTicketStatus(ticketId, 'paid', formattedDate);
-      alert('ชำระค่าปรับสำเร็จ! ระบบบันทึกข้อมูลเรียบร้อย');
-      loadTicketDetails();
+      window.location.href = `payment.html?id=${ticketId}`;
     }
 
     loadTicketDetails();

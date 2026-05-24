@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชำระค่าปรับ — ใบสั่งจราจร</title>
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .payment-loader {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+        <!-- Page Header -->
+        <div class="page-header">
+          <!-- Circular Back Button -->
+          <a id="btn-back" href="#" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+  
+          <!-- Title Block -->
+          <div class="title-block">
+            <h2 class="text-header">ชำระค่าปรับ</h2>
+            <p class="text-subheader">ชำระเงินผ่านคิวอาร์โค้ดใบสั่งจราจรของคุณ</p>
+          </div>
+        </div>
+
+        <!-- Centered Card Wrapper -->
+        <div style="display: flex; justify-content: center; width: 100%;">
+          <div style="width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: var(--spacing-md);">
+
+
+          <!-- QR Payment Card Container -->
+          <div class="modal-content-payment" style="box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08); width: 100%;">
+            <!-- Header Banner -->
+            <div class="qr-header-banner">
+              <div class="qr-banner-logo">
+                <svg viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 30px; width: auto;">
+                  <!-- Logo Symbol (White background rounded square) -->
+                  <rect width="40" height="40" rx="10" fill="#ffffff" />
+                  <!-- Logo Symbol Details (hollow space filled with dark blue) -->
+                  <rect x="6" y="6" width="12" height="12" fill="#0c3664" rx="1.5" />
+                  <rect x="22" y="6" width="12" height="12" fill="#0c3664" rx="1.5" />
+                  <rect x="6" y="22" width="12" height="12" fill="#0c3664" rx="1.5" />
+                  <!-- Bottom right green arrow -->
+                  <path d="M22 22 H34 V34 Z" fill="#00a76e" />
+                  <!-- Inner white dot in the green arrow -->
+                  <rect x="25" y="25" width="4" height="4" fill="#ffffff" />
+                  
+                  <!-- Logo Text -->
+                  <text x="52" y="16" font-family="'Inter', 'Anuphan', sans-serif" font-weight="900" font-size="14" fill="#ffffff" letter-spacing="0.5">THAI QR</text>
+                  <text x="52" y="32" font-family="'Inter', 'Anuphan', sans-serif" font-weight="900" font-size="14" fill="#ffffff" letter-spacing="0.5">PAYMENT</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- The White Card Wrapper inside Page -->
+            <div class="qr-card">
+              <!-- Content Body -->
+              <div class="qr-modal-body">
+                <!-- PromptPay logo container -->
+                <div class="promptpay-logo-container">
+                  <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 32px; width: auto;">
+                    <!-- Border -->
+                    <rect x="0.5" y="0.5" width="119" height="39" rx="4" stroke="#0b305f" stroke-width="1.5" fill="white" />
+                    <!-- Top line / background for พร้อมเพย์ -->
+                    <line x1="20" y1="12" x2="100" y2="12" stroke="#0b305f" stroke-width="0.75" />
+                    <rect x="35" y="6" width="50" height="12" fill="white" />
+                    <text x="60" y="14" font-family="'Anuphan', sans-serif" font-weight="600" font-size="8.5" fill="#0b305f" text-anchor="middle">พร้อมเพย์</text>
+                    <!-- PromptPay text -->
+                    <text x="60" y="32" font-family="'Inter', 'Anuphan', sans-serif" font-weight="800" font-size="14.5" text-anchor="middle">
+                      <tspan fill="#0b305f">Prompt</tspan><tspan fill="#005ea6">Pay</tspan>
+                    </text>
+                  </svg>
+                </div>
+
+                <!-- QR Code Image Box -->
+                <div class="qr-code-box">
+                  <svg class="qr-code-img" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="5" width="25" height="25" fill="#000" />
+                    <rect x="7" y="7" width="21" height="21" fill="#fff" />
+                    <rect x="11" y="11" width="13" height="13" fill="#000" />
+                    
+                    <rect x="70" y="5" width="25" height="25" fill="#000" />
+                    <rect x="72" y="7" width="21" height="21" fill="#fff" />
+                    <rect x="76" y="11" width="13" height="13" fill="#000" />
+                    
+                    <rect x="5" y="70" width="25" height="25" fill="#000" />
+                    <rect x="7" y="72" width="21" height="21" fill="#fff" />
+                    <rect x="11" y="76" width="13" height="13" fill="#000" />
+                    
+                    <rect x="40" y="10" width="10" height="5" fill="#000" />
+                    <rect x="50" y="15" width="5" height="15" fill="#000" />
+                    <rect x="35" y="25" width="10" height="10" fill="#000" />
+                    <rect x="15" y="40" width="10" height="15" fill="#000" />
+                    <rect x="35" y="45" width="20" height="10" fill="#000" />
+                    <rect x="65" y="40" width="10" height="10" fill="#000" />
+                    <rect x="80" y="35" width="15" height="5" fill="#000" />
+                    <rect x="45" y="60" width="15" height="15" fill="#000" />
+                    <rect x="70" y="65" width="20" height="10" fill="#000" />
+                    <rect x="75" y="80" width="15" height="15" fill="#000" />
+                    <rect x="40" y="85" width="20" height="5" fill="#000" />
+                    <rect x="25" y="60" width="5" height="10" fill="#000" />
+                  </svg>
+                </div>
+
+                <!-- Dynamic Payment Details -->
+                <div class="qr-payment-info-block">
+                  <div id="payment-amount-display" class="qr-amount-text">- บาท</div>
+                  <div id="payment-ref-display" class="qr-ref-text">เลขที่ใบสั่ง: -</div>
+                  <div id="payment-date-display" class="qr-info-text">วันที่ออกใบสั่ง: -</div>
+                  <div id="payment-plate-display" class="qr-info-text">ทะเบียนรถ: -</div>
+                  
+                  <p class="qr-help-text">
+                    คุณสามารถชำระเงินค่าใบสั่งจราจร ด้วยคิวอาร์โค้ดนี้<br>
+                    ผ่านแอปพลิเคชันธนาคาร<br>
+                    ที่รองรับการชำระเงินด้วยคิวอาร์โค้ด
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Button Container -->
+            <div class="qr-action-container">
+              <button id="btn-confirm-payment" class="btn btn-primary qr-action-btn" onclick="saveImage()">
+                <span class="material-symbols-outlined">download</span>
+                <span>บันทึกรูปภาพ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="db.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketId = urlParams.get('id') || 'ticket-3';
+    
+
+
+    // DOM Elements
+    const paymentAmountDisplay = document.getElementById('payment-amount-display');
+    const paymentRefDisplay = document.getElementById('payment-ref-display');
+    const paymentDateDisplay = document.getElementById('payment-date-display');
+    const paymentPlateDisplay = document.getElementById('payment-plate-display');
+    const btnConfirmPayment = document.getElementById('btn-confirm-payment');
+
+    let currentTicket = null;
+
+    function loadTicket() {
+      currentTicket = DB.getTicketById(ticketId);
+
+      if (!currentTicket) {
+        alert('ไม่พบข้อมูลใบสั่งจราจรที่ต้องการชำระ');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Update UI with ticket info
+      paymentAmountDisplay.textContent = currentTicket.fine.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' บาท';
+      paymentRefDisplay.textContent = 'เลขที่ใบสั่ง: ' + currentTicket.ticketNumber;
+      paymentDateDisplay.textContent = 'วันที่ออกใบสั่ง: ' + currentTicket.issueDate;
+      paymentPlateDisplay.textContent = 'ทะเบียนรถ: ' + currentTicket.licensePlate;
+
+      // Set back button link
+      document.getElementById('btn-back').href = `detail.html?id=${ticketId}`;
+    }
+
+    function saveImage() {
+      // Show loading status inside button
+      btnConfirmPayment.disabled = true;
+      btnConfirmPayment.style.backgroundColor = '#4a5568';
+      btnConfirmPayment.style.opacity = '0.8';
+      btnConfirmPayment.innerHTML = '<span class="payment-loader"></span> <span>กำลังบันทึกรูปภาพ...</span>';
+
+      setTimeout(() => {
+        btnConfirmPayment.innerHTML = `
+          <span class="material-symbols-outlined">download_done</span>
+          <span>บันทึกรูปภาพสำเร็จ</span>
+        `;
+        btnConfirmPayment.style.backgroundColor = '#059669'; // Green success color
+
+        setTimeout(() => {
+          alert('บันทึกรูปภาพคิวอาร์โค้ดลงในอุปกรณ์เรียบร้อยแล้ว! กรุณาชำระเงินผ่านแอปพลิเคชันธนาคาร');
+          window.location.href = `detail.html?id=${ticketId}`;
+        }, 300);
+      }, 1500);
+    }
+
+    // Initialize
+    loadTicket();
+  </script>
+</body>
+</html>

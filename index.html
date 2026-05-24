@@ -11,54 +11,13 @@
 </head>
 <body>
   <div class="app-container">
-    <!-- Desktop Left Sidebar (Visible on Desktop only) -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">
-        <div class="sidebar-logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
-        <div class="sidebar-logo-text">
-          <span class="logo-main">ตรวจสอบใบสั่งจราจร</span>
-          <span class="logo-sub">ระบบใบสั่งจราจร</span>
-        </div>
-      </div>
-      
-      <nav class="sidebar-menu">
-        <a href="index.html" class="sidebar-menu-item active" id="menu-tickets">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="9" y1="9" x2="15" y2="9"></line>
-            <line x1="9" y1="13" x2="15" y2="13"></line>
-            <line x1="9" y1="17" x2="15" y2="17"></line>
-          </svg>
-          ข้อมูลใบสั่งจราจร
-        </a>
-        <a href="points.html" class="sidebar-menu-item" id="menu-points">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          ตรวจสอบคะแนนการขับขี่
-        </a>
-      </nav>
-
-      <div class="sidebar-user">
-        <div class="user-avatar">ข</div>
-        <div class="user-info">
-          <span class="user-name">คุณขับขี่ เดินทางปลอดภัย</span>
-          <span class="user-points">คะแนนคงเหลือ: 7 / 12</span>
-        </div>
-      </div>
-    </aside>
 
     <!-- Scrollable Main Content Layout -->
     <div class="main-layout">
       <!-- Main Content -->
       <main>
         <!-- Title Block -->
-        <div>
+        <div class="title-block">
           <h2 class="text-header">ข้อมูลใบสั่งจราจรของคุณ</h2>
           <p class="text-subheader">ข้อมูลใบสั่งจราจร โดยสำนักงานตำรวจแห่งชาติ (ตร.)</p>
         </div>
@@ -98,27 +57,7 @@
           ข้อมูล ณ วันที่ 2 มกราคม 2569 11.40 น.
         </div>
 
-        <!-- Developer Tester Menu -->
-        <div class="tester-widget">
-          <div class="tester-title">
-            <span>จำลองระบบ (Developer Tools)</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-          </div>
-          <div class="tester-row">
-            <label for="toggle-empty-db">จำลองสถานะ "ไม่พบข้อมูลใบสั่ง"</label>
-            <label class="switch">
-              <input type="checkbox" id="toggle-empty-db">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="tester-row">
-            <span>คืนค่าข้อมูลใบสั่งเริ่มต้น</span>
-            <button class="btn btn-secondary btn-small" style="width: auto; min-h: auto;" id="btn-reset-db">รีเซ็ตข้อมูล</button>
-          </div>
-        </div>
+
       </main>
     </div>
   </div>
@@ -130,8 +69,7 @@
     const ticketsArea = document.getElementById('tickets-area');
     const pointsValue = document.getElementById('points-value');
     const dashboardGaugeFill = document.getElementById('dashboard-gauge-fill');
-    const toggleEmptyDb = document.getElementById('toggle-empty-db');
-    const btnResetDb = document.getElementById('btn-reset-db');
+
 
     // Abbreviate Thai Date Months
     function abbreviateThaiDate(str) {
@@ -196,7 +134,7 @@
     // Render Tickets list
     function renderTickets() {
       const tickets = DB.getTickets();
-      const isEmpty = DB.getEmptyState() || tickets.length === 0;
+      const isEmpty = tickets.length === 0;
 
       // Update ticket count in welcome card dynamically
       const welcomeTicketCount = document.getElementById('welcome-ticket-count');
@@ -290,21 +228,9 @@
     function initPage() {
       renderPointsSummary();
       renderTickets();
-      toggleEmptyDb.checked = DB.getEmptyState();
     }
 
-    // Event Listeners
-    toggleEmptyDb.addEventListener('change', (e) => {
-      DB.setEmptyState(e.target.checked);
-      renderTickets();
-    });
 
-    btnResetDb.addEventListener('click', () => {
-      DB.reset();
-      toggleEmptyDb.checked = false;
-      initPage();
-      alert('รีเซ็ตฐานข้อมูลเรียบร้อยแล้ว!');
-    });
 
     window.addEventListener('pageshow', () => {
       initPage();
