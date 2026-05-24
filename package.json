@@ -1,0 +1,13 @@
+{
+  "name": "czp-police-ticket",
+  "version": "1.0.0",
+  "description": "Citizen Portal (CZP) Police Ticket Web Application",
+  "main": "index.html",
+  "scripts": {
+    "sass:build": "sass styles.scss styles.css",
+    "sass:watch": "sass --watch styles.scss:styles.css"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}
