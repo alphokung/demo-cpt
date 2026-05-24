@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบสั่งจราจร — ข้อมูลใบสั่งจราจรของคุณ</title>
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Desktop Left Sidebar (Visible on Desktop only) -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="sidebar-logo-text">
+          <span class="logo-main">ตรวจสอบใบสั่งจราจร</span>
+          <span class="logo-sub">ระบบใบสั่งจราจร</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="index.html" class="sidebar-menu-item active" id="menu-tickets">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="9"></line>
+            <line x1="9" y1="13" x2="15" y2="13"></line>
+            <line x1="9" y1="17" x2="15" y2="17"></line>
+          </svg>
+          ข้อมูลใบสั่งจราจร
+        </a>
+        <a href="points.html" class="sidebar-menu-item" id="menu-points">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          ตรวจสอบคะแนนการขับขี่
+        </a>
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="user-avatar">ข</div>
+        <div class="user-info">
+          <span class="user-name">คุณขับขี่ เดินทางปลอดภัย</span>
+          <span class="user-points">คะแนนคงเหลือ: 7 / 12</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Scrollable Main Content Layout -->
+    <div class="main-layout">
+      <!-- Main Content -->
+      <main>
+        <!-- Title Block -->
+        <div>
+          <h2 class="text-header">ข้อมูลใบสั่งจราจรของคุณ</h2>
+          <p class="text-subheader">ข้อมูลใบสั่งจราจร โดยสำนักงานตำรวจแห่งชาติ (ตร.)</p>
+        </div>
+
+        <!-- Welcome and Points Cards Dashboard -->
+        <div class="dashboard-grid">
+          <!-- Welcome Card -->
+          <div class="card welcome-card">
+            <h2 id="welcome-driver-name">สวัสดี คุณขับขี่ดี</h2>
+            <p>ยินดีต้อนรับสู่บริการ ใบสั่งจราจร</p>
+            <p style="margin-top: 8px; color: rgba(255, 255, 255, 0.75);">คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" style="font-weight: 700; color: white;">2</span> ใบ ดังนี้</p>
+          </div>
+
+          <!-- Points Card (Interactive Link to points.html) -->
+          <div class="card points-card card-interactive" onclick="window.location.href='points.html'">
+            <span class="points-card-title">คะแนนการขับขี่</span>
+            <div class="dashboard-gauge-container">
+              <svg class="dashboard-gauge-svg" viewBox="0 0 100 100">
+                <circle class="dashboard-gauge-bg" cx="50" cy="50" r="42"></circle>
+                <circle id="dashboard-gauge-fill" class="dashboard-gauge-fill" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+              </svg>
+              <div class="dashboard-gauge-text">
+                <span id="points-value" class="dashboard-gauge-value">7</span>
+                <span class="dashboard-gauge-max">เต็ม 12 คะแนน</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Content Area -->
+        <div id="tickets-area">
+          <!-- Will be populated by JS: either ticket list or empty state -->
+        </div>
+
+        <!-- Sync Timestamp -->
+        <div class="footer-timestamp">
+          ข้อมูล ณ วันที่ 2 มกราคม 2569 11.40 น.
+        </div>
+
+        <!-- Developer Tester Menu -->
+        <div class="tester-widget">
+          <div class="tester-title">
+            <span>จำลองระบบ (Developer Tools)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <div class="tester-row">
+            <label for="toggle-empty-db">จำลองสถานะ "ไม่พบข้อมูลใบสั่ง"</label>
+            <label class="switch">
+              <input type="checkbox" id="toggle-empty-db">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="tester-row">
+            <span>คืนค่าข้อมูลใบสั่งเริ่มต้น</span>
+            <button class="btn btn-secondary btn-small" style="width: auto; min-h: auto;" id="btn-reset-db">รีเซ็ตข้อมูล</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="db.js"></script>
+  <script>
+    // Elements
+    const ticketsArea = document.getElementById('tickets-area');
+    const pointsValue = document.getElementById('points-value');
+    const dashboardGaugeFill = document.getElementById('dashboard-gauge-fill');
+    const toggleEmptyDb = document.getElementById('toggle-empty-db');
+    const btnResetDb = document.getElementById('btn-reset-db');
+
+    // Abbreviate Thai Date Months
+    function abbreviateThaiDate(str) {
+      if (!str) return '';
+      return str
+        .replace('มกราคม', 'ม.ค.')
+        .replace('กุมภาพันธ์', 'ก.พ.')
+        .replace('มีนาคม', 'มี.ค.')
+        .replace('เมษายน', 'เม.ย.')
+        .replace('พฤษภาคม', 'พ.ค.')
+        .replace('มิถุนายน', 'มิ.ย.')
+        .replace('กรกฎาคม', 'ก.ค.')
+        .replace('สิงหาคม', 'ส.ค.')
+        .replace('กันยายน', 'ก.ย.')
+        .replace('ตุลาคม', 'ต.ค.')
+        .replace('พฤศจิกายน', 'พ.ย.')
+        .replace('ธันวาคม', 'ธ.ค.');
+    }
+
+    // Load and Render Points summary
+    function renderPointsSummary() {
+      const points = DB.getPoints();
+      
+      // Animate score number
+      if (pointsValue) {
+        let scoreVal = 0;
+        const targetScore = points.remainingPoints;
+        const duration = 800;
+        const intervalTime = 30;
+        const step = targetScore / (duration / intervalTime);
+        
+        const numAnim = setInterval(() => {
+          scoreVal += step;
+          if (scoreVal >= targetScore) {
+            scoreVal = targetScore;
+            clearInterval(numAnim);
+          }
+          pointsValue.textContent = Math.round(scoreVal);
+        }, intervalTime);
+      }
+      
+      if (dashboardGaugeFill) {
+        const c = 264;
+        dashboardGaugeFill.style.strokeDasharray = c;
+        dashboardGaugeFill.style.strokeDashoffset = c;
+
+        setTimeout(() => {
+          const pct = (points.remainingPoints / points.maxPoints) * c;
+          dashboardGaugeFill.style.strokeDashoffset = c - pct;
+        }, 100);
+
+        if (points.remainingPoints <= 3) {
+          dashboardGaugeFill.style.stroke = 'var(--danger-40)';
+        } else if (points.remainingPoints <= 7) {
+          dashboardGaugeFill.style.stroke = 'var(--warning-50)';
+        } else {
+          dashboardGaugeFill.style.stroke = 'var(--primary-40)';
+        }
+      }
+    }
+
+    // Render Tickets list
+    function renderTickets() {
+      const tickets = DB.getTickets();
+      const isEmpty = DB.getEmptyState() || tickets.length === 0;
+
+      // Update ticket count in welcome card dynamically
+      const welcomeTicketCount = document.getElementById('welcome-ticket-count');
+      if (welcomeTicketCount) {
+        welcomeTicketCount.textContent = isEmpty ? 0 : tickets.length;
+      }
+
+      if (isEmpty) {
+        ticketsArea.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 class="empty-title">ไม่พบข้อมูลใบสั่งจราจร</h3>
+            <p class="empty-desc">ไม่พบข้อมูลใบสั่งจราจร ในฐานข้อมูลของสำนักงานตำรวจแห่งชาติ</p>
+          </div>
+        `;
+      } else {
+        let html = '<div class="ticket-list-container">';
+        
+        tickets.forEach(ticket => {
+          let statusIconSrc = '';
+          // Determine status contents, colors, and the media SVG icon
+          if (ticket.status === 'paid') {
+            statusText = 'ชำระค่าปรับแล้ว';
+            statusColorTextClass = 'status-text-paid';
+            statusIconSrc = '_media/ticket-paid.svg';
+          } else if (ticket.status === 'warning') {
+            statusText = 'ยังไม่ได้ชำระค่าปรับ - ออกหนังสือเตือนแล้ว';
+            statusColorTextClass = 'status-text-warning';
+            statusIconSrc = '_media/ticket-expired.svg';
+          } else {
+            statusText = 'ยังไม่ได้ชำระค่าปรับ';
+            statusColorTextClass = 'status-text-unpaid';
+            statusIconSrc = '_media/ticket-pending.svg';
+          }
+
+          let statusDetailText = '';
+          if (ticket.status === 'paid') {
+            statusDetailText = abbreviateThaiDate(ticket.paymentDetails);
+          } else {
+            statusDetailText = `กรุณาชำระภายในวันที่ ${abbreviateThaiDate(ticket.dueDate)}`;
+          }
+
+          html += `
+            <div class="card">
+              <div class="ticket-card-header">
+                <!-- Use SVGs from the _media folder -->
+                <img src="${statusIconSrc}" alt="Ticket Status" style="width: 56px; height: 56px; flex-shrink: 0;">
+                
+                <div class="ticket-summary-info">
+                  <span class="ticket-num-title">ใบสั่งเลขที่: ${ticket.ticketNumber}</span>
+                  <span class="ticket-fine-title">ค่าปรับ: ${ticket.fine.toLocaleString()} บาท</span>
+                </div>
+              </div>
+              
+              <div class="ticket-card-body">
+                <div class="ticket-card-body-item">
+                  <span class="ticket-card-label">สถานที่เกิดเหตุ:</span>
+                  <span class="ticket-card-value">${ticket.offenseLocation}</span>
+                </div>
+                <div class="ticket-card-body-item">
+                  <span class="ticket-card-label">วันที่เกิดเหตุ:</span>
+                  <span class="ticket-card-value">${abbreviateThaiDate(ticket.offenseDate)}</span>
+                </div>
+                <div class="ticket-card-body-item">
+                  <span class="ticket-card-label">สถานะ:</span>
+                  <span class="ticket-card-value">
+                    <div style="display: flex; flex-direction: column;">
+                      <span class="card-status-title ${statusColorTextClass}">${statusText}</span>
+                      <span class="card-status-desc ${statusColorTextClass}">${statusDetailText}</span>
+                    </div>
+                  </span>
+                </div>
+              </div>
+              
+              <button class="btn btn-secondary card-btn-action" onclick="window.location.href='detail.html?id=${ticket.id}'">ดูรายละเอียด</button>
+            </div>
+          `;
+        });
+        
+        html += '</div>';
+        ticketsArea.innerHTML = html;
+      }
+    }
+
+    // Initialize Page
+    function initPage() {
+      renderPointsSummary();
+      renderTickets();
+      toggleEmptyDb.checked = DB.getEmptyState();
+    }
+
+    // Event Listeners
+    toggleEmptyDb.addEventListener('change', (e) => {
+      DB.setEmptyState(e.target.checked);
+      renderTickets();
+    });
+
+    btnResetDb.addEventListener('click', () => {
+      DB.reset();
+      toggleEmptyDb.checked = false;
+      initPage();
+      alert('รีเซ็ตฐานข้อมูลเรียบร้อยแล้ว!');
+    });
+
+    window.addEventListener('pageshow', () => {
+      initPage();
+    });
+
+    initPage();
+  </script>
+</body>
+</html>
