@@ -1601,6 +1601,7 @@ main {
   padding: 0 !important;
   overflow: hidden;
   max-width: 440px;
+  max-height: 90vh;
   background-color: #f7f9fc; /* Light gray background like the image */
   border-radius: 28px !important;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
@@ -1763,9 +1764,9 @@ main {
 
 .contact-icon-box {
   background-color: #dbeafe; /* Soft light blue */
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1969,6 +1970,9 @@ main {
   background-color: white;
   width: 100%;
   box-sizing: border-box;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .payment-qr-container {
