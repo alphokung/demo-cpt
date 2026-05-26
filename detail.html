@@ -62,23 +62,23 @@
         </div>
 
         <!-- Ticket Overview Summary Card (Standalone Full-Width Card) -->
-        <div class="card ticket-summary-card">
+        <div class="card summary-card">
           <div id="detail-status-icon-skeleton" class="skeleton-loading skeleton-circle status-icon-size"></div>
           <img id="detail-status-icon" src="" alt="Ticket Status Icon" class="status-icon-size loading-hidden">
           
-          <div class="ticket-summary-info">
-            <span id="summary-ticket-num" class="ticket-num-title">
+          <div class="summary-info">
+            <span id="summary-ticket-num" class="list-title">
               <span class="skeleton-loading skeleton-text short mb-0"></span>
             </span>
-            <span id="summary-ticket-fine" class="ticket-fine-title">
+            <span id="summary-ticket-fine" class="fine-title">
               <span class="skeleton-loading skeleton-text medium mb-0"></span>
             </span>
-            <span id="summary-ticket-due" class="ticket-due-title">
+            <span id="summary-ticket-due" class="due-title">
               <span class="skeleton-loading skeleton-text short mb-0"></span>
             </span>
-            <div class="ticket-status-row">
+            <div class="status-row">
               <span id="summary-ticket-status-label-skeleton" class="skeleton-loading skeleton-status-label-summary"></span>
-              <span id="summary-ticket-status-label" class="ticket-status-label loading-hidden">สถานะ:</span>
+              <span id="summary-ticket-status-label" class="status-label loading-hidden">สถานะ:</span>
               <span id="summary-ticket-status-skeleton" class="skeleton-loading skeleton-text short mb-0"></span>
               <span id="summary-ticket-status" class="status-pill loading-hidden"></span>
             </div>
@@ -201,7 +201,7 @@
         </div>
 
         <div class="footer-timestamp">
-          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
+          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
         </div>
       </main>
     </div>
@@ -440,7 +440,7 @@
 
       summaryTicketNum.textContent = `ใบสั่งเลขที่: ${currentTicket.ticketNumber}`;
       summaryTicketFine.textContent = `ค่าปรับ: ${currentTicket.fine.toLocaleString()} บาท`;
-      summaryTicketDue.innerHTML = `กำหนดชำระ <span class="ticket-due-date-highlight">${abbreviateThaiDate(currentTicket.dueDate)}</span>`;
+      summaryTicketDue.innerHTML = `กำหนดชำระ <span class="due-date-highlight">${abbreviateThaiDate(currentTicket.dueDate)}</span>`;
       warningDocTicketNum.textContent = currentTicket.ticketNumber;
 
       // Populate payment modal dynamic fields

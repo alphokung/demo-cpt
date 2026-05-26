@@ -30,35 +30,51 @@
 <body>
   <div class="app-container">
     <div class="main-layout">
-      <main class="fdemo-main">
+      <main>
+
+        <!-- Title Block -->
+        <div class="title-block">
+          <h2 class="text-header">ใบรับรองแพทย์ดิจิทัล</h2>
+          <p class="text-subheader">ข้อมูลใบรับรองแพทย์ดิจิทัล โดยกระทรวงสาธารณสุข</p>
+        </div>
 
         <!-- Welcome Banner -->
-        <div class="fdemo-banner">
-          <p class="fdemo-banner-greeting">ยินดีต้อนรับ</p>
-          <p class="fdemo-banner-name" id="fdemo-banner-name">กำลังโหลด...</p>
-          <p class="fdemo-banner-sub" id="fdemo-banner-sub"></p>
+        <div class="welcome-banner">
+          <p class="welcome-banner-greeting">ยินดีต้อนรับ</p>
+          <p class="welcome-banner-name" id="welcome-banner-name">กำลังโหลด...</p>
+          <p class="welcome-banner-sub" id="welcome-banner-sub"></p>
         </div>
 
         <!-- Filter Chips -->
-        <div class="fdemo-filter-row">
-          <button class="fdemo-filter-chip active" data-filter="all" onclick="setFilter('all')">ทั้งหมด</button>
-          <button class="fdemo-filter-chip" data-filter="valid" onclick="setFilter('valid')">
-            <span class="fdemo-filter-dot dot-valid"></span>
-            ใบรับรองแพทย์ที่ใช้งานได้
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">ทั้งหมด</button>
+          <button class="filter-chip" data-filter="health" onclick="setFilter('health')">
+            <span class="filter-dot dot-health"></span>
+            ตรวจสุขภาพ
           </button>
-          <button class="fdemo-filter-chip" data-filter="expired" onclick="setFilter('expired')">
-            <span class="fdemo-filter-dot dot-expired"></span>
-            ใบรับรองแพทย์ที่หมดอายุ
+          <button class="filter-chip" data-filter="work" onclick="setFilter('work')">
+            <span class="filter-dot dot-work"></span>
+            ใบรับรองการทำงาน
+          </button>
+          <button class="filter-chip" data-filter="driving" onclick="setFilter('driving')">
+            <span class="filter-dot dot-driving"></span>
+            ใบขับขี่
+          </button>
+          <button class="filter-chip" data-filter="covid" onclick="setFilter('covid')">
+            <span class="filter-dot dot-covid"></span>
+            โควิด-19
           </button>
         </div>
 
         <!-- Dynamic Content -->
-        <div id="fdemo-content">
+        <div id="list-content">
           <!-- Rendered by demo.js -->
         </div>
 
         <!-- Timestamp -->
-        <p class="fdemo-timestamp">ข้อมูลใบรับรองแพทย์ดิจิทัล จากหมอพร้อม<br>ณ วันที่ 2 มกราคม 2569  11.40 น.</p>
+        <div class="footer-timestamp">
+          ข้อมูลใบรับรองแพทย์ดิจิทัล จากหมอพร้อม<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
+        </div>
 
       </main>
     </div>
@@ -74,7 +90,7 @@
   </div>
 
   <!-- Demo state toggle (floating) -->
-  <button class="fdemo-demo-toggle" id="fdemo-toggle-btn" onclick="toggleDemoState()">สลับ: ไม่มีข้อมูล</button>
+  <button class="demo-toggle" id="demo-toggle-btn" onclick="toggleDemoState()">สลับ: ไม่มีข้อมูล</button>
 
   <script src="demo.js"></script>
   <script>

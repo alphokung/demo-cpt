@@ -80,25 +80,25 @@
           
           <div id="logs-container" class="points-logs-list">
             <!-- Skeleton Logs (3 items) -->
-            <div class="card ticket-summary-card">
-              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
-              <div class="skeleton-ticket-header-text">
+            <div class="card summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+              <div class="skeleton-header-text">
                 <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
                 <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
                 <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
               </div>
             </div>
-            <div class="card ticket-summary-card">
-              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
-              <div class="skeleton-ticket-header-text">
+            <div class="card summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+              <div class="skeleton-header-text">
                 <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
                 <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
                 <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
               </div>
             </div>
-            <div class="card ticket-summary-card">
-              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
-              <div class="skeleton-ticket-header-text">
+            <div class="card summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+              <div class="skeleton-header-text">
                 <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
                 <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
                 <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
@@ -109,7 +109,7 @@
 
         <!-- Sync Timestamp -->
         <div class="footer-timestamp">
-          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
+          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
         </div>
       </main>
     </div>
@@ -174,7 +174,7 @@
         let titleClass = isDeduction ? 'log-title-deduction' : 'log-title-restore';
 
         logsHTML += `
-          <div class="card ticket-summary-card">
+          <div class="card summary-card">
             <div class="log-icon-container ${logClass}">
               ${isDeduction ? `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -190,8 +190,8 @@
               `}
             </div>
             
-            <div class="ticket-summary-info">
-              <span class="ticket-num-title ${titleClass}">${log.title}</span>
+            <div class="summary-info">
+              <span class="list-title ${titleClass}">${log.title}</span>
               <div class="log-detail mt-xs">
                 <span class="log-detail-item"><strong>คงเหลือ:</strong> ${log.remaining} คะแนน</span>
                 <span class="log-detail-item"><strong>วันที่ถูกตัดคะแนน:</strong> ${log.date}</span>

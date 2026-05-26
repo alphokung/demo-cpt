@@ -28,7 +28,7 @@ function isExpired(cert) {
 
 function setFilter(filter) {
   activeFilter = filter;
-  document.querySelectorAll('.fdemo-filter-chip').forEach(function (chip) {
+  document.querySelectorAll('.filter-chip').forEach(function (chip) {
     chip.classList.toggle('active', chip.dataset.filter === filter);
   });
   renderCertSections();
@@ -37,48 +37,57 @@ function setFilter(filter) {
 function renderCertCard(cert) {
   var iconName = ICONS[cert.typeKey] || 'description';
   var badgeClass = cert.status === 'valid' ? 'valid' : cert.status === 'expiring' ? 'expiring' : 'expired';
-  var itemClass = isExpired(cert) ? 'fdemo-cert-item is-expired' : 'fdemo-cert-item';
-  var expiryLabel = isExpired(cert) ? 'หมดอายุ' : 'หมดอายุ';
+  var itemClass = isExpired(cert) ? 'list-item is-expired' : 'list-item';
 
   return '<a href="cert-detail.html" class="' + itemClass + '">' +
-    '<div class="fdemo-cert-icon ' + cert.typeKey + '">' +
+    '<span class="list-badge ' + badgeClass + ' list-badge--corner">' + STATUS_LABEL[cert.status] + '</span>' +
+    '<div class="list-icon ' + cert.typeKey + '">' +
       '<span class="material-symbols-outlined">' + iconName + '</span>' +
     '</div>' +
-    '<div class="fdemo-cert-body">' +
-      '<p class="fdemo-cert-title">' + cert.title + '</p>' +
-      '<p class="fdemo-cert-meta">' + cert.hospital + '</p>' +
-      '<span class="fdemo-cert-badge ' + badgeClass + '">' + STATUS_LABEL[cert.status] + '</span>' +
+    '<div class="list-body">' +
+      '<p class="list-title">' + cert.title + '</p>' +
+      '<div class="list-meta">' +
+        '<span class="list-meta-item">' +
+          '<span class="material-symbols-outlined list-meta-icon">domain</span>' +
+          '<span>' + cert.hospital + '</span>' +
+        '</span>' +
+        '<span class="list-meta-item">' +
+          '<span class="material-symbols-outlined list-meta-icon">calendar_today</span>' +
+          '<span>หมดอายุ ' + cert.expiryDate + '</span>' +
+        '</span>' +
+      '</div>' +
     '</div>' +
-    '<span class="material-symbols-outlined fdemo-chevron">chevron_right</span>' +
+    '<span class="material-symbols-outlined chevron">chevron_right</span>' +
   '</a>';
 }
 
 function renderCertSections() {
   var certs = demoHasData ? ALL_CERTS : [];
+
+  // Apply category type filter
+  if (activeFilter !== 'all') {
+    certs = certs.filter(function (c) {
+      return c.typeKey === activeFilter;
+    });
+  }
+
   var activeCerts = certs.filter(isActive);
   var expiredCerts = certs.filter(isExpired);
 
-  // Apply filter
-  if (activeFilter === 'valid') {
-    expiredCerts = [];
-  } else if (activeFilter === 'expired') {
-    activeCerts = [];
-  }
-
-  var container = document.getElementById('fdemo-content');
+  var container = document.getElementById('list-content');
   if (!container) return;
 
   if (certs.length === 0) {
     // No-data state
     container.innerHTML =
-      '<div class="fdemo-section">' +
-        '<p class="fdemo-section-title">ใบรับรองแพทย์ทั้งหมด (0)</p>' +
-        '<div class="fdemo-empty-state">' +
-          '<div class="fdemo-empty-icon">' +
+      '<div class="list-section">' +
+        '<p class="list-section-title">ใบรับรองแพทย์ทั้งหมด (0)</p>' +
+        '<div class="empty-state">' +
+          '<div class="empty-icon">' +
             '<span class="material-symbols-outlined" style="font-size:28px">search</span>' +
           '</div>' +
-          '<p class="fdemo-empty-title">ไม่พบข้อมูลใบรับรองแพทย์</p>' +
-          '<p class="fdemo-empty-desc">ท่านยังไม่มีใบรับรองแพทย์ดิจิทัลในระบบ<br>สามารถขอรับที่โรงพยาบาลที่เข้าร่วมโครงการ</p>' +
+          '<p class="empty-title">ไม่พบข้อมูลใบรับรองแพทย์</p>' +
+          '<p class="empty-desc">ท่านยังไม่มีใบรับรองแพทย์ดิจิทัลในระบบ<br>สามารถขอรับที่โรงพยาบาลที่เข้าร่วมโครงการ</p>' +
         '</div>' +
       '</div>';
     return;
@@ -88,20 +97,21 @@ function renderCertSections() {
 
   // Active section
   if (activeFilter !== 'expired') {
-    html += '<div class="fdemo-section">';
-    html += '<p class="fdemo-section-title">ใบรับรองแพทย์ที่ใช้งานได้ (' + activeCerts.length + ')</p>';
+    html += '<div class="list-section">';
+    html += '<p class="list-section-title">ใบรับรองแพทย์ที่ใช้งานได้ (' + activeCerts.length + ')</p>';
+    html += '<p class="list-section-note">ใบรับรองแพทย์ที่ยังไม่หมดอายุ สามารถใช้แสดงต่อหน่วยงานหรือนำไปใช้ประกอบการทำธุรกรรมได้</p>';
     if (activeCerts.length > 0) {
-      html += '<div class="fdemo-cert-list">';
+      html += '<div class="cert-list">';
       activeCerts.forEach(function (c) { html += renderCertCard(c); });
       html += '</div>';
     } else {
       html +=
-        '<div class="fdemo-empty-state">' +
-          '<div class="fdemo-empty-icon">' +
+        '<div class="empty-state">' +
+          '<div class="empty-icon">' +
             '<span class="material-symbols-outlined" style="font-size:28px">search</span>' +
           '</div>' +
-          '<p class="fdemo-empty-title">ไม่พบรายการ</p>' +
-          '<p class="fdemo-empty-desc">ไม่มีใบรับรองแพทย์ที่ใช้งานได้ในขณะนี้</p>' +
+          '<p class="empty-title">ไม่พบรายการ</p>' +
+          '<p class="empty-desc">ไม่มีใบรับรองแพทย์ที่ใช้งานได้ในขณะนี้</p>' +
         '</div>';
     }
     html += '</div>';
@@ -109,21 +119,21 @@ function renderCertSections() {
 
   // Expired section
   if (activeFilter !== 'valid') {
-    html += '<div class="fdemo-section">';
-    html += '<p class="fdemo-section-title">ใบรับรองแพทย์ที่หมดอายุ (' + expiredCerts.length + ')</p>';
+    html += '<div class="list-section">';
+    html += '<p class="list-section-title">ใบรับรองแพทย์ที่หมดอายุ (' + expiredCerts.length + ')</p>';
+    html += '<p class="list-section-note">ใบรับรองแพทย์ที่หมดอายุไม่สามารถใช้งานได้ กรุณาติดต่อโรงพยาบาลเพื่อออกใบรับรองแพทย์ใหม่</p>';
     if (expiredCerts.length > 0) {
-      html += '<div class="fdemo-cert-list">';
+      html += '<div class="cert-list">';
       expiredCerts.forEach(function (c) { html += renderCertCard(c); });
-      html += '</div>';
-      html += '<p class="fdemo-section-note">ใบรับรองแพทย์ที่หมดอายุไม่สามารถใช้งานได้ กรุณาติดต่อโรงพยาบาลเพื่อออกใบรับรองแพทย์ใหม่</p>';
+      html += '</div>';      
     } else {
       html +=
-        '<div class="fdemo-empty-state">' +
-          '<div class="fdemo-empty-icon">' +
+        '<div class="empty-state">' +
+          '<div class="empty-icon">' +
             '<span class="material-symbols-outlined" style="font-size:28px">search</span>' +
           '</div>' +
-          '<p class="fdemo-empty-title">ไม่พบรายการ</p>' +
-          '<p class="fdemo-empty-desc">ไม่มีใบรับรองแพทย์ที่หมดอายุ</p>' +
+          '<p class="empty-title">ไม่พบรายการ</p>' +
+          '<p class="empty-desc">ไม่มีใบรับรองแพทย์ที่หมดอายุ</p>' +
         '</div>';
     }
     html += '</div>';
@@ -133,8 +143,8 @@ function renderCertSections() {
 }
 
 function updateBanner() {
-  var nameEl = document.getElementById('fdemo-banner-name');
-  var subEl = document.getElementById('fdemo-banner-sub');
+  var nameEl = document.getElementById('welcome-banner-name');
+  var subEl = document.getElementById('welcome-banner-sub');
   if (!nameEl || !subEl) return;
 
   if (demoHasData) {
@@ -149,7 +159,7 @@ function updateBanner() {
 
 function toggleDemoState() {
   demoHasData = !demoHasData;
-  var btn = document.getElementById('fdemo-toggle-btn');
+  var btn = document.getElementById('demo-toggle-btn');
   if (btn) btn.textContent = demoHasData ? 'สลับ: ไม่มีข้อมูล' : 'สลับ: มีข้อมูล';
   updateBanner();
   renderCertSections();
