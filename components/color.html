@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color — Components</title>
+  <meta name="description" content="ระบบสี design token ทั้งหมด — primitive scales และ semantic tokens">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .palette-row {
+      display: flex;
+      gap: 0;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .swatch {
+      flex: 1;
+      min-width: 0;
+      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px 5px;
+      cursor: default;
+      transition: flex 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .swatch:hover { flex: 2.5; }
+    .swatch-label {
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .swatch:hover .swatch-label { opacity: 1; }
+    .swatch-stop {
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.85;
+    }
+
+    /* semantic token table */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--font-size-body-s);
+    }
+    .token-table th {
+      text-align: left;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--neutral-96);
+      font-size: var(--font-size-label-s);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-lighter);
+      border-bottom: 1px solid var(--stroke-neutral-default);
+    }
+    .token-table td {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-bottom: 1px solid var(--stroke-neutral-default);
+      vertical-align: middle;
+      color: var(--foreground-neutral-default);
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table td code { font-size: 11px; }
+    .color-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+    .token-name { font-family: 'SFMono-Regular', 'Consolas', monospace; font-size: 11px; color: var(--primary-20); }
+    .token-alias { font-size: 11px; color: var(--foreground-neutral-lighter); font-family: 'SFMono-Regular', 'Consolas', monospace; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Color</h2>
+            <p class="text-subheader">Design token สี — primitive scales และ semantic tokens</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Primary ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Primary — Green</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สีหลักของระบบ — ใช้กับ button, link, active state, brand element</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#00291b"><span class="swatch-stop" style="color:#8de3b8">0</span><span class="swatch-label" style="color:#8de3b8">#00291b</span></div>
+              <div class="swatch" style="background:#003d28"><span class="swatch-stop" style="color:#8de3b8">10</span><span class="swatch-label" style="color:#8de3b8">#003d28</span></div>
+              <div class="swatch" style="background:#006643"><span class="swatch-stop" style="color:#adebd2">20</span><span class="swatch-label" style="color:#adebd2">#006643</span></div>
+              <div class="swatch" style="background:#008858"><span class="swatch-stop" style="color:#ebfaf4">30</span><span class="swatch-label" style="color:#ebfaf4">#008858</span></div>
+              <div class="swatch" style="background:#00b274"><span class="swatch-stop" style="color:#ebfaf4">40</span><span class="swatch-label" style="color:#ebfaf4">#00b274</span></div>
+              <div class="swatch" style="background:#34c57e"><span class="swatch-stop" style="color:#003d28">50</span><span class="swatch-label" style="color:#003d28">#34c57e</span></div>
+              <div class="swatch" style="background:#5ed49a"><span class="swatch-stop" style="color:#003d28">60</span><span class="swatch-label" style="color:#003d28">#5ed49a</span></div>
+              <div class="swatch" style="background:#8de3b8"><span class="swatch-stop" style="color:#003d28">80</span><span class="swatch-label" style="color:#003d28">#8de3b8</span></div>
+              <div class="swatch" style="background:#adebd2"><span class="swatch-stop" style="color:#003d28">90</span><span class="swatch-label" style="color:#003d28">#adebd2</span></div>
+              <div class="swatch" style="background:#ebfaf4; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#006643">95</span><span class="swatch-label" style="color:#006643">#ebfaf4</span></div>
+              <div class="swatch" style="background:#f6fffb; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#006643">99</span><span class="swatch-label" style="color:#006643">#f6fffb</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Secondary ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Secondary — Blue</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สีรอง — ใช้กับ tutorial, link บางประเภท, highlight เสริม</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#0e1c34"><span class="swatch-stop" style="color:#87a5de">0</span><span class="swatch-label" style="color:#87a5de">#0e1c34</span></div>
+              <div class="swatch" style="background:#142748"><span class="swatch-stop" style="color:#87a5de">10</span><span class="swatch-label" style="color:#87a5de">#142748</span></div>
+              <div class="swatch" style="background:#1f3c70"><span class="swatch-stop" style="color:#c3d2ee">20</span><span class="swatch-label" style="color:#c3d2ee">#1f3c70</span></div>
+              <div class="swatch" style="background:#274b8c"><span class="swatch-stop" style="color:#dfe7f6">30</span><span class="swatch-label" style="color:#dfe7f6">#274b8c</span></div>
+              <div class="swatch" style="background:#325fb4"><span class="swatch-stop" style="color:#eff3fa">40</span><span class="swatch-label" style="color:#eff3fa">#325fb4</span></div>
+              <div class="swatch" style="background:#396bc8"><span class="swatch-stop" style="color:#eff3fa">50</span><span class="swatch-label" style="color:#eff3fa">#396bc8</span></div>
+              <div class="swatch" style="background:#5f88d3"><span class="swatch-stop" style="color:#1f3c70">60</span><span class="swatch-label" style="color:#1f3c70">#5f88d3</span></div>
+              <div class="swatch" style="background:#87a5de"><span class="swatch-stop" style="color:#142748">70</span><span class="swatch-label" style="color:#142748">#87a5de</span></div>
+              <div class="swatch" style="background:#c3d2ee"><span class="swatch-stop" style="color:#142748">80</span><span class="swatch-label" style="color:#142748">#c3d2ee</span></div>
+              <div class="swatch" style="background:#dfe7f6"><span class="swatch-stop" style="color:#1f3c70">90</span><span class="swatch-label" style="color:#1f3c70">#dfe7f6</span></div>
+              <div class="swatch" style="background:#eff3fa; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#1f3c70">95</span><span class="swatch-label" style="color:#1f3c70">#eff3fa</span></div>
+              <div class="swatch" style="background:#f7f9fd; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#1f3c70">99</span><span class="swatch-label" style="color:#1f3c70">#f7f9fd</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Neutral ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Neutral — Gray</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สีเทา — text, border, background ทั่วไป</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#000000"><span class="swatch-stop" style="color:#b4b8bb">0</span><span class="swatch-label" style="color:#b4b8bb">#000000</span></div>
+              <div class="swatch" style="background:#0b0b0c"><span class="swatch-stop" style="color:#b4b8bb">5</span><span class="swatch-label" style="color:#b4b8bb">#0b0b0c</span></div>
+              <div class="swatch" style="background:#151618"><span class="swatch-stop" style="color:#b4b8bb">10</span><span class="swatch-label" style="color:#b4b8bb">#151618</span></div>
+              <div class="swatch" style="background:#1d1f21"><span class="swatch-stop" style="color:#dde0e2">15</span><span class="swatch-label" style="color:#dde0e2">#1d1f21</span></div>
+              <div class="swatch" style="background:#25272a"><span class="swatch-stop" style="color:#dde0e2">20</span><span class="swatch-label" style="color:#dde0e2">#25272a</span></div>
+              <div class="swatch" style="background:#2a2d31"><span class="swatch-stop" style="color:#dde0e2">25</span><span class="swatch-label" style="color:#dde0e2">#2a2d31</span></div>
+              <div class="swatch" style="background:#2f3337"><span class="swatch-stop" style="color:#dde0e2">30</span><span class="swatch-label" style="color:#dde0e2">#2f3337</span></div>
+              <div class="swatch" style="background:#373c41"><span class="swatch-stop" style="color:#f1f3f3">40</span><span class="swatch-label" style="color:#f1f3f3">#373c41</span></div>
+              <div class="swatch" style="background:#3d4349"><span class="swatch-stop" style="color:#f1f3f3">50</span><span class="swatch-label" style="color:#f1f3f3">#3d4349</span></div>
+              <div class="swatch" style="background:#62676c"><span class="swatch-stop" style="color:#f8f9f9">60</span><span class="swatch-label" style="color:#f8f9f9">#62676c</span></div>
+              <div class="swatch" style="background:#8b9094"><span class="swatch-stop" style="color:#151618">70</span><span class="swatch-label" style="color:#151618">#8b9094</span></div>
+              <div class="swatch" style="background:#b4b8bb"><span class="swatch-stop" style="color:#151618">80</span><span class="swatch-label" style="color:#151618">#b4b8bb</span></div>
+              <div class="swatch" style="background:#dde0e2"><span class="swatch-stop" style="color:#25272a">90</span><span class="swatch-label" style="color:#25272a">#dde0e2</span></div>
+              <div class="swatch" style="background:#ebecee"><span class="swatch-stop" style="color:#25272a">94</span><span class="swatch-label" style="color:#25272a">#ebecee</span></div>
+              <div class="swatch" style="background:#f1f3f3; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#25272a">96</span><span class="swatch-label" style="color:#25272a">#f1f3f3</span></div>
+              <div class="swatch" style="background:#f8f9f9; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#25272a">98</span><span class="swatch-label" style="color:#25272a">#f8f9f9</span></div>
+              <div class="swatch" style="background:#ffffff; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#25272a">100</span><span class="swatch-label" style="color:#25272a">#ffffff</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Danger ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Danger / Negative — Red</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ข้อผิดพลาด, การแจ้งเตือนอันตราย, destructive action</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#55160c"><span class="swatch-stop" style="color:#fda29b">0</span><span class="swatch-label" style="color:#fda29b">#55160c</span></div>
+              <div class="swatch" style="background:#7a271a"><span class="swatch-stop" style="color:#fda29b">10</span><span class="swatch-label" style="color:#fda29b">#7a271a</span></div>
+              <div class="swatch" style="background:#912018"><span class="swatch-stop" style="color:#fecdca">20</span><span class="swatch-label" style="color:#fecdca">#912018</span></div>
+              <div class="swatch" style="background:#b42318"><span class="swatch-stop" style="color:#fef3f2">30</span><span class="swatch-label" style="color:#fef3f2">#b42318</span></div>
+              <div class="swatch" style="background:#d92d20"><span class="swatch-stop" style="color:#fef3f2">40</span><span class="swatch-label" style="color:#fef3f2">#d92d20</span></div>
+              <div class="swatch" style="background:#f04438"><span class="swatch-stop" style="color:#55160c">50</span><span class="swatch-label" style="color:#55160c">#f04438</span></div>
+              <div class="swatch" style="background:#f97066"><span class="swatch-stop" style="color:#55160c">60</span><span class="swatch-label" style="color:#55160c">#f97066</span></div>
+              <div class="swatch" style="background:#fda29b"><span class="swatch-stop" style="color:#55160c">70</span><span class="swatch-label" style="color:#55160c">#fda29b</span></div>
+              <div class="swatch" style="background:#fecdca"><span class="swatch-stop" style="color:#7a271a">80</span><span class="swatch-label" style="color:#7a271a">#fecdca</span></div>
+              <div class="swatch" style="background:#fee4e2"><span class="swatch-stop" style="color:#7a271a">90</span><span class="swatch-label" style="color:#7a271a">#fee4e2</span></div>
+              <div class="swatch" style="background:#fef3f2; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#7a271a">95</span><span class="swatch-label" style="color:#7a271a">#fef3f2</span></div>
+              <div class="swatch" style="background:#fffbfa; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#7a271a">99</span><span class="swatch-label" style="color:#7a271a">#fffbfa</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Positive ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Positive — Green</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สำเร็จ, ชำระแล้ว, สถานะดี</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#053321"><span class="swatch-stop" style="color:#75e0a7">0</span><span class="swatch-label" style="color:#75e0a7">#053321</span></div>
+              <div class="swatch" style="background:#074d31"><span class="swatch-stop" style="color:#75e0a7">10</span><span class="swatch-label" style="color:#75e0a7">#074d31</span></div>
+              <div class="swatch" style="background:#085d3a"><span class="swatch-stop" style="color:#a9efc5">20</span><span class="swatch-label" style="color:#a9efc5">#085d3a</span></div>
+              <div class="swatch" style="background:#067647"><span class="swatch-stop" style="color:#dcfae6">30</span><span class="swatch-label" style="color:#dcfae6">#067647</span></div>
+              <div class="swatch" style="background:#079455"><span class="swatch-stop" style="color:#ecfdf3">40</span><span class="swatch-label" style="color:#ecfdf3">#079455</span></div>
+              <div class="swatch" style="background:#17b26a"><span class="swatch-stop" style="color:#053321">50</span><span class="swatch-label" style="color:#053321">#17b26a</span></div>
+              <div class="swatch" style="background:#47cd89"><span class="swatch-stop" style="color:#053321">60</span><span class="swatch-label" style="color:#053321">#47cd89</span></div>
+              <div class="swatch" style="background:#75e0a7"><span class="swatch-stop" style="color:#053321">70</span><span class="swatch-label" style="color:#053321">#75e0a7</span></div>
+              <div class="swatch" style="background:#a9efc5"><span class="swatch-stop" style="color:#053321">80</span><span class="swatch-label" style="color:#053321">#a9efc5</span></div>
+              <div class="swatch" style="background:#dcfae6"><span class="swatch-stop" style="color:#053321">90</span><span class="swatch-label" style="color:#053321">#dcfae6</span></div>
+              <div class="swatch" style="background:#ecfdf3; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#085d3a">95</span><span class="swatch-label" style="color:#085d3a">#ecfdf3</span></div>
+              <div class="swatch" style="background:#f6fef9; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#085d3a">99</span><span class="swatch-label" style="color:#085d3a">#f6fef9</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Warning ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Warning — Orange</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เตือน, ใกล้หมดอายุ, ต้องดำเนินการ</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#4e1d09"><span class="swatch-stop" style="color:#fec84b">0</span><span class="swatch-label" style="color:#fec84b">#4e1d09</span></div>
+              <div class="swatch" style="background:#7a2e0e"><span class="swatch-stop" style="color:#fec84b">10</span><span class="swatch-label" style="color:#fec84b">#7a2e0e</span></div>
+              <div class="swatch" style="background:#93370d"><span class="swatch-stop" style="color:#fedf89">20</span><span class="swatch-label" style="color:#fedf89">#93370d</span></div>
+              <div class="swatch" style="background:#b54708"><span class="swatch-stop" style="color:#fffaeb">30</span><span class="swatch-label" style="color:#fffaeb">#b54708</span></div>
+              <div class="swatch" style="background:#dc6803"><span class="swatch-stop" style="color:#fffaeb">40</span><span class="swatch-label" style="color:#fffaeb">#dc6803</span></div>
+              <div class="swatch" style="background:#f79009"><span class="swatch-stop" style="color:#4e1d09">50</span><span class="swatch-label" style="color:#4e1d09">#f79009</span></div>
+              <div class="swatch" style="background:#fdb022"><span class="swatch-stop" style="color:#4e1d09">60</span><span class="swatch-label" style="color:#4e1d09">#fdb022</span></div>
+              <div class="swatch" style="background:#fec84b"><span class="swatch-stop" style="color:#4e1d09">70</span><span class="swatch-label" style="color:#4e1d09">#fec84b</span></div>
+              <div class="swatch" style="background:#fedf89"><span class="swatch-stop" style="color:#4e1d09">80</span><span class="swatch-label" style="color:#4e1d09">#fedf89</span></div>
+              <div class="swatch" style="background:#fef0c7"><span class="swatch-stop" style="color:#4e1d09">90</span><span class="swatch-label" style="color:#4e1d09">#fef0c7</span></div>
+              <div class="swatch" style="background:#fffaeb; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#7a2e0e">95</span><span class="swatch-label" style="color:#7a2e0e">#fffaeb</span></div>
+              <div class="swatch" style="background:#fffcf5; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#7a2e0e">99</span><span class="swatch-label" style="color:#7a2e0e">#fffcf5</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Info ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Info — Blue</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ข้อมูล, แจ้งเตือนทั่วไป</p>
+            <div class="palette-row">
+              <div class="swatch" style="background:#062c41"><span class="swatch-stop" style="color:#7cd4fd">0</span><span class="swatch-label" style="color:#7cd4fd">#062c41</span></div>
+              <div class="swatch" style="background:#0b4a6f"><span class="swatch-stop" style="color:#7cd4fd">10</span><span class="swatch-label" style="color:#7cd4fd">#0b4a6f</span></div>
+              <div class="swatch" style="background:#003c66"><span class="swatch-stop" style="color:#b9e6fe">20</span><span class="swatch-label" style="color:#b9e6fe">#003c66</span></div>
+              <div class="swatch" style="background:#026aa2"><span class="swatch-stop" style="color:#f0f9ff">30</span><span class="swatch-label" style="color:#f0f9ff">#026aa2</span></div>
+              <div class="swatch" style="background:#0086c9"><span class="swatch-stop" style="color:#f0f9ff">40</span><span class="swatch-label" style="color:#f0f9ff">#0086c9</span></div>
+              <div class="swatch" style="background:#0ba5ec"><span class="swatch-stop" style="color:#062c41">50</span><span class="swatch-label" style="color:#062c41">#0ba5ec</span></div>
+              <div class="swatch" style="background:#36bffa"><span class="swatch-stop" style="color:#062c41">60</span><span class="swatch-label" style="color:#062c41">#36bffa</span></div>
+              <div class="swatch" style="background:#7cd4fd"><span class="swatch-stop" style="color:#062c41">70</span><span class="swatch-label" style="color:#062c41">#7cd4fd</span></div>
+              <div class="swatch" style="background:#b9e6fe"><span class="swatch-stop" style="color:#062c41">80</span><span class="swatch-label" style="color:#062c41">#b9e6fe</span></div>
+              <div class="swatch" style="background:#addfff"><span class="swatch-stop" style="color:#062c41">90</span><span class="swatch-label" style="color:#062c41">#addfff</span></div>
+              <div class="swatch" style="background:#f0f9ff; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#0b4a6f">95</span><span class="swatch-label" style="color:#0b4a6f">#f0f9ff</span></div>
+              <div class="swatch" style="background:#f5fbff; border:1px solid var(--neutral-90)"><span class="swatch-stop" style="color:#0b4a6f">99</span><span class="swatch-label" style="color:#0b4a6f">#f5fbff</span></div>
+            </div>
+          </div>
+
+          <!-- ─── Semantic — Background ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Semantic — Background</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">token สำหรับใช้เป็น background ของ element ต่างๆ</p>
+            <div class="components-section">
+              <table class="token-table">
+                <thead><tr><th>Preview</th><th>Token</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="color-dot" style="background:var(--background-primary-lighter)"></div></td><td><span class="token-name">--background-primary-lighter</span></td><td><span class="token-alias">primary-95 · #ebfaf4</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-primary-light)"></div></td><td><span class="token-name">--background-primary-light</span></td><td><span class="token-alias">primary-90 · #adebd2</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-primary-medium)"></div></td><td><span class="token-name">--background-primary-medium</span></td><td><span class="token-alias">primary-40 · #00b274</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-positive-light)"></div></td><td><span class="token-name">--background-positive-light</span></td><td><span class="token-alias">positive-95 · #ecfdf3</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-positive-medium)"></div></td><td><span class="token-name">--background-positive-medium</span></td><td><span class="token-alias">positive-50 · #17b26a</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-warning-light)"></div></td><td><span class="token-name">--background-warning-light</span></td><td><span class="token-alias">warning-95 · #fffaeb</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-warning-medium)"></div></td><td><span class="token-name">--background-warning-medium</span></td><td><span class="token-alias">warning-50 · #f79009</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-negative-light)"></div></td><td><span class="token-name">--background-negative-light</span></td><td><span class="token-alias">danger-95 · #fef3f2</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-negative-medium)"></div></td><td><span class="token-name">--background-negative-medium</span></td><td><span class="token-alias">danger-50 · #f04438</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-neutral-lighter); border:1px solid var(--stroke-neutral-default)"></div></td><td><span class="token-name">--background-neutral-lighter</span></td><td><span class="token-alias">neutral-100 · #ffffff</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-neutral-medium)"></div></td><td><span class="token-name">--background-neutral-medium</span></td><td><span class="token-alias">neutral-96 · #f1f3f3</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-neutral-dark)"></div></td><td><span class="token-name">--background-neutral-dark</span></td><td><span class="token-alias">neutral-94 · #ebecee</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-secondary-lighter)"></div></td><td><span class="token-name">--background-secondary-lighter</span></td><td><span class="token-alias">secondary-95 · #eff3fa</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--background-info-light)"></div></td><td><span class="token-name">--background-info-light</span></td><td><span class="token-alias">info-95 · #f0f9ff</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ─── Semantic — Foreground ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Semantic — Foreground</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">token สำหรับสีข้อความและ icon</p>
+            <div class="components-section">
+              <table class="token-table">
+                <thead><tr><th>Preview</th><th>Token</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-neutral-default)"></div></td><td><span class="token-name">--foreground-neutral-default</span></td><td><span class="token-alias">neutral-20 · #25272a</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-neutral-light)"></div></td><td><span class="token-name">--foreground-neutral-light</span></td><td><span class="token-alias">neutral-40 · #373c41</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-neutral-lighter)"></div></td><td><span class="token-name">--foreground-neutral-lighter</span></td><td><span class="token-alias">neutral-60 · #62676c</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-neutral-lightest)"></div></td><td><span class="token-name">--foreground-neutral-lightest</span></td><td><span class="token-alias">neutral-80 · #b4b8bb</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-primary-default)"></div></td><td><span class="token-name">--foreground-primary-default</span></td><td><span class="token-alias">primary-30 · #008858</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-primary-dark)"></div></td><td><span class="token-name">--foreground-primary-dark</span></td><td><span class="token-alias">primary-20 · #006643</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-positive-default)"></div></td><td><span class="token-name">--foreground-positive-default</span></td><td><span class="token-alias">positive-40 · #079455</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-positive-dark)"></div></td><td><span class="token-name">--foreground-positive-dark</span></td><td><span class="token-alias">positive-20 · #085d3a</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-warning-default)"></div></td><td><span class="token-name">--foreground-warning-default</span></td><td><span class="token-alias">warning-40 · #dc6803</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-warning-dark)"></div></td><td><span class="token-name">--foreground-warning-dark</span></td><td><span class="token-alias">warning-20 · #93370d</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-negative-default)"></div></td><td><span class="token-name">--foreground-negative-default</span></td><td><span class="token-alias">danger-40 · #d92d20</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-negative-dark)"></div></td><td><span class="token-name">--foreground-negative-dark</span></td><td><span class="token-alias">danger-20 · #912018</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-secondary-default)"></div></td><td><span class="token-name">--foreground-secondary-default</span></td><td><span class="token-alias">secondary-40 · #325fb4</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--foreground-info-default)"></div></td><td><span class="token-name">--foreground-info-default</span></td><td><span class="token-alias">info-50 · #0ba5ec</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ─── Semantic — Stroke ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Semantic — Stroke / Border</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">token สำหรับ border และ divider</p>
+            <div class="components-section">
+              <table class="token-table">
+                <thead><tr><th>Preview</th><th>Token</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-neutral-default)"></div></td><td><span class="token-name">--stroke-neutral-default</span></td><td><span class="token-alias">neutral-90 · #dde0e2</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-neutral-lighter)"></div></td><td><span class="token-name">--stroke-neutral-lighter</span></td><td><span class="token-alias">neutral-94 · #ebecee</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-neutral-lightest)"></div></td><td><span class="token-name">--stroke-neutral-lightest</span></td><td><span class="token-alias">neutral-96 · #f1f3f3</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-primary-default)"></div></td><td><span class="token-name">--stroke-primary-default</span></td><td><span class="token-alias">primary-30 · #008858</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-primary-lighter)"></div></td><td><span class="token-name">--stroke-primary-lighter</span></td><td><span class="token-alias">primary-60 · #5ed49a</span></td></tr>
+                  <tr><td><div class="color-dot" style="background:var(--stroke-secondary-default)"></div></td><td><span class="token-name">--stroke-secondary-default</span></td><td><span class="token-alias">secondary-60 · #5f88d3</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

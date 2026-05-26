@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spacing — Components</title>
+  <meta name="description" content="Spacing, margin และ padding helper classes — ระบบ token และ utility class">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xl);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-default);
+    }
+    .spacing-row:last-child { border-bottom: none; }
+    .spacing-bar-wrap {
+      width: 200px;
+      flex-shrink: 0;
+    }
+    .spacing-bar {
+      background: var(--primary-40);
+      border-radius: var(--radius-sm);
+      height: 20px;
+      transition: width 0.3s ease;
+    }
+    .spacing-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .spacing-token { font-family: 'SFMono-Regular', 'Consolas', monospace; font-size: 12px; color: var(--primary-20); }
+    .spacing-px { font-size: var(--font-size-label-s); color: var(--foreground-neutral-lighter); margin-left: var(--spacing-sm); }
+
+    .radius-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xl);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-default);
+    }
+    .radius-row:last-child { border-bottom: none; }
+    .radius-box {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-95);
+      border: 2px solid var(--primary-40);
+      flex-shrink: 0;
+    }
+
+    .util-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-sm);
+    }
+    .util-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--neutral-96);
+      border-radius: var(--radius-md);
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 11px;
+      color: var(--primary-20);
+    }
+    .util-chip span { color: var(--foreground-neutral-lighter); font-size: 10px; font-family: inherit; }
+
+    .demo-box {
+      background: var(--primary-95);
+      border: 2px dashed var(--primary-50);
+      border-radius: var(--radius-md);
+      min-height: 24px;
+    }
+    .demo-inner {
+      background: var(--primary-40);
+      border-radius: var(--radius-sm);
+      min-height: 20px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Spacing &amp; Helpers</h2>
+            <p class="text-subheader">Token ระยะห่าง, radius และ utility class สำหรับ margin, padding, gap</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Spacing Scale ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Spacing Scale</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ระบบ spacing 11 ระดับ — ใช้เป็น margin, padding, gap</p>
+            <div class="components-section">
+
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:2px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-xxs</span><span class="spacing-px">2px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-xs</span><span class="spacing-px">4px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:6px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-sm</span><span class="spacing-px">6px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-md</span><span class="spacing-px">8px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-lg</span><span class="spacing-px">12px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-xl</span><span class="spacing-px">16px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:20px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-2xl</span><span class="spacing-px">20px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-3xl</span><span class="spacing-px">24px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-4xl</span><span class="spacing-px">32px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-5xl</span><span class="spacing-px">40px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-6xl</span><span class="spacing-px">48px</span></div>
+              </div>
+              <div class="spacing-row">
+                <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px"></div></div>
+                <div class="spacing-meta"><span class="spacing-token">--spacing-7xl</span><span class="spacing-px">64px</span></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Border Radius ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Border Radius</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ระบบ radius 11 ระดับ — ใช้กับ card, button, input, chip</p>
+            <div class="components-section">
+
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:0px"></div>
+                <div><span class="spacing-token">--radius-none</span><span class="spacing-px">0px</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:2px"></div>
+                <div><span class="spacing-token">--radius-xxs</span><span class="spacing-px">2px</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:4px"></div>
+                <div><span class="spacing-token">--radius-xs</span><span class="spacing-px">4px</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:6px"></div>
+                <div><span class="spacing-token">--radius-sm</span><span class="spacing-px">6px</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:8px"></div>
+                <div><span class="spacing-token">--radius-md</span><span class="spacing-px">8px — input, small card</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:10px"></div>
+                <div><span class="spacing-token">--radius-lg</span><span class="spacing-px">10px — icon box</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:12px"></div>
+                <div><span class="spacing-token">--radius-xl</span><span class="spacing-px">12px — tag, status banner</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:16px"></div>
+                <div><span class="spacing-token">--radius-2xl</span><span class="spacing-px">16px — card, modal</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:20px"></div>
+                <div><span class="spacing-token">--radius-3xl</span><span class="spacing-px">20px — welcome banner</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:24px"></div>
+                <div><span class="spacing-token">--radius-4xl</span><span class="spacing-px">24px</span></div>
+              </div>
+              <div class="radius-row">
+                <div class="radius-box" style="border-radius:1000px"></div>
+                <div><span class="spacing-token">--radius-full</span><span class="spacing-px">1000px — pill, chip, circle</span></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Margin Utilities ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Margin Utilities</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">utility class สำหรับ margin-top และ margin-bottom</p>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Margin-top — <code>.mt-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.mt-xxs <span>2px</span></div>
+                  <div class="util-chip">.mt-xs <span>4px</span></div>
+                  <div class="util-chip">.mt-sm <span>6px</span></div>
+                  <div class="util-chip">.mt-md <span>8px</span></div>
+                  <div class="util-chip">.mt-lg <span>12px</span></div>
+                  <div class="util-chip">.mt-xl <span>16px</span></div>
+                  <div class="util-chip">.mt-2xl <span>20px</span></div>
+                  <div class="util-chip">.mt-3xl <span>24px</span></div>
+                  <div class="util-chip">.mt-4xl <span>32px</span></div>
+                  <div class="util-chip">.mt-5xl <span>40px</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Margin-bottom — <code>.mb-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.mb-0 <span>0</span></div>
+                  <div class="util-chip">.mb-xs <span>4px</span></div>
+                  <div class="util-chip">.mb-sm <span>6px</span></div>
+                  <div class="util-chip">.mb-md <span>8px</span></div>
+                  <div class="util-chip">.mb-lg <span>12px</span></div>
+                  <div class="util-chip">.mb-xl <span>16px</span></div>
+                  <div class="util-chip">.mb-2xl <span>20px</span></div>
+                  <div class="util-chip">.mb-3xl <span>24px</span></div>
+                  <div class="util-chip">.mb-4xl <span>32px</span></div>
+                  <div class="util-chip">.mb-5xl <span>40px</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Padding Utilities ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Padding Utilities</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">utility class สำหรับ padding ทุกทิศทาง</p>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">All sides — <code>.p-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.p-none <span>0</span></div>
+                  <div class="util-chip">.p-xs <span>4px</span></div>
+                  <div class="util-chip">.p-sm <span>6px</span></div>
+                  <div class="util-chip">.p-md <span>8px</span></div>
+                  <div class="util-chip">.p-lg <span>12px</span></div>
+                  <div class="util-chip">.p-xl <span>16px</span></div>
+                  <div class="util-chip">.p-2xl <span>20px</span></div>
+                  <div class="util-chip">.p-3xl <span>24px</span></div>
+                  <div class="util-chip">.p-4xl <span>32px</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Top — <code>.pt-*</code> &nbsp;|&nbsp; Bottom — <code>.pb-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.pt-xs <span>4px</span></div>
+                  <div class="util-chip">.pt-sm <span>6px</span></div>
+                  <div class="util-chip">.pt-md <span>8px</span></div>
+                  <div class="util-chip">.pt-lg <span>12px</span></div>
+                  <div class="util-chip">.pt-xl <span>16px</span></div>
+                  <div class="util-chip">.pt-2xl <span>20px</span></div>
+                  <div class="util-chip">.pt-3xl <span>24px</span></div>
+                  <div class="util-chip">.pb-xs <span>4px</span></div>
+                  <div class="util-chip">.pb-sm <span>6px</span></div>
+                  <div class="util-chip">.pb-md <span>8px</span></div>
+                  <div class="util-chip">.pb-lg <span>12px</span></div>
+                  <div class="util-chip">.pb-xl <span>16px</span></div>
+                  <div class="util-chip">.pb-2xl <span>20px</span></div>
+                  <div class="util-chip">.pb-3xl <span>24px</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Horizontal (left+right) — <code>.px-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.px-xs <span>4px</span></div>
+                  <div class="util-chip">.px-sm <span>6px</span></div>
+                  <div class="util-chip">.px-md <span>8px</span></div>
+                  <div class="util-chip">.px-lg <span>12px</span></div>
+                  <div class="util-chip">.px-xl <span>16px</span></div>
+                  <div class="util-chip">.px-2xl <span>20px</span></div>
+                  <div class="util-chip">.px-3xl <span>24px</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Vertical (top+bottom) — <code>.py-*</code></p>
+                <div class="util-grid">
+                  <div class="util-chip">.py-xs <span>4px</span></div>
+                  <div class="util-chip">.py-sm <span>6px</span></div>
+                  <div class="util-chip">.py-md <span>8px</span></div>
+                  <div class="util-chip">.py-lg <span>12px</span></div>
+                  <div class="util-chip">.py-xl <span>16px</span></div>
+                  <div class="util-chip">.py-2xl <span>20px</span></div>
+                  <div class="util-chip">.py-3xl <span>24px</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Gap Utilities ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Gap Utilities</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.gap-*</code> ใช้กับ flexbox และ grid container</p>
+            <div class="components-section">
+              <div class="form-group">
+                <div class="util-grid">
+                  <div class="util-chip">.gap-xs <span>4px</span></div>
+                  <div class="util-chip">.gap-sm <span>6px</span></div>
+                  <div class="util-chip">.gap-md <span>8px</span></div>
+                  <div class="util-chip">.gap-lg <span>12px</span></div>
+                  <div class="util-chip">.gap-xl <span>16px</span></div>
+                  <div class="util-chip">.gap-2xl <span>20px</span></div>
+                  <div class="util-chip">.gap-3xl <span>24px</span></div>
+                  <div class="util-chip">.gap-4xl <span>32px</span></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Interactive — gap demo</p>
+                <div style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-lg); flex-wrap:wrap">
+                  <button class="filter-chip active" onclick="setGap('gap-xs', this)">gap-xs · 4</button>
+                  <button class="filter-chip" onclick="setGap('gap-md', this)">gap-md · 8</button>
+                  <button class="filter-chip" onclick="setGap('gap-lg', this)">gap-lg · 12</button>
+                  <button class="filter-chip" onclick="setGap('gap-xl', this)">gap-xl · 16</button>
+                  <button class="filter-chip" onclick="setGap('gap-2xl', this)">gap-2xl · 20</button>
+                  <button class="filter-chip" onclick="setGap('gap-3xl', this)">gap-3xl · 24</button>
+                  <button class="filter-chip" onclick="setGap('gap-4xl', this)">gap-4xl · 32</button>
+                </div>
+                <div id="gap-demo" class="flex-center gap-xs" style="flex-wrap:wrap; background:var(--neutral-96); border-radius:var(--radius-xl); padding:var(--spacing-xl)">
+                  <div style="width:48px; height:48px; background:var(--primary-40); border-radius:var(--radius-md)"></div>
+                  <div style="width:48px; height:48px; background:var(--primary-60); border-radius:var(--radius-md)"></div>
+                  <div style="width:48px; height:48px; background:var(--primary-80); border-radius:var(--radius-md)"></div>
+                  <div style="width:48px; height:48px; background:var(--primary-90); border-radius:var(--radius-md)"></div>
+                  <div style="width:48px; height:48px; background:var(--primary-95); border:1px solid var(--primary-80); border-radius:var(--radius-md)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Padding Live Demo ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Padding — Live Demo</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เลือก class เพื่อดูระยะ padding ของกล่อง</p>
+            <div class="components-section">
+              <div style="display:flex; gap:var(--spacing-md); flex-wrap:wrap; margin-bottom:var(--spacing-xl)">
+                <button class="filter-chip" onclick="setPad('p-xs', this)">p-xs</button>
+                <button class="filter-chip" onclick="setPad('p-sm', this)">p-sm</button>
+                <button class="filter-chip" onclick="setPad('p-md', this)">p-md</button>
+                <button class="filter-chip active" onclick="setPad('p-lg', this)">p-lg</button>
+                <button class="filter-chip" onclick="setPad('p-xl', this)">p-xl</button>
+                <button class="filter-chip" onclick="setPad('p-2xl', this)">p-2xl</button>
+                <button class="filter-chip" onclick="setPad('p-3xl', this)">p-3xl</button>
+                <button class="filter-chip" onclick="setPad('p-4xl', this)">p-4xl</button>
+              </div>
+              <div id="pad-demo" class="demo-box p-lg">
+                <div class="demo-inner"></div>
+              </div>
+              <p id="pad-label" class="form-hint" style="margin-top:var(--spacing-md); color:var(--primary-40)">.p-lg — padding: 12px</p>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">CSS custom properties</p>
+                <pre class="code-block">/* spacing token */
+margin-top: var(--spacing-xl);      /* 16px */
+padding: var(--spacing-lg);         /* 12px */
+gap: var(--spacing-md);             /* 8px */
+
+/* radius token */
+border-radius: var(--radius-2xl);   /* 16px — card */
+border-radius: var(--radius-full);  /* pill */</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Utility classes (HTML)</p>
+                <pre class="code-block">&lt;!-- margin --&gt;
+&lt;div class="mt-xl"&gt;...&lt;/div&gt;   &lt;!-- margin-top: 16px --&gt;
+&lt;div class="mb-lg"&gt;...&lt;/div&gt;   &lt;!-- margin-bottom: 12px --&gt;
+
+&lt;!-- padding --&gt;
+&lt;div class="p-xl"&gt;...&lt;/div&gt;    &lt;!-- padding: 16px --&gt;
+&lt;div class="px-lg py-md"&gt;...&lt;/div&gt;  &lt;!-- px:12px py:8px --&gt;
+
+&lt;!-- gap (on flex/grid parent) --&gt;
+&lt;div style="display:flex" class="gap-md"&gt;...&lt;/div&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const padSizes = { 'p-xs':'4px','p-sm':'6px','p-md':'8px','p-lg':'12px','p-xl':'16px','p-2xl':'20px','p-3xl':'24px','p-4xl':'32px' };
+    const gapClasses = ['gap-xs','gap-md','gap-lg','gap-xl','gap-2xl','gap-3xl','gap-4xl'];
+
+    function setPad(cls, btn) {
+      const demo = document.getElementById('pad-demo');
+      Object.keys(padSizes).forEach(c => demo.classList.remove(c));
+      demo.classList.add(cls);
+      document.getElementById('pad-label').textContent = `.${cls} — padding: ${padSizes[cls]}`;
+      btn.closest('.components-section').querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function setGap(cls, btn) {
+      const demo = document.getElementById('gap-demo');
+      gapClasses.forEach(c => demo.classList.remove(c));
+      demo.classList.add(cls);
+      btn.closest('.form-group').querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
