@@ -1571,6 +1571,24 @@ main {
   color: var(--foreground-positive-default);
 }
 
+.loading-hidden {
+  display: none !important;
+}
+
+.skeleton-status-label-summary {
+  width: 44px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.skeleton-status-label-detail {
+  width: 60px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 /* Unused legacy QR layout removed */
 
 

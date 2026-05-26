@@ -78,7 +78,8 @@
               <span class="skeleton-loading skeleton-text short mb-0"></span>
             </span>
             <div class="ticket-status-row">
-              <span class="ticket-status-label">สถานะ:</span>
+              <span id="summary-ticket-status-label-skeleton" class="skeleton-loading skeleton-status-label-summary"></span>
+              <span id="summary-ticket-status-label" class="ticket-status-label loading-hidden">สถานะ:</span>
               <span id="summary-ticket-status-skeleton" class="skeleton-loading skeleton-text short mb-0"></span>
               <span id="summary-ticket-status" class="status-pill loading-hidden"></span>
             </div>
@@ -139,14 +140,15 @@
                 </div>
                 
                 <div class="details-item">
-                  <span class="details-label">สถานะ:</span>
+                  <span id="detail-status-label-skeleton" class="skeleton-loading skeleton-status-label-detail"></span>
+                  <span id="detail-status-label" class="details-label loading-hidden">สถานะ:</span>
                   <span id="detail-status" class="details-value">
                     <span class="skeleton-loading skeleton-text short mb-0"></span>
                   </span>
                   <span id="detail-status-sub" class="details-subvalue"></span>
                   
                   <!-- Warning Letter Button -->
-                  <button id="btn-warning-letter" class="btn btn-tertiary-outline btn-small mt-md btn-warning-letter" onclick="openWarningModal()">
+                  <button id="btn-warning-letter" class="btn btn-tertiary-outline btn-small mt-md btn-warning-letter loading-hidden" onclick="openWarningModal()">
                     <span class="material-symbols-outlined">description</span>
                     ดูหนังสือเตือนแจ้งให้ชำระค่าปรับ
                   </button>
@@ -180,7 +182,7 @@
             </div>
 
             <!-- Sticky Footer Actions (Mobile footer, desktop flow layout) -->
-            <div id="sticky-footer" class="sticky-footer">
+            <div id="sticky-footer" class="sticky-footer loading-hidden">
               <button id="btn-pay-fine" class="btn btn-primary btn-pay-fine" onclick="openPaymentModal()">
                 <span class="material-symbols-outlined">qr_code</span>
                 ชำระค่าปรับ
@@ -416,14 +418,31 @@
       const skeletonIcon = document.getElementById('detail-status-icon-skeleton');
       if (skeletonIcon) skeletonIcon.style.display = 'none';
       if (detailStatusIcon) {
-        detailStatusIcon.classList.add('loading-visible');
+        detailStatusIcon.classList.remove('loading-hidden');
       }
 
       const skeletonStatus = document.getElementById('summary-ticket-status-skeleton');
       if (skeletonStatus) skeletonStatus.style.display = 'none';
       if (summaryTicketStatus) {
-        summaryTicketStatus.classList.add('loading-visible');
+        summaryTicketStatus.classList.remove('loading-hidden');
       }
+
+      // Hide status labels skeletons and show actual labels
+      const summaryLabelSkeleton = document.getElementById('summary-ticket-status-label-skeleton');
+      if (summaryLabelSkeleton) summaryLabelSkeleton.style.display = 'none';
+      const summaryLabel = document.getElementById('summary-ticket-status-label');
+      if (summaryLabel) summaryLabel.classList.remove('loading-hidden');
+
+      const detailLabelSkeleton = document.getElementById('detail-status-label-skeleton');
+      if (detailLabelSkeleton) detailLabelSkeleton.style.display = 'none';
+      const detailLabel = document.getElementById('detail-status-label');
+      if (detailLabel) detailLabel.classList.remove('loading-hidden');
+
+      // Show action buttons
+      const stickyFooter = document.getElementById('sticky-footer');
+      if (stickyFooter) stickyFooter.classList.remove('loading-hidden');
+      if (btnWarningLetter) btnWarningLetter.classList.remove('loading-hidden');
+      if (btnPayFine) btnPayFine.classList.remove('loading-hidden');
 
       summaryTicketNum.textContent = `ใบสั่งเลขที่: ${currentTicket.ticketNumber}`;
       summaryTicketFine.textContent = `ค่าปรับ: ${currentTicket.fine.toLocaleString()} บาท`;
