@@ -58,27 +58,99 @@ const DEFAULT_POINTS = {
   logs: [
     {
       id: "log-1",
-      title: "ถูกตัดคะแนน (-2 คะแนน)",
+      title: "คืนคะแนนครบกำหนด 1 ปี (+1 คะแนน)",
       remaining: 7,
-      date: "10 ม.ค. 2569 09:31 น.",
-      refTicket: "0265125960711",
-      type: "deduction"
+      date: "02 ม.ค. 2569 10:15 น.",
+      refTicket: "0265125960812",
+      type: "restoration"
     },
     {
       id: "log-2",
-      title: "ถูกตัดคะแนน (-2 คะแนน)",
-      remaining: 9,
-      date: "10 ม.ค. 2569 09:31 น.",
-      refTicket: "0265125960711",
+      title: "ถูกตัดคะแนน (-2 คะแนน) — ฝ่าสัญญาณไฟจราจร",
+      remaining: 6,
+      date: "10 ธ.ค. 2568 15:30 น.",
+      refTicket: "0265125960811",
       type: "deduction"
     },
     {
       id: "log-3",
       title: "คืนคะแนนครบกำหนด 1 ปี (+1 คะแนน)",
-      remaining: 9,
-      date: "10 ม.ค. 2569 09:31 น.",
-      refTicket: "0265125960711",
+      remaining: 8,
+      date: "28 พ.ย. 2568 09:00 น.",
+      refTicket: "0265125960710",
       type: "restoration"
+    },
+    {
+      id: "log-4",
+      title: "ถูกตัดคะแนน (-1 คะแนน) — ขับรถไม่คาดเข็มขัดนิรภัย",
+      remaining: 7,
+      date: "15 พ.ย. 2568 08:45 น.",
+      refTicket: "0265125960709",
+      type: "deduction"
+    },
+    {
+      id: "log-5",
+      title: "คืนคะแนนผ่านการอบรม (+2 คะแนน)",
+      remaining: 8,
+      date: "05 ต.ค. 2568 14:00 น.",
+      refTicket: "อบรมครั้งที่ 1/2568",
+      type: "restoration"
+    },
+    {
+      id: "log-6",
+      title: "ถูกตัดคะแนน (-2 คะแนน) — ขับรถเร็วเกินกว่าอัตราที่กฎหมายกำหนด",
+      remaining: 6,
+      date: "22 ก.ย. 2568 22:15 น.",
+      refTicket: "0265125960707",
+      type: "deduction"
+    },
+    {
+      id: "log-7",
+      title: "ถูกตัดคะแนน (-1 คะแนน) — ใช้โทรศัพท์มือถือขณะขับรถ",
+      remaining: 8,
+      date: "10 ส.ค. 2568 11:30 น.",
+      refTicket: "0265125960706",
+      type: "deduction"
+    },
+    {
+      id: "log-8",
+      title: "คืนคะแนนครบกำหนด 1 ปี (+2 คะแนน)",
+      remaining: 9,
+      date: "25 ก.ค. 2568 10:00 น.",
+      refTicket: "0265125960605",
+      type: "restoration"
+    },
+    {
+      id: "log-9",
+      title: "ถูกตัดคะแนน (-3 คะแนน) — ขับรถโดยประมาทหรือน่าหวาดเสียว",
+      remaining: 7,
+      date: "18 พ.ค. 2568 17:20 น.",
+      refTicket: "0265125960604",
+      type: "deduction"
+    },
+    {
+      id: "log-10",
+      title: "คืนคะแนนครบกำหนด 1 ปี (+1 คะแนน)",
+      remaining: 10,
+      date: "12 เม.ย. 2568 09:00 น.",
+      refTicket: "0265125960402",
+      type: "restoration"
+    },
+    {
+      id: "log-11",
+      title: "ถูกตัดคะแนน (-2 คะแนน) — ขับรถย้อนศร",
+      remaining: 9,
+      date: "20 ก.พ. 2568 08:30 น.",
+      refTicket: "0265125960503",
+      type: "deduction"
+    },
+    {
+      id: "log-12",
+      title: "ถูกตัดคะแนน (-1 คะแนน) — ขับขี่รถจักรยานยนต์ไม่สวมหมวกนิรภัย",
+      remaining: 11,
+      date: "15 ม.ค. 2568 09:00 น.",
+      refTicket: "0265125960101",
+      type: "deduction"
     }
   ]
 };
@@ -89,19 +161,14 @@ const DB = {
     if (!localStorage.getItem("czp_tickets")) {
       localStorage.setItem("czp_tickets", JSON.stringify(DEFAULT_TICKETS));
     }
-    if (!localStorage.getItem("czp_points")) {
+    if (!localStorage.getItem("czp_points") || JSON.parse(localStorage.getItem("czp_points")).logs.length !== 12) {
       localStorage.setItem("czp_points", JSON.stringify(DEFAULT_POINTS));
     }
-    if (localStorage.getItem("czp_empty_state") === null) {
-      localStorage.setItem("czp_empty_state", "false");
-    }
+
   },
 
   getTickets() {
     this.init();
-    if (localStorage.getItem("czp_empty_state") === "true") {
-      return [];
-    }
     return JSON.parse(localStorage.getItem("czp_tickets"));
   },
 
@@ -130,19 +197,11 @@ const DB = {
     return JSON.parse(localStorage.getItem("czp_points"));
   },
 
-  getEmptyState() {
-    this.init();
-    return localStorage.getItem("czp_empty_state") === "true";
-  },
 
-  setEmptyState(isEmpty) {
-    localStorage.setItem("czp_empty_state", isEmpty.toString());
-  },
 
   reset() {
     localStorage.setItem("czp_tickets", JSON.stringify(DEFAULT_TICKETS));
     localStorage.setItem("czp_points", JSON.stringify(DEFAULT_POINTS));
-    localStorage.setItem("czp_empty_state", "false");
   }
 };
 
