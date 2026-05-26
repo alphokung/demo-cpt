@@ -1084,6 +1084,84 @@
           </div>
 
 
+          <!-- ─── 16. Label Display ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Label Display</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สำหรับแสดงข้อมูลในหน้า detail — label เล็กอยู่บน, value ใหญ่อยู่ล่าง</p>
+
+            <div class="components-section">
+
+              <!-- Basic stacked label + value -->
+              <div class="form-group">
+                <p class="form-label">Basic — details-list</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">วันที่ออกใบสั่ง:</span>
+                    <span class="details-value">10 ม.ค. 2569 09:31 น.</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานที่เกิดเหตุ:</span>
+                    <span class="details-value">มอเตอร์เวย์ M7 กม. 135+400 ถนนบางนา-ตราด</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">ออกใบสั่งโดย:</span>
+                    <span class="details-value">ด.ต.สมชาย ใจดี</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">ทะเบียนรถ:</span>
+                    <span class="details-value">กข 1234 กรุงเทพมหานคร</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Value with sub-value -->
+              <div class="form-group">
+                <p class="form-label">Value + Sub-value</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สถานะ:</span>
+                    <span class="details-value">ยังไม่ได้ชำระค่าปรับ</span>
+                    <span class="details-subvalue">กรุณาชำระภายในวันที่ 10 ก.พ. 2569</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานะ:</span>
+                    <span class="details-value details-value-paid">ชำระค่าปรับแล้ว</span>
+                    <span class="details-subvalue details-subvalue-paid">ชำระเมื่อวันที่ 15 ม.ค. 2569 เวลา 14:20 น.</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานะ:</span>
+                    <span class="details-value details-value-warning">ยังไม่ได้ชำระ — ออกหนังสือเตือนแล้ว</span>
+                    <span class="details-subvalue details-subvalue-warning">หนังสือเตือนออกเมื่อวันที่ 20 ม.ค. 2569</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inline / horizontal variant (card-label + card-value) -->
+              <div class="form-group">
+                <p class="form-label">Inline — card-label / card-value (ใช้ใน list card)</p>
+                <div style="display:flex; flex-direction:column; gap: var(--spacing-md);">
+                  <div class="card-body-item">
+                    <span class="card-label">วันที่เกิดเหตุ:</span>
+                    <span class="card-value">10 ม.ค. 2569</span>
+                  </div>
+                  <div class="card-body-item">
+                    <span class="card-label">สถานที่เกิดเหตุ:</span>
+                    <span class="card-value">มอเตอร์เวย์ M7 กม. 135</span>
+                  </div>
+                  <div class="card-body-item">
+                    <span class="card-label">ค่าปรับ:</span>
+                    <span class="card-value">500 บาท</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
         </div><!-- components-layout -->
 
         <p class="page-timestamp">Components Demo — ทางรัฐ Design System</p>
