@@ -3645,6 +3645,58 @@ input[type=color] {
 .img-helper-frame.ratio-3-4 {
   aspect-ratio: 3/4;
 }
+.img-helper-frame.circle {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: auto;
+}
+.img-helper-frame.square {
+  border-radius: var(--radius-lg);
+  aspect-ratio: 1/1;
+  width: auto;
+}
+.img-helper-frame.size-xs {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.img-helper-frame.size-sm {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.img-helper-frame.size-md {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+.img-helper-frame.size-lg {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+}
+.img-helper-frame.size-xl {
+  width: 128px;
+  height: 128px;
+  flex-shrink: 0;
+}
+.img-helper-frame.size-2xl {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+}
+.img-helper-frame.ring-online {
+  outline: 3px solid var(--positive-40);
+  outline-offset: 2px;
+}
+.img-helper-frame.ring-busy {
+  outline: 3px solid var(--danger-40);
+  outline-offset: 2px;
+}
+.img-helper-frame.ring-offline {
+  outline: 3px solid var(--neutral-80);
+  outline-offset: 2px;
+}
 .img-helper-caption {
   font-size: var(--font-size-label-m);
   color: var(--foreground-neutral-lighter);
@@ -3697,6 +3749,72 @@ input[type=color] {
 .img-helper-placeholder.ratio-1-1 {
   aspect-ratio: 1/1;
 }
+.img-helper-placeholder.circle {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: auto;
+  padding: 0;
+}
+.img-helper-placeholder.square {
+  border-radius: var(--radius-lg);
+  aspect-ratio: 1/1;
+  width: auto;
+  padding: 0;
+}
+.img-helper-placeholder.size-xs {
+  width: 32px;
+  height: 32px;
+}
+.img-helper-placeholder.size-xs .material-symbols-outlined {
+  font-size: 18px;
+}
+.img-helper-placeholder.size-xs p {
+  display: none;
+}
+.img-helper-placeholder.size-sm {
+  width: 48px;
+  height: 48px;
+}
+.img-helper-placeholder.size-sm .material-symbols-outlined {
+  font-size: 22px;
+}
+.img-helper-placeholder.size-sm p {
+  display: none;
+}
+.img-helper-placeholder.size-md {
+  width: 64px;
+  height: 64px;
+}
+.img-helper-placeholder.size-md .material-symbols-outlined {
+  font-size: 28px;
+}
+.img-helper-placeholder.size-md p {
+  display: none;
+}
+.img-helper-placeholder.size-lg {
+  width: 96px;
+  height: 96px;
+}
+.img-helper-placeholder.size-lg .material-symbols-outlined {
+  font-size: 36px;
+}
+.img-helper-placeholder.size-lg p {
+  display: none;
+}
+.img-helper-placeholder.size-xl {
+  width: 128px;
+  height: 128px;
+}
+.img-helper-placeholder.size-xl .material-symbols-outlined {
+  font-size: 44px;
+}
+.img-helper-placeholder.size-2xl {
+  width: 160px;
+  height: 160px;
+}
+.img-helper-placeholder.size-2xl .material-symbols-outlined {
+  font-size: 52px;
+}
 
 .img-helper-grid {
   display: grid;
@@ -3708,6 +3826,13 @@ input[type=color] {
 }
 .img-helper-grid.col-4 {
   grid-template-columns: repeat(4, 1fr);
+}
+
+.img-helper-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--spacing-lg);
 }
 
 /* ─── Responsive Table → Card ─── */

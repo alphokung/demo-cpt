@@ -3712,6 +3712,34 @@ input[type="color"] {
     &.ratio-4-3   { aspect-ratio: 4 / 3;  }
     &.ratio-1-1   { aspect-ratio: 1 / 1;  }
     &.ratio-3-4   { aspect-ratio: 3 / 4;  }
+
+    // ── Shape: Circle ──────────────────────────────────
+    &.circle {
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+      width: auto; // let size modifier or parent control width
+    }
+
+    // ── Shape: Square ──────────────────────────────────
+    &.square {
+      border-radius: var(--radius-lg);
+      aspect-ratio: 1 / 1;
+      width: auto;
+    }
+
+    // ── Size modifiers (apply to circle or square) ─────
+    // Use inline-block so the frame shrinks to the set size
+    &.size-xs  { width: 32px;  height: 32px;  flex-shrink: 0; }
+    &.size-sm  { width: 48px;  height: 48px;  flex-shrink: 0; }
+    &.size-md  { width: 64px;  height: 64px;  flex-shrink: 0; }
+    &.size-lg  { width: 96px;  height: 96px;  flex-shrink: 0; }
+    &.size-xl  { width: 128px; height: 128px; flex-shrink: 0; }
+    &.size-2xl { width: 160px; height: 160px; flex-shrink: 0; }
+
+    // Status ring (online/busy/offline indicator on circle images)
+    &.ring-online  { outline: 3px solid var(--positive-40); outline-offset: 2px; }
+    &.ring-busy    { outline: 3px solid var(--danger-40);   outline-offset: 2px; }
+    &.ring-offline { outline: 3px solid var(--neutral-80);  outline-offset: 2px; }
   }
 
   &-caption {
@@ -3758,6 +3786,26 @@ input[type="color"] {
     &.ratio-16-9 { aspect-ratio: 16 / 9; }
     &.ratio-4-3  { aspect-ratio: 4 / 3;  }
     &.ratio-1-1  { aspect-ratio: 1 / 1;  }
+
+    // Circle / square placeholder
+    &.circle {
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+      width: auto;
+      padding: 0;
+    }
+    &.square {
+      border-radius: var(--radius-lg);
+      aspect-ratio: 1 / 1;
+      width: auto;
+      padding: 0;
+    }
+    &.size-xs  { width: 32px;  height: 32px;  .material-symbols-outlined { font-size: 18px; } p { display: none; } }
+    &.size-sm  { width: 48px;  height: 48px;  .material-symbols-outlined { font-size: 22px; } p { display: none; } }
+    &.size-md  { width: 64px;  height: 64px;  .material-symbols-outlined { font-size: 28px; } p { display: none; } }
+    &.size-lg  { width: 96px;  height: 96px;  .material-symbols-outlined { font-size: 36px; } p { display: none; } }
+    &.size-xl  { width: 128px; height: 128px; .material-symbols-outlined { font-size: 44px; } }
+    &.size-2xl { width: 160px; height: 160px; .material-symbols-outlined { font-size: 52px; } }
   }
 }
 
@@ -3769,6 +3817,14 @@ input[type="color"] {
 
   &.col-2 { grid-template-columns: repeat(2, 1fr); }
   &.col-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+// Inline row for circle/square avatars at varying sizes
+.img-helper-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--spacing-lg);
 }
 
 /* ─── Responsive Table → Card ─── */
