@@ -2370,6 +2370,116 @@ main {
 }
 
 /* ============================================
+   Certificate Detail Page
+   ============================================ */
+
+.cert-main {
+  padding: var(--spacing-xl);
+  padding-bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+
+  @media (min-width: 1024px) {
+    max-width: 680px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--spacing-4xl);
+    padding-bottom: var(--spacing-4xl);
+  }
+}
+
+/* Status banners */
+.cert-status-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--radius-xl);
+
+  .material-symbols-outlined {
+    font-size: 24px;
+    flex-shrink: 0;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    margin-top: 1px;
+  }
+
+  &-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &-title {
+    font-size: var(--font-size-title-s);
+    font-weight: var(--font-weight-600);
+    margin: 0;
+    font-family: "Anuphan", sans-serif;
+  }
+
+  &-subtitle {
+    font-size: var(--font-size-body-s);
+    margin: 0;
+    font-family: "Anuphan", sans-serif;
+  }
+
+  &.valid {
+    background-color: var(--background-positive-light);
+
+    .material-symbols-outlined { color: var(--foreground-positive-default); }
+    .cert-status-banner-title   { color: var(--foreground-positive-dark); }
+    .cert-status-banner-subtitle{ color: var(--foreground-positive-default); }
+  }
+
+  &.expiring {
+    background-color: var(--background-warning-light);
+
+    .material-symbols-outlined { color: var(--foreground-warning-default); }
+    .cert-status-banner-title   { color: var(--foreground-warning-dark); }
+    .cert-status-banner-subtitle{ color: var(--foreground-warning-default); }
+  }
+
+  &.expired {
+    background-color: var(--background-negative-light);
+
+    .material-symbols-outlined { color: var(--foreground-negative-default); }
+    .cert-status-banner-title   { color: var(--foreground-negative-default); }
+    .cert-status-banner-subtitle{ color: var(--foreground-negative-default); }
+  }
+}
+
+/* Page title */
+.cert-page-title {
+  font-size: var(--font-size-title-l);
+  font-weight: var(--font-weight-700);
+  color: var(--foreground-neutral-default);
+  margin: 0 0 var(--spacing-xl) 0;
+  font-family: "Anuphan", sans-serif;
+}
+
+/* Content card */
+.cert-card {
+  background-color: var(--background-neutral-lighter);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  box-shadow: 0 1px 4px rgba(21, 22, 24, 0.06);
+}
+
+/* Divider */
+.cert-divider {
+  border: none;
+  border-top: 1px solid var(--stroke-neutral-lighter);
+  margin: 0;
+}
+
+/* Section header (icon + label) */
+.cert-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
    Tutorial / Onboarding Page
    ============================================ */
 
@@ -2524,6 +2634,132 @@ main {
   .material-symbols-outlined {
     font-size: 20px;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    color: var(--foreground-primary-default);
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: var(--font-size-title-s);
+    font-weight: var(--font-weight-600);
+    color: var(--foreground-neutral-default);
+    margin: 0;
+    font-family: "Anuphan", sans-serif;
+  }
+}
+
+/* Field group */
+.cert-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.cert-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+
+  &-label {
+    font-size: var(--font-size-body-s);
+    color: var(--foreground-neutral-lighter);
+    margin: 0;
+    font-family: "Anuphan", sans-serif;
+  }
+
+  &-value {
+    font-size: var(--font-size-body-m);
+    color: var(--foreground-neutral-default);
+    font-weight: var(--font-weight-400);
+    margin: 0;
+    line-height: 1.6;
+    font-family: "Anuphan", sans-serif;
+
+    &.highlight {
+      color: var(--foreground-primary-default);
+      font-weight: var(--font-weight-700);
+    }
+
+    &.positive {
+      color: var(--foreground-positive-default);
+      font-weight: var(--font-weight-600);
+    }
+  }
+}
+
+/* Usage tags */
+.cert-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.cert-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-lg);
+  background-color: var(--background-neutral-medium);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-light);
+  font-family: "Anuphan", sans-serif;
+  white-space: nowrap;
+}
+
+/* Timeline */
+.cert-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-timeline-item {
+  display: flex;
+  gap: var(--spacing-lg);
+  position: relative;
+
+  &:not(:last-child) {
+    padding-bottom: var(--spacing-xl);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 18px;
+      bottom: 0;
+      width: 2px;
+      background-color: var(--primary-60);
+    }
+  }
+
+  &-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-40);
+    flex-shrink: 0;
+    margin-top: 3px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    padding-bottom: 2px;
+  }
+
+  &-title {
+    font-size: var(--font-size-title-s);
+    font-weight: var(--font-weight-600);
+    color: var(--foreground-neutral-default);
+    margin: 0;
+    font-family: "Anuphan", sans-serif;
+  }
+
+  &-desc {
+    font-size: var(--font-size-body-s);
+    color: var(--foreground-neutral-lighter);
   }
 }
 
@@ -2582,6 +2818,14 @@ main {
     margin: 0;
     font-family: "Anuphan", sans-serif;
   }
+}
+
+/* Footer timestamp */
+.cert-timestamp {
+  text-align: center;
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lightest);
+  font-family: "Anuphan", sans-serif;
 }
 
 

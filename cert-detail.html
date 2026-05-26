@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบรับรองแพทย์ดิจิทัล — รายละเอียด</title>
+  <meta name="description" content="รายละเอียดใบรับรองแพทย์ดิจิทัล ตรวจสอบสถานะ ข้อมูล และประวัติการใช้งาน">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ใบรับรองแพทย์ดิจิทัล — รายละเอียด">
+  <meta property="og:description" content="รายละเอียดใบรับรองแพทย์ดิจิทัล ตรวจสอบสถานะ ข้อมูล และประวัติการใช้งาน">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ระบบใบสั่งจราจรออนไลน์">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ใบรับรองแพทย์ดิจิทัล — รายละเอียด">
+  <meta property="twitter:description" content="รายละเอียดใบรับรองแพทย์ดิจิทัล ตรวจสอบสถานะ ข้อมูล และประวัติการใช้งาน">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main class="cert-main">
+
+        <!-- ─── Status Banners (show one based on cert state) ─── -->
+        <div class="cert-status-banner valid">
+          <span class="material-symbols-outlined">check_circle</span>
+          <div class="cert-status-banner-text">
+            <p class="cert-status-banner-title">ใบรับรองแพทย์ยังมีผลบังคับใช้</p>
+            <p class="cert-status-banner-subtitle">หมดอายุวันที่ 12 กันยายน 2569 (อีก 113 วัน)</p>
+          </div>
+        </div>
+
+        <div class="cert-status-banner expiring">
+          <span class="material-symbols-outlined">schedule</span>
+          <div class="cert-status-banner-text">
+            <p class="cert-status-banner-title">ใบรับรองแพทย์ใกล้หมดอายุ</p>
+            <p class="cert-status-banner-subtitle">หมดอายุวันที่ 12 มิถุนายน 2569 (อีก 15 วัน)</p>
+          </div>
+        </div>
+
+        <div class="cert-status-banner expired">
+          <span class="material-symbols-outlined">warning</span>
+          <div class="cert-status-banner-text">
+            <p class="cert-status-banner-title">ใบรับรองแพทย์หมดอายุแล้ว</p>
+            <p class="cert-status-banner-subtitle">หมดอายุแล้ว เมื่อวันที่ 12 กันยายน 2568</p>
+          </div>
+        </div>
+
+        <!-- ─── Main Certificate Card ─── -->
+        <div class="cert-card">
+
+          <!-- Title -->
+          <h2 class="cert-page-title">ใบรับรองแพทย์ตรวจสุขภาพ</h2>
+
+          <!-- Basic fields -->
+          <div class="cert-field-group">
+            <div class="cert-field">
+              <p class="cert-field-label">เลขที่เอกสาร:</p>
+              <p class="cert-field-value">MED-2568-C001-00001</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">ชื่อผู้รับการตรวจ:</p>
+              <p class="cert-field-value">นายสมชาย ใจดี</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">เลขบัตรประชาชน:</p>
+              <p class="cert-field-value">1-1001-XXXXX-XX-X</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">ประเภทใบรับรองแพทย์:</p>
+              <p class="cert-field-value">ใบรับรองแพทย์ตรวจสุขภาพ</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">สถานพยาบาล:</p>
+              <p class="cert-field-value">โรงพยาบาลสิริราช</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">แพทย์ผู้ตรวจ:</p>
+              <p class="cert-field-value">นพ.วิชัย สุขสมบูรณ์</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">ผลการตรวจ / ความเห็นแพทย์:</p>
+              <p class="cert-field-value">ผลการตรวจสุขภาพทั่วไปอยู่ในเกณฑ์ปกติ ไม่พบโรคหรืออาการผิดปกติที่มีนัยสำคัญ เหมาะสมสำหรับการปฏิบัติงานตามปกติ</p>
+            </div>
+          </div>
+
+          <!-- Usage tags -->
+          <div class="cert-field">
+            <p class="cert-field-label">ใช้ได้กับ:</p>
+            <div class="cert-tag-list" style="margin-top: var(--spacing-md)">
+              <span class="cert-tag">ทำ/ต่ออายุ ใบขับขี่</span>
+              <span class="cert-tag">ขอวีซ่า</span>
+              <span class="cert-tag">สมัครงาน</span>
+              <span class="cert-tag">สมัครข้าราชการ</span>
+              <span class="cert-tag">เบิกสิทธิประกันสังคม</span>
+            </div>
+          </div>
+
+          <hr class="cert-divider">
+
+          <!-- ข้อมูลใบรับรองแพทย์ -->
+          <div class="cert-section-header">
+            <span class="material-symbols-outlined">info</span>
+            <h3>ข้อมูลใบรับรองแพทย์</h3>
+          </div>
+          <div class="cert-field-group">
+            <div class="cert-field">
+              <p class="cert-field-label">แพทย์ผู้ออกใบรอง:</p>
+              <p class="cert-field-value">นพ.วิชัย สุขสมบูรณ์</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">วันที่ออกใบรอง:</p>
+              <p class="cert-field-value">12 กันยายน 2568</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">วันหมดอายุ:</p>
+              <p class="cert-field-value highlight">12 กันยายน 2569</p>
+            </div>
+          </div>
+
+          <hr class="cert-divider">
+
+          <!-- การยืนยันความถูกต้อง -->
+          <div class="cert-section-header">
+            <span class="material-symbols-outlined">verified_user</span>
+            <h3>การยืนยันความถูกต้อง</h3>
+          </div>
+          <div class="cert-field-group">
+            <div class="cert-field">
+              <p class="cert-field-label">การยืนยันความถูกต้อง:</p>
+              <p class="cert-field-value positive">ยืนยันแล้วโดยกระทรวงสาธารณสุข</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">เลขที่อ้างอิง (Ref.):</p>
+              <p class="cert-field-value">MOPH-2568-00124-A</p>
+            </div>
+            <div class="cert-field">
+              <p class="cert-field-label">ยืนยันล่าสุด:</p>
+              <p class="cert-field-value">15 พ.ค. 2569 เวลา 08:32</p>
+            </div>
+          </div>
+
+          <hr class="cert-divider">
+
+          <!-- ประวัติการใช้งาน -->
+          <div class="cert-section-header">
+            <span class="material-symbols-outlined">trending_up</span>
+            <h3>ประวัติการใช้งาน</h3>
+          </div>
+          <div class="cert-timeline">
+            <div class="cert-timeline-item">
+              <div class="cert-timeline-item-dot"></div>
+              <div class="cert-timeline-item-content">
+                <p class="cert-timeline-item-title">ออกใบรับรองแพทย์</p>
+                <p class="cert-timeline-item-desc">12 ม.ค. 2568 — โรงพยาบาลสิริราช</p>
+              </div>
+            </div>
+            <div class="cert-timeline-item">
+              <div class="cert-timeline-item-dot"></div>
+              <div class="cert-timeline-item-content">
+                <p class="cert-timeline-item-title">บันทึกลงระบบกระทรวงสาธารณสุข</p>
+                <p class="cert-timeline-item-desc">12 ม.ค. 2568 เวลา 14:20</p>
+              </div>
+            </div>
+            <div class="cert-timeline-item">
+              <div class="cert-timeline-item-dot"></div>
+              <div class="cert-timeline-item-content">
+                <p class="cert-timeline-item-title">ดาวน์โหลด PDF</p>
+                <p class="cert-timeline-item-desc">20 ม.ค. 2568 เวลา 09:05 — โดยผู้ใช้งาน</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timestamp -->
+          <p class="cert-timestamp">ข้อมูล ณ วันที่ 2 มกราคม 2569  11.40 น.</p>
+
+        </div><!-- .cert-card -->
+      </main>
+    </div>
+
+    <!-- Sticky footer: Download button -->
+    <div class="sticky-footer">
+      <button class="btn btn-tertiary-outline flex-center" style="gap: var(--spacing-md)">
+        <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">download</span>
+        ดาวน์โหลด
+      </button>
+    </div>
+
+  </div>
+</body>
+</html>
