@@ -688,6 +688,8 @@ main {
 
 .detail-main-card {
   padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 1024px) {
@@ -1403,6 +1405,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    margin-top: auto;
   }
   
   .sticky-footer .footer-row {
@@ -1436,7 +1439,7 @@ main {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
     gap: var(--spacing-2xl);
-    align-items: start;
+    align-items: stretch;
   }
 }
 
