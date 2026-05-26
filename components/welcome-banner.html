@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Banner — Components</title>
+  <meta name="description" content="ตัวอย่าง Welcome Banner component — แบนเนอร์ต้อนรับผู้ใช้งาน">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Welcome Banner</h2>
+            <p class="text-subheader">แบนเนอร์ต้อนรับผู้ใช้งาน — gradient เข้ม แสดงชื่อและสถานะ</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แบนเนอร์พื้นฐาน — greeting เล็ก, ชื่อใหญ่, sub text</p>
+            <div class="components-section">
+              <div class="welcome-banner">
+                <p class="welcome-banner-greeting">สวัสดี</p>
+                <p class="welcome-banner-name">นายสมชาย ใจดี</p>
+                <p class="welcome-banner-sub">เลขบัตรประชาชน 1-1001-12345-67-8</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── With Score ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Points / Score</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แสดงคะแนนหรือข้อมูลเพิ่มเติมด้านขวา</p>
+            <div class="components-section">
+              <div class="welcome-banner" style="flex-direction:row; align-items:center; justify-content:space-between">
+                <div>
+                  <p class="welcome-banner-greeting">สวัสดี</p>
+                  <p class="welcome-banner-name">นายสมชาย ใจดี</p>
+                  <p class="welcome-banner-sub">ใบขับขี่ประเภท ข.</p>
+                </div>
+                <div style="text-align:right; flex-shrink:0">
+                  <p style="font-size:11px; color:rgba(255,255,255,0.65); margin-bottom:2px">คะแนนสะสม</p>
+                  <p style="font-size:32px; font-weight:700; color:var(--neutral-100); line-height:1; font-family:'Anuphan',sans-serif">8</p>
+                  <p style="font-size:11px; color:rgba(255,255,255,0.65)">/12 คะแนน</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── With Alert Strip ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Notification Strip</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">มีแถบแจ้งเตือนด้านบนของแบนเนอร์</p>
+            <div class="components-section">
+              <div style="position:relative">
+                <div style="background:var(--danger-40); border-radius:var(--radius-xl) var(--radius-xl) 0 0; padding:var(--spacing-sm) var(--spacing-lg); display:flex; align-items:center; gap:var(--spacing-sm)">
+                  <span class="material-symbols-outlined" style="font-size:16px; color:var(--neutral-100); font-variation-settings:'FILL' 1">warning</span>
+                  <p style="font-size:12px; color:var(--neutral-100); margin:0; font-weight:500">มีใบสั่งค้างชำระ 2 รายการ</p>
+                </div>
+                <div class="welcome-banner" style="border-radius: 0 0 20px 20px">
+                  <p class="welcome-banner-greeting">สวัสดี</p>
+                  <p class="welcome-banner-name">นายสมชาย ใจดี</p>
+                  <p class="welcome-banner-sub">ใบขับขี่ประเภท ข. · หมดอายุ 14 ก.พ. 2570</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Basic</p>
+                <pre class="code-block">&lt;div class="welcome-banner"&gt;
+  &lt;p class="welcome-banner-greeting"&gt;สวัสดี&lt;/p&gt;
+  &lt;p class="welcome-banner-name"&gt;ชื่อ-นามสกุล&lt;/p&gt;
+  &lt;p class="welcome-banner-sub"&gt;ข้อความรอง&lt;/p&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">With right-side content</p>
+                <pre class="code-block">&lt;div class="welcome-banner"
+  style="flex-direction:row; align-items:center; justify-content:space-between"&gt;
+  &lt;div&gt;
+    &lt;p class="welcome-banner-greeting"&gt;สวัสดี&lt;/p&gt;
+    &lt;p class="welcome-banner-name"&gt;ชื่อผู้ใช้&lt;/p&gt;
+    &lt;p class="welcome-banner-sub"&gt;ข้อมูลเพิ่มเติม&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div&gt;...right content...&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -2654,6 +2654,44 @@ main {
   font-family: "Anuphan", sans-serif;
   white-space: nowrap;
 }
+.tag--primary {
+  background-color: var(--primary-95);
+  color: var(--primary-20);
+}
+.tag--success {
+  background-color: var(--positive-95);
+  color: var(--positive-30);
+}
+.tag--warning {
+  background-color: var(--warning-95);
+  color: var(--warning-30);
+}
+.tag--danger {
+  background-color: var(--danger-95);
+  color: var(--danger-30);
+}
+.tag--info {
+  background-color: var(--secondary-95);
+  color: var(--secondary-20);
+}
+.tag--sm {
+  padding: 2px var(--spacing-md);
+  font-size: var(--font-size-label-s);
+}
+.tag--lg {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  font-size: var(--font-size-body-m);
+}
+.tag--dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  margin-right: var(--spacing-xs);
+  flex-shrink: 0;
+}
 
 /* Timeline */
 .timeline {

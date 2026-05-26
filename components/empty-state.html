@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empty State — Components</title>
+  <meta name="description" content="ตัวอย่าง Empty State component — หน้าแสดงเมื่อไม่มีข้อมูล">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Empty State</h2>
+            <p class="text-subheader">แสดงเมื่อไม่มีข้อมูล — ไอคอน, หัวข้อ, คำอธิบาย และ action</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ไอคอนวงกลมเทา + หัวข้อ + คำอธิบาย</p>
+            <div class="components-section">
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <span class="material-symbols-outlined" style="font-size:28px">inbox</span>
+                </div>
+                <p class="empty-title">ไม่พบรายการ</p>
+                <p class="empty-desc">ยังไม่มีข้อมูลในระบบ</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Context Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Context Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ปรับไอคอนและข้อความตามบริบทการใช้งาน</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-2xl)">
+
+                <!-- No fines -->
+                <div class="empty-state" style="padding:var(--spacing-3xl) var(--spacing-xl)">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">receipt_long</span>
+                  </div>
+                  <p class="empty-title">ไม่มีใบสั่งค้างชำระ</p>
+                  <p class="empty-desc">คุณไม่มีใบสั่งจราจรที่ยังไม่ได้ชำระ<br>ขับขี่อย่างปลอดภัยต่อไปนะ</p>
+                </div>
+
+                <hr style="border:none; border-top:1px solid var(--stroke-neutral-default)">
+
+                <!-- No documents -->
+                <div class="empty-state" style="padding:var(--spacing-3xl) var(--spacing-xl)">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">folder_open</span>
+                  </div>
+                  <p class="empty-title">ยังไม่มีเอกสาร</p>
+                  <p class="empty-desc">เพิ่มเอกสารของคุณเพื่อเข้าถึงได้ทุกที่ทุกเวลา</p>
+                </div>
+
+                <hr style="border:none; border-top:1px solid var(--stroke-neutral-default)">
+
+                <!-- No results -->
+                <div class="empty-state" style="padding:var(--spacing-3xl) var(--spacing-xl)">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">search_off</span>
+                  </div>
+                  <p class="empty-title">ไม่พบผลการค้นหา</p>
+                  <p class="empty-desc">ไม่พบข้อมูลที่ตรงกับ "<strong>ใบขับขี่ประเภท ค.</strong>"<br>ลองค้นหาด้วยคำอื่น</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── With Action Button ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Action Button</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่มปุ่ม action ใต้คำอธิบาย</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-2xl)">
+
+                <div class="empty-state" style="padding:var(--spacing-3xl) var(--spacing-xl)">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">receipt_long</span>
+                  </div>
+                  <p class="empty-title">ยังไม่มีประวัติการชำระ</p>
+                  <p class="empty-desc" style="margin-bottom:var(--spacing-xl)">เมื่อคุณชำระค่าปรับแล้ว ประวัติจะแสดงที่นี่</p>
+                  <button class="btn btn-secondary" style="width:auto">
+                    <span class="material-symbols-outlined">search</span>
+                    ตรวจสอบใบสั่ง
+                  </button>
+                </div>
+
+                <hr style="border:none; border-top:1px solid var(--stroke-neutral-default)">
+
+                <div class="empty-state" style="padding:var(--spacing-3xl) var(--spacing-xl)">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">wifi_off</span>
+                  </div>
+                  <p class="empty-title">ไม่สามารถโหลดข้อมูลได้</p>
+                  <p class="empty-desc" style="margin-bottom:var(--spacing-xl)">กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต แล้วลองใหม่อีกครั้ง</p>
+                  <button class="btn btn-primary" style="width:auto">
+                    <span class="material-symbols-outlined">refresh</span>
+                    ลองใหม่
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML structure</p>
+                <pre class="code-block">&lt;div class="empty-state"&gt;
+  &lt;div class="empty-icon"&gt;
+    &lt;span class="material-symbols-outlined"
+      style="font-size:28px"&gt;inbox&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p class="empty-title"&gt;ไม่พบรายการ&lt;/p&gt;
+  &lt;p class="empty-desc"&gt;ยังไม่มีข้อมูลในระบบ&lt;/p&gt;
+
+  &lt;!-- optional action button --&gt;
+  &lt;button class="btn btn-secondary" style="width:auto;margin-top:var(--spacing-xl)"&gt;
+    ดำเนินการ
+  &lt;/button&gt;
+&lt;/div&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

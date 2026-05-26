@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Banner — Components</title>
+  <meta name="description" content="ตัวอย่าง Status Banner component — แบนเนอร์แสดงสถานะ valid, expiring, expired">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Status Banner</h2>
+            <p class="text-subheader">แบนเนอร์แสดงสถานะเอกสาร/ข้อมูล — valid · expiring · expired</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Status Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">3 สถานะหลักสำหรับแสดงผลเอกสารหรือใบอนุญาต</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <div class="status-banner valid">
+                  <span class="material-symbols-outlined">verified</span>
+                  <div class="status-banner-text">
+                    <p class="status-banner-title">ใบรับรองแพทย์มีผลบังคับใช้</p>
+                    <p class="status-banner-subtitle">มีผลถึงวันที่ 12 มกราคม 2570</p>
+                  </div>
+                </div>
+
+                <div class="status-banner expiring">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <div class="status-banner-text">
+                    <p class="status-banner-title">ใกล้หมดอายุ — ต่ออายุเร็วๆ นี้</p>
+                    <p class="status-banner-subtitle">จะหมดอายุในอีก 14 วัน — 14 ก.พ. 2569</p>
+                  </div>
+                </div>
+
+                <div class="status-banner expired">
+                  <span class="material-symbols-outlined">cancel</span>
+                  <div class="status-banner-text">
+                    <p class="status-banner-title">ใบรับรองแพทย์หมดอายุแล้ว</p>
+                    <p class="status-banner-subtitle">หมดอายุตั้งแต่ 10 กุมภาพันธ์ 2568 กรุณาต่ออายุ</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Context Examples ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">In Context — ใบขับขี่</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ตัวอย่างใน detail page ของใบขับขี่</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ใบขับขี่สาธารณะ ประเภท ท.</p>
+                  <div class="status-banner valid">
+                    <span class="material-symbols-outlined">directions_car</span>
+                    <div class="status-banner-text">
+                      <p class="status-banner-title">ใบขับขี่มีผลบังคับใช้</p>
+                      <p class="status-banner-subtitle">หมดอายุ 14 กุมภาพันธ์ 2570 · คะแนน 8/12</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ใบขับขี่รถยนต์ส่วนบุคคล ประเภท ข.</p>
+                  <div class="status-banner expiring">
+                    <span class="material-symbols-outlined">directions_car</span>
+                    <div class="status-banner-text">
+                      <p class="status-banner-title">ใกล้ครบกำหนด — ต่ออายุก่อน 14 ก.พ.</p>
+                      <p class="status-banner-subtitle">เหลืออีก 21 วัน · ต่ออายุออนไลน์ได้เลย</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ใบรับรองแพทย์ประจำปี</p>
+                  <div class="status-banner expired">
+                    <span class="material-symbols-outlined">medical_services</span>
+                    <div class="status-banner-text">
+                      <p class="status-banner-title">ใบรับรองแพทย์หมดอายุ</p>
+                      <p class="status-banner-subtitle">กรุณาไปตรวจสุขภาพและขอใบรับรองแพทย์ใหม่</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML structure</p>
+                <pre class="code-block">&lt;div class="status-banner valid"&gt;     &lt;!-- valid | expiring | expired --&gt;
+  &lt;span class="material-symbols-outlined"&gt;verified&lt;/span&gt;
+  &lt;div class="status-banner-text"&gt;
+    &lt;p class="status-banner-title"&gt;หัวข้อสถานะ&lt;/p&gt;
+    &lt;p class="status-banner-subtitle"&gt;รายละเอียดเพิ่มเติม&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Modifier classes</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label"><code>.valid</code></span>
+                    <span class="details-value">สีเขียว — สถานะปกติ มีผลบังคับใช้</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label"><code>.expiring</code></span>
+                    <span class="details-value">สีเหลือง — ใกล้หมดอายุ ควรดำเนินการ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label"><code>.expired</code></span>
+                    <span class="details-value">สีแดง — หมดอายุแล้ว ต้องดำเนินการ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

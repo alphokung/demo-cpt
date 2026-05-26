@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Chip — Components</title>
+  <meta name="description" content="ตัวอย่าง Filter Chip component — chip กรองข้อมูลแบบ horizontal scroll">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Filter Chip</h2>
+            <p class="text-subheader">Chip กรองข้อมูล — scroll แนวนอน พร้อม active state</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── States ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">States — Default &amp; Active</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">default: เส้นขอบเทา — active: พื้นหลังสีเขียวอ่อน</p>
+            <div class="components-section">
+              <div style="display:flex; gap:var(--spacing-md); flex-wrap:wrap">
+                <button class="filter-chip active">ทั้งหมด</button>
+                <button class="filter-chip">สุขภาพ</button>
+                <button class="filter-chip">ใบขับขี่</button>
+                <button class="filter-chip">ค่าปรับ</button>
+                <button class="filter-chip">เอกสารแรงงาน</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── With Dot ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Colour Dot</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.filter-dot</code> จุดสีระบุหมวดหมู่ก่อนข้อความ</p>
+            <div class="components-section">
+              <div style="display:flex; gap:var(--spacing-md); flex-wrap:wrap">
+                <button class="filter-chip active">
+                  ทั้งหมด
+                </button>
+                <button class="filter-chip">
+                  <span class="filter-dot dot-health"></span>สุขภาพ
+                </button>
+                <button class="filter-chip">
+                  <span class="filter-dot dot-driving"></span>ใบขับขี่
+                </button>
+                <button class="filter-chip">
+                  <span class="filter-dot dot-work"></span>แรงงาน
+                </button>
+                <button class="filter-chip">
+                  <span class="filter-dot dot-covid"></span>COVID-19
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Scrollable Row ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Scrollable Row — filter-row</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.filter-row</code> ซ่อน scrollbar และ overflow-x auto</p>
+            <div class="components-section">
+              <div class="filter-row">
+                <button class="filter-chip active">ทั้งหมด</button>
+                <button class="filter-chip"><span class="filter-dot dot-health"></span>สุขภาพ</button>
+                <button class="filter-chip"><span class="filter-dot dot-driving"></span>ใบขับขี่</button>
+                <button class="filter-chip"><span class="filter-dot dot-work"></span>แรงงาน</button>
+                <button class="filter-chip"><span class="filter-dot dot-covid"></span>COVID-19</button>
+                <button class="filter-chip">เอกสารราชการ</button>
+                <button class="filter-chip">ทะเบียนบ้าน</button>
+                <button class="filter-chip">ภาษี</button>
+              </div>
+              <p class="form-hint">← scroll แนวนอนบนหน้าจอแคบ</p>
+            </div>
+          </div>
+
+          <!-- ─── Interactive ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Interactive Demo</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">กดเพื่อเปลี่ยน active chip</p>
+            <div class="components-section">
+              <div class="filter-row" id="chip-demo">
+                <button class="filter-chip active" onclick="setActive(this)">ทั้งหมด</button>
+                <button class="filter-chip" onclick="setActive(this)"><span class="filter-dot dot-health"></span>สุขภาพ</button>
+                <button class="filter-chip" onclick="setActive(this)"><span class="filter-dot dot-driving"></span>ใบขับขี่</button>
+                <button class="filter-chip" onclick="setActive(this)"><span class="filter-dot dot-work"></span>แรงงาน</button>
+                <button class="filter-chip" onclick="setActive(this)"><span class="filter-dot dot-covid"></span>COVID-19</button>
+              </div>
+              <p id="chip-result" class="form-hint" style="color:var(--primary-40)">เลือก: ทั้งหมด</p>
+            </div>
+          </div>
+
+          <!-- ─── Dot Reference ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Dot Colour Reference</h3>
+            </div>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+                <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                  <span class="filter-dot dot-health" style="width:12px; height:12px"></span>
+                  <code>dot-health</code>
+                  <span class="form-hint">สีเขียวน้ำทะเล — หมวดสุขภาพ</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                  <span class="filter-dot dot-driving" style="width:12px; height:12px"></span>
+                  <code>dot-driving</code>
+                  <span class="form-hint">สีม่วงฟ้า — ใบขับขี่</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                  <span class="filter-dot dot-work" style="width:12px; height:12px"></span>
+                  <code>dot-work</code>
+                  <span class="form-hint">สีส้มพาสเทล — แรงงาน</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                  <span class="filter-dot dot-covid" style="width:12px; height:12px"></span>
+                  <code>dot-covid</code>
+                  <span class="form-hint">สีฟ้า — COVID-19</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML structure</p>
+                <pre class="code-block">&lt;div class="filter-row"&gt;
+  &lt;button class="filter-chip active"&gt;ทั้งหมด&lt;/button&gt;
+  &lt;button class="filter-chip"&gt;
+    &lt;span class="filter-dot dot-health"&gt;&lt;/span&gt;สุขภาพ
+  &lt;/button&gt;
+  &lt;button class="filter-chip"&gt;
+    &lt;span class="filter-dot dot-driving"&gt;&lt;/span&gt;ใบขับขี่
+  &lt;/button&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Toggle active — JavaScript</p>
+                <pre class="code-block">function setActive(btn) {
+  const row = btn.closest('.filter-row');
+  row.querySelectorAll('.filter-chip')
+    .forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+}</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function setActive(btn) {
+      const row = document.getElementById('chip-demo');
+      row.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      const label = btn.textContent.trim();
+      document.getElementById('chip-result').textContent = 'เลือก: ' + label;
+    }
+  </script>
+</body>
+</html>

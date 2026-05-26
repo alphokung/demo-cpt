@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tag / Badge — Components</title>
+  <meta name="description" content="ตัวอย่าง Tag และ Badge component — pill label สำหรับแสดงสถานะและหมวดหมู่">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Tag &amp; Badge</h2>
+            <p class="text-subheader">Pill label สำหรับแสดงสถานะ หมวดหมู่ และป้ายกำกับข้อมูล</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Tag — Neutral ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Tag — Neutral (Category)</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ใช้แสดงหมวดหมู่หรือ label ทั่วไป — pill สีเทาอ่อน</p>
+            <div class="components-section">
+              <div class="tag-list">
+                <span class="tag">สุขภาพ</span>
+                <span class="tag">ใบขับขี่</span>
+                <span class="tag">ค่าปรับ</span>
+                <span class="tag">เอกสารราชการ</span>
+                <span class="tag">COVID-19</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Tag — Colour Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Tag — Colour Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">modifier class เพิ่มสีตามความหมาย</p>
+            <div class="components-section">
+              <div class="tag-list">
+                <span class="tag tag--primary">ข้อมูลใหม่</span>
+                <span class="tag tag--success">สำเร็จ</span>
+                <span class="tag tag--warning">ใกล้หมดอายุ</span>
+                <span class="tag tag--danger">ค้างชำระ</span>
+                <span class="tag tag--info">รออนุมัติ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Tag — Size Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Tag — Size Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">3 ขนาด — sm, default, lg</p>
+            <div class="components-section">
+              <div style="display:flex; align-items:center; gap:var(--spacing-md); flex-wrap:wrap">
+                <span class="tag tag--success tag--sm">Small</span>
+                <span class="tag tag--success">Default</span>
+                <span class="tag tag--success tag--lg">Large</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Tag — With Dot ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Tag — With Dot Indicator</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่ม dot สีก่อนข้อความ — เหมือน cell-status ในตาราง</p>
+            <div class="components-section">
+              <div class="tag-list">
+                <span class="tag tag--success tag--dot">ชำระแล้ว</span>
+                <span class="tag tag--danger tag--dot">ค้างชำระ</span>
+                <span class="tag tag--warning tag--dot">มีหนังสือเตือน</span>
+                <span class="tag tag--primary tag--dot">มีผลบังคับใช้</span>
+                <span class="tag tag--dot">หมดอายุ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── List Badge ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">List Badge — inline &amp; corner</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.list-badge</code> ใช้ใน list-item — แสดงสถานะใบอนุญาต</p>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Inline variants</p>
+                <div style="display:flex; gap:var(--spacing-md); flex-wrap:wrap">
+                  <span class="list-badge valid">มีผลบังคับใช้</span>
+                  <span class="list-badge expiring">ใกล้หมดอายุ</span>
+                  <span class="list-badge expired">หมดอายุ</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Corner badge (absolute positioned inside .list-item)</p>
+                <div style="position:relative; background:var(--canvas-white); border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-md) var(--spacing-lg); padding-top:calc(var(--spacing-md) + 10px); height:64px">
+                  <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                  <p style="font-size:var(--font-size-body-s); color:var(--foreground-neutral-lighter)">ตัวอย่าง list-item พร้อม corner badge</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Status Badge Mini ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Status Badge Mini — icon overlay</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.status-badge-mini</code> วางซ้อนมุมล่างขวาของไอคอนวงกลม</p>
+            <div class="components-section">
+              <div style="display:flex; gap:var(--spacing-2xl); flex-wrap:wrap">
+                <div style="text-align:center">
+                  <div style="position:relative; display:inline-flex">
+                    <div style="width:44px; height:44px; border-radius:var(--radius-lg); background:var(--background-positive-light); color:var(--foreground-positive-default); display:flex; align-items:center; justify-content:center">
+                      <span class="material-symbols-outlined" style="font-size:22px">medical_services</span>
+                    </div>
+                    <div class="status-badge-mini status-badge-success">
+                      <span class="material-symbols-outlined" style="font-size:11px; font-variation-settings:'FILL' 1">check</span>
+                    </div>
+                  </div>
+                  <p class="form-hint" style="margin-top:var(--spacing-sm)">success</p>
+                </div>
+                <div style="text-align:center">
+                  <div style="position:relative; display:inline-flex">
+                    <div style="width:44px; height:44px; border-radius:var(--radius-lg); background:var(--background-warning-light); color:var(--foreground-warning-default); display:flex; align-items:center; justify-content:center">
+                      <span class="material-symbols-outlined" style="font-size:22px">directions_car</span>
+                    </div>
+                    <div class="status-badge-mini status-badge-warning">
+                      <span class="material-symbols-outlined" style="font-size:11px; font-variation-settings:'FILL' 1">schedule</span>
+                    </div>
+                  </div>
+                  <p class="form-hint" style="margin-top:var(--spacing-sm)">warning</p>
+                </div>
+                <div style="text-align:center">
+                  <div style="position:relative; display:inline-flex">
+                    <div style="width:44px; height:44px; border-radius:var(--radius-lg); background:var(--background-negative-light); color:var(--foreground-negative-default); display:flex; align-items:center; justify-content:center">
+                      <span class="material-symbols-outlined" style="font-size:22px">receipt_long</span>
+                    </div>
+                    <div class="status-badge-mini status-badge-danger">
+                      <span class="material-symbols-outlined" style="font-size:11px; font-variation-settings:'FILL' 1">close</span>
+                    </div>
+                  </div>
+                  <p class="form-hint" style="margin-top:var(--spacing-sm)">danger</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Tag</p>
+                <pre class="code-block">&lt;span class="tag"&gt;Neutral&lt;/span&gt;
+&lt;span class="tag tag--primary"&gt;Primary&lt;/span&gt;
+&lt;span class="tag tag--success"&gt;Success&lt;/span&gt;
+&lt;span class="tag tag--warning"&gt;Warning&lt;/span&gt;
+&lt;span class="tag tag--danger"&gt;Danger&lt;/span&gt;
+&lt;span class="tag tag--info"&gt;Info&lt;/span&gt;
+
+&lt;!-- Size --&gt;
+&lt;span class="tag tag--sm"&gt;Small&lt;/span&gt;
+&lt;span class="tag tag--lg"&gt;Large&lt;/span&gt;
+
+&lt;!-- Dot indicator --&gt;
+&lt;span class="tag tag--success tag--dot"&gt;ชำระแล้ว&lt;/span&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">List Badge</p>
+                <pre class="code-block">&lt;span class="list-badge valid"&gt;มีผลบังคับใช้&lt;/span&gt;
+&lt;span class="list-badge expiring"&gt;ใกล้หมดอายุ&lt;/span&gt;
+&lt;span class="list-badge expired"&gt;หมดอายุ&lt;/span&gt;
+
+&lt;!-- Corner (inside .list-item) --&gt;
+&lt;span class="list-badge expiring list-badge--corner"&gt;ใกล้หมดอายุ&lt;/span&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

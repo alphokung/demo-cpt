@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Item — Components</title>
+  <meta name="description" content="ตัวอย่าง List Item component — รายการพร้อมไอคอน badge และ meta info">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">List Item</h2>
+            <p class="text-subheader">รายการข้อมูลพร้อมไอคอน meta info badge และ chevron</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic — Icon Colour Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ไอคอน 4 สีตามหมวดหมู่ — health, driving, covid, work</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <a href="#" class="list-item">
+                  <div class="list-icon health">
+                    <span class="material-symbols-outlined">medical_services</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบรับรองแพทย์</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                        12 ม.ค. 2568
+                      </div>
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">local_hospital</span>
+                        โรงพยาบาลสิริราช
+                      </div>
+                    </div>
+                    <span class="list-badge valid">มีผลบังคับใช้</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+                <a href="#" class="list-item">
+                  <div class="list-icon driving">
+                    <span class="material-symbols-outlined">directions_car</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบขับขี่รถยนต์ส่วนบุคคล ประเภท ข.</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">event</span>
+                        หมดอายุ 14 ก.พ. 2569
+                      </div>
+                    </div>
+                    <span class="list-badge expiring">ใกล้หมดอายุ</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+                <a href="#" class="list-item">
+                  <div class="list-icon covid">
+                    <span class="material-symbols-outlined">coronavirus</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบรับรองวัคซีน COVID-19</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">vaccines</span>
+                        Moderna · เข็มที่ 4
+                      </div>
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                        15 พ.ย. 2566
+                      </div>
+                    </div>
+                    <span class="list-badge valid">มีผลบังคับใช้</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+                <a href="#" class="list-item">
+                  <div class="list-icon work">
+                    <span class="material-symbols-outlined">badge</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบอนุญาตทำงาน</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">business</span>
+                        กรมการจัดหางาน
+                      </div>
+                    </div>
+                    <span class="list-badge valid">มีผลบังคับใช้</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Expired State ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Expired State — is-expired</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.list-item.is-expired</code> — ไอคอนเปลี่ยนเป็นสีเทา แสดงถึงเอกสารหมดอายุ</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <a href="#" class="list-item is-expired">
+                  <div class="list-icon driving">
+                    <span class="material-symbols-outlined">directions_car</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบขับขี่รถยนต์ส่วนบุคคล ประเภท ข.</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">event</span>
+                        หมดอายุ 10 ก.พ. 2567
+                      </div>
+                    </div>
+                    <span class="list-badge expired">หมดอายุ</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+                <a href="#" class="list-item is-expired">
+                  <div class="list-icon health">
+                    <span class="material-symbols-outlined">medical_services</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบรับรองแพทย์ประจำปี 2567</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                        12 ม.ค. 2567
+                      </div>
+                    </div>
+                    <span class="list-badge expired">หมดอายุ</span>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Corner Badge ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Corner Badge</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)"><code>.list-badge--corner</code> แสดง badge มุมบนขวา</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <a href="#" class="list-item">
+                  <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                  <div class="list-icon driving">
+                    <span class="material-symbols-outlined">directions_car</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบขับขี่สาธารณะ ประเภท ท.</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">event</span>
+                        หมดอายุ 28 ก.พ. 2569
+                      </div>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+                <a href="#" class="list-item is-expired">
+                  <span class="list-badge expired list-badge--corner">หมดอายุ</span>
+                  <div class="list-icon health">
+                    <span class="material-symbols-outlined">medical_services</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-title">ใบรับรองแพทย์ประจำปี 2567</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                        หมดอายุ 12 ม.ค. 2567
+                      </div>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML structure</p>
+                <pre class="code-block">&lt;a href="#" class="list-item"&gt;
+  &lt;!-- optional corner badge --&gt;
+  &lt;span class="list-badge expiring list-badge--corner"&gt;ใกล้หมดอายุ&lt;/span&gt;
+
+  &lt;div class="list-icon health"&gt;   &lt;!-- health | driving | covid | work --&gt;
+    &lt;span class="material-symbols-outlined"&gt;medical_services&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class="list-body"&gt;
+    &lt;p class="list-title"&gt;ชื่อรายการ&lt;/p&gt;
+    &lt;div class="list-meta"&gt;
+      &lt;div class="list-meta-item"&gt;
+        &lt;span class="material-symbols-outlined list-meta-icon"&gt;calendar_today&lt;/span&gt;
+        วันที่
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;span class="list-badge valid"&gt;มีผลบังคับใช้&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="material-symbols-outlined chevron"&gt;chevron_right&lt;/span&gt;
+&lt;/a&gt;
+
+&lt;!-- Expired state --&gt;
+&lt;a href="#" class="list-item is-expired"&gt;...&lt;/a&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

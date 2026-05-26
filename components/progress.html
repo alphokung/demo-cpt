@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress — Components</title>
+  <meta name="description" content="ตัวอย่าง Progress component — tutorial-progress bar แสดงความคืบหน้า">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Progress</h2>
+            <p class="text-subheader">Tutorial / onboarding progress bar — passed · active · future</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Static Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Static Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แสดงสถานะ passed (สีเขียว) · active (gradient) · future (เทา)</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-2xl)">
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ขั้นที่ 1 / 4</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ขั้นที่ 2 / 4</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ขั้นที่ 3 / 4</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">ขั้นที่ 4 / 4 (เสร็จสิ้น)</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Step Count Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Step Count Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ปรับจำนวน bar ตามขั้นตอน</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-2xl)">
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">3 ขั้นตอน</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">5 ขั้นตอน</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="form-label" style="margin-bottom:var(--spacing-sm)">7 ขั้นตอน</p>
+                  <div class="tutorial-progress" style="position:static; padding:0; background:transparent">
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar passed"></div>
+                    <div class="tutorial-progress-bar active"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                    <div class="tutorial-progress-bar"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Interactive Demo ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Interactive Demo</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">กดปุ่มถัดไป / ย้อนกลับ เพื่อดู transition</p>
+            <div class="components-section">
+              <div class="tutorial-progress" id="prog-bar" style="position:static; padding:0; background:transparent; margin-bottom:var(--spacing-xl)">
+                <div class="tutorial-progress-bar active"></div>
+                <div class="tutorial-progress-bar"></div>
+                <div class="tutorial-progress-bar"></div>
+                <div class="tutorial-progress-bar"></div>
+                <div class="tutorial-progress-bar"></div>
+              </div>
+              <p id="prog-label" class="form-hint" style="text-align:center; margin-bottom:var(--spacing-xl)">ขั้นที่ 1 จาก 5</p>
+              <div style="display:flex; gap:var(--spacing-md)">
+                <button class="btn btn-tertiary-outline tutorial-back-btn" id="btn-prev" onclick="stepPrev()" disabled>
+                  <span class="material-symbols-outlined">arrow_back</span>ย้อนกลับ
+                </button>
+                <button class="btn btn-primary tutorial-next-btn" id="btn-next" onclick="stepNext()">
+                  ถัดไป<span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML structure</p>
+                <pre class="code-block">&lt;div class="tutorial-progress"&gt;
+  &lt;div class="tutorial-progress-bar passed"&gt;&lt;/div&gt;
+  &lt;div class="tutorial-progress-bar active"&gt;&lt;/div&gt;
+  &lt;div class="tutorial-progress-bar"&gt;&lt;/div&gt;  &lt;!-- future --&gt;
+  &lt;div class="tutorial-progress-bar"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Bar state classes</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label"><code>.passed</code></span>
+                    <span class="details-value">สีเขียว — ขั้นตอนที่ผ่านมาแล้ว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label"><code>.active</code></span>
+                    <span class="details-value">gradient เขียว→ขาว — ขั้นตอนปัจจุบัน</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">(ไม่มี class)</span>
+                    <span class="details-value">สีเทา — ขั้นตอนที่ยังไม่ถึง</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Note — sticky positioning</p>
+                <pre class="code-block">/* ใน tutorial page จริง — progress ติดอยู่ด้านบน */
+.tutorial-progress {
+  position: sticky;
+  top: 0;
+  background-color: var(--background-neutral-lighter);
+  z-index: 10;
+}
+
+/* ใน component demo — override ให้ static */
+style="position:static; padding:0; background:transparent"</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    let step = 0;
+    const total = 5;
+
+    function render() {
+      const bars = document.querySelectorAll('#prog-bar .tutorial-progress-bar');
+      bars.forEach((b, i) => {
+        b.className = 'tutorial-progress-bar';
+        if (i < step)       b.classList.add('passed');
+        else if (i === step) b.classList.add('active');
+      });
+      document.getElementById('prog-label').textContent = `ขั้นที่ ${step + 1} จาก ${total}`;
+      document.getElementById('btn-prev').disabled = step === 0;
+      const nextBtn = document.getElementById('btn-next');
+      if (step === total - 1) {
+        nextBtn.innerHTML = '<span class="material-symbols-outlined">check</span>เสร็จสิ้น';
+        nextBtn.disabled = false;
+      } else {
+        nextBtn.innerHTML = 'ถัดไป<span class="material-symbols-outlined">arrow_forward</span>';
+        nextBtn.disabled = false;
+      }
+    }
+
+    function stepNext() {
+      if (step < total - 1) { step++; render(); }
+      else {
+        // all passed
+        const bars = document.querySelectorAll('#prog-bar .tutorial-progress-bar');
+        bars.forEach(b => { b.className = 'tutorial-progress-bar passed'; });
+        document.getElementById('prog-label').textContent = 'เสร็จสิ้นทุกขั้นตอน ✓';
+        document.getElementById('btn-next').disabled = true;
+      }
+    }
+
+    function stepPrev() {
+      if (step > 0) { step--; render(); }
+    }
+  </script>
+</body>
+</html>

@@ -2735,6 +2735,29 @@ main {
   color: var(--foreground-neutral-light);
   font-family: "Anuphan", sans-serif;
   white-space: nowrap;
+
+  // Colour variants
+  &--primary { background-color: var(--primary-95);  color: var(--primary-20);  }
+  &--success { background-color: var(--positive-95); color: var(--positive-30); }
+  &--warning { background-color: var(--warning-95);  color: var(--warning-30);  }
+  &--danger  { background-color: var(--danger-95);   color: var(--danger-30);   }
+  &--info    { background-color: var(--secondary-95); color: var(--secondary-20); }
+
+  // Size variants
+  &--sm { padding: 2px var(--spacing-md); font-size: var(--font-size-label-s); }
+  &--lg { padding: var(--spacing-sm) var(--spacing-xl); font-size: var(--font-size-body-m); }
+
+  // Dot indicator before label
+  &--dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+    margin-right: var(--spacing-xs);
+    flex-shrink: 0;
+  }
 }
 
 /* Timeline */
