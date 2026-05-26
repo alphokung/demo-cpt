@@ -166,7 +166,7 @@ function toggleDemoState() {
 }
 
 function initFilterDemo() {
-  fetch('demo.json')
+  fetch('med.json')
     .then(function (res) { return res.json(); })
     .then(function (data) {
       USER = data.user;
