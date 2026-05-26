@@ -1,4 +1,4 @@
-// demo.js — filter-demo page logic
+// med.js — med-index page logic
 
 var ALL_CERTS = [];
 var USER = {};
