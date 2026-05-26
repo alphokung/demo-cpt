@@ -2849,6 +2849,14 @@ main {
   }
 }
 
+/* Right column stack for cert-detail — 3 cards stacked vertically in col 2 */
+.cert-right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  min-width: 0;
+}
+
 /* Footer timestamp */
 .cert-timestamp {
   text-align: center;

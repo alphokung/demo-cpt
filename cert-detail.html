@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +27,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="app-container">
     <div class="main-layout">
@@ -106,28 +108,28 @@
               </div>
               <div class="details-item">
                 <span class="details-label">ผลการตรวจ / ความเห็นแพทย์</span>
-                <span class="details-value">ผลการตรวจสุขภาพทั่วไปอยู่ในเกณฑ์ปกติ ไม่พบโรคหรืออาการผิดปกติที่มีนัยสำคัญ เหมาะสมสำหรับการปฏิบัติงานตามปกติ</span>
+                <span class="details-value">ผลการตรวจสุขภาพทั่วไปอยู่ในเกณฑ์ปกติ ไม่พบโรคหรืออาการผิดปกติที่มีนัยสำคัญ
+                  เหมาะสมสำหรับการปฏิบัติงานตามปกติ</span>
+              </div>
+
+              <div class="details-item">
+                <span class="details-label">ใช้ได้กับ</span>
+                <span class="details-value">
+                  <div class="cert-tag-list">
+                    <span class="cert-tag">ทำ/ต่ออายุ ใบขับขี่</span>
+                    <span class="cert-tag">ขอวีซ่า</span>
+                    <span class="cert-tag">สมัครงาน</span>
+                    <span class="cert-tag">สมัครข้าราชการ</span>
+                    <span class="cert-tag">เบิกสิทธิประกันสังคม</span>
+                  </div>
+                </span>
               </div>
             </div>
-
-            <hr class="cert-divider">
-
-            <!-- Usage Tags -->
-            <div class="section-title-container" style="margin-bottom: var(--spacing-md)">
-              <div class="section-bar"></div>
-              <h3 class="section-title">ใช้ได้กับ</h3>
-            </div>
-            <div class="cert-tag-list">
-              <span class="cert-tag">ทำ/ต่ออายุ ใบขับขี่</span>
-              <span class="cert-tag">ขอวีซ่า</span>
-              <span class="cert-tag">สมัครงาน</span>
-              <span class="cert-tag">สมัครข้าราชการ</span>
-              <span class="cert-tag">เบิกสิทธิประกันสังคม</span>
-            </div>
-
           </div><!-- Left card -->
 
-          <!-- Right Column: Validity, Verification & History -->
+          <!-- Right column: 3 stacked cards -->
+          <div class="cert-right-stack">
+
           <div class="card detail-main-card">
 
             <!-- Section: Certificate Validity -->
@@ -150,9 +152,10 @@
                 <span class="details-value cert-field-value highlight">12 กันยายน 2569</span>
               </div>
             </div>
+          </div>
 
-            <hr class="cert-divider">
 
+          <div class="card detail-main-card">
             <!-- Section: Verification -->
             <div class="section-title-container">
               <div class="section-bar"></div>
@@ -174,8 +177,11 @@
               </div>
             </div>
 
-            <hr class="cert-divider">
 
+
+          </div>
+
+          <div class="card detail-main-card">
             <!-- Section: Usage History -->
             <div class="section-title-container">
               <div class="section-bar"></div>
@@ -209,20 +215,24 @@
             <!-- Sticky Footer Actions (flows inside card on desktop) -->
             <div class="sticky-footer">
               <button class="btn btn-tertiary-outline flex-center" style="gap: var(--spacing-md)">
-                <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">download</span>
+                <span class="material-symbols-outlined"
+                  style="font-size:20px;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">download</span>
                 ดาวน์โหลด
               </button>
             </div>
 
-          </div><!-- Right card -->
+          </div><!-- ประวัติการใช้งาน card -->
+
+          </div><!-- cert-right-stack -->
 
         </div><!-- desktop-split-layout -->
 
         <!-- Timestamp -->
-        <p class="cert-timestamp">ข้อมูล ณ วันที่ 2 มกราคม 2569  11.40 น.</p>
+        <p class="cert-timestamp">ข้อมูล ณ วันที่ 2 มกราคม 2569 11.40 น.</p>
 
       </main>
     </div>
   </div>
 </body>
+
 </html>
