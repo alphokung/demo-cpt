@@ -140,8 +140,7 @@
                 </div>
                 
                 <div class="details-item">
-                  <span id="detail-status-label-skeleton" class="skeleton-loading skeleton-status-label-detail"></span>
-                  <span id="detail-status-label" class="details-label loading-hidden">สถานะ:</span>
+                  <span class="details-label">สถานะ:</span>
                   <span id="detail-status" class="details-value">
                     <span class="skeleton-loading skeleton-text short mb-0"></span>
                   </span>
@@ -433,10 +432,6 @@
       const summaryLabel = document.getElementById('summary-ticket-status-label');
       if (summaryLabel) summaryLabel.classList.remove('loading-hidden');
 
-      const detailLabelSkeleton = document.getElementById('detail-status-label-skeleton');
-      if (detailLabelSkeleton) detailLabelSkeleton.style.display = 'none';
-      const detailLabel = document.getElementById('detail-status-label');
-      if (detailLabel) detailLabel.classList.remove('loading-hidden');
 
       // Show action buttons
       const stickyFooter = document.getElementById('sticky-footer');
