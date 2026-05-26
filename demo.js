@@ -39,7 +39,7 @@ function renderCertCard(cert) {
   var badgeClass = cert.status === 'valid' ? 'valid' : cert.status === 'expiring' ? 'expiring' : 'expired';
   var itemClass = isExpired(cert) ? 'list-item is-expired' : 'list-item';
 
-  return '<a href="cert-detail.html" class="' + itemClass + '">' +
+  return '<a href="med-detail.html" class="' + itemClass + '">' +
     '<span class="list-badge ' + badgeClass + ' list-badge--corner">' + STATUS_LABEL[cert.status] + '</span>' +
     '<div class="list-icon ' + cert.typeKey + '">' +
       '<span class="material-symbols-outlined">' + iconName + '</span>' +
