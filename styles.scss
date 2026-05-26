@@ -2266,33 +2266,26 @@ main {
 /* Loading Page Specific Styles */
 .loading-page-body {
   background-color: #ffffff !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-.loading-layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding: var(--spacing-xl);
-  background-color: #ffffff;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 .loading-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 360px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  padding: var(--spacing-xl) !important;
 }
 
 .loading-illustration-container {
