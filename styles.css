@@ -2679,134 +2679,20 @@ main {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 .cert-section-header .material-symbols-outlined {
   font-size: 20px;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-  color: var(--foreground-primary-default);
-  flex-shrink: 0;
+  color: var(--foreground-secondary-default);
 }
 .cert-section-header h3 {
-  font-size: var(--font-size-title-s);
-  font-weight: var(--font-weight-600);
-  color: var(--foreground-neutral-default);
-  margin: 0;
-  font-family: "Anuphan", sans-serif;
-}
-
-/* Field group */
-.cert-field-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.cert-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xxs);
-}
-.cert-field-label {
-  font-size: var(--font-size-body-s);
-  color: var(--foreground-neutral-lighter);
-  margin: 0;
-  font-family: "Anuphan", sans-serif;
-}
-.cert-field-value {
-  font-size: var(--font-size-body-m);
-  color: var(--foreground-neutral-default);
-  font-weight: var(--font-weight-400);
-  margin: 0;
-  line-height: 1.6;
-  font-family: "Anuphan", sans-serif;
-}
-.cert-field-value.highlight {
-  color: var(--foreground-primary-default);
+  font-size: var(--font-size-title-m);
   font-weight: var(--font-weight-700);
-}
-.cert-field-value.positive {
-  color: var(--foreground-positive-default);
-  font-weight: var(--font-weight-600);
-}
-
-/* Usage tags */
-.cert-tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-}
-
-.cert-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--spacing-xs) var(--spacing-lg);
-  background-color: var(--background-neutral-medium);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-body-s);
-  color: var(--foreground-neutral-light);
-  font-family: "Anuphan", sans-serif;
-  white-space: nowrap;
-}
-
-/* Timeline */
-.cert-timeline {
-  display: flex;
-  flex-direction: column;
-}
-
-.cert-timeline-item {
-  display: flex;
-  gap: var(--spacing-lg);
-  position: relative;
-}
-.cert-timeline-item:not(:last-child) {
-  padding-bottom: var(--spacing-xl);
-}
-.cert-timeline-item:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 18px;
-  bottom: 0;
-  width: 2px;
-  background-color: var(--primary-60);
-}
-.cert-timeline-item-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-full);
-  background-color: var(--primary-40);
-  flex-shrink: 0;
-  margin-top: 3px;
-  position: relative;
-  z-index: 1;
-}
-.cert-timeline-item-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  padding-bottom: 2px;
-}
-.cert-timeline-item-title {
-  font-size: var(--font-size-title-s);
-  font-weight: var(--font-weight-600);
   color: var(--foreground-neutral-default);
   margin: 0;
-  font-family: "Anuphan", sans-serif;
-}
-.cert-timeline-item-desc {
-  font-size: var(--font-size-body-s);
-  color: var(--foreground-neutral-lighter);
-  margin: 0;
-  font-family: "Anuphan", sans-serif;
 }
 
-/* Footer timestamp */
-.cert-timestamp {
-  text-align: center;
-  font-size: var(--font-size-body-s);
-  color: var(--foreground-neutral-lightest);
+/* ============================================
    Tutorial / Onboarding Page
    ============================================ */
 .tutorial-body {
@@ -2955,6 +2841,121 @@ main {
 .tutorial-feature-icon .material-symbols-outlined {
   font-size: 20px;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  color: var(--foreground-primary-default);
+  flex-shrink: 0;
+}
+.tutorial-feature-icon h3 {
+  font-size: var(--font-size-title-s);
+  font-weight: var(--font-weight-600);
+  color: var(--foreground-neutral-default);
+  margin: 0;
+  font-family: "Anuphan", sans-serif;
+}
+
+/* Field group */
+.cert-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.cert-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+}
+.cert-field-label {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+  font-family: "Anuphan", sans-serif;
+}
+.cert-field-value {
+  font-size: var(--font-size-body-m);
+  color: var(--foreground-neutral-default);
+  font-weight: var(--font-weight-400);
+  margin: 0;
+  line-height: 1.6;
+  font-family: "Anuphan", sans-serif;
+}
+.cert-field-value.highlight {
+  color: var(--foreground-primary-default);
+  font-weight: var(--font-weight-700);
+}
+.cert-field-value.positive {
+  color: var(--foreground-positive-default);
+  font-weight: var(--font-weight-600);
+}
+
+/* Usage tags */
+.cert-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.cert-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-lg);
+  background-color: var(--background-neutral-medium);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-light);
+  font-family: "Anuphan", sans-serif;
+  white-space: nowrap;
+}
+
+/* Timeline */
+.cert-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-timeline-item {
+  display: flex;
+  gap: var(--spacing-lg);
+  position: relative;
+}
+.cert-timeline-item:not(:last-child) {
+  padding-bottom: var(--spacing-xl);
+}
+.cert-timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 18px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--primary-60);
+}
+.cert-timeline-item-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background-color: var(--primary-40);
+  flex-shrink: 0;
+  margin-top: 3px;
+  position: relative;
+  z-index: 1;
+}
+.cert-timeline-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  padding-bottom: 2px;
+}
+.cert-timeline-item-title {
+  font-size: var(--font-size-title-s);
+  font-weight: var(--font-weight-600);
+  color: var(--foreground-neutral-default);
+  margin: 0;
+  font-family: "Anuphan", sans-serif;
+}
+.cert-timeline-item-desc {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
 }
 
 .tutorial-feature-text {
@@ -3007,6 +3008,14 @@ main {
   color: var(--warning-20);
   line-height: 1.6;
   margin: 0;
+  font-family: "Anuphan", sans-serif;
+}
+
+/* Footer timestamp */
+.cert-timestamp {
+  text-align: center;
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lightest);
   font-family: "Anuphan", sans-serif;
 }
 

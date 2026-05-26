@@ -2480,6 +2480,22 @@ main {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+
+  .material-symbols-outlined {
+    font-size: 20px;
+    color: var(--foreground-secondary-default);
+  }
+
+  h3 {
+    font-size: var(--font-size-title-m);
+    font-weight: var(--font-weight-700);
+    color: var(--foreground-neutral-default);
+    margin: 0;
+  }
+}
+
+/* ============================================
    Tutorial / Onboarding Page
    ============================================ */
 
