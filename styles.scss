@@ -2303,24 +2303,24 @@ main {
 
 .loading-arrows-container {
   position: absolute;
-  top: 58px;
+  top: 30px;
   left: 95px;
   width: 80px;
   height: 82px;
-  overflow: hidden;
+  z-index: 999;
 }
 
 .loading-arrow-img {
-  width: 111px;
-  height: 82px;
+  width: 100px;
+  height: auto;
   display: block;
-  animation: move-arrows-anim 1.6s infinite ease-in-out;
+  animation: move-arrows-anim 2s infinite ease-in-out;
 }
 
 .loading-department-img {
   position: absolute;
-  top: 46px;
-  right: 52px;
+  top: 30px;
+  right: 40px;
   width: 78px;
   height: 78px;
   display: block;
