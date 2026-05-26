@@ -3,7 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ใบสั่งจราจร — ข้อมูลใบสั่งจราจรของคุณ</title>
+  <title>ระบบใบสั่งจราจร — ตรวจสอบและชำระค่าปรับออนไลน์</title>
+  <meta name="description" content="บริการตรวจสอบใบสั่งจราจรออนไลน์ ค้นหาใบสั่งที่ค้างชำระ และตรวจสอบคะแนนความประพฤติในการขับขี่ โดยสำนักงานตำรวจแห่งชาติ">
+  <meta name="keywords" content="ใบสั่ง, ใบสั่งจราจร, ชำระค่าปรับ, คะแนนการขับขี่, ตรวจสอบใบสั่ง, สำนักงานตำรวจแห่งชาติ">
+  <meta name="author" content="สำนักงานตำรวจแห่งชาติ">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ระบบใบสั่งจราจรออนไลน์ — ตรวจสอบและชำระค่าปรับ">
+  <meta property="og:description" content="ค้นหาข้อมูลใบสั่งจราจร ค้างชำระ ตรวจสอบคะแนนความประพฤติในการขับขี่ ชำระค่าปรับผ่าน QR Code ได้ทันที">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ระบบใบสั่งจราจรออนไลน์">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ระบบใบสั่งจราจรออนไลน์ — ตรวจสอบและชำระค่าปรับ">
+  <meta property="twitter:description" content="ค้นหาข้อมูลใบสั่งจราจร ค้างชำระ ตรวจสอบคะแนนความประพฤติในการขับขี่ ชำระค่าปรับผ่าน QR Code ได้ทันที">
+  <meta property="twitter:image" content="_media/og-image.png">
+
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -26,35 +45,88 @@
         <div class="dashboard-grid">
           <!-- Welcome Card -->
           <div class="card welcome-card">
-            <h2 id="welcome-driver-name">สวัสดี คุณขับขี่ดี</h2>
-            <p>ยินดีต้อนรับสู่บริการ ใบสั่งจราจร</p>
-            <p style="margin-top: 8px; color: rgba(255, 255, 255, 0.75);">คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" style="font-weight: 700; color: white;">2</span> ใบ ดังนี้</p>
+            <h2 id="welcome-driver-name">
+              <span class="skeleton-loading welcome-driver-name-skeleton"></span>
+            </h2>
+            <p id="welcome-text-1">
+              <span class="skeleton-loading welcome-text-1-skeleton"></span>
+            </p>
+            <p id="welcome-text-2" class="mt-xs welcome-card-subtext">
+              <span class="skeleton-loading welcome-text-2-skeleton"></span>
+            </p>
           </div>
 
           <!-- Points Card (Interactive Link to points.html) -->
-          <div class="card points-card card-interactive" onclick="window.location.href='points.html'">
+          <a href="points.html" class="card points-card card-interactive points-card-link">
             <span class="points-card-title">คะแนนการขับขี่</span>
             <div class="dashboard-gauge-container">
               <svg class="dashboard-gauge-svg" viewBox="0 0 100 100">
                 <circle class="dashboard-gauge-bg" cx="50" cy="50" r="42"></circle>
                 <circle id="dashboard-gauge-fill" class="dashboard-gauge-fill" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
               </svg>
-              <div class="dashboard-gauge-text">
-                <span id="points-value" class="dashboard-gauge-value">7</span>
+              <!-- Skeleton loading state inside the circle -->
+              <div id="dashboard-gauge-skeleton" class="skeleton-loading skeleton-circle dashboard-gauge-skeleton-circle"></div>
+              
+              <!-- Actual text contents, hidden until load finishes -->
+              <div id="dashboard-gauge-text" class="dashboard-gauge-text" style="display: none;">
+                <span id="points-value" class="dashboard-gauge-value">-</span>
                 <span class="dashboard-gauge-max">เต็ม 12 คะแนน</span>
               </div>
             </div>
-          </div>
+          </a>
         </div>
 
         <!-- Dynamic Content Area -->
         <div id="tickets-area">
-          <!-- Will be populated by JS: either ticket list or empty state -->
+          <div class="ticket-list-container">
+            <!-- Skeleton Card 1 -->
+            <div class="card ticket-card">
+              <div class="ticket-card-header">
+                <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
+                <div class="skeleton-ticket-header-text">
+                  <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                  <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
+                </div>
+              </div>
+              <div class="ticket-card-body skeleton-ticket-body">
+                <div class="ticket-card-body-item">
+                  <div class="skeleton-loading skeleton-body-label"></div>
+                  <div class="skeleton-loading skeleton-body-value-1 mb-0"></div>
+                </div>
+                <div class="ticket-card-body-item">
+                  <div class="skeleton-loading skeleton-body-label"></div>
+                  <div class="skeleton-loading skeleton-body-value-2 mb-0"></div>
+                </div>
+              </div>
+              <div class="skeleton-loading skeleton-ticket-button"></div>
+            </div>
+            <!-- Skeleton Card 2 -->
+            <div class="card ticket-card">
+              <div class="ticket-card-header">
+                <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
+                <div class="skeleton-ticket-header-text">
+                  <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                  <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
+                </div>
+              </div>
+              <div class="ticket-card-body skeleton-ticket-body">
+                <div class="ticket-card-body-item">
+                  <div class="skeleton-loading skeleton-body-label"></div>
+                  <div class="skeleton-loading skeleton-body-value-3 mb-0"></div>
+                </div>
+                <div class="ticket-card-body-item">
+                  <div class="skeleton-loading skeleton-body-label"></div>
+                  <div class="skeleton-loading skeleton-body-value-4 mb-0"></div>
+                </div>
+              </div>
+              <div class="skeleton-loading skeleton-ticket-button"></div>
+            </div>
+          </div>
         </div>
 
         <!-- Sync Timestamp -->
         <div class="footer-timestamp">
-          ข้อมูล ณ วันที่ 2 มกราคม 2569 11.40 น.
+          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
         </div>
 
 
@@ -186,7 +258,7 @@
             <div class="card">
               <div class="ticket-card-header">
                 <!-- Use SVGs from the _media folder -->
-                <img src="${statusIconSrc}" alt="Ticket Status" style="width: 56px; height: 56px; flex-shrink: 0;">
+                <img src="${statusIconSrc}" alt="Ticket Status" class="status-icon-size">
                 
                 <div class="ticket-summary-info">
                   <span class="ticket-num-title">ใบสั่งเลขที่: ${ticket.ticketNumber}</span>
@@ -206,7 +278,7 @@
                 <div class="ticket-card-body-item">
                   <span class="ticket-card-label">สถานะ:</span>
                   <span class="ticket-card-value">
-                    <div style="display: flex; flex-direction: column;">
+                    <div class="flex-column">
                       <span class="card-status-title ${statusColorTextClass}">${statusText}</span>
                       <span class="card-status-desc ${statusColorTextClass}">${statusDetailText}</span>
                     </div>
@@ -214,7 +286,7 @@
                 </div>
               </div>
               
-              <button class="btn btn-secondary card-btn-action" onclick="window.location.href='detail.html?id=${ticket.id}'">ดูรายละเอียด</button>
+              <a href="detail.html?id=${ticket.id}" class="btn btn-secondary card-btn-action flex-center">ดูรายละเอียด</a>
             </div>
           `;
         });
@@ -226,11 +298,35 @@
 
     // Initialize Page
     function initPage() {
-      renderPointsSummary();
-      renderTickets();
+      const welcomeDriverName = document.getElementById('welcome-driver-name');
+      const welcomeText1 = document.getElementById('welcome-text-1');
+      const welcomeText2 = document.getElementById('welcome-text-2');
+      
+      const gaugeSkeleton = document.getElementById('dashboard-gauge-skeleton');
+      const gaugeText = document.getElementById('dashboard-gauge-text');
+      
+      if (gaugeSkeleton) gaugeSkeleton.style.display = 'block';
+      if (gaugeText) gaugeText.style.display = 'none';
+      
+      setTimeout(() => {
+        if (gaugeSkeleton) gaugeSkeleton.style.display = 'none';
+        if (gaugeText) gaugeText.style.display = 'flex';
+        
+        renderPointsSummary();
+
+        if (welcomeDriverName) {
+          welcomeDriverName.textContent = 'สวัสดี คุณขับขี่ดี';
+        }
+        if (welcomeText1) {
+          welcomeText1.textContent = 'ยินดีต้อนรับสู่บริการ ใบสั่งจราจร';
+        }
+        if (welcomeText2) {
+          welcomeText2.innerHTML = 'คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" class="welcome-ticket-highlight"></span> ใบ ดังนี้';
+        }
+
+        renderTickets();
+      }, 1000); // 1 sec delay
     }
-
-
 
     window.addEventListener('pageshow', () => {
       initPage();

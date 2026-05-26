@@ -3,7 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ตรวจสอบคะแนนการขับขี่</title>
+  <title>ตรวจสอบคะแนนการขับขี่ — ระบบใบสั่งจราจรออนไลน์</title>
+  <meta name="description" content="ตรวจสอบคะแนนความประพฤติในการขับรถยนต์ ประวัติการหักคะแนน และการคืนคะแนนจราจร เพื่อความปลอดภัยและการขับขี่ที่ถูกต้องตามกฎหมาย">
+  <meta name="keywords" content="คะแนนการขับขี่, ตรวจสอบคะแนน, หักคะแนนจราจร, คืนคะแนนใบขับขี่, ใบขับขี่, สำนักงานตำรวจแห่งชาติ">
+  <meta name="author" content="สำนักงานตำรวจแห่งชาติ">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ตรวจสอบคะแนนความประพฤติการขับขี่ออนไลน์">
+  <meta property="og:description" content="ตรวจสอบคะแนนความประพฤติในการขับรถยนต์ ประวัติการหักคะแนน และการคืนคะแนนจราจร เพื่อความปลอดภัยและการขับขี่ที่ถูกต้องตามกฎหมาย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ระบบใบสั่งจราจรออนไลน์">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ตรวจสอบคะแนนความประพฤติการขับขี่ออนไลน์">
+  <meta property="twitter:description" content="ตรวจสอบคะแนนความประพฤติในการขับรถยนต์ ประวัติการหักคะแนน และการคืนคะแนนจราจร เพื่อความปลอดภัยและการขับขี่ที่ถูกต้องตามกฎหมาย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -29,41 +48,69 @@
           </div>
         </div>
 
-        <p style="line-height: 1.6; font-size: var(--font-size-body-m); text-align: justify; color: var(--foreground-neutral-light); margin-bottom: var(--spacing-sm);">
+        <p class="points-intro-text">
           หากคะแนนของคุณถูกตัดจนเหลือศูนย์คะแนน จะถูกสั่งพักใช้ใบอนุญาตขับขี่เป็นระยะเวลา 90 วัน สำหรับคะแนนที่ถูกตัด จะมีการคืนคะแนนเมื่อครบกำหนด 1 ปี สำหรับการทำผิดนั้นๆ หรือกรณีที่มีคะแนนเหลือน้อย อาจจะขอรับการอบรมความรู้เกี่ยวกับการขับรถและวินัยจราจร จาก กรมการขนส่งทางบก เพื่อรับคืนคะแนนตามที่หลักสูตรกำหนด
         </p>
         
         <!-- Large Points Gauge Card (First Section, displays as full width) -->
-        <div class="card points-gauge-card" style="margin-top: 0; margin-bottom: var(--spacing-sm);">
-          <span class="points-gauge-title" style="margin-bottom: var(--spacing-md);">คะแนนการขับขี่</span>
+        <div class="card points-gauge-card">
+          <span class="points-gauge-title mb-md">คะแนนการขับขี่</span>
           
           <div class="gauge-container">
             <svg class="gauge-svg" viewBox="0 0 140 140">
               <circle class="gauge-bg" cx="70" cy="70" r="58"></circle>
               <circle id="gauge-fill" class="gauge-fill" cx="70" cy="70" r="58"></circle>
             </svg>
-            <div class="gauge-text">
-              <span id="gauge-score-value" class="gauge-value">0</span>
+            <!-- Skeleton loading state inside the circle -->
+            <div id="gauge-skeleton" class="skeleton-loading skeleton-circle points-gauge-skeleton-circle"></div>
+            
+            <!-- Actual text contents, hidden until load finishes -->
+            <div id="gauge-text-container" class="gauge-text" style="display: none;">
+              <span id="gauge-score-value" class="gauge-value">-</span>
               <span class="gauge-max">เต็ม 12 คะแนน</span>
             </div>
           </div>
         </div>
 
         <!-- History Logs (Second Section, displays as a card list) -->
-        <div style="margin-top: var(--spacing-md);">
-          <div class="section-title-container" style="margin-bottom: var(--spacing-lg);">
+        <div class="mt-md">
+          <div class="section-title-container mb-lg">
             <div class="section-bar"></div>
             <h3 class="section-title">ประวัติการหักและคืนคะแนน</h3>
           </div>
           
           <div id="logs-container" class="points-logs-list">
-            <!-- Will be dynamically populated by JS -->
+            <!-- Skeleton Logs (3 items) -->
+            <div class="card ticket-summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
+              <div class="skeleton-ticket-header-text">
+                <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
+                <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
+              </div>
+            </div>
+            <div class="card ticket-summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
+              <div class="skeleton-ticket-header-text">
+                <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
+                <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
+              </div>
+            </div>
+            <div class="card ticket-summary-card">
+              <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
+              <div class="skeleton-ticket-header-text">
+                <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                <div class="skeleton-loading skeleton-text skeleton-header-subtitle"></div>
+                <div class="skeleton-loading skeleton-text skeleton-body-label mb-0"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Sync Timestamp -->
         <div class="footer-timestamp">
-          ข้อมูล ณ วันที่ 2 มกราคม 2569 11.40 น.
+          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
         </div>
       </main>
     </div>
@@ -77,8 +124,8 @@
     const gaugeScoreValue = document.getElementById('gauge-score-value');
     const logsContainer = document.getElementById('logs-container');
 
-    // Load Points Data
-    function loadPointsData() {
+    // Load Points Gauge
+    function loadPointsGauge() {
       const points = DB.getPoints();
       
       // Animate score number
@@ -114,13 +161,18 @@
       } else {
         gaugeFill.style.stroke = 'var(--primary-40)';
       }
+    }
 
+    // Load Points Logs
+    function loadPointsLogs() {
+      const points = DB.getPoints();
+      
       // Render Logs
       let logsHTML = '';
       points.logs.forEach(log => {
         let isDeduction = log.type === 'deduction';
         let logClass = isDeduction ? 'log-icon-danger' : '';
-        let badgeColor = isDeduction ? 'color: var(--foreground-negative-default);' : 'color: var(--foreground-positive-default);';
+        let titleClass = isDeduction ? 'log-title-deduction' : 'log-title-restore';
 
         logsHTML += `
           <div class="card ticket-summary-card">
@@ -140,8 +192,8 @@
             </div>
             
             <div class="ticket-summary-info">
-              <span class="ticket-num-title" style="${badgeColor}">${log.title}</span>
-              <div class="log-detail" style="margin-top: 4px;">
+              <span class="ticket-num-title ${titleClass}">${log.title}</span>
+              <div class="log-detail mt-xs">
                 <span class="log-detail-item"><strong>คงเหลือ:</strong> ${log.remaining} คะแนน</span>
                 <span class="log-detail-item"><strong>วันที่ถูกตัดคะแนน:</strong> ${log.date}</span>
                 <span class="log-detail-item"><strong>อ้างอิงใบสั่งที่ทำผิด:</strong> ${log.refTicket}</span>
@@ -153,7 +205,29 @@
       logsContainer.innerHTML = logsHTML;
     }
 
-    loadPointsData();
+    // Initialize Page
+    function initPage() {
+      const gaugeSkeleton = document.getElementById('gauge-skeleton');
+      const gaugeTextContainer = document.getElementById('gauge-text-container');
+
+      if (gaugeSkeleton) gaugeSkeleton.style.display = 'block';
+      if (gaugeTextContainer) gaugeTextContainer.style.display = 'none';
+
+      // Delay logs and gauge loading by 1 second (1000ms)
+      setTimeout(() => {
+        if (gaugeSkeleton) gaugeSkeleton.style.display = 'none';
+        if (gaugeTextContainer) gaugeTextContainer.style.display = 'flex';
+
+        loadPointsGauge();
+        loadPointsLogs();
+      }, 1000);
+    }
+
+    window.addEventListener('pageshow', () => {
+      initPage();
+    });
+
+    initPage();
   </script>
 </body>
 </html>
