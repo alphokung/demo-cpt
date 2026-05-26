@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components — Input Demo</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Components</h2>
+            <p class="text-subheader">ตัวอย่าง HTML input และ UI components ทั้งหมด</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+
+          <!-- ─── 1. Text Inputs ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Text Inputs</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-text">Text</label>
+                <input class="input" type="text" id="input-text" placeholder="กรอกข้อความ">
+                <span class="form-hint">ข้อความทั่วไป เช่น ชื่อ-นามสกุล</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-email">Email</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon-left">mail</span>
+                  <input class="input" type="email" id="input-email" placeholder="example@email.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-password">Password</label>
+                <div class="input-wrapper has-suffix">
+                  <span class="material-symbols-outlined input-icon-left">lock</span>
+                  <input class="input" type="password" id="input-password" placeholder="รหัสผ่าน">
+                  <span class="material-symbols-outlined input-icon-right" id="pw-toggle" style="cursor:pointer;pointer-events:auto" onclick="togglePassword()">visibility</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-number">Number</label>
+                <input class="input" type="number" id="input-number" placeholder="0" min="0" max="100">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-tel">Telephone</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon-left">call</span>
+                  <input class="input" type="tel" id="input-tel" placeholder="0XX-XXX-XXXX">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-url">URL</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon-left">link</span>
+                  <input class="input" type="url" id="input-url" placeholder="https://example.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-search">Search</label>
+                <div class="input-wrapper has-suffix">
+                  <span class="material-symbols-outlined input-icon-left">search</span>
+                  <input class="input" type="search" id="input-search" placeholder="ค้นหา...">
+                  <span class="material-symbols-outlined input-icon-right" style="cursor:pointer;pointer-events:auto" onclick="document.getElementById('input-search').value=''">close</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 2. Date & Time Inputs ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Date &amp; Time Inputs</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-date">Date</label>
+                <input class="input" type="date" id="input-date">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-time">Time</label>
+                <input class="input" type="time" id="input-time">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-datetime">Datetime-local</label>
+                <input class="input" type="datetime-local" id="input-datetime">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-month">Month</label>
+                <input class="input" type="month" id="input-month">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-week">Week</label>
+                <input class="input" type="week" id="input-week">
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 3. Textarea ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Textarea</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-textarea">ความคิดเห็น / หมายเหตุ</label>
+                <textarea class="input" id="input-textarea" rows="4" placeholder="กรอกรายละเอียดเพิ่มเติม..."></textarea>
+                <span class="form-hint">ไม่เกิน 500 ตัวอักษร</span>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 4. Select ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Select</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-select">จังหวัด</label>
+                <div class="select-wrapper">
+                  <select class="input" id="input-select">
+                    <option value="" disabled selected>เลือกจังหวัด</option>
+                    <option value="bkk">กรุงเทพมหานคร</option>
+                    <option value="chm">เชียงใหม่</option>
+                    <option value="kbi">กระบี่</option>
+                    <option value="phk">ภูเก็ต</option>
+                    <option value="khk">ขอนแก่น</option>
+                    <option value="nbi">นนทบุรี</option>
+                  </select>
+                  <span class="material-symbols-outlined select-arrow">expand_more</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-select-multi">ประเภทใบรับรองแพทย์ (เลือกได้หลายรายการ)</label>
+                <select class="input" id="input-select-multi" multiple size="5" style="min-height:unset;height:auto;padding:var(--spacing-sm)">
+                  <option value="health">ใบรับรองแพทย์ตรวจสุขภาพ</option>
+                  <option value="driving">ใบรับรองแพทย์สำหรับใบขับขี่</option>
+                  <option value="covid">ผลตรวจ COVID-19</option>
+                  <option value="work">ใบรับรองสุขภาพเพื่อสมัครงาน</option>
+                  <option value="visa">ใบรับรองแพทย์สำหรับวีซ่า</option>
+                </select>
+                <span class="form-hint">กด Ctrl (Windows) หรือ Cmd (Mac) เพื่อเลือกหลายรายการ</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-datalist">Datalist (Autocomplete)</label>
+                <input class="input" list="hospital-list" id="input-datalist" placeholder="พิมพ์ชื่อโรงพยาบาล...">
+                <datalist id="hospital-list">
+                  <option value="โรงพยาบาลสิริราช">
+                  <option value="โรงพยาบาลจุฬาลงกรณ์">
+                  <option value="โรงพยาบาลรามาธิบดี">
+                  <option value="โรงพยาบาลพระมงกุฎเกล้า">
+                  <option value="โรงพยาบาลราชวิถี">
+                  <option value="โรงพยาบาลกลาง">
+                </datalist>
+                <span class="form-hint">แนะนำรายการอัตโนมัติเมื่อพิมพ์</span>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 5. Checkbox & Radio ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Checkbox &amp; Radio</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <p class="form-label">Checkbox — ใช้ได้กับ</p>
+                <div class="check-list">
+                  <label class="check-item">
+                    <input type="checkbox" checked>
+                    <div>
+                      <p class="check-item-label">ทำ/ต่ออายุ ใบขับขี่</p>
+                    </div>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" checked>
+                    <div>
+                      <p class="check-item-label">ขอวีซ่า</p>
+                    </div>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox">
+                    <div>
+                      <p class="check-item-label">สมัครงาน</p>
+                      <p class="check-item-desc">สำหรับสมัครตำแหน่งราชการและเอกชน</p>
+                    </div>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" disabled>
+                    <div>
+                      <p class="check-item-label" style="color:var(--neutral-70)">เบิกสิทธิประกันสังคม (ไม่พร้อมใช้งาน)</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Radio — สถานะการชำระค่าปรับ</p>
+                <div class="check-list">
+                  <label class="check-item">
+                    <input type="radio" name="payment-status" value="unpaid" checked>
+                    <p class="check-item-label">ยังไม่ได้ชำระ</p>
+                  </label>
+                  <label class="check-item">
+                    <input type="radio" name="payment-status" value="paid">
+                    <p class="check-item-label">ชำระแล้ว</p>
+                  </label>
+                  <label class="check-item">
+                    <input type="radio" name="payment-status" value="warning">
+                    <p class="check-item-label">ออกหนังสือเตือนแล้ว</p>
+                  </label>
+                  <label class="check-item">
+                    <input type="radio" name="payment-status" value="exempt" disabled>
+                    <p class="check-item-label" style="color:var(--neutral-70)">ยกเว้นค่าปรับ (ไม่พร้อมใช้งาน)</p>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 6. Toggle Switch ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Toggle Switch</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="toggle-item">
+                <div class="toggle-text">
+                  <p class="toggle-label">การแจ้งเตือนใบสั่งจราจร</p>
+                  <p class="toggle-desc">รับการแจ้งเตือนเมื่อมีใบสั่งใหม่</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item">
+                <div class="toggle-text">
+                  <p class="toggle-label">การแจ้งเตือนใบรับรองแพทย์</p>
+                  <p class="toggle-desc">แจ้งเตือนเมื่อใบรับรองใกล้หมดอายุ</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item">
+                <div class="toggle-text">
+                  <p class="toggle-label" style="color:var(--neutral-70)">โหมดไม่ระบุตัวตน (ไม่พร้อมใช้งาน)</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" disabled>
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 7. Range ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Range</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-range">ช่วงค่าปรับ (บาท): <span id="range-val">500</span></label>
+                <div class="range-wrapper">
+                  <input type="range" id="input-range" min="0" max="5000" step="100" value="500"
+                    oninput="document.getElementById('range-val').textContent = Number(this.value).toLocaleString()">
+                  <div class="range-labels">
+                    <span>0 บาท</span>
+                    <span>5,000 บาท</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-range-disabled">คะแนนการขับขี่ (Disabled)</label>
+                <div class="range-wrapper">
+                  <input type="range" id="input-range-disabled" min="0" max="12" value="7" disabled>
+                  <div class="range-labels">
+                    <span>0</span>
+                    <span>12 คะแนน</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 8. Color ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Color</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label" for="input-color">เลือกสี</label>
+                <div class="color-input-row">
+                  <input type="color" id="input-color" value="#00b274">
+                  <span class="form-hint" id="color-val">#00b274</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 9. File Upload ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">File Upload</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <label class="form-label">อัปโหลดเอกสาร</label>
+                <div class="file-dropzone">
+                  <input type="file" id="input-file" accept=".pdf,.jpg,.png" multiple
+                    onchange="updateFileLabel(this)">
+                  <span class="material-symbols-outlined file-dropzone-icon">upload_file</span>
+                  <p class="file-dropzone-text" id="file-label">
+                    <span>คลิกเพื่อเลือกไฟล์</span> หรือลากไฟล์มาวางที่นี่
+                  </p>
+                  <p class="file-dropzone-hint">PDF, JPG, PNG — ขนาดไม่เกิน 10 MB</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-file-simple">File (Native)</label>
+                <input class="input" type="file" id="input-file-simple" style="padding:10px;cursor:pointer">
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 10. Input States ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Input States</h3>
+            </div>
+
+            <div class="input-state-grid">
+
+              <div class="form-group">
+                <label class="form-label" for="state-default">Default</label>
+                <input class="input" type="text" id="state-default" placeholder="พิมพ์ข้อความ...">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state-filled">Filled</label>
+                <input class="input" type="text" id="state-filled" value="นายสมชาย ใจดี">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state-error">Error</label>
+                <input class="input input-error" type="text" id="state-error" value="ข้อมูลไม่ถูกต้อง">
+                <span class="form-error-msg">
+                  <span class="material-symbols-outlined">error</span>
+                  กรุณากรอกข้อมูลให้ถูกต้อง
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state-disabled">Disabled</label>
+                <input class="input" type="text" id="state-disabled" value="ไม่สามารถแก้ไขได้" disabled>
+                <span class="form-hint">ฟิลด์นี้ถูกปิดใช้งาน</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state-readonly">Read-only</label>
+                <input class="input" type="text" id="state-readonly" value="MED-2568-C001-00001" readonly>
+                <span class="form-hint">อ่านได้อย่างเดียว ไม่สามารถแก้ไข</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="state-required">Required</label>
+                <input class="input" type="text" id="state-required" placeholder="จำเป็นต้องกรอก" required>
+                <span class="form-hint">ฟิลด์บังคับ (required)</span>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 11. Buttons ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Buttons</h3>
+            </div>
+
+            <div class="components-section">
+
+              <div class="form-group">
+                <p class="form-label">Variants</p>
+                <div class="components-row">
+                  <button class="btn btn-primary" style="width:auto">Primary</button>
+                  <button class="btn btn-secondary" style="width:auto">Secondary</button>
+                  <button class="btn btn-outline" style="width:auto">Outline</button>
+                  <button class="btn btn-destructive" style="width:auto">Destructive</button>
+                  <button class="btn btn-tertiary-outline" style="width:auto">Tertiary</button>
+                  <button class="btn btn-link" style="width:auto">Link</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">With Icons</p>
+                <div class="components-row">
+                  <button class="btn btn-primary" style="width:auto">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    ยืนยัน
+                  </button>
+                  <button class="btn btn-secondary" style="width:auto">
+                    <span class="material-symbols-outlined">download</span>
+                    ดาวน์โหลด
+                  </button>
+                  <button class="btn btn-destructive" style="width:auto">
+                    <span class="material-symbols-outlined">delete</span>
+                    ลบ
+                  </button>
+                  <button class="btn btn-outline" style="width:auto">
+                    <span class="material-symbols-outlined">share</span>
+                    แชร์
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Sizes</p>
+                <div class="components-row" style="align-items:flex-end">
+                  <button class="btn btn-primary btn-small" style="width:auto">Small</button>
+                  <button class="btn btn-primary" style="width:auto">Default</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Disabled</p>
+                <div class="components-row">
+                  <button class="btn btn-primary" disabled style="width:auto">Primary</button>
+                  <button class="btn btn-secondary" disabled style="width:auto">Secondary</button>
+                  <button class="btn btn-outline" disabled style="width:auto">Outline</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Full Width</p>
+                <button class="btn btn-primary">ชำระค่าปรับ</button>
+                <button class="btn btn-tertiary-outline flex-center" style="gap:var(--spacing-md)">
+                  <span class="material-symbols-outlined" style="font-size:20px">info</span>
+                  วิธีขอใบรับรองแพทย์ดิจิทัล
+                </button>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Submit / Reset / Button</p>
+                <div class="components-row">
+                  <input type="submit" class="btn btn-primary" value="Submit" style="width:auto">
+                  <input type="reset" class="btn btn-tertiary-outline" value="Reset" style="width:auto">
+                  <button type="button" class="btn btn-secondary" style="width:auto">Button</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ─── 12. Hidden Input ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Hidden &amp; Other Inputs</h3>
+            </div>
+
+            <div class="components-section">
+
+              <!-- Hidden (shown for reference only) -->
+              <div class="form-group">
+                <p class="form-label">Hidden (ไม่แสดงผลบนหน้าจอ)</p>
+                <code style="font-size:var(--font-size-body-m);color:var(--foreground-neutral-lighter);background:var(--neutral-96);padding:var(--spacing-md) var(--spacing-lg);border-radius:var(--radius-md);display:block">&lt;input type="hidden" name="csrf_token" value="abc123"&gt;</code>
+                <input type="hidden" name="csrf_token" value="abc123">
+                <span class="form-hint">ใช้ส่งข้อมูลแบบไม่แสดงผล เช่น token, session ID</span>
+              </div>
+
+              <!-- Image submit button -->
+              <div class="form-group">
+                <p class="form-label">Image Submit Button</p>
+                <input type="image" src="favicon/favicon-32x32.png" alt="Submit via image" title="กด Submit ด้วยรูปภาพ">
+                <span class="form-hint">ปุ่ม Submit ที่ใช้รูปภาพแทนข้อความ</span>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div><!-- components-layout -->
+
+        <p class="page-timestamp">Components Demo — ทางรัฐ Design System</p>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    function togglePassword() {
+      const input = document.getElementById('input-password');
+      const icon = document.getElementById('pw-toggle');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    // File dropzone label update
+    function updateFileLabel(input) {
+      const label = document.getElementById('file-label');
+      if (input.files.length === 0) {
+        label.innerHTML = '<span>คลิกเพื่อเลือกไฟล์</span> หรือลากไฟล์มาวางที่นี่';
+      } else if (input.files.length === 1) {
+        label.innerHTML = '<span>' + input.files[0].name + '</span>';
+      } else {
+        label.innerHTML = '<span>' + input.files.length + ' ไฟล์</span> ถูกเลือก';
+      }
+    }
+
+    // Color input display
+    const colorInput = document.getElementById('input-color');
+    const colorVal = document.getElementById('color-val');
+    colorInput.addEventListener('input', () => {
+      colorVal.textContent = colorInput.value;
+    });
+  </script>
+</body>
+</html>

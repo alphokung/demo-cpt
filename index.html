@@ -77,55 +77,55 @@
 
         <!-- Dynamic Content Area -->
         <div id="tickets-area">
-          <div class="ticket-list-container">
+          <div class="list-container">
             <!-- Skeleton Card 1 -->
-            <div class="card ticket-card">
-              <div class="ticket-card-header">
-                <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
-                <div class="skeleton-ticket-header-text">
+            <div class="card list-card">
+              <div class="card-header">
+                <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                <div class="skeleton-header-text">
                   <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
                   <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
                 </div>
               </div>
-              <div class="ticket-card-body skeleton-ticket-body">
-                <div class="ticket-card-body-item">
+              <div class="card-body skeleton-body">
+                <div class="card-body-item">
                   <div class="skeleton-loading skeleton-body-label"></div>
                   <div class="skeleton-loading skeleton-body-value-1 mb-0"></div>
                 </div>
-                <div class="ticket-card-body-item">
+                <div class="card-body-item">
                   <div class="skeleton-loading skeleton-body-label"></div>
                   <div class="skeleton-loading skeleton-body-value-2 mb-0"></div>
                 </div>
               </div>
-              <div class="skeleton-loading skeleton-ticket-button"></div>
+              <div class="skeleton-loading skeleton-button"></div>
             </div>
             <!-- Skeleton Card 2 -->
-            <div class="card ticket-card">
-              <div class="ticket-card-header">
-                <div class="skeleton-loading skeleton-circle skeleton-ticket-avatar"></div>
-                <div class="skeleton-ticket-header-text">
+            <div class="card list-card">
+              <div class="card-header">
+                <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                <div class="skeleton-header-text">
                   <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
                   <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
                 </div>
               </div>
-              <div class="ticket-card-body skeleton-ticket-body">
-                <div class="ticket-card-body-item">
+              <div class="card-body skeleton-body">
+                <div class="card-body-item">
                   <div class="skeleton-loading skeleton-body-label"></div>
                   <div class="skeleton-loading skeleton-body-value-3 mb-0"></div>
                 </div>
-                <div class="ticket-card-body-item">
+                <div class="card-body-item">
                   <div class="skeleton-loading skeleton-body-label"></div>
                   <div class="skeleton-loading skeleton-body-value-4 mb-0"></div>
                 </div>
               </div>
-              <div class="skeleton-loading skeleton-ticket-button"></div>
+              <div class="skeleton-loading skeleton-button"></div>
             </div>
           </div>
         </div>
 
         <!-- Sync Timestamp -->
         <div class="footer-timestamp">
-          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
+          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
         </div>
 
 
@@ -227,7 +227,7 @@
           </div>
         `;
       } else {
-        let html = '<div class="ticket-list-container">';
+        let html = '<div class="list-container">';
         
         tickets.forEach(ticket => {
           let statusIconSrc = '';
@@ -255,28 +255,28 @@
 
           html += `
             <div class="card">
-              <div class="ticket-card-header">
+              <div class="card-header">
                 <!-- Use SVGs from the _media folder -->
                 <img src="${statusIconSrc}" alt="Ticket Status" class="status-icon-size">
                 
-                <div class="ticket-summary-info">
-                  <span class="ticket-num-title">ใบสั่งเลขที่: ${ticket.ticketNumber}</span>
-                  <span class="ticket-fine-title">ค่าปรับ: ${ticket.fine.toLocaleString()} บาท</span>
+                <div class="summary-info">
+                  <span class="list-title">ใบสั่งเลขที่: ${ticket.ticketNumber}</span>
+                  <span class="fine-title">ค่าปรับ: ${ticket.fine.toLocaleString()} บาท</span>
                 </div>
               </div>
               
-              <div class="ticket-card-body">
-                <div class="ticket-card-body-item">
-                  <span class="ticket-card-label">สถานที่เกิดเหตุ:</span>
-                  <span class="ticket-card-value">${ticket.offenseLocation}</span>
+              <div class="card-body">
+                <div class="card-body-item">
+                  <span class="card-label">สถานที่เกิดเหตุ:</span>
+                  <span class="card-value">${ticket.offenseLocation}</span>
                 </div>
-                <div class="ticket-card-body-item">
-                  <span class="ticket-card-label">วันที่เกิดเหตุ:</span>
-                  <span class="ticket-card-value">${abbreviateThaiDate(ticket.offenseDate)}</span>
+                <div class="card-body-item">
+                  <span class="card-label">วันที่เกิดเหตุ:</span>
+                  <span class="card-value">${abbreviateThaiDate(ticket.offenseDate)}</span>
                 </div>
-                <div class="ticket-card-body-item">
-                  <span class="ticket-card-label">สถานะ:</span>
-                  <span class="ticket-card-value">
+                <div class="card-body-item">
+                  <span class="card-label">สถานะ:</span>
+                  <span class="card-value">
                     <div class="flex-column">
                       <span class="card-status-title ${statusColorTextClass}">${statusText}</span>
                       <span class="card-status-desc ${statusColorTextClass}">${statusDetailText}</span>
@@ -320,7 +320,7 @@
           welcomeText1.textContent = 'ยินดีต้อนรับสู่บริการ ใบสั่งจราจร';
         }
         if (welcomeText2) {
-          welcomeText2.innerHTML = 'คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" class="welcome-ticket-highlight"></span> ใบ ดังนี้';
+          welcomeText2.innerHTML = 'คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" class="welcome-highlight"></span> ใบ ดังนี้';
         }
 
         renderTickets();
