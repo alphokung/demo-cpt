@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skeleton Loading — Components</title>
+  <meta name="description" content="ตัวอย่าง Skeleton Loading component — placeholder animation ขณะโหลดข้อมูล">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Skeleton Loading</h2>
+            <p class="text-subheader">Placeholder animation ขณะรอโหลดข้อมูล — pulse สีเทาอ่อน</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Base Classes ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Base Classes</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่ม <code>.skeleton-loading</code> ให้ element ใดก็ได้ เพื่อเปิด pulse animation</p>
+            <div class="components-section">
+
+              <div class="form-group">
+                <p class="form-label">Text line — <code>.skeleton-text</code></p>
+                <div class="skeleton-loading skeleton-text"></div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Text variants — full / medium (70%) / short (40%)</p>
+                <div style="display:flex; flex-direction:column; gap:var(--spacing-sm)">
+                  <div class="skeleton-loading skeleton-text"></div>
+                  <div class="skeleton-loading skeleton-text medium"></div>
+                  <div class="skeleton-loading skeleton-text short"></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Title — <code>.skeleton-title</code></p>
+                <div class="skeleton-loading skeleton-title"></div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Circle — <code>.skeleton-circle</code></p>
+                <div style="display:flex; gap:var(--spacing-xl); align-items:center; flex-wrap:wrap">
+                  <div class="skeleton-loading skeleton-circle" style="width:32px;height:32px"></div>
+                  <div class="skeleton-loading skeleton-circle" style="width:44px;height:44px"></div>
+                  <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                  <div class="skeleton-loading skeleton-circle" style="width:64px;height:64px"></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Button — <code>.skeleton-button</code></p>
+                <div class="skeleton-loading skeleton-button"></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Card Skeleton ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">List Card Skeleton</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ตัวอย่าง skeleton ของ list card — avatar + header text + body rows + button</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+
+                <!-- Card skeleton 1 -->
+                <div class="card" style="margin:0">
+                  <div class="card-header">
+                    <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                    <div class="skeleton-header-text">
+                      <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                      <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="card-body skeleton-body">
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-1 mb-0"></div>
+                    </div>
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-2 mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="skeleton-loading skeleton-button"></div>
+                </div>
+
+                <!-- Card skeleton 2 -->
+                <div class="card" style="margin:0">
+                  <div class="card-header">
+                    <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                    <div class="skeleton-header-text">
+                      <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                      <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="card-body skeleton-body">
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-3 mb-0"></div>
+                    </div>
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-4 mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="skeleton-loading skeleton-button"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── List Item Skeleton ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">List Item Skeleton</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ตัวอย่าง skeleton ของ list-item — icon box + title + meta</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+
+                <div style="display:flex; align-items:center; gap:var(--spacing-md); padding:var(--spacing-md) var(--spacing-lg); border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl)">
+                  <div class="skeleton-loading" style="width:44px;height:44px;border-radius:var(--radius-lg);flex-shrink:0"></div>
+                  <div style="flex:1; display:flex; flex-direction:column; gap:var(--spacing-sm)">
+                    <div class="skeleton-loading skeleton-text medium" style="margin-bottom:0"></div>
+                    <div class="skeleton-loading skeleton-text short" style="margin-bottom:0;height:12px"></div>
+                  </div>
+                  <div class="skeleton-loading skeleton-circle" style="width:20px;height:20px;flex-shrink:0"></div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:var(--spacing-md); padding:var(--spacing-md) var(--spacing-lg); border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl)">
+                  <div class="skeleton-loading" style="width:44px;height:44px;border-radius:var(--radius-lg);flex-shrink:0"></div>
+                  <div style="flex:1; display:flex; flex-direction:column; gap:var(--spacing-sm)">
+                    <div class="skeleton-loading skeleton-text" style="width:55%;margin-bottom:0"></div>
+                    <div class="skeleton-loading skeleton-text short" style="margin-bottom:0;height:12px"></div>
+                  </div>
+                  <div class="skeleton-loading skeleton-circle" style="width:20px;height:20px;flex-shrink:0"></div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:var(--spacing-md); padding:var(--spacing-md) var(--spacing-lg); border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl)">
+                  <div class="skeleton-loading" style="width:44px;height:44px;border-radius:var(--radius-lg);flex-shrink:0"></div>
+                  <div style="flex:1; display:flex; flex-direction:column; gap:var(--spacing-sm)">
+                    <div class="skeleton-loading skeleton-text" style="width:75%;margin-bottom:0"></div>
+                    <div class="skeleton-loading skeleton-text short" style="margin-bottom:0;height:12px"></div>
+                  </div>
+                  <div class="skeleton-loading skeleton-circle" style="width:20px;height:20px;flex-shrink:0"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Welcome Banner Skeleton ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Welcome Banner Skeleton</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">skeleton บน background เข้ม — ใช้ <code>rgba(255,255,255,0.25)</code> แทนสีเทา</p>
+            <div class="components-section">
+              <div class="welcome-banner">
+                <span class="skeleton-loading welcome-driver-name-skeleton" style="height:22px;width:160px;display:block;margin-bottom:6px"></span>
+                <span class="skeleton-loading" style="height:14px;width:200px;display:block;background:rgba(255,255,255,0.2)!important;border-radius:var(--radius-sm);margin-bottom:4px"></span>
+                <span class="skeleton-loading" style="height:14px;width:140px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:var(--radius-sm)"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Interactive Toggle ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Interactive Demo — Loaded vs Skeleton</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">กดปุ่มเพื่อสลับระหว่าง skeleton state และ loaded state</p>
+            <div class="components-section">
+
+              <div style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-xl)">
+                <button class="btn btn-primary" style="width:auto" onclick="setLoaded(false)">
+                  <span class="material-symbols-outlined">downloading</span>กำลังโหลด
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="setLoaded(true)">
+                  <span class="material-symbols-outlined">check_circle</span>โหลดแล้ว
+                </button>
+              </div>
+
+              <!-- Skeleton state -->
+              <div id="demo-skeleton" style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+                <div class="card" style="margin:0">
+                  <div class="card-header">
+                    <div class="skeleton-loading skeleton-circle skeleton-avatar"></div>
+                    <div class="skeleton-header-text">
+                      <div class="skeleton-loading skeleton-text skeleton-header-title"></div>
+                      <div class="skeleton-loading skeleton-text skeleton-header-subtitle mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="card-body skeleton-body">
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-1 mb-0"></div>
+                    </div>
+                    <div class="card-body-item">
+                      <div class="skeleton-loading skeleton-body-label"></div>
+                      <div class="skeleton-loading skeleton-body-value-2 mb-0"></div>
+                    </div>
+                  </div>
+                  <div class="skeleton-loading skeleton-button"></div>
+                </div>
+              </div>
+
+              <!-- Loaded state (hidden initially) -->
+              <div id="demo-loaded" style="display:none; flex-direction:column; gap:var(--spacing-lg)">
+                <div class="card" style="margin:0">
+                  <div class="card-header">
+                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="avatar" class="img-helper-frame circle size-md" style="flex-shrink:0">
+                    <div class="summary-info" style="margin-left:var(--spacing-md)">
+                      <span class="list-title">ใบสั่งเลขที่: 0265125960711</span>
+                      <span class="fine-title">ค่าปรับ: 500 บาท</span>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-body-item">
+                      <span class="card-label">สถานที่เกิดเหตุ:</span>
+                      <span class="card-value">มอเตอร์เวย์ M7 กม. 135+400</span>
+                    </div>
+                    <div class="card-body-item">
+                      <span class="card-label">วันที่เกิดเหตุ:</span>
+                      <span class="card-value">10 ม.ค. 2569</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-secondary" style="width:100%">ดูรายละเอียด</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Core class</p>
+                <pre class="code-block">&lt;!-- เพิ่ม skeleton-loading ให้ element ใดก็ได้ --&gt;
+&lt;div class="skeleton-loading" style="height:16px; width:80%"&gt;&lt;/div&gt;
+
+&lt;!-- Text preset --&gt;
+&lt;div class="skeleton-loading skeleton-text"&gt;&lt;/div&gt;         &lt;!-- 100% width --&gt;
+&lt;div class="skeleton-loading skeleton-text medium"&gt;&lt;/div&gt;  &lt;!-- 70% --&gt;
+&lt;div class="skeleton-loading skeleton-text short"&gt;&lt;/div&gt;   &lt;!-- 40% --&gt;
+
+&lt;!-- Title --&gt;
+&lt;div class="skeleton-loading skeleton-title"&gt;&lt;/div&gt;
+
+&lt;!-- Circle (avatar) --&gt;
+&lt;div class="skeleton-loading skeleton-circle skeleton-avatar"&gt;&lt;/div&gt;
+
+&lt;!-- Button --&gt;
+&lt;div class="skeleton-loading skeleton-button"&gt;&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Toggle skeleton ↔ loaded via JavaScript</p>
+                <pre class="code-block">// ซ่อน skeleton, แสดง content จริง
+function setLoaded(isLoaded) {
+  document.getElementById('skeleton-view').style.display =
+    isLoaded ? 'none' : 'block';
+  document.getElementById('content-view').style.display =
+    isLoaded ? 'block' : 'none';
+}</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">บน dark background — ใช้ rgba แทนสีเทา</p>
+                <pre class="code-block">&lt;!-- inside .welcome-card / .welcome-banner --&gt;
+&lt;span class="skeleton-loading"
+  style="background:rgba(255,255,255,0.25) !important;
+         width:160px; height:22px; display:block"&gt;
+&lt;/span&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function setLoaded(isLoaded) {
+      document.getElementById('demo-skeleton').style.display = isLoaded ? 'none' : 'flex';
+      document.getElementById('demo-loaded').style.display  = isLoaded ? 'flex' : 'none';
+    }
+  </script>
+</body>
+</html>
