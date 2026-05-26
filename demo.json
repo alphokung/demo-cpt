@@ -1,0 +1,85 @@
+{
+  "user": {
+    "name": "สุขภาย สบายดี",
+    "greeting": "สวัสดี"
+  },
+  "certificates": [
+    {
+      "id": "cert-001",
+      "type": "health",
+      "typeKey": "health",
+      "title": "ใบรับรองแพทย์ตรวจสุขภาพ",
+      "hospital": "โรงพยาบาลสิริราช",
+      "issueDate": "12 ม.ค. 2568",
+      "expiryDate": "12 ม.ค. 2569",
+      "status": "valid",
+      "documentNumber": "MED-2568-C001-00001"
+    },
+    {
+      "id": "cert-002",
+      "type": "driving",
+      "typeKey": "driving",
+      "title": "ใบรับรองแพทย์สำหรับใบขับขี่",
+      "hospital": "คลินิกสุขภาพดี",
+      "issueDate": "3 มี.ค. 2568",
+      "expiryDate": "3 มี.ค. 2569",
+      "status": "valid",
+      "documentNumber": "MED-2568-D001-00023"
+    },
+    {
+      "id": "cert-003",
+      "type": "covid",
+      "typeKey": "covid",
+      "title": "ผลตรวจ COVID-19",
+      "hospital": "โรงพยาบาลพระมงกุฎเกล้า",
+      "issueDate": "20 เม.ย. 2568",
+      "expiryDate": "20 เม.ย. 2569",
+      "status": "valid",
+      "documentNumber": "COVID-2568-00892"
+    },
+    {
+      "id": "cert-004",
+      "type": "work",
+      "typeKey": "work",
+      "title": "ใบรับรองสุขภาพเพื่อสมัครงาน",
+      "hospital": "โรงพยาบาลกลาง",
+      "issueDate": "5 พ.ค. 2568",
+      "expiryDate": "5 พ.ค. 2569",
+      "status": "expiring",
+      "documentNumber": "MED-2568-W001-00456"
+    },
+    {
+      "id": "cert-005",
+      "type": "health",
+      "typeKey": "health",
+      "title": "ใบรับรองแพทย์ตรวจสุขภาพ",
+      "hospital": "โรงพยาบาลราชวิถี",
+      "issueDate": "8 มิ.ย. 2568",
+      "expiryDate": "8 มิ.ย. 2569",
+      "status": "valid",
+      "documentNumber": "MED-2568-C002-00078"
+    },
+    {
+      "id": "cert-006",
+      "type": "health",
+      "typeKey": "health",
+      "title": "ใบรับรองแพทย์ตรวจสุขภาพ",
+      "hospital": "โรงพยาบาลสิริราช",
+      "issueDate": "10 ก.พ. 2567",
+      "expiryDate": "10 ก.พ. 2568",
+      "status": "expired",
+      "documentNumber": "MED-2567-C001-00312"
+    },
+    {
+      "id": "cert-007",
+      "type": "driving",
+      "typeKey": "driving",
+      "title": "ใบรับรองแพทย์สำหรับใบขับขี่",
+      "hospital": "คลินิกสุขภาพดี",
+      "issueDate": "15 ม.ค. 2567",
+      "expiryDate": "15 ม.ค. 2568",
+      "status": "expired",
+      "documentNumber": "MED-2567-D001-00099"
+    }
+  ]
+}

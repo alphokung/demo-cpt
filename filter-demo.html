@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบรับรองแพทย์ดิจิทัล — รายการ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Title Block -->
+        <div class="title-block">
+          <h2 class="text-header">ใบรับรองแพทย์ดิจิทัล</h2>
+          <p class="text-subheader">ข้อมูลใบรับรองแพทย์ดิจิทัล โดยกระทรวงสาธารณสุข</p>
+        </div>
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <p class="welcome-banner-greeting">ยินดีต้อนรับ</p>
+          <p class="welcome-banner-name" id="welcome-banner-name">กำลังโหลด...</p>
+          <p class="welcome-banner-sub" id="welcome-banner-sub"></p>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="filter-row">
+          <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">ทั้งหมด</button>
+          <button class="filter-chip" data-filter="health" onclick="setFilter('health')">
+            <span class="filter-dot dot-health"></span>
+            ตรวจสุขภาพ
+          </button>
+          <button class="filter-chip" data-filter="work" onclick="setFilter('work')">
+            <span class="filter-dot dot-work"></span>
+            ใบรับรองการทำงาน
+          </button>
+          <button class="filter-chip" data-filter="driving" onclick="setFilter('driving')">
+            <span class="filter-dot dot-driving"></span>
+            ใบขับขี่
+          </button>
+          <button class="filter-chip" data-filter="covid" onclick="setFilter('covid')">
+            <span class="filter-dot dot-covid"></span>
+            โควิด-19
+          </button>
+        </div>
+
+        <!-- Dynamic Content -->
+        <div id="list-content">
+          <!-- Rendered by demo.js -->
+        </div>
+
+        <!-- Timestamp -->
+        <div class="footer-timestamp">
+          ข้อมูลใบรับรองแพทย์ดิจิทัล จากหมอพร้อม<br>ณ วันที่ 2 มกราคม 2569 11.40 น.
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Sticky Footer -->
+    <div class="sticky-footer">
+      <button class="btn btn-tertiary-outline flex-center" style="gap: var(--spacing-md)">
+        <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">info</span>
+        วิธีขอใบรับรองแพทย์ดิจิทัล
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Demo state toggle (floating) -->
+  <button class="demo-toggle" id="demo-toggle-btn" onclick="toggleDemoState()">สลับ: ไม่มีข้อมูล</button>
+
+  <script src="demo.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', initFilterDemo);
+  </script>
+</body>
+</html>
