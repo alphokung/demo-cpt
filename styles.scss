@@ -3561,6 +3561,70 @@ input[type="color"] {
   &.is-neutral .timeline-item-dot,
   &.is-neutral .timeline-item-icon { background-color: var(--neutral-80);  .material-symbols-outlined { color: var(--neutral-100); } }
 
+  // ── Stage modifiers ──────────────────────────────────────
+
+  // PASSED — solid primary, checkmark icon
+  &.is-passed {
+    .timeline-item-dot {
+      background-color: var(--primary-40);
+      &::after {
+        content: '';
+        display: block;
+        width: 6px;
+        height: 4px;
+        border-left: 2px solid var(--neutral-100);
+        border-bottom: 2px solid var(--neutral-100);
+        transform: rotate(-45deg) translate(1px, -1px);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -3px;
+        margin-left: -3px;
+      }
+    }
+    .timeline-item-icon {
+      background-color: var(--primary-40);
+      .material-symbols-outlined { color: var(--neutral-100); }
+    }
+    .timeline-item-title { color: var(--foreground-neutral-default); }
+    .timeline-item-desc  { color: var(--foreground-neutral-lighter); }
+  }
+
+  // ACTIVE — pulsing ring, brand primary
+  &.is-active {
+    .timeline-item-dot {
+      background-color: var(--primary-40);
+      animation: timeline-pulse 1.8s ease-in-out infinite;
+      box-shadow: 0 0 0 3px var(--primary-95);
+    }
+    .timeline-item-icon {
+      background-color: var(--primary-40);
+      box-shadow: 0 0 0 4px var(--primary-95);
+      animation: timeline-pulse-icon 1.8s ease-in-out infinite;
+      .material-symbols-outlined { color: var(--neutral-100); }
+    }
+    .timeline-item-title {
+      color: var(--foreground-primary-default);
+      font-weight: var(--font-weight-700);
+    }
+    .timeline-item-desc { color: var(--foreground-neutral-lighter); }
+  }
+
+  // FUTURE — outlined dot, muted text, dashed connector
+  &.is-future {
+    .timeline-item-dot {
+      background-color: var(--neutral-100);
+      border: 2px solid var(--neutral-80);
+    }
+    .timeline-item-icon {
+      background-color: var(--neutral-96);
+      border: 2px solid var(--neutral-80);
+      .material-symbols-outlined { color: var(--neutral-70); }
+    }
+    .timeline-item-title { color: var(--neutral-70); }
+    .timeline-item-desc  { color: var(--neutral-80); }
+  }
+
   // tag / badge next to the title
   &-tag {
     display: inline-flex;
@@ -3581,11 +3645,40 @@ input[type="color"] {
   }
 }
 
+// Pulse animations
+@keyframes timeline-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(0, 178, 116, 0.5), 0 0 0 3px var(--primary-95); }
+  70%  { box-shadow: 0 0 0 8px rgba(0, 178, 116, 0),   0 0 0 3px var(--primary-95); }
+  100% { box-shadow: 0 0 0 0   rgba(0, 178, 116, 0),   0 0 0 3px var(--primary-95); }
+}
+
+@keyframes timeline-pulse-icon {
+  0%   { box-shadow: 0 0 0 0    rgba(0, 178, 116, 0.4), 0 0 0 4px var(--primary-95); }
+  70%  { box-shadow: 0 0 0 10px rgba(0, 178, 116, 0),   0 0 0 4px var(--primary-95); }
+  100% { box-shadow: 0 0 0 0    rgba(0, 178, 116, 0),   0 0 0 4px var(--primary-95); }
+}
+
 // connector line colour variants per status
 .timeline-item.is-success:not(:last-child)::before { background-color: var(--positive-60); }
 .timeline-item.is-warning:not(:last-child)::before { background-color: var(--warning-60); }
 .timeline-item.is-danger:not(:last-child)::before  { background-color: var(--danger-60);  }
 .timeline-item.is-neutral:not(:last-child)::before { background-color: var(--neutral-80); }
+
+// Stage connector lines
+.timeline-item.is-passed:not(:last-child)::before  { background-color: var(--primary-60); }
+.timeline-item.is-active:not(:last-child)::before  {
+  background: linear-gradient(to bottom, var(--primary-60) 50%, var(--neutral-85, var(--neutral-80)) 50%);
+  background-size: 2px 12px;
+}
+.timeline-item.is-future:not(:last-child)::before  {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--neutral-80) 0,
+    var(--neutral-80) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+}
 
 // icon-variant needs a slightly offset connector
 .timeline-item:has(.timeline-item-icon):not(:last-child)::before {
