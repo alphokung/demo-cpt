@@ -2866,16 +2866,21 @@ main {
 
 // Welcome banner
 .fdemo-banner {
-  background-color: var(--primary-10);
-  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(circle at 85% 110%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 45%, transparent 45%),
+    radial-gradient(circle at 60% 130%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 65%, transparent 65%),
+    linear-gradient(135deg, #05263d, #0d3856);
+  border-radius: 20px;
   padding: var(--spacing-xl) var(--spacing-2xl);
   margin-bottom: var(--spacing-xl);
+  overflow: hidden;
+  position: relative;
 }
 
 .fdemo-banner-greeting {
   font-size: var(--font-size-body-s);
   font-weight: 400;
-  color: var(--primary-70);
+  color: rgba(255, 255, 255, 0.65);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -2888,7 +2893,7 @@ main {
 
 .fdemo-banner-sub {
   font-size: var(--font-size-body-s);
-  color: var(--primary-80);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 // Filter chips row
