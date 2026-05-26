@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alert & Confirm — Components</title>
+  <meta name="description" content="ตัวอย่างการใช้งาน ThaiAlert — alert และ confirm dialog">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Alert &amp; Confirm</h2>
+            <p class="text-subheader">ตัวอย่างการใช้งาน <code>ThaiAlert</code> — dialog แจ้งเตือนและยืนยันการดำเนินการ</p>
+          </div>
+        </div>
+
+        <!-- ─── Alert ─── -->
+        <div class="card">
+          <div class="section-title-container">
+            <div class="section-bar"></div>
+            <h3 class="section-title">Alert</h3>
+          </div>
+          <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แสดงข้อความแจ้งเตือนฝ่ายเดียว — ผู้ใช้กดปุ่มเพื่อปิด</p>
+          <div class="components-section">
+            <div class="form-group">
+              <p class="form-label">Type Variants</p>
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+                <button class="btn btn-secondary" onclick="ThaiAlert.alert({ type:'info', title:'อัปเดตข้อมูลสำเร็จ', message:'ข้อมูลของคุณได้รับการบันทึกเรียบร้อยแล้ว' })">
+                  <span class="material-symbols-outlined">info</span>Alert — info
+                </button>
+                <button class="btn btn-secondary" onclick="ThaiAlert.alert({ type:'success', title:'ชำระค่าปรับสำเร็จ', message:'ระบบได้รับการชำระเงินเรียบร้อยแล้ว คุณจะได้รับใบเสร็จทางอีเมลภายใน 24 ชั่วโมง', buttonText:'รับทราบ' })">
+                  <span class="material-symbols-outlined">check_circle</span>Alert — success
+                </button>
+                <button class="btn btn-secondary" onclick="ThaiAlert.alert({ type:'warning', title:'ใกล้ถึงกำหนดชำระ', message:'ใบสั่งเลขที่ 0265125960711 จะครบกำหนดชำระใน 3 วัน กรุณาชำระก่อนโดนค่าปรับเพิ่ม', buttonText:'เข้าใจแล้ว' })">
+                  <span class="material-symbols-outlined">warning</span>Alert — warning
+                </button>
+                <button class="btn btn-secondary" onclick="ThaiAlert.alert({ type:'danger', title:'คะแนนเหลือน้อยมาก', message:'คะแนนใบอนุญาตขับขี่ของคุณเหลือเพียง 2 คะแนน หากถูกตัดอีกอาจถูกพักใช้ใบอนุญาต 90 วัน', buttonText:'รับทราบ' })">
+                  <span class="material-symbols-outlined">error</span>Alert — danger
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Confirm ─── -->
+        <div class="card">
+          <div class="section-title-container">
+            <div class="section-bar"></div>
+            <h3 class="section-title">Confirm</h3>
+          </div>
+          <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ขอการยืนยันจากผู้ใช้ก่อนดำเนินการ — คืนค่า <code>true</code> เมื่อยืนยัน, <code>false</code> เมื่อยกเลิก</p>
+          <div class="components-section">
+            <div class="form-group">
+              <p class="form-label">Type Variants</p>
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+                <button class="btn btn-secondary" onclick="ThaiAlert.confirm({ type:'info', title:'ยืนยันการส่งข้อมูล', message:'คุณต้องการส่งแบบฟอร์มนี้ไปยังสำนักงานตำรวจแห่งชาติหรือไม่?', confirmText:'ส่งข้อมูล' }).then(ok => showResult(ok, 'r1'))">
+                  <span class="material-symbols-outlined">info</span>Confirm — info
+                </button>
+                <p id="r1" class="form-hint" style="display:none"></p>
+                <button class="btn btn-secondary" onclick="ThaiAlert.confirm({ type:'success', title:'ยืนยันการชำระค่าปรับ', message:'ยืนยันการชำระค่าปรับ 500 บาท สำหรับใบสั่งเลขที่ 0265125960711 ผ่านพร้อมเพย์ใช่หรือไม่?', confirmText:'ยืนยันชำระเงิน' }).then(ok => showResult(ok, 'r2'))">
+                  <span class="material-symbols-outlined">check_circle</span>Confirm — success
+                </button>
+                <p id="r2" class="form-hint" style="display:none"></p>
+                <button class="btn btn-secondary" onclick="ThaiAlert.confirm({ type:'warning', title:'ล้างข้อมูลทั้งหมด', message:'การดำเนินการนี้จะลบข้อมูลฟอร์มที่กรอกไว้ทั้งหมด คุณแน่ใจหรือไม่?', confirmText:'ล้างข้อมูล', cancelText:'ไม่ใช่ ย้อนกลับ' }).then(ok => showResult(ok, 'r3'))">
+                  <span class="material-symbols-outlined">warning</span>Confirm — warning
+                </button>
+                <p id="r3" class="form-hint" style="display:none"></p>
+                <button class="btn btn-secondary" onclick="ThaiAlert.confirm({ type:'danger', title:'ลบบัญชีผู้ใช้', message:'การลบบัญชีจะไม่สามารถกู้คืนได้ ข้อมูลทั้งหมดจะถูกลบออกจากระบบอย่างถาวร', confirmText:'ลบบัญชี' }).then(ok => showResult(ok, 'r4'))">
+                  <span class="material-symbols-outlined">error</span>Confirm — danger
+                </button>
+                <p id="r4" class="form-hint" style="display:none"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Usage ─── -->
+        <div class="card">
+          <div class="section-title-container">
+            <div class="section-bar"></div>
+            <h3 class="section-title">วิธีใช้งาน</h3>
+          </div>
+          <div class="components-section">
+            <div class="form-group">
+              <p class="form-label">1 · เพิ่ม script ในหน้าที่ต้องการใช้</p>
+              <pre class="code-block">&lt;script src="../alert.js"&gt;&lt;/script&gt;</pre>
+            </div>
+            <div class="form-group">
+              <p class="form-label">2 · Alert — แสดงข้อความแจ้งเตือน</p>
+              <pre class="code-block">await ThaiAlert.alert({
+  type: 'success',       // 'info' | 'success' | 'warning' | 'danger'
+  title: 'บันทึกสำเร็จ',
+  message: 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว',
+  buttonText: 'รับทราบ' // default: 'ตกลง'
+});</pre>
+            </div>
+            <div class="form-group">
+              <p class="form-label">3 · Confirm — ขอการยืนยันก่อนดำเนินการ</p>
+              <pre class="code-block">const confirmed = await ThaiAlert.confirm({
+  type: 'danger',
+  title: 'ลบรายการนี้?',
+  message: 'การดำเนินการนี้ไม่สามารถกู้คืนได้',
+  confirmText: 'ลบ',     // default: 'ยืนยัน'
+  cancelText: 'ยกเลิก'  // default: 'ยกเลิก'
+});
+if (confirmed) { /* ผู้ใช้กดยืนยัน */ }</pre>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../alert.js"></script>
+  <script>
+    function showResult(ok, id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = 'block';
+      el.style.color = ok ? 'var(--foreground-positive-default)' : 'var(--foreground-neutral-lighter)';
+      el.textContent  = ok ? '✓ ผู้ใช้กดยืนยัน' : '✕ ผู้ใช้กดยกเลิก';
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+  </script>
+</body>
+</html>

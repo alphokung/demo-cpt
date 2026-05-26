@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Label Display — Components</title>
+  <meta name="description" content="ตัวอย่าง Label Display pattern สำหรับแสดงข้อมูลในหน้า detail">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Label Display</h2>
+            <p class="text-subheader">Pattern สำหรับแสดงข้อมูล — label เล็กอยู่บน, value ใหญ่อยู่ล่าง</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic — details-list</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ใช้ใน detail page — label เล็กสีเทาอยู่บน, value ใหญ่สีเข้มอยู่ล่าง</p>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">วันที่ออกใบสั่ง:</span>
+                <span class="details-value">10 ม.ค. 2569 09:31 น.</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานที่เกิดเหตุ:</span>
+                <span class="details-value">มอเตอร์เวย์ M7 กม. 135+400 ถนนบางนา-ตราด</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ออกใบสั่งโดย:</span>
+                <span class="details-value">ด.ต.สมชาย ใจดี</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ทะเบียนรถ:</span>
+                <span class="details-value">กข 1234 กรุงเทพมหานคร</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Value + Sub-value</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่ม sub-value ข้อความเล็กด้านล่าง พร้อม colour variants</p>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">สถานะ:</span>
+                <span class="details-value">ยังไม่ได้ชำระค่าปรับ</span>
+                <span class="details-subvalue">กรุณาชำระภายในวันที่ 10 ก.พ. 2569</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานะ:</span>
+                <span class="details-value details-value-paid">ชำระค่าปรับแล้ว</span>
+                <span class="details-subvalue details-subvalue-paid">ชำระเมื่อวันที่ 15 ม.ค. 2569 เวลา 14:20 น.</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานะ:</span>
+                <span class="details-value details-value-warning">ยังไม่ได้ชำระ — ออกหนังสือเตือนแล้ว</span>
+                <span class="details-subvalue details-subvalue-warning">หนังสือเตือนออกเมื่อวันที่ 20 ม.ค. 2569</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Inline — card-label / card-value</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ใช้ใน list card body — ขนาดเล็กกว่า details-list เหมาะกับรายการข้อมูลสั้น</p>
+            <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+              <div class="card-body-item">
+                <span class="card-label">วันที่เกิดเหตุ:</span>
+                <span class="card-value">10 ม.ค. 2569</span>
+              </div>
+              <div class="card-body-item">
+                <span class="card-label">สถานที่เกิดเหตุ:</span>
+                <span class="card-value">มอเตอร์เวย์ M7 กม. 135</span>
+              </div>
+              <div class="card-body-item">
+                <span class="card-label">ค่าปรับ:</span>
+                <span class="card-value">500 บาท</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Components — Input Demo</title>
-  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <title>Components — Design System</title>
+  <meta name="description" content="รวม UI components ทั้งหมดของระบบ — Form, Table, Alert, Label, Timeline, Image Helper">
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
 
   <!-- Open Graph / Facebook -->
@@ -26,6 +26,73 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+    }
+    .comp-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      padding: var(--spacing-xl);
+      background: var(--neutral-100);
+      border: 1px solid var(--stroke-neutral-default);
+      border-radius: var(--radius-2xl);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+    .comp-card:hover {
+      border-color: var(--primary-80);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .comp-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-xl);
+      background: var(--primary-95);
+      color: var(--primary-40);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .comp-card-icon .material-symbols-outlined {
+      font-size: 24px;
+    }
+    .comp-card-title {
+      font-size: var(--font-size-title-m);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      margin: 0;
+    }
+    .comp-card-desc {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .comp-card-arrow {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: var(--font-size-body-s);
+      font-weight: var(--font-weight-600);
+      color: var(--primary-40);
+    }
+    .comp-card-arrow .material-symbols-outlined {
+      font-size: 18px;
+      transition: transform 0.18s ease;
+    }
+    .comp-card:hover .comp-card-arrow .material-symbols-outlined {
+      transform: translateX(4px);
+    }
+  </style>
 </head>
 <body>
   <div class="app-container">
@@ -39,1214 +106,94 @@
           </a>
           <div class="title-block">
             <h2 class="text-header">Components</h2>
-            <p class="text-subheader">ตัวอย่าง HTML input และ UI components ทั้งหมด</p>
+            <p class="text-subheader">รวม UI components ทั้งหมดของระบบ — เลือกหมวดหมู่เพื่อดูตัวอย่างการใช้งาน</p>
           </div>
         </div>
 
-        <div class="components-layout">
+        <div class="comp-grid">
 
-
-          <!-- ─── 1. Text Inputs ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Text Inputs</h3>
+          <!-- Form Inputs -->
+          <a href="components/form.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">edit_note</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-text">Text</label>
-                <input class="input" type="text" id="input-text" placeholder="กรอกข้อความ">
-                <span class="form-hint">ข้อความทั่วไป เช่น ชื่อ-นามสกุล</span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-email">Email</label>
-                <div class="input-wrapper">
-                  <span class="material-symbols-outlined input-icon-left">mail</span>
-                  <input class="input" type="email" id="input-email" placeholder="example@email.com">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-password">Password</label>
-                <div class="input-wrapper has-suffix">
-                  <span class="material-symbols-outlined input-icon-left">lock</span>
-                  <input class="input" type="password" id="input-password" placeholder="รหัสผ่าน">
-                  <span class="material-symbols-outlined input-icon-right" id="pw-toggle" style="cursor:pointer;pointer-events:auto" onclick="togglePassword()">visibility</span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-number">Number</label>
-                <input class="input" type="number" id="input-number" placeholder="0" min="0" max="100">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-tel">Telephone</label>
-                <div class="input-wrapper">
-                  <span class="material-symbols-outlined input-icon-left">call</span>
-                  <input class="input" type="tel" id="input-tel" placeholder="0XX-XXX-XXXX">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-url">URL</label>
-                <div class="input-wrapper">
-                  <span class="material-symbols-outlined input-icon-left">link</span>
-                  <input class="input" type="url" id="input-url" placeholder="https://example.com">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-search">Search</label>
-                <div class="input-wrapper has-suffix">
-                  <span class="material-symbols-outlined input-icon-left">search</span>
-                  <input class="input" type="search" id="input-search" placeholder="ค้นหา...">
-                  <span class="material-symbols-outlined input-icon-right" style="cursor:pointer;pointer-events:auto" onclick="document.getElementById('input-search').value=''">close</span>
-                </div>
-              </div>
-
+            <p class="comp-card-title">Form &amp; Inputs</p>
+            <p class="comp-card-desc">Text, Date, Textarea, Select, Checkbox, Radio, Toggle, Range, Color, File Upload, Input States และ Buttons พร้อม loading state</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 2. Date & Time Inputs ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Date &amp; Time Inputs</h3>
+          <!-- Table -->
+          <a href="components/table.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">table</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-date">Date</label>
-                <input class="input" type="date" id="input-date">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-time">Time</label>
-                <input class="input" type="time" id="input-time">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-datetime">Datetime-local</label>
-                <input class="input" type="datetime-local" id="input-datetime">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-month">Month</label>
-                <input class="input" type="month" id="input-month">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-week">Week</label>
-                <input class="input" type="week" id="input-week">
-              </div>
-
+            <p class="comp-card-title">Table</p>
+            <p class="comp-card-desc">ตาราง responsive — บนหน้าจอใหญ่แสดงเป็น table, บนมือถือพับเป็น card แต่ละแถวโดยอัตโนมัติ</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 3. Textarea ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Textarea</h3>
+          <!-- Alert & Confirm -->
+          <a href="components/alert.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">notifications</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-textarea">ความคิดเห็น / หมายเหตุ</label>
-                <textarea class="input" id="input-textarea" rows="4" placeholder="กรอกรายละเอียดเพิ่มเติม..."></textarea>
-                <span class="form-hint">ไม่เกิน 500 ตัวอักษร</span>
-              </div>
-
+            <p class="comp-card-title">Alert &amp; Confirm</p>
+            <p class="comp-card-desc">Dialog แจ้งเตือนและขอยืนยันการดำเนินการ — รองรับ info, success, warning, danger พร้อม Promise API</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 4. Select ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Select</h3>
+          <!-- Label Display -->
+          <a href="components/label.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">label</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-select">จังหวัด</label>
-                <div class="select-wrapper">
-                  <select class="input" id="input-select">
-                    <option value="" disabled selected>เลือกจังหวัด</option>
-                    <option value="bkk">กรุงเทพมหานคร</option>
-                    <option value="chm">เชียงใหม่</option>
-                    <option value="kbi">กระบี่</option>
-                    <option value="phk">ภูเก็ต</option>
-                    <option value="khk">ขอนแก่น</option>
-                    <option value="nbi">นนทบุรี</option>
-                  </select>
-                  <span class="material-symbols-outlined select-arrow">expand_more</span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-select-multi">ประเภทใบรับรองแพทย์ (เลือกได้หลายรายการ)</label>
-                <select class="input" id="input-select-multi" multiple size="5" style="min-height:unset;height:auto;padding:var(--spacing-sm)">
-                  <option value="health">ใบรับรองแพทย์ตรวจสุขภาพ</option>
-                  <option value="driving">ใบรับรองแพทย์สำหรับใบขับขี่</option>
-                  <option value="covid">ผลตรวจ COVID-19</option>
-                  <option value="work">ใบรับรองสุขภาพเพื่อสมัครงาน</option>
-                  <option value="visa">ใบรับรองแพทย์สำหรับวีซ่า</option>
-                </select>
-                <span class="form-hint">กด Ctrl (Windows) หรือ Cmd (Mac) เพื่อเลือกหลายรายการ</span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-datalist">Datalist (Autocomplete)</label>
-                <input class="input" list="hospital-list" id="input-datalist" placeholder="พิมพ์ชื่อโรงพยาบาล...">
-                <datalist id="hospital-list">
-                  <option value="โรงพยาบาลสิริราช">
-                  <option value="โรงพยาบาลจุฬาลงกรณ์">
-                  <option value="โรงพยาบาลรามาธิบดี">
-                  <option value="โรงพยาบาลพระมงกุฎเกล้า">
-                  <option value="โรงพยาบาลราชวิถี">
-                  <option value="โรงพยาบาลกลาง">
-                </datalist>
-                <span class="form-hint">แนะนำรายการอัตโนมัติเมื่อพิมพ์</span>
-              </div>
-
+            <p class="comp-card-title">Label Display</p>
+            <p class="comp-card-desc">Pattern สำหรับแสดงข้อมูล — details-list, value + sub-value, และ inline card-label/card-value</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 5. Checkbox & Radio ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Checkbox &amp; Radio</h3>
+          <!-- Timeline -->
+          <a href="components/timeline.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">timeline</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <p class="form-label">Checkbox — ใช้ได้กับ</p>
-                <div class="check-list">
-                  <label class="check-item">
-                    <input type="checkbox" checked>
-                    <div>
-                      <p class="check-item-label">ทำ/ต่ออายุ ใบขับขี่</p>
-                    </div>
-                  </label>
-                  <label class="check-item">
-                    <input type="checkbox" checked>
-                    <div>
-                      <p class="check-item-label">ขอวีซ่า</p>
-                    </div>
-                  </label>
-                  <label class="check-item">
-                    <input type="checkbox">
-                    <div>
-                      <p class="check-item-label">สมัครงาน</p>
-                      <p class="check-item-desc">สำหรับสมัครตำแหน่งราชการและเอกชน</p>
-                    </div>
-                  </label>
-                  <label class="check-item">
-                    <input type="checkbox" disabled>
-                    <div>
-                      <p class="check-item-label" style="color:var(--neutral-70)">เบิกสิทธิประกันสังคม (ไม่พร้อมใช้งาน)</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Radio — สถานะการชำระค่าปรับ</p>
-                <div class="check-list">
-                  <label class="check-item">
-                    <input type="radio" name="payment-status" value="unpaid" checked>
-                    <p class="check-item-label">ยังไม่ได้ชำระ</p>
-                  </label>
-                  <label class="check-item">
-                    <input type="radio" name="payment-status" value="paid">
-                    <p class="check-item-label">ชำระแล้ว</p>
-                  </label>
-                  <label class="check-item">
-                    <input type="radio" name="payment-status" value="warning">
-                    <p class="check-item-label">ออกหนังสือเตือนแล้ว</p>
-                  </label>
-                  <label class="check-item">
-                    <input type="radio" name="payment-status" value="exempt" disabled>
-                    <p class="check-item-label" style="color:var(--neutral-70)">ยกเว้นค่าปรับ (ไม่พร้อมใช้งาน)</p>
-                  </label>
-                </div>
-              </div>
-
+            <p class="comp-card-title">Timeline</p>
+            <p class="comp-card-desc">แสดงลำดับเหตุการณ์พร้อม stage — passed, active, future และ status colours: success, warning, danger, neutral</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 6. Toggle Switch ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Toggle Switch</h3>
+          <!-- Image Helper -->
+          <a href="components/image.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">image</span>
             </div>
-
-            <div class="components-section">
-
-              <div class="toggle-item">
-                <div class="toggle-text">
-                  <p class="toggle-label">การแจ้งเตือนใบสั่งจราจร</p>
-                  <p class="toggle-desc">รับการแจ้งเตือนเมื่อมีใบสั่งใหม่</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" checked>
-                  <span class="toggle-track"></span>
-                </label>
-              </div>
-
-              <div class="toggle-item">
-                <div class="toggle-text">
-                  <p class="toggle-label">การแจ้งเตือนใบรับรองแพทย์</p>
-                  <p class="toggle-desc">แจ้งเตือนเมื่อใบรับรองใกล้หมดอายุ</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox">
-                  <span class="toggle-track"></span>
-                </label>
-              </div>
-
-              <div class="toggle-item">
-                <div class="toggle-text">
-                  <p class="toggle-label" style="color:var(--neutral-70)">โหมดไม่ระบุตัวตน (ไม่พร้อมใช้งาน)</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" disabled>
-                  <span class="toggle-track"></span>
-                </label>
-              </div>
-
+            <p class="comp-card-title">Image Helper</p>
+            <p class="comp-card-desc">Aspect ratio frames (16:9, 1:1, 4:3, 3:4), circle และ square ทุกขนาด, status rings และ placeholder</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
             </div>
-          </div>
+          </a>
 
-
-          <!-- ─── 7. Range ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Range</h3>
-            </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-range">ช่วงค่าปรับ (บาท): <span id="range-val">500</span></label>
-                <div class="range-wrapper">
-                  <input type="range" id="input-range" min="0" max="5000" step="100" value="500"
-                    oninput="document.getElementById('range-val').textContent = Number(this.value).toLocaleString()">
-                  <div class="range-labels">
-                    <span>0 บาท</span>
-                    <span>5,000 บาท</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-range-disabled">คะแนนการขับขี่ (Disabled)</label>
-                <div class="range-wrapper">
-                  <input type="range" id="input-range-disabled" min="0" max="12" value="7" disabled>
-                  <div class="range-labels">
-                    <span>0</span>
-                    <span>12 คะแนน</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 8. Color ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Color</h3>
-            </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label" for="input-color">เลือกสี</label>
-                <div class="color-input-row">
-                  <input type="color" id="input-color" value="#00b274">
-                  <span class="form-hint" id="color-val">#00b274</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 9. File Upload ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">File Upload</h3>
-            </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <label class="form-label">อัปโหลดเอกสาร</label>
-                <div class="file-dropzone">
-                  <input type="file" id="input-file" accept=".pdf,.jpg,.png" multiple
-                    onchange="updateFileLabel(this)">
-                  <span class="material-symbols-outlined file-dropzone-icon">upload_file</span>
-                  <p class="file-dropzone-text" id="file-label">
-                    <span>คลิกเพื่อเลือกไฟล์</span> หรือลากไฟล์มาวางที่นี่
-                  </p>
-                  <p class="file-dropzone-hint">PDF, JPG, PNG — ขนาดไม่เกิน 10 MB</p>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="input-file-simple">File (Native)</label>
-                <input class="input" type="file" id="input-file-simple" style="padding:10px;cursor:pointer">
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 10. Input States ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Input States</h3>
-            </div>
-
-            <div class="input-state-grid">
-
-              <div class="form-group">
-                <label class="form-label" for="state-default">Default</label>
-                <input class="input" type="text" id="state-default" placeholder="พิมพ์ข้อความ...">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="state-filled">Filled</label>
-                <input class="input" type="text" id="state-filled" value="นายสมชาย ใจดี">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="state-error">Error</label>
-                <input class="input input-error" type="text" id="state-error" value="ข้อมูลไม่ถูกต้อง">
-                <span class="form-error-msg">
-                  <span class="material-symbols-outlined">error</span>
-                  กรุณากรอกข้อมูลให้ถูกต้อง
-                </span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="state-disabled">Disabled</label>
-                <input class="input" type="text" id="state-disabled" value="ไม่สามารถแก้ไขได้" disabled>
-                <span class="form-hint">ฟิลด์นี้ถูกปิดใช้งาน</span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="state-readonly">Read-only</label>
-                <input class="input" type="text" id="state-readonly" value="MED-2568-C001-00001" readonly>
-                <span class="form-hint">อ่านได้อย่างเดียว ไม่สามารถแก้ไข</span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="state-required">Required</label>
-                <input class="input" type="text" id="state-required" placeholder="จำเป็นต้องกรอก" required>
-                <span class="form-hint">ฟิลด์บังคับ (required)</span>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 11. Buttons ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Buttons</h3>
-            </div>
-
-            <div class="components-section">
-
-              <div class="form-group">
-                <p class="form-label">Variants</p>
-                <div class="components-row">
-                  <button class="btn btn-primary" style="width:auto">Primary</button>
-                  <button class="btn btn-secondary" style="width:auto">Secondary</button>
-                  <button class="btn btn-outline" style="width:auto">Outline</button>
-                  <button class="btn btn-destructive" style="width:auto">Destructive</button>
-                  <button class="btn btn-tertiary-outline" style="width:auto">Tertiary</button>
-                  <button class="btn btn-link" style="width:auto">Link</button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">With Icons</p>
-                <div class="components-row">
-                  <button class="btn btn-primary" style="width:auto">
-                    <span class="material-symbols-outlined">check_circle</span>
-                    ยืนยัน
-                  </button>
-                  <button class="btn btn-secondary" style="width:auto">
-                    <span class="material-symbols-outlined">download</span>
-                    ดาวน์โหลด
-                  </button>
-                  <button class="btn btn-destructive" style="width:auto">
-                    <span class="material-symbols-outlined">delete</span>
-                    ลบ
-                  </button>
-                  <button class="btn btn-outline" style="width:auto">
-                    <span class="material-symbols-outlined">share</span>
-                    แชร์
-                  </button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Sizes</p>
-                <div class="components-row" style="align-items:flex-end">
-                  <button class="btn btn-primary btn-small" style="width:auto">Small</button>
-                  <button class="btn btn-primary" style="width:auto">Default</button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Disabled</p>
-                <div class="components-row">
-                  <button class="btn btn-primary" disabled style="width:auto">Primary</button>
-                  <button class="btn btn-secondary" disabled style="width:auto">Secondary</button>
-                  <button class="btn btn-outline" disabled style="width:auto">Outline</button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Full Width</p>
-                <button class="btn btn-primary">ชำระค่าปรับ</button>
-                <button class="btn btn-tertiary-outline flex-center" style="gap:var(--spacing-md)">
-                  <span class="material-symbols-outlined" style="font-size:20px">info</span>
-                  วิธีขอใบรับรองแพทย์ดิจิทัล
-                </button>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Loading State</p>
-                <div class="components-row">
-                  <button class="btn btn-primary is-loading" style="width:auto">ยืนยัน</button>
-                  <button class="btn btn-secondary is-loading" style="width:auto">ดาวน์โหลด</button>
-                  <button class="btn btn-destructive is-loading" style="width:auto">ลบข้อมูล</button>
-                  <button class="btn btn-outline is-loading" style="width:auto">แชร์</button>
-                  <button class="btn btn-tertiary-outline is-loading" style="width:auto">บันทึก</button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Loading — Interactive (คลิกเพื่อทดลอง)</p>
-                <div class="components-row">
-                  <button class="btn btn-primary" style="width:auto" onclick="triggerLoading(this, 2500)">
-                    <span class="material-symbols-outlined">send</span>
-                    ส่งข้อมูล
-                  </button>
-                  <button class="btn btn-secondary" style="width:auto" onclick="triggerLoading(this, 2000)">
-                    <span class="material-symbols-outlined">download</span>
-                    ดาวน์โหลด
-                  </button>
-                  <button class="btn btn-destructive" style="width:auto" onclick="triggerLoading(this, 1800)">
-                    <span class="material-symbols-outlined">delete</span>
-                    ลบข้อมูล
-                  </button>
-                  <button class="btn btn-outline" style="width:auto" onclick="triggerLoading(this, 2200)">
-                    <span class="material-symbols-outlined">share</span>
-                    แชร์
-                  </button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p class="form-label">Submit / Reset / Button</p>
-                <div class="components-row">
-                  <input type="submit" class="btn btn-primary" value="Submit" style="width:auto">
-                  <input type="reset" class="btn btn-tertiary-outline" value="Reset" style="width:auto">
-                  <button type="button" class="btn btn-secondary" style="width:auto">Button</button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 12. Hidden Input ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Hidden &amp; Other Inputs</h3>
-            </div>
-
-            <div class="components-section">
-
-              <!-- Hidden (shown for reference only) -->
-              <div class="form-group">
-                <p class="form-label">Hidden (ไม่แสดงผลบนหน้าจอ)</p>
-                <code style="font-size:var(--font-size-body-m);color:var(--foreground-neutral-lighter);background:var(--neutral-96);padding:var(--spacing-md) var(--spacing-lg);border-radius:var(--radius-md);display:block">&lt;input type="hidden" name="csrf_token" value="abc123"&gt;</code>
-                <input type="hidden" name="csrf_token" value="abc123">
-                <span class="form-hint">ใช้ส่งข้อมูลแบบไม่แสดงผล เช่น token, session ID</span>
-              </div>
-
-              <!-- Image submit button -->
-              <div class="form-group">
-                <p class="form-label">Image Submit Button</p>
-                <input type="image" src="favicon/favicon-32x32.png" alt="Submit via image" title="กด Submit ด้วยรูปภาพ" width="32" height="32">
-                <span class="form-hint">ปุ่ม Submit ที่ใช้รูปภาพแทนข้อความ</span>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 13. Timeline ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Timeline</h3>
-            </div>
-
-            <div class="components-section">
-
-              <!-- Basic dot timeline -->
-              <div class="form-group">
-                <p class="form-label">Basic — Dot</p>
-                <div class="timeline">
-                  <div class="timeline-item">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ออกใบรับรองแพทย์</p>
-                      <p class="timeline-item-desc">12 ม.ค. 2568 — โรงพยาบาลสิริราช</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">บันทึกลงระบบกระทรวงสาธารณสุข</p>
-                      <p class="timeline-item-desc">12 ม.ค. 2568 เวลา 14:20</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ดาวน์โหลด PDF</p>
-                      <p class="timeline-item-desc">20 ม.ค. 2568 เวลา 09:05 — โดยผู้ใช้งาน</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stage: passed / active / future (dot) -->
-              <div class="form-group">
-                <p class="form-label">Stages — Dot (passed · active · future)</p>
-                <div class="timeline">
-                  <div class="timeline-item is-passed">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ยื่นคำขอ</p>
-                      <p class="timeline-item-desc">12 ม.ค. 2568 เวลา 09:00 — ผ่านแล้ว</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-passed">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ตรวจสอบเอกสาร</p>
-                      <p class="timeline-item-desc">13 ม.ค. 2568 เวลา 14:30 — ผ่านแล้ว</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-active">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">อยู่ระหว่างดำเนินการ</p>
-                      <p class="timeline-item-desc">กำลังรอการอนุมัติจากเจ้าหน้าที่</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-future">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ส่งผลการพิจารณา</p>
-                      <p class="timeline-item-desc">ยังไม่ถึงขั้นตอนนี้</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-future">
-                    <div class="timeline-item-dot"></div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">รับเอกสาร</p>
-                      <p class="timeline-item-desc">ยังไม่ถึงขั้นตอนนี้</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stage: passed / active / future (icon) -->
-              <div class="form-group">
-                <p class="form-label">Stages — Icon (passed · active · future)</p>
-                <div class="timeline">
-                  <div class="timeline-item is-passed">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">check</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">ออกใบสั่งจราจร</p>
-                        <span class="timeline-item-tag" style="background:var(--primary-95);color:var(--primary-20)">ผ่านแล้ว</span>
-                      </div>
-                      <p class="timeline-item-desc">10 ม.ค. 2569 เวลา 09:31</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-passed">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">check</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">ออกหนังสือเตือน</p>
-                        <span class="timeline-item-tag" style="background:var(--primary-95);color:var(--primary-20)">ผ่านแล้ว</span>
-                      </div>
-                      <p class="timeline-item-desc">28 มี.ค. 2569 เวลา 10:00</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-active">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">payments</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">รอชำระค่าปรับ</p>
-                        <span class="timeline-item-tag">กำลังดำเนินการ</span>
-                      </div>
-                      <p class="timeline-item-desc">กรุณาชำระภายใน 31 ม.ค. 2570</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-future">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">task_alt</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ยืนยันการชำระเงิน</p>
-                      <p class="timeline-item-desc">ยังไม่ถึงขั้นตอนนี้</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-future">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">verified</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">ปิดคดี</p>
-                      <p class="timeline-item-desc">ยังไม่ถึงขั้นตอนนี้</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Icon + Status Colours -->
-              <div class="form-group">
-                <p class="form-label">Icon + Status Colours</p>
-                <div class="timeline">
-                  <div class="timeline-item is-success">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">check</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">ชำระค่าปรับเรียบร้อย</p>
-                        <span class="timeline-item-tag">สำเร็จ</span>
-                      </div>
-                      <p class="timeline-item-desc">10 เม.ย. 2569 เวลา 11:45 — ผ่าน KTB Netbank</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-warning">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">schedule</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">ออกหนังสือเตือน</p>
-                        <span class="timeline-item-tag" style="background:var(--warning-90);color:var(--warning-20)">เตือน</span>
-                      </div>
-                      <p class="timeline-item-desc">28 มี.ค. 2569 — กองบังคับการตำรวจทางหลวง</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-danger">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">error</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <div class="timeline-item-header">
-                        <p class="timeline-item-title">ออกใบสั่ง</p>
-                        <span class="timeline-item-tag" style="background:var(--danger-95);color:var(--danger-30)">ค้างชำระ</span>
-                      </div>
-                      <p class="timeline-item-desc">10 ม.ค. 2569 เวลา 09:31 — ถนนมอเตอร์เวย์ M7</p>
-                    </div>
-                  </div>
-                  <div class="timeline-item is-neutral">
-                    <div class="timeline-item-icon">
-                      <span class="material-symbols-outlined">receipt_long</span>
-                    </div>
-                    <div class="timeline-item-content">
-                      <p class="timeline-item-title">บันทึกข้อมูลในระบบ</p>
-                      <p class="timeline-item-desc">10 ม.ค. 2569 เวลา 09:35 — ระบบอัตโนมัติ</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 14. Image Helper ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Image Helper</h3>
-            </div>
-
-            <div class="components-section">
-
-              <!-- Aspect ratio frames -->
-              <div class="form-group">
-                <p class="form-label">Aspect Ratio Frames</p>
-                <div class="img-helper-grid col-2">
-                  <div class="img-helper">
-                    <div class="img-helper-frame ratio-16-9">
-                      <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="16:9 example">
-                      <span class="img-helper-badge">
-                        <span class="material-symbols-outlined">photo_camera</span>
-                        16 : 9
-                      </span>
-                    </div>
-                    <p class="img-helper-caption">16 : 9 — ภาพแนวนอน (landscape)</p>
-                  </div>
-                  <div class="img-helper">
-                    <div class="img-helper-frame ratio-1-1">
-                      <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="1:1 example">
-                      <span class="img-helper-badge">
-                        <span class="material-symbols-outlined">photo_camera</span>
-                        1 : 1
-                      </span>
-                    </div>
-                    <p class="img-helper-caption">1 : 1 — ภาพสี่เหลี่ยมจัตุรัส</p>
-                  </div>
-                  <div class="img-helper">
-                    <div class="img-helper-frame ratio-4-3">
-                      <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="4:3 example">
-                      <span class="img-helper-badge">
-                        <span class="material-symbols-outlined">photo_camera</span>
-                        4 : 3
-                      </span>
-                    </div>
-                    <p class="img-helper-caption">4 : 3 — มาตรฐานทั่วไป</p>
-                  </div>
-                  <div class="img-helper">
-                    <div class="img-helper-frame ratio-3-4">
-                      <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="3:4 example">
-                      <span class="img-helper-badge">
-                        <span class="material-symbols-outlined">photo_camera</span>
-                        3 : 4
-                      </span>
-                    </div>
-                    <p class="img-helper-caption">3 : 4 — ภาพแนวตั้ง (portrait)</p>
-                  </div>
-                </div>
-              </div>
-
-
-              <!-- Single full-width with caption -->
-              <div class="form-group">
-                <p class="form-label">Full-width + Caption</p>
-                <div class="img-helper">
-                  <div class="img-helper-frame ratio-16-9">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="หลักฐานภาพจากกล้องวงจรปิด">
-                    <span class="img-helper-badge">
-                      <span class="material-symbols-outlined">videocam</span>
-                      กล้องวงจรปิด CCTV-07
-                    </span>
-                  </div>
-                  <p class="img-helper-caption">หลักฐานภาพจากกล้องวงจรปิด — ถนนมอเตอร์เวย์ M7 กม. 135+400<br>วันที่ 10 มกราคม 2569 เวลา 09:31 น.</p>
-                </div>
-              </div>
-
-              <!-- Circle shape + sizes -->
-              <div class="form-group">
-                <p class="form-label">Circle — ทุกขนาด (xs → 2xl)</p>
-                <div class="img-helper-row">
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="xs" class="img-helper-frame circle size-xs">
-                    <p class="img-helper-caption mt-xs">xs<br>32px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="sm" class="img-helper-frame circle size-sm">
-                    <p class="img-helper-caption mt-xs">sm<br>48px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="md" class="img-helper-frame circle size-md">
-                    <p class="img-helper-caption mt-xs">md<br>64px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="lg" class="img-helper-frame circle size-lg">
-                    <p class="img-helper-caption mt-xs">lg<br>96px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="xl" class="img-helper-frame circle size-xl">
-                    <p class="img-helper-caption mt-xs">xl<br>128px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="2xl" class="img-helper-frame circle size-2xl">
-                    <p class="img-helper-caption mt-xs">2xl<br>160px</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Circle + status rings -->
-              <div class="form-group">
-                <p class="form-label">Circle — Status Rings</p>
-                <div class="img-helper-row">
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="online" class="img-helper-frame circle size-lg ring-online">
-                    <p class="img-helper-caption mt-xs">ring-online</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="busy" class="img-helper-frame circle size-lg ring-busy">
-                    <p class="img-helper-caption mt-xs">ring-busy</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="offline" class="img-helper-frame circle size-lg ring-offline">
-                    <p class="img-helper-caption mt-xs">ring-offline</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Square shape + sizes -->
-              <div class="form-group">
-                <p class="form-label">Square — ทุกขนาด (xs → 2xl)</p>
-                <div class="img-helper-row">
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="xs" class="img-helper-frame square size-xs">
-                    <p class="img-helper-caption mt-xs">xs<br>32px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="sm" class="img-helper-frame square size-sm">
-                    <p class="img-helper-caption mt-xs">sm<br>48px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="md" class="img-helper-frame square size-md">
-                    <p class="img-helper-caption mt-xs">md<br>64px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="lg" class="img-helper-frame square size-lg">
-                    <p class="img-helper-caption mt-xs">lg<br>96px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="xl" class="img-helper-frame square size-xl">
-                    <p class="img-helper-caption mt-xs">xl<br>128px</p>
-                  </div>
-                  <div style="text-align:center">
-                    <img src="https://sv-random.pages.dev/_media/onepiece/chalermpon.jpg" alt="2xl" class="img-helper-frame square size-2xl">
-                    <p class="img-helper-caption mt-xs">2xl<br>160px</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Placeholder — circle & square -->
-              <div class="form-group">
-                <p class="form-label">Placeholder — Circle &amp; Square</p>
-                <div class="img-helper-row">
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder circle size-sm">
-                      <span class="material-symbols-outlined">person</span>
-                    </div>
-                    <p class="img-helper-caption mt-xs">circle sm</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder circle size-md">
-                      <span class="material-symbols-outlined">person</span>
-                    </div>
-                    <p class="img-helper-caption mt-xs">circle md</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder circle size-lg">
-                      <span class="material-symbols-outlined">person</span>
-                    </div>
-                    <p class="img-helper-caption mt-xs">circle lg</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder circle size-xl">
-                      <span class="material-symbols-outlined">person</span>
-                      <p>ไม่มีรูปภาพ</p>
-                    </div>
-                    <p class="img-helper-caption mt-xs">circle xl</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder square size-lg">
-                      <span class="material-symbols-outlined">image</span>
-                    </div>
-                    <p class="img-helper-caption mt-xs">square lg</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder square size-xl">
-                      <span class="material-symbols-outlined">image</span>
-                      <p>ไม่มีรูปภาพ</p>
-                    </div>
-                    <p class="img-helper-caption mt-xs">square xl</p>
-                  </div>
-                  <div style="text-align:center">
-                    <div class="img-helper-placeholder square size-2xl">
-                      <span class="material-symbols-outlined">image</span>
-                      <p>ไม่มีรูปภาพ</p>
-                    </div>
-                    <p class="img-helper-caption mt-xs">square 2xl</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <!-- ─── 15. Responsive Table ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Table → Card (Responsive)</h3>
-            </div>
-            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">บนหน้าจอใหญ่แสดงเป็นตาราง — บนมือถือพับเป็น card แต่ละแถวโดยอัตโนมัติ</p>
-
-            <div class="data-table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>เลขที่ใบสั่ง</th>
-                    <th>ข้อหา</th>
-                    <th>สถานที่เกิดเหตุ</th>
-                    <th>วันที่</th>
-                    <th>ค่าปรับ</th>
-                    <th>สถานะ</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td data-label="เลขที่ใบสั่ง">0265125960711</td>
-                    <td data-label="ข้อหา">ขับรถเกินความเร็ว</td>
-                    <td data-label="สถานที่เกิดเหตุ">มอเตอร์เวย์ M7 กม. 135</td>
-                    <td data-label="วันที่">10 ม.ค. 2569</td>
-                    <td data-label="ค่าปรับ">500 บาท</td>
-                    <td data-label="สถานะ"><span class="cell-status unpaid">ค้างชำระ</span></td>
-                    <td data-label="การดำเนินการ">
-                      <div class="cell-actions">
-                        <a href="#" class="btn btn-primary btn-small" style="width:auto">ชำระ</a>
-                        <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td data-label="เลขที่ใบสั่ง">0265125960712</td>
-                    <td data-label="ข้อหา">ฝ่าสัญญาณไฟจราจร</td>
-                    <td data-label="สถานที่เกิดเหตุ">แยกอโศก กรุงเทพฯ</td>
-                    <td data-label="วันที่">28 ธ.ค. 2568</td>
-                    <td data-label="ค่าปรับ">1,000 บาท</td>
-                    <td data-label="สถานะ"><span class="cell-status paid">ชำระแล้ว</span></td>
-                    <td data-label="การดำเนินการ">
-                      <div class="cell-actions">
-                        <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td data-label="เลขที่ใบสั่ง">0265125960713</td>
-                    <td data-label="ข้อหา">ไม่คาดเข็มขัดนิรภัย</td>
-                    <td data-label="สถานที่เกิดเหตุ">ถนนพระราม 9 กรุงเทพฯ</td>
-                    <td data-label="วันที่">15 พ.ย. 2568</td>
-                    <td data-label="ค่าปรับ">500 บาท</td>
-                    <td data-label="สถานะ"><span class="cell-status warning">มีหนังสือเตือน</span></td>
-                    <td data-label="การดำเนินการ">
-                      <div class="cell-actions">
-                        <a href="#" class="btn btn-primary btn-small" style="width:auto">ชำระ</a>
-                        <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td data-label="เลขที่ใบสั่ง">MED-2568-C001</td>
-                    <td data-label="ข้อหา">ใบรับรองแพทย์ตรวจสุขภาพ</td>
-                    <td data-label="สถานที่เกิดเหตุ">โรงพยาบาลสิริราช</td>
-                    <td data-label="วันที่">12 ม.ค. 2568</td>
-                    <td data-label="ค่าปรับ">—</td>
-                    <td data-label="สถานะ"><span class="cell-status valid">มีผลบังคับใช้</span></td>
-                    <td data-label="การดำเนินการ">
-                      <div class="cell-actions">
-                        <a href="#" class="btn btn-secondary btn-small" style="width:auto">ดาวน์โหลด</a>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td data-label="เลขที่ใบสั่ง">MED-2567-C001</td>
-                    <td data-label="ข้อหา">ใบรับรองแพทย์ตรวจสุขภาพ</td>
-                    <td data-label="สถานที่เกิดเหตุ">โรงพยาบาลสิริราช</td>
-                    <td data-label="วันที่">10 ก.พ. 2567</td>
-                    <td data-label="ค่าปรับ">—</td>
-                    <td data-label="สถานะ"><span class="cell-status expired">หมดอายุ</span></td>
-                    <td data-label="การดำเนินการ">
-                      <div class="cell-actions">
-                        <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-
-
-          <!-- ─── 16. Label Display ─── -->
-          <div class="card">
-            <div class="section-title-container">
-              <div class="section-bar"></div>
-              <h3 class="section-title">Label Display</h3>
-            </div>
-            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">สำหรับแสดงข้อมูลในหน้า detail — label เล็กอยู่บน, value ใหญ่อยู่ล่าง</p>
-
-            <div class="components-section">
-
-              <!-- Basic stacked label + value -->
-              <div class="form-group">
-                <p class="form-label">Basic — details-list</p>
-                <div class="details-list">
-                  <div class="details-item">
-                    <span class="details-label">วันที่ออกใบสั่ง:</span>
-                    <span class="details-value">10 ม.ค. 2569 09:31 น.</span>
-                  </div>
-                  <div class="details-item">
-                    <span class="details-label">สถานที่เกิดเหตุ:</span>
-                    <span class="details-value">มอเตอร์เวย์ M7 กม. 135+400 ถนนบางนา-ตราด</span>
-                  </div>
-                  <div class="details-item">
-                    <span class="details-label">ออกใบสั่งโดย:</span>
-                    <span class="details-value">ด.ต.สมชาย ใจดี</span>
-                  </div>
-                  <div class="details-item">
-                    <span class="details-label">ทะเบียนรถ:</span>
-                    <span class="details-value">กข 1234 กรุงเทพมหานคร</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Value with sub-value -->
-              <div class="form-group">
-                <p class="form-label">Value + Sub-value</p>
-                <div class="details-list">
-                  <div class="details-item">
-                    <span class="details-label">สถานะ:</span>
-                    <span class="details-value">ยังไม่ได้ชำระค่าปรับ</span>
-                    <span class="details-subvalue">กรุณาชำระภายในวันที่ 10 ก.พ. 2569</span>
-                  </div>
-                  <div class="details-item">
-                    <span class="details-label">สถานะ:</span>
-                    <span class="details-value details-value-paid">ชำระค่าปรับแล้ว</span>
-                    <span class="details-subvalue details-subvalue-paid">ชำระเมื่อวันที่ 15 ม.ค. 2569 เวลา 14:20 น.</span>
-                  </div>
-                  <div class="details-item">
-                    <span class="details-label">สถานะ:</span>
-                    <span class="details-value details-value-warning">ยังไม่ได้ชำระ — ออกหนังสือเตือนแล้ว</span>
-                    <span class="details-subvalue details-subvalue-warning">หนังสือเตือนออกเมื่อวันที่ 20 ม.ค. 2569</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Inline / horizontal variant (card-label + card-value) -->
-              <div class="form-group">
-                <p class="form-label">Inline — card-label / card-value (ใช้ใน list card)</p>
-                <div style="display:flex; flex-direction:column; gap: var(--spacing-md);">
-                  <div class="card-body-item">
-                    <span class="card-label">วันที่เกิดเหตุ:</span>
-                    <span class="card-value">10 ม.ค. 2569</span>
-                  </div>
-                  <div class="card-body-item">
-                    <span class="card-label">สถานที่เกิดเหตุ:</span>
-                    <span class="card-value">มอเตอร์เวย์ M7 กม. 135</span>
-                  </div>
-                  <div class="card-body-item">
-                    <span class="card-label">ค่าปรับ:</span>
-                    <span class="card-value">500 บาท</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-        </div><!-- components-layout -->
-
-        <!-- Link to Alert demo -->
-        <a href="alert.html" class="btn btn-secondary" style="margin-top:var(--spacing-xl)">
-          <span class="material-symbols-outlined">notifications</span>
-          ดู Alert &amp; Confirm Demo
-        </a>
-
-        <p class="page-timestamp">Components Demo — ทางรัฐ Design System</p>
+        </div>
 
       </main>
     </div>
   </div>
-
-  <script>
-    // Toggle password visibility
-    function togglePassword() {
-      const input = document.getElementById('input-password');
-      const icon = document.getElementById('pw-toggle');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.textContent = 'visibility_off';
-      } else {
-        input.type = 'password';
-        icon.textContent = 'visibility';
-      }
-    }
-
-    // File dropzone label update
-    function updateFileLabel(input) {
-      const label = document.getElementById('file-label');
-      if (input.files.length === 0) {
-        label.innerHTML = '<span>คลิกเพื่อเลือกไฟล์</span> หรือลากไฟล์มาวางที่นี่';
-      } else if (input.files.length === 1) {
-        label.innerHTML = '<span>' + input.files[0].name + '</span>';
-      } else {
-        label.innerHTML = '<span>' + input.files.length + ' ไฟล์</span> ถูกเลือก';
-      }
-    }
-
-    // Color input display
-    const colorInput = document.getElementById('input-color');
-    const colorVal = document.getElementById('color-val');
-    colorInput.addEventListener('input', () => {
-      colorVal.textContent = colorInput.value;
-    });
-
-    // Button loading state demo
-    function triggerLoading(btn, duration) {
-      btn.classList.add('is-loading');
-      setTimeout(() => btn.classList.remove('is-loading'), duration || 2000);
-    }
-  </script>
 </body>
 </html>

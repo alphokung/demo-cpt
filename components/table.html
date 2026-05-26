@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table — Components</title>
+  <meta name="description" content="ตาราง responsive — desktop แสดงเป็น table, mobile พับเป็น card">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Table → Card (Responsive)</h2>
+            <p class="text-subheader">บนหน้าจอใหญ่แสดงเป็นตาราง — บนมือถือพับเป็น card แต่ละแถวโดยอัตโนมัติ</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>เลขที่ใบสั่ง</th>
+                  <th>ข้อหา</th>
+                  <th>สถานที่เกิดเหตุ</th>
+                  <th>วันที่</th>
+                  <th>ค่าปรับ</th>
+                  <th>สถานะ</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="เลขที่ใบสั่ง">0265125960711</td>
+                  <td data-label="ข้อหา">ขับรถเกินความเร็ว</td>
+                  <td data-label="สถานที่เกิดเหตุ">มอเตอร์เวย์ M7 กม. 135</td>
+                  <td data-label="วันที่">10 ม.ค. 2569</td>
+                  <td data-label="ค่าปรับ">500 บาท</td>
+                  <td data-label="สถานะ"><span class="cell-status unpaid">ค้างชำระ</span></td>
+                  <td data-label="การดำเนินการ">
+                    <div class="cell-actions">
+                      <a href="#" class="btn btn-primary btn-small" style="width:auto">ชำระ</a>
+                      <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="เลขที่ใบสั่ง">0265125960712</td>
+                  <td data-label="ข้อหา">ฝ่าสัญญาณไฟจราจร</td>
+                  <td data-label="สถานที่เกิดเหตุ">แยกอโศก กรุงเทพฯ</td>
+                  <td data-label="วันที่">28 ธ.ค. 2568</td>
+                  <td data-label="ค่าปรับ">1,000 บาท</td>
+                  <td data-label="สถานะ"><span class="cell-status paid">ชำระแล้ว</span></td>
+                  <td data-label="การดำเนินการ">
+                    <div class="cell-actions">
+                      <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="เลขที่ใบสั่ง">0265125960713</td>
+                  <td data-label="ข้อหา">ไม่คาดเข็มขัดนิรภัย</td>
+                  <td data-label="สถานที่เกิดเหตุ">ถนนพระราม 9 กรุงเทพฯ</td>
+                  <td data-label="วันที่">15 พ.ย. 2568</td>
+                  <td data-label="ค่าปรับ">500 บาท</td>
+                  <td data-label="สถานะ"><span class="cell-status warning">มีหนังสือเตือน</span></td>
+                  <td data-label="การดำเนินการ">
+                    <div class="cell-actions">
+                      <a href="#" class="btn btn-primary btn-small" style="width:auto">ชำระ</a>
+                      <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="เลขที่ใบสั่ง">MED-2568-C001</td>
+                  <td data-label="ข้อหา">ใบรับรองแพทย์ตรวจสุขภาพ</td>
+                  <td data-label="สถานที่เกิดเหตุ">โรงพยาบาลสิริราช</td>
+                  <td data-label="วันที่">12 ม.ค. 2568</td>
+                  <td data-label="ค่าปรับ">—</td>
+                  <td data-label="สถานะ"><span class="cell-status valid">มีผลบังคับใช้</span></td>
+                  <td data-label="การดำเนินการ">
+                    <div class="cell-actions">
+                      <a href="#" class="btn btn-secondary btn-small" style="width:auto">ดาวน์โหลด</a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="เลขที่ใบสั่ง">MED-2567-C001</td>
+                  <td data-label="ข้อหา">ใบรับรองแพทย์ตรวจสุขภาพ</td>
+                  <td data-label="สถานที่เกิดเหตุ">โรงพยาบาลสิริราช</td>
+                  <td data-label="วันที่">10 ก.พ. 2567</td>
+                  <td data-label="ค่าปรับ">—</td>
+                  <td data-label="สถานะ"><span class="cell-status expired">หมดอายุ</span></td>
+                  <td data-label="การดำเนินการ">
+                    <div class="cell-actions">
+                      <a href="#" class="btn btn-tertiary-outline btn-small" style="width:auto">ดูข้อมูล</a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
