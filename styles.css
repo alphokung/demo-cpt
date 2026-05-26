@@ -1365,10 +1365,15 @@ main {
 
 @media (min-width: 1024px) {
   .desktop-split-layout {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: var(--spacing-2xl);
-    align-items: start;
+  }
+  .desktop-split-layout > * {
+    flex: 1 1 calc(50% - var(--spacing-2xl) / 2);
+    min-width: 0;
   }
 }
 .modal-overlay {
