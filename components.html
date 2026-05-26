@@ -543,6 +543,39 @@
               </div>
 
               <div class="form-group">
+                <p class="form-label">Loading State</p>
+                <div class="components-row">
+                  <button class="btn btn-primary is-loading" style="width:auto">ยืนยัน</button>
+                  <button class="btn btn-secondary is-loading" style="width:auto">ดาวน์โหลด</button>
+                  <button class="btn btn-destructive is-loading" style="width:auto">ลบข้อมูล</button>
+                  <button class="btn btn-outline is-loading" style="width:auto">แชร์</button>
+                  <button class="btn btn-tertiary-outline is-loading" style="width:auto">บันทึก</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">Loading — Interactive (คลิกเพื่อทดลอง)</p>
+                <div class="components-row">
+                  <button class="btn btn-primary" style="width:auto" onclick="triggerLoading(this, 2500)">
+                    <span class="material-symbols-outlined">send</span>
+                    ส่งข้อมูล
+                  </button>
+                  <button class="btn btn-secondary" style="width:auto" onclick="triggerLoading(this, 2000)">
+                    <span class="material-symbols-outlined">download</span>
+                    ดาวน์โหลด
+                  </button>
+                  <button class="btn btn-destructive" style="width:auto" onclick="triggerLoading(this, 1800)">
+                    <span class="material-symbols-outlined">delete</span>
+                    ลบข้อมูล
+                  </button>
+                  <button class="btn btn-outline" style="width:auto" onclick="triggerLoading(this, 2200)">
+                    <span class="material-symbols-outlined">share</span>
+                    แชร์
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <p class="form-label">Submit / Reset / Button</p>
                 <div class="components-row">
                   <input type="submit" class="btn btn-primary" value="Submit" style="width:auto">
@@ -1208,6 +1241,12 @@
     colorInput.addEventListener('input', () => {
       colorVal.textContent = colorInput.value;
     });
+
+    // Button loading state demo
+    function triggerLoading(btn, duration) {
+      btn.classList.add('is-loading');
+      setTimeout(() => btn.classList.remove('is-loading'), duration || 2000);
+    }
   </script>
 </body>
 </html>

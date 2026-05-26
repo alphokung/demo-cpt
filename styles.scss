@@ -4073,6 +4073,52 @@ code {
   color: var(--foreground-primary-dark);
 }
 
+// ─────────────────────────────────────────────────────────────
+// Button loading state
+// ─────────────────────────────────────────────────────────────
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+// Default spinner tokens (white — for solid/dark buttons)
+.btn {
+  --btn-spinner-color: rgba(255, 255, 255, 0.95);
+  --btn-spinner-track: rgba(255, 255, 255, 0.30);
+}
+
+// Green spinner — for light/transparent buttons
+.btn-secondary,
+.btn-outline,
+.btn-tertiary-outline,
+.btn-link {
+  --btn-spinner-color: var(--primary-40);
+  --btn-spinner-track: rgba(0, 178, 116, 0.25);
+}
+
+.btn.is-loading {
+  pointer-events: none;
+  color: transparent !important;
+  position: relative;
+
+  // Hide icon glyphs too
+  .material-symbols-outlined { color: transparent !important; }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2.5px solid var(--btn-spinner-track);
+    border-top-color: var(--btn-spinner-color);
+    animation: btn-spin 0.65s linear infinite;
+  }
+}
+
 // Warning confirm button
 .btn-warning {
   background-color: var(--warning-50);

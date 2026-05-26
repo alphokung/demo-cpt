@@ -4102,6 +4102,46 @@ code {
   color: var(--foreground-primary-dark);
 }
 
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.btn {
+  --btn-spinner-color: rgba(255, 255, 255, 0.95);
+  --btn-spinner-track: rgba(255, 255, 255, 0.30);
+}
+
+.btn-secondary,
+.btn-outline,
+.btn-tertiary-outline,
+.btn-link {
+  --btn-spinner-color: var(--primary-40);
+  --btn-spinner-track: rgba(0, 178, 116, 0.25);
+}
+
+.btn.is-loading {
+  pointer-events: none;
+  color: transparent !important;
+  position: relative;
+}
+.btn.is-loading .material-symbols-outlined {
+  color: transparent !important;
+}
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid var(--btn-spinner-track);
+  border-top-color: var(--btn-spinner-color);
+  animation: btn-spin 0.65s linear infinite;
+}
+
 .btn-warning {
   background-color: var(--warning-50);
   color: var(--neutral-100);
