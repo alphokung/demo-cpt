@@ -4074,26 +4074,37 @@ code {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Button loading state
+// Button loading state — arc grows in and shrinks out while spinning
 // ─────────────────────────────────────────────────────────────
 
-@keyframes btn-spin {
-  to { transform: rotate(360deg); }
+// Register --btn-arc so CSS can tween it between keyframes
+@property --btn-arc {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 25;
 }
 
-// Default spinner tokens (white — for solid/dark buttons)
+@keyframes btn-spin {
+  to { transform: translate(-50%, -50%) rotate(1turn); }
+}
+
+@keyframes btn-arc-grow {
+  0%, 100% { --btn-arc: 25; }
+  50%       { --btn-arc: 265; }
+}
+
+// Spinner colour tokens
 .btn {
   --btn-spinner-color: rgba(255, 255, 255, 0.95);
-  --btn-spinner-track: rgba(255, 255, 255, 0.30);
+  --btn-spinner-track: rgba(255, 255, 255, 0.28);
 }
 
-// Green spinner — for light/transparent buttons
 .btn-secondary,
 .btn-outline,
 .btn-tertiary-outline,
 .btn-link {
   --btn-spinner-color: var(--primary-40);
-  --btn-spinner-track: rgba(0, 178, 116, 0.25);
+  --btn-spinner-track: rgba(0, 178, 116, 0.22);
 }
 
 .btn.is-loading {
@@ -4101,9 +4112,23 @@ code {
   color: transparent !important;
   position: relative;
 
-  // Hide icon glyphs too
   .material-symbols-outlined { color: transparent !important; }
 
+  // Track ring
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2.5px solid var(--btn-spinner-track);
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  // Arc that spins AND grows/shrinks via @property animation
   &::after {
     content: '';
     position: absolute;
@@ -4113,9 +4138,18 @@ code {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2.5px solid var(--btn-spinner-track);
-    border-top-color: var(--btn-spinner-color);
-    animation: btn-spin 0.65s linear infinite;
+    background: conic-gradient(
+      from 0deg,
+      var(--btn-spinner-color) calc(var(--btn-arc) * 1deg),
+      transparent        calc(var(--btn-arc) * 1deg)
+    );
+    // Punch a hole in the centre to expose the track ring → donut shape
+    mask: radial-gradient(closest-side, transparent 75%, black 76%);
+    -webkit-mask: radial-gradient(closest-side, transparent 75%, black 76%);
+    animation:
+      btn-spin     1s    linear       infinite,
+      btn-arc-grow 1.4s  ease-in-out  infinite;
+    pointer-events: none;
   }
 }
 

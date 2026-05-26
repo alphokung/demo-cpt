@@ -4102,14 +4102,27 @@ code {
   color: var(--foreground-primary-dark);
 }
 
+@property --btn-arc {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 25;
+}
 @keyframes btn-spin {
   to {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+@keyframes btn-arc-grow {
+  0%, 100% {
+    --btn-arc: 25;
+  }
+  50% {
+    --btn-arc: 265;
   }
 }
 .btn {
   --btn-spinner-color: rgba(255, 255, 255, 0.95);
-  --btn-spinner-track: rgba(255, 255, 255, 0.30);
+  --btn-spinner-track: rgba(255, 255, 255, 0.28);
 }
 
 .btn-secondary,
@@ -4117,7 +4130,7 @@ code {
 .btn-tertiary-outline,
 .btn-link {
   --btn-spinner-color: var(--primary-40);
-  --btn-spinner-track: rgba(0, 178, 116, 0.25);
+  --btn-spinner-track: rgba(0, 178, 116, 0.22);
 }
 
 .btn.is-loading {
@@ -4128,6 +4141,18 @@ code {
 .btn.is-loading .material-symbols-outlined {
   color: transparent !important;
 }
+.btn.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid var(--btn-spinner-track);
+  box-sizing: border-box;
+  pointer-events: none;
+}
 .btn.is-loading::after {
   content: "";
   position: absolute;
@@ -4137,9 +4162,11 @@ code {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2.5px solid var(--btn-spinner-track);
-  border-top-color: var(--btn-spinner-color);
-  animation: btn-spin 0.65s linear infinite;
+  background: conic-gradient(from 0deg, var(--btn-spinner-color) calc(var(--btn-arc) * 1deg), transparent calc(var(--btn-arc) * 1deg));
+  mask: radial-gradient(closest-side, transparent 75%, black 76%);
+  -webkit-mask: radial-gradient(closest-side, transparent 75%, black 76%);
+  animation: btn-spin 1s linear infinite, btn-arc-grow 1.4s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .btn-warning {
