@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Helpers — Components</title>
+  <meta name="description" content="ตัวอย่าง Text Helper classes — font size, weight, color, alignment, truncation">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Text Helpers</h2>
+            <p class="text-subheader">Utility class สำหรับจัดการ typography — ขนาด, น้ำหนัก, สี, จัดวาง, ตัดข้อความ</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Type Scale ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Type Scale — Font Size</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ทุก class จับคู่ line-height โดยอัตโนมัติ</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-xl)">
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-display-m</code>
+                  <p class="text-display-m fw-700">46px Display</p>
+                </div>
+                <div style="height:1px; background:var(--stroke-neutral-lighter)"></div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-headline-s</code>
+                  <p class="text-headline-s fw-700">24px Headline</p>
+                </div>
+                <div style="height:1px; background:var(--stroke-neutral-lighter)"></div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-title-l</code>
+                  <p class="text-title-l fw-600">18px Title L</p>
+                </div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-title-m</code>
+                  <p class="text-title-m fw-600">16px Title M</p>
+                </div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-title-s</code>
+                  <p class="text-title-s fw-600">14px Title S</p>
+                </div>
+                <div style="height:1px; background:var(--stroke-neutral-lighter)"></div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-body-l</code>
+                  <p class="text-body-l">16px Body L — ข้อความเนื้อหาขนาดใหญ่</p>
+                </div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-body-m</code>
+                  <p class="text-body-m">14px Body M — ข้อความเนื้อหาหลัก (ค่าเริ่มต้น)</p>
+                </div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-body-s</code>
+                  <p class="text-body-s">12px Body S — คำอธิบายเพิ่มเติม caption</p>
+                </div>
+
+                <div style="display:flex; align-items:baseline; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-label-s</code>
+                  <p class="text-label-s">11px Label S — badge, meta, tiny label</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Font Weight ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Font Weight — <code>.fw-*</code></h3>
+            </div>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-300</code>
+                  <p class="text-title-m fw-300">Light 300 — ข้อความน้ำหนักเบา</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-400</code>
+                  <p class="text-title-m fw-400">Regular 400 — ข้อความปกติ</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-500</code>
+                  <p class="text-title-m fw-500">Medium 500 — ข้อความ medium</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-600</code>
+                  <p class="text-title-m fw-600">Semi-Bold 600 — ข้อความ semi-bold</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-700</code>
+                  <p class="text-title-m fw-700">Bold 700 — ข้อความหนา</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:80px; font-size:12px; color:var(--foreground-neutral-lighter)">.fw-800</code>
+                  <p class="text-title-m fw-800">Extra Bold 800 — ข้อความหนามาก</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Text Color ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Text Color — <code>.text-*</code></h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ใช้ semantic color token — สีจะปรับตาม theme โดยอัตโนมัติ</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-default</code>
+                  <p class="text-body-m text-default fw-500">Default — สีข้อความหลัก</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-muted</code>
+                  <p class="text-body-m text-muted fw-500">Muted — ข้อความรอง</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-lighter</code>
+                  <p class="text-body-m text-lighter fw-500">Lighter — ข้อความ hint / meta</p>
+                </div>
+                <div style="height:1px; background:var(--stroke-neutral-lighter)"></div>
+
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-primary</code>
+                  <p class="text-body-m text-primary fw-500">Primary — สีแบรนด์เขียว</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-secondary</code>
+                  <p class="text-body-m text-secondary fw-500">Secondary — สีแบรนด์น้ำเงิน</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-danger</code>
+                  <p class="text-body-m text-danger fw-500">Danger — สีข้อผิดพลาด แดง</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-success</code>
+                  <p class="text-body-m text-success fw-500">Success — สีสำเร็จ เขียว</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-warning</code>
+                  <p class="text-body-m text-warning fw-500">Warning — สีคำเตือน ส้ม</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-info</code>
+                  <p class="text-body-m text-info fw-500">Info — สีข้อมูล ฟ้า</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:140px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-white</code>
+                  <span style="background:var(--neutral-40);border-radius:var(--radius-md);padding:2px var(--spacing-md)">
+                    <p class="text-body-m text-white fw-500" style="display:inline">White — บนพื้นหลังเข้ม</p>
+                  </span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Alignment ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Alignment</h3>
+            </div>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+                <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                  <code style="font-size:12px; color:var(--foreground-neutral-lighter); display:block; margin-bottom:var(--spacing-sm)">.text-left</code>
+                  <p class="text-body-m text-left">ข้อความจัดชิดซ้าย — Left aligned text</p>
+                </div>
+                <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                  <code style="font-size:12px; color:var(--foreground-neutral-lighter); display:block; margin-bottom:var(--spacing-sm)">.text-center</code>
+                  <p class="text-body-m text-center">ข้อความจัดกึ่งกลาง — Center aligned text</p>
+                </div>
+                <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                  <code style="font-size:12px; color:var(--foreground-neutral-lighter); display:block; margin-bottom:var(--spacing-sm)">.text-right</code>
+                  <p class="text-body-m text-right">ข้อความจัดชิดขวา — Right aligned text</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Truncation ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Truncation &amp; Line Clamp</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ตัดข้อความที่ยาวเกินด้วย ellipsis</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-xl)">
+
+                <div class="form-group">
+                  <p class="form-label">.text-truncate — ตัดใน 1 บรรทัด</p>
+                  <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                    <p class="text-body-m text-truncate">ข้อความยาวมาก ๆ ที่จะถูกตัดให้เหลือแค่บรรทัดเดียวพร้อม ... เมื่อยาวเกินกว่า container ที่กำหนดไว้</p>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <p class="form-label">.text-clamp-2 — จำกัด 2 บรรทัด</p>
+                  <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                    <p class="text-body-m text-clamp-2">ข้อความยาวหลายบรรทัดที่จะถูก clamp ให้เหลือเพียง 2 บรรทัด บรรทัดแรกแสดงเนื้อหาหลัก บรรทัดที่สองแสดงต่อ และบรรทัดที่สามจะถูกตัดออก พร้อม ellipsis ที่ท้าย</p>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <p class="form-label">.text-clamp-3 — จำกัด 3 บรรทัด</p>
+                  <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-xl); padding:var(--spacing-lg) var(--spacing-xl)">
+                    <p class="text-body-m text-clamp-3">ข้อความยาวหลายบรรทัดที่จะถูก clamp ให้เหลือเพียง 3 บรรทัด บรรทัดแรกแสดงเนื้อหาหลัก บรรทัดที่สองแสดงเนื้อหาต่อ บรรทัดที่สามแสดงต่ออีก และบรรทัดที่สี่จะถูกตัดออก พร้อม ellipsis ที่ท้ายบรรทัดสุดท้าย</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Transform & Decoration ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Transform &amp; Decoration</h3>
+            </div>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-lg)">
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-uppercase</code>
+                  <p class="text-body-m text-uppercase fw-600">hello world — ตัวพิมพ์ใหญ่ทั้งหมด</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-capitalize</code>
+                  <p class="text-body-m text-capitalize">hello world — ตัวใหญ่นำคำ</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-lowercase</code>
+                  <p class="text-body-m text-lowercase">HELLO WORLD — ตัวพิมพ์เล็กทั้งหมด</p>
+                </div>
+                <div style="height:1px; background:var(--stroke-neutral-lighter)"></div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-underline</code>
+                  <p class="text-body-m text-underline text-primary">ลิงก์หรือข้อความที่ต้องการขีดเส้นใต้</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap">
+                  <code style="min-width:160px; font-size:12px; color:var(--foreground-neutral-lighter)">.text-no-underline</code>
+                  <a href="#" class="text-body-m text-primary text-no-underline">ลิงก์ที่ไม่มีเส้นใต้</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Real-world Examples ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">ตัวอย่างการใช้งานจริง</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">การผสม class หลายตัวเข้าด้วยกัน</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-xl)">
+
+                <!-- Article header example -->
+                <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-2xl); padding:var(--spacing-xl)">
+                  <p class="text-label-s text-uppercase text-muted fw-600" style="letter-spacing:0.05em; margin-bottom:var(--spacing-sm)">ประกาศสำคัญ</p>
+                  <p class="text-title-l fw-700" style="margin-bottom:var(--spacing-sm)">การต่ออายุใบขับขี่ประจำปี 2569</p>
+                  <p class="text-body-m text-muted text-clamp-2">กรมการขนส่งทางบกประกาศขยายเวลาการต่ออายุใบขับขี่ออกไปอีก 3 เดือน เพื่ออำนวยความสะดวกให้ผู้ขับขี่ที่ยังไม่ได้ดำเนินการ สามารถยื่นคำขอผ่านแอปพลิเคชัน DLT Vehicle Tax ได้</p>
+                  <p class="text-body-s text-lighter" style="margin-top:var(--spacing-md)">อัปเดตล่าสุด: 27 พฤษภาคม 2569</p>
+                </div>
+
+                <!-- Card label–value example -->
+                <div style="border:1px solid var(--stroke-neutral-lighter); border-radius:var(--radius-2xl); padding:var(--spacing-xl)">
+                  <p class="text-title-s fw-700" style="margin-bottom:var(--spacing-lg)">ข้อมูลใบสั่ง</p>
+                  <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                      <span class="text-body-s text-muted">เลขที่ใบสั่ง</span>
+                      <span class="text-body-m fw-600 text-truncate" style="max-width:180px">0265125960711</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                      <span class="text-body-s text-muted">ค่าปรับ</span>
+                      <span class="text-title-m fw-700 text-danger">500 บาท</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                      <span class="text-body-s text-muted">สถานะ</span>
+                      <span class="text-body-m fw-600 text-success">ชำระแล้ว</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">Font size</p>
+                <pre class="code-block">&lt;p class="text-display-m"&gt;46px&lt;/p&gt;
+&lt;p class="text-headline-s"&gt;24px&lt;/p&gt;
+&lt;p class="text-title-l"&gt;18px&lt;/p&gt;
+&lt;p class="text-title-m"&gt;16px&lt;/p&gt;
+&lt;p class="text-title-s"&gt;14px&lt;/p&gt;
+&lt;p class="text-body-l"&gt;16px&lt;/p&gt;
+&lt;p class="text-body-m"&gt;14px (default)&lt;/p&gt;
+&lt;p class="text-body-s"&gt;12px&lt;/p&gt;
+&lt;p class="text-label-s"&gt;11px&lt;/p&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Font weight</p>
+                <pre class="code-block">&lt;p class="fw-300"&gt;Light&lt;/p&gt;
+&lt;p class="fw-400"&gt;Regular&lt;/p&gt;
+&lt;p class="fw-500"&gt;Medium&lt;/p&gt;
+&lt;p class="fw-600"&gt;Semi-Bold&lt;/p&gt;
+&lt;p class="fw-700"&gt;Bold&lt;/p&gt;
+&lt;p class="fw-800"&gt;Extra Bold&lt;/p&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Color</p>
+                <pre class="code-block">&lt;p class="text-default"&gt;...&lt;/p&gt;
+&lt;p class="text-muted"&gt;...&lt;/p&gt;
+&lt;p class="text-lighter"&gt;...&lt;/p&gt;
+&lt;p class="text-primary"&gt;...&lt;/p&gt;
+&lt;p class="text-secondary"&gt;...&lt;/p&gt;
+&lt;p class="text-danger"&gt;...&lt;/p&gt;
+&lt;p class="text-success"&gt;...&lt;/p&gt;
+&lt;p class="text-warning"&gt;...&lt;/p&gt;
+&lt;p class="text-info"&gt;...&lt;/p&gt;
+&lt;p class="text-white"&gt;...&lt;/p&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Alignment</p>
+                <pre class="code-block">&lt;p class="text-left"&gt;ชิดซ้าย&lt;/p&gt;
+&lt;p class="text-center"&gt;กึ่งกลาง&lt;/p&gt;
+&lt;p class="text-right"&gt;ชิดขวา&lt;/p&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Truncation</p>
+                <pre class="code-block">&lt;!-- ตัด 1 บรรทัด --&gt;
+&lt;p class="text-truncate"&gt;ข้อความยาวมาก...&lt;/p&gt;
+
+&lt;!-- จำกัดจำนวนบรรทัด --&gt;
+&lt;p class="text-clamp-1"&gt;...&lt;/p&gt;
+&lt;p class="text-clamp-2"&gt;...&lt;/p&gt;
+&lt;p class="text-clamp-3"&gt;...&lt;/p&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Transform &amp; decoration</p>
+                <pre class="code-block">&lt;p class="text-uppercase"&gt;UPPERCASE&lt;/p&gt;
+&lt;p class="text-lowercase"&gt;lowercase&lt;/p&gt;
+&lt;p class="text-capitalize"&gt;Capitalize Each Word&lt;/p&gt;
+&lt;p class="text-underline"&gt;ขีดเส้นใต้&lt;/p&gt;
+&lt;a class="text-no-underline"&gt;ลิงก์ไม่มีเส้นใต้&lt;/a&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">ผสมหลาย class</p>
+                <pre class="code-block">&lt;p class="text-title-l fw-700 text-primary"&gt;หัวข้อสีแบรนด์&lt;/p&gt;
+&lt;p class="text-body-s text-muted text-clamp-2"&gt;คำอธิบาย 2 บรรทัด&lt;/p&gt;
+&lt;p class="text-label-s text-uppercase fw-600 text-lighter"&gt;LABEL&lt;/p&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
