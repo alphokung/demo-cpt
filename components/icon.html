@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icons — Components</title>
+  <meta name="description" content="วิธีใช้ Material Symbols Outlined — variable font, size, color, axes customization">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: var(--spacing-md);
+    }
+    .icon-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-lg) var(--spacing-sm);
+      border: 1px solid var(--stroke-neutral-lighter);
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+    }
+    .icon-tile:hover {
+      background: var(--background-primary-lighter);
+      border-color: var(--stroke-primary-lighter);
+    }
+    .icon-tile:active { background: var(--primary-90); }
+    .icon-tile .material-symbols-outlined { font-size: 28px; color: var(--foreground-neutral-default); }
+    .icon-tile-name {
+      font-size: 10px;
+      color: var(--foreground-neutral-lighter);
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.3;
+    }
+    /* Axes demo row */
+    .axes-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2xl);
+      flex-wrap: wrap;
+    }
+    .axes-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    .axes-cell-label {
+      font-size: 11px;
+      color: var(--foreground-neutral-lighter);
+      text-align: center;
+    }
+    /* Live customizer */
+    .customizer-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-3xl);
+      background: var(--background-neutral-medium);
+      border-radius: var(--radius-2xl);
+      min-height: 160px;
+    }
+    .customizer-preview .material-symbols-outlined {
+      font-size: 64px;
+      color: var(--foreground-primary-default);
+      transition: all 0.2s ease;
+    }
+    .customizer-preview-name {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+    }
+    /* Copied toast */
+    .copy-toast {
+      position: fixed;
+      bottom: var(--spacing-3xl);
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: var(--neutral-20);
+      color: var(--neutral-100);
+      font-size: var(--font-size-body-s);
+      padding: var(--spacing-sm) var(--spacing-xl);
+      border-radius: var(--radius-full);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+      z-index: 999;
+    }
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    /* Range input */
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary-30-base);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Icons</h2>
+            <p class="text-subheader">Material Symbols Outlined — variable font ปรับ Fill, Weight, Grade, Size ได้อิสระ</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">การใช้งานพื้นฐาน</h3>
+            </div>
+            <div class="components-section">
+
+              <div class="form-group">
+                <p class="form-label">HTML — ใส่ชื่อไอคอนใน span</p>
+                <pre class="code-block">&lt;span class="material-symbols-outlined"&gt;home&lt;/span&gt;
+&lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;span class="material-symbols-outlined"&gt;check_circle&lt;/span&gt;</pre>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:var(--spacing-xl); flex-wrap:wrap; padding:var(--spacing-lg) 0">
+                <span class="material-symbols-outlined" style="font-size:32px">home</span>
+                <span class="material-symbols-outlined" style="font-size:32px">search</span>
+                <span class="material-symbols-outlined" style="font-size:32px">check_circle</span>
+              </div>
+
+              <div class="form-group" style="margin-top:var(--spacing-lg)">
+                <p class="form-label">โหลด font ครั้งเดียวใน &lt;head&gt; ของทุกหน้า (มีอยู่แล้วใน styles.scss)</p>
+                <pre class="code-block">&lt;!-- ไม่ต้องเพิ่มเองถ้าใช้ styles.css — ถูก import ไว้แล้ว --&gt;
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');</pre>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Size ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">ขนาด — font-size</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ไอคอนปรับขนาดด้วย CSS <code>font-size</code> ตามปกติ</p>
+            <div class="components-section">
+
+              <div class="axes-row">
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:16px">notifications</span>
+                  <span class="axes-cell-label">16px</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:20px">notifications</span>
+                  <span class="axes-cell-label">20px</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:24px">notifications</span>
+                  <span class="axes-cell-label">24px<br>(default)</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px">notifications</span>
+                  <span class="axes-cell-label">32px</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:48px">notifications</span>
+                  <span class="axes-cell-label">48px</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:64px">notifications</span>
+                  <span class="axes-cell-label">64px</span>
+                </div>
+              </div>
+
+              <pre class="code-block" style="margin-top:var(--spacing-lg)">&lt;span class="material-symbols-outlined" style="font-size:16px"&gt;notifications&lt;/span&gt;
+&lt;span class="material-symbols-outlined" style="font-size:24px"&gt;notifications&lt;/span&gt;
+&lt;span class="material-symbols-outlined" style="font-size:48px"&gt;notifications&lt;/span&gt;</pre>
+
+            </div>
+          </div>
+
+          <!-- ─── Color ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">สี — color</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ไอคอนรับสีจาก CSS <code>color</code> — ใช้ semantic token เสมอ</p>
+            <div class="components-section">
+
+              <div class="axes-row">
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-neutral-default)">settings</span>
+                  <span class="axes-cell-label">default</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-neutral-lighter)">settings</span>
+                  <span class="axes-cell-label">lighter</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-primary-default)">settings</span>
+                  <span class="axes-cell-label">primary</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-secondary-default)">settings</span>
+                  <span class="axes-cell-label">secondary</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-negative-default)">settings</span>
+                  <span class="axes-cell-label">danger</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-positive-default)">settings</span>
+                  <span class="axes-cell-label">success</span>
+                </div>
+                <div class="axes-cell">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--foreground-warning-default)">settings</span>
+                  <span class="axes-cell-label">warning</span>
+                </div>
+                <div class="axes-cell" style="background:var(--neutral-30); border-radius:var(--radius-lg); padding:var(--spacing-md)">
+                  <span class="material-symbols-outlined" style="font-size:32px; color:var(--neutral-100)">settings</span>
+                  <span class="axes-cell-label" style="color:var(--neutral-80)">white</span>
+                </div>
+              </div>
+
+              <pre class="code-block" style="margin-top:var(--spacing-lg)">&lt;span class="material-symbols-outlined"
+  style="color:var(--foreground-primary-default)"&gt;
+  settings
+&lt;/span&gt;</pre>
+
+            </div>
+          </div>
+
+          <!-- ─── Variable Font Axes ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Variable Font Axes</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">Material Symbols เป็น variable font ปรับได้ 4 axes ผ่าน <code>font-variation-settings</code></p>
+            <div class="components-section">
+
+              <!-- FILL -->
+              <div class="form-group">
+                <p class="form-label">FILL — 0 (outlined) / 1 (filled)</p>
+                <div class="axes-row">
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">favorite</span>
+                    <span class="axes-cell-label">FILL 0<br>Outlined</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; color:var(--foreground-negative-default)">favorite</span>
+                    <span class="axes-cell-label">FILL 1<br>Filled</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">star</span>
+                    <span class="axes-cell-label">FILL 0</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; color:var(--warning-40)">star</span>
+                    <span class="axes-cell-label">FILL 1</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">notifications</span>
+                    <span class="axes-cell-label">FILL 0</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; color:var(--foreground-primary-default)">notifications</span>
+                    <span class="axes-cell-label">FILL 1</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- WGHT -->
+              <div class="form-group">
+                <p class="form-label">wght — น้ำหนักเส้น 100 (บาง) → 700 (หนา)</p>
+                <div class="axes-row">
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 100,'GRAD' 0,'opsz' 24">home</span>
+                    <span class="axes-cell-label">100</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24">home</span>
+                    <span class="axes-cell-label">300</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">home</span>
+                    <span class="axes-cell-label">400<br>(default)</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 600,'GRAD' 0,'opsz' 24">home</span>
+                    <span class="axes-cell-label">600</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 700,'GRAD' 0,'opsz' 24">home</span>
+                    <span class="axes-cell-label">700</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- OPSZ -->
+              <div class="form-group">
+                <p class="form-label">opsz — optical size ปรับ detail ตามขนาดที่ใช้จริง (20–48)</p>
+                <div class="axes-row">
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20">info</span>
+                    <span class="axes-cell-label">opsz 20<br>(small)</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24">info</span>
+                    <span class="axes-cell-label">opsz 24<br>(default)</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 40">info</span>
+                    <span class="axes-cell-label">opsz 40</span>
+                  </div>
+                  <div class="axes-cell">
+                    <span class="material-symbols-outlined" style="font-size:40px; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 48">info</span>
+                    <span class="axes-cell-label">opsz 48<br>(large)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Live Customizer ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Live Customizer</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ปรับค่า axes แบบ real-time และดู CSS ที่ได้</p>
+            <div class="components-section">
+
+              <div class="customizer-preview">
+                <span class="material-symbols-outlined" id="c-icon">bookmark</span>
+                <span class="customizer-preview-name" id="c-icon-name">bookmark</span>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-xl); margin-top:var(--spacing-xl)">
+
+                <div class="form-group">
+                  <label class="form-label">Icon name</label>
+                  <input class="form-control" type="text" id="c-name-input" value="bookmark" placeholder="ชื่อไอคอน">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Size: <span id="c-size-val">64</span>px</label>
+                  <input type="range" id="c-size" min="16" max="96" value="64">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">FILL: <span id="c-fill-val">0</span></label>
+                  <input type="range" id="c-fill" min="0" max="1" step="0.01" value="0">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">wght: <span id="c-wght-val">400</span></label>
+                  <input type="range" id="c-wght" min="100" max="700" step="100" value="400">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">GRAD: <span id="c-grad-val">0</span></label>
+                  <input type="range" id="c-grad" min="-50" max="200" step="50" value="0">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">opsz: <span id="c-opsz-val">24</span></label>
+                  <input type="range" id="c-opsz" min="20" max="48" step="4" value="24">
+                </div>
+
+              </div>
+
+              <div class="form-group" style="margin-top:var(--spacing-lg)">
+                <p class="form-label">CSS output</p>
+                <pre class="code-block" id="c-output">.material-symbols-outlined {
+  font-size: 64px;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}</pre>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Common Icons ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">ไอคอนที่ใช้บ่อยในโปรเจกต์นี้</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">คลิกเพื่อคัดลอกชื่อไอคอน</p>
+            <div class="components-section">
+              <div class="icon-grid" id="icon-grid"></div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+
+              <div class="form-group">
+                <p class="form-label">พื้นฐาน — outlined (ค่าเริ่มต้น)</p>
+                <pre class="code-block">&lt;span class="material-symbols-outlined"&gt;icon_name&lt;/span&gt;</pre>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">ปรับ axes ด้วย font-variation-settings</p>
+                <pre class="code-block">&lt;!-- Filled, bold --&gt;
+&lt;span class="material-symbols-outlined"
+  style="font-variation-settings:'FILL' 1,'wght' 600,'GRAD' 0,'opsz' 24"&gt;
+  favorite
+&lt;/span&gt;
+
+&lt;!-- หรือผ่าน CSS class --&gt;
+.icon-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}</pre>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">ใช้กับ token สีและขนาด</p>
+                <pre class="code-block">&lt;span class="material-symbols-outlined"
+  style="font-size:20px; color:var(--foreground-primary-default)"&gt;
+  check_circle
+&lt;/span&gt;</pre>
+              </div>
+
+              <div class="form-group">
+                <p class="form-label">ค้นหาไอคอนเพิ่มเติม</p>
+                <a href="https://fonts.google.com/icons" target="_blank" rel="noopener noreferrer"
+                   class="btn btn-secondary" style="width:auto; display:inline-flex">
+                  <span class="material-symbols-outlined">open_in_new</span>
+                  fonts.google.com/icons
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Copy toast -->
+  <div class="copy-toast" id="copy-toast">คัดลอกแล้ว!</div>
+
+  <script>
+    // ─── Common icons list ────────────────────────────────────────────────────
+    var ICONS = [
+      'arrow_back', 'arrow_forward', 'chevron_right', 'close', 'menu',
+      'search', 'home', 'notifications', 'settings', 'person',
+      'check_circle', 'cancel', 'error', 'warning', 'info',
+      'add', 'remove', 'edit', 'delete', 'share',
+      'download', 'upload', 'refresh', 'more_horiz', 'more_vert',
+      'calendar_today', 'location_on', 'phone', 'mail', 'link',
+      'visibility', 'visibility_off', 'lock', 'lock_open', 'fingerprint',
+      'receipt_long', 'payments', 'qr_code_2', 'credit_card', 'account_balance',
+      'ecg_heart', 'medical_services', 'directions_car', 'work', 'biotech',
+      'domain', 'verified', 'shield', 'star', 'favorite',
+      'open_in_new', 'content_copy', 'send', 'inbox', 'filter_list',
+    ];
+
+    var grid = document.getElementById('icon-grid');
+    ICONS.forEach(function(name) {
+      var tile = document.createElement('div');
+      tile.className = 'icon-tile';
+      tile.title = 'คัดลอก: ' + name;
+      tile.innerHTML =
+        '<span class="material-symbols-outlined">' + name + '</span>' +
+        '<span class="icon-tile-name">' + name + '</span>';
+      tile.addEventListener('click', function() { copyText(name); });
+      grid.appendChild(tile);
+    });
+
+    // ─── Copy helper ─────────────────────────────────────────────────────────
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        var t = document.getElementById('copy-toast');
+        t.textContent = 'คัดลอก "' + text + '" แล้ว';
+        t.classList.add('show');
+        setTimeout(function() { t.classList.remove('show'); }, 1800);
+      });
+    }
+
+    // ─── Live customizer ─────────────────────────────────────────────────────
+    var icon    = document.getElementById('c-icon');
+    var nameInp = document.getElementById('c-name-input');
+    var output  = document.getElementById('c-output');
+
+    function updateCustomizer() {
+      var name  = nameInp.value.trim() || 'bookmark';
+      var size  = document.getElementById('c-size').value;
+      var fill  = parseFloat(document.getElementById('c-fill').value).toFixed(2);
+      var wght  = document.getElementById('c-wght').value;
+      var grad  = document.getElementById('c-grad').value;
+      var opsz  = document.getElementById('c-opsz').value;
+
+      // Update labels
+      document.getElementById('c-size-val').textContent = size;
+      document.getElementById('c-fill-val').textContent = fill;
+      document.getElementById('c-wght-val').textContent = wght;
+      document.getElementById('c-grad-val').textContent = grad;
+      document.getElementById('c-opsz-val').textContent = opsz;
+
+      // Update preview
+      icon.textContent = name;
+      document.getElementById('c-icon-name').textContent = name;
+      icon.style.fontSize = size + 'px';
+      icon.style.fontVariationSettings =
+        "'FILL' " + fill + ", 'wght' " + wght + ", 'GRAD' " + grad + ", 'opsz' " + opsz;
+
+      // Update code output
+      output.textContent =
+        '.material-symbols-outlined {\n' +
+        '  font-size: ' + size + 'px;\n' +
+        "  font-variation-settings: 'FILL' " + fill + ", 'wght' " + wght + ", 'GRAD' " + grad + ", 'opsz' " + opsz + ';\n' +
+        '}';
+    }
+
+    ['c-name-input','c-size','c-fill','c-wght','c-grad','c-opsz'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', updateCustomizer);
+    });
+  </script>
+</body>
+</html>
