@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs — Components</title>
+  <meta name="description" content="ตัวอย่าง Tabs component — แท็บนำทางเนื้อหา แบบ underline และ pill style">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Tabs</h2>
+            <p class="text-subheader">แท็บสำหรับสลับเนื้อหา — underline style และ pill style</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Underline Tabs ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Underline Tabs</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แท็บแบบ underline — เหมาะกับ content หลักของหน้า</p>
+            <div class="components-section">
+
+              <div class="tabs" id="tabs-underline">
+                <div class="tab-bar">
+                  <button class="tab-btn active" onclick="switchTab('tabs-underline', 'panel-all', this)">ทั้งหมด</button>
+                  <button class="tab-btn" onclick="switchTab('tabs-underline', 'panel-active', this)">ใช้งานได้</button>
+                  <button class="tab-btn" onclick="switchTab('tabs-underline', 'panel-expired', this)">หมดอายุ</button>
+                </div>
+                <div class="tab-panels">
+                  <div class="tab-panel active" id="panel-all">
+                    <div style="display:flex;flex-direction:column;gap:var(--spacing-md)">
+                      <div style="padding:var(--spacing-lg) var(--spacing-xl);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:space-between">
+                        <div>
+                          <p style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-600)">ใบรับรองแพทย์ตรวจสุขภาพ</p>
+                          <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">โรงพยาบาลกรุงเทพ • หมดอายุ 31 ธ.ค. 2569</p>
+                        </div>
+                        <span class="tag tag--success tag--sm tag--dot">ใช้งานได้</span>
+                      </div>
+                      <div style="padding:var(--spacing-lg) var(--spacing-xl);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:space-between">
+                        <div>
+                          <p style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-600)">ใบรับรองสำหรับใบขับขี่</p>
+                          <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">โรงพยาบาลพระราม 9 • หมดอายุ 15 มี.ค. 2568</p>
+                        </div>
+                        <span class="tag tag--danger tag--sm tag--dot">หมดอายุ</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-panel" id="panel-active">
+                    <div style="padding:var(--spacing-lg) var(--spacing-xl);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:space-between">
+                      <div>
+                        <p style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-600)">ใบรับรองแพทย์ตรวจสุขภาพ</p>
+                        <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">โรงพยาบาลกรุงเทพ • หมดอายุ 31 ธ.ค. 2569</p>
+                      </div>
+                      <span class="tag tag--success tag--sm tag--dot">ใช้งานได้</span>
+                    </div>
+                  </div>
+                  <div class="tab-panel" id="panel-expired">
+                    <div style="padding:var(--spacing-lg) var(--spacing-xl);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:space-between">
+                      <div>
+                        <p style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-600)">ใบรับรองสำหรับใบขับขี่</p>
+                        <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">โรงพยาบาลพระราม 9 • หมดอายุ 15 มี.ค. 2568</p>
+                      </div>
+                      <span class="tag tag--danger tag--sm tag--dot">หมดอายุ</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Tabs with Icons ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Tabs with Icons</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่มไอคอนในแท็บเพื่อช่วยสื่อความหมาย</p>
+            <div class="components-section">
+
+              <div class="tabs" id="tabs-icons">
+                <div class="tab-bar">
+                  <button class="tab-btn active" onclick="switchTab('tabs-icons', 'icon-overview', this)">
+                    <span class="material-symbols-outlined">grid_view</span>ภาพรวม
+                  </button>
+                  <button class="tab-btn" onclick="switchTab('tabs-icons', 'icon-history', this)">
+                    <span class="material-symbols-outlined">history</span>ประวัติ
+                  </button>
+                  <button class="tab-btn" onclick="switchTab('tabs-icons', 'icon-settings', this)">
+                    <span class="material-symbols-outlined">settings</span>ตั้งค่า
+                  </button>
+                </div>
+                <div class="tab-panels">
+                  <div class="tab-panel active" id="icon-overview">
+                    <p style="color:var(--foreground-neutral-light)">เนื้อหา Tab ภาพรวม — แสดงสรุปข้อมูลทั้งหมด</p>
+                  </div>
+                  <div class="tab-panel" id="icon-history">
+                    <p style="color:var(--foreground-neutral-light)">เนื้อหา Tab ประวัติ — รายการกิจกรรมที่ผ่านมา</p>
+                  </div>
+                  <div class="tab-panel" id="icon-settings">
+                    <p style="color:var(--foreground-neutral-light)">เนื้อหา Tab ตั้งค่า — การกำหนดค่าต่าง ๆ</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Pill Tabs ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Pill Style Tabs</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">แท็บแบบ pill — เหมาะกับ filter หรือ segment control</p>
+            <div class="components-section">
+
+              <div class="tabs" id="tabs-pill">
+                <div class="tab-bar tab-bar--pill">
+                  <button class="tab-btn active" onclick="switchTab('tabs-pill', 'pill-day', this)">วันนี้</button>
+                  <button class="tab-btn" onclick="switchTab('tabs-pill', 'pill-week', this)">สัปดาห์นี้</button>
+                  <button class="tab-btn" onclick="switchTab('tabs-pill', 'pill-month', this)">เดือนนี้</button>
+                </div>
+                <div class="tab-panels">
+                  <div class="tab-panel active" id="pill-day">
+                    <div style="text-align:center;padding:var(--spacing-2xl) 0">
+                      <p style="font-size:var(--font-size-display-m);font-weight:var(--font-weight-700);color:var(--foreground-primary-default)">3</p>
+                      <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">รายการวันนี้</p>
+                    </div>
+                  </div>
+                  <div class="tab-panel" id="pill-week">
+                    <div style="text-align:center;padding:var(--spacing-2xl) 0">
+                      <p style="font-size:var(--font-size-display-m);font-weight:var(--font-weight-700);color:var(--foreground-primary-default)">18</p>
+                      <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">รายการสัปดาห์นี้</p>
+                    </div>
+                  </div>
+                  <div class="tab-panel" id="pill-month">
+                    <div style="text-align:center;padding:var(--spacing-2xl) 0">
+                      <p style="font-size:var(--font-size-display-m);font-weight:var(--font-weight-700);color:var(--foreground-primary-default)">74</p>
+                      <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter)">รายการเดือนนี้</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML — Underline Tabs</p>
+                <pre class="code-block">&lt;div class="tabs" id="my-tabs"&gt;
+  &lt;div class="tab-bar"&gt;
+    &lt;button class="tab-btn active"
+      onclick="switchTab('my-tabs', 'panel-1', this)"&gt;
+      แท็บที่ 1
+    &lt;/button&gt;
+    &lt;button class="tab-btn"
+      onclick="switchTab('my-tabs', 'panel-2', this)"&gt;
+      แท็บที่ 2
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="tab-panels"&gt;
+    &lt;div class="tab-panel active" id="panel-1"&gt;เนื้อหา 1&lt;/div&gt;
+    &lt;div class="tab-panel"       id="panel-2"&gt;เนื้อหา 2&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">HTML — Pill Tabs (เพิ่ม .tab-bar--pill)</p>
+                <pre class="code-block">&lt;div class="tab-bar tab-bar--pill"&gt;
+  &lt;button class="tab-btn active" onclick="switchTab(...)"&gt;วันนี้&lt;/button&gt;
+  &lt;button class="tab-btn" onclick="switchTab(...)"&gt;สัปดาห์นี้&lt;/button&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">JavaScript</p>
+                <pre class="code-block">function switchTab(tabsId, panelId, btn) {
+  var tabs = document.getElementById(tabsId);
+  // ปิดแท็บทั้งหมด
+  tabs.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  tabs.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  // เปิดแท็บที่เลือก
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabsId, panelId, btn) {
+      var tabs = document.getElementById(tabsId);
+      tabs.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      tabs.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+  </script>
+</body>
+</html>

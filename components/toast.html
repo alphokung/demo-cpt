@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toast / Snackbar — Components</title>
+  <meta name="description" content="ตัวอย่าง Toast Notification — auto-dismiss message แจ้งผลการดำเนินการ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <!-- Toast container — fixed top center -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Toast / Snackbar</h2>
+            <p class="text-subheader">การแจ้งเตือนสั้น ๆ ที่หายไปเองอัตโนมัติ — feedback จากการดำเนินการ</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Colour Variants ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Colour Variants</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">กดปุ่มเพื่อแสดง toast แต่ละแบบ — หายไปเองใน 3 วินาที</p>
+            <div class="components-section">
+              <div style="display:flex; flex-wrap:wrap; gap:var(--spacing-md)">
+                <button class="btn btn-primary" style="width:auto" onclick="showToast('บันทึกข้อมูลสำเร็จแล้ว', 'success', 'check_circle')">
+                  <span class="material-symbols-outlined">check_circle</span>Success
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="showToast('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง', 'danger', 'error')">
+                  <span class="material-symbols-outlined">error</span>Danger
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="showToast('กรุณาตรวจสอบข้อมูลก่อนดำเนินการ', 'warning', 'warning')">
+                  <span class="material-symbols-outlined">warning</span>Warning
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="showToast('มีการอัปเดตใหม่พร้อมใช้งาน', 'info', 'info')">
+                  <span class="material-symbols-outlined">info</span>Info
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="showToast('คัดลอกลิงก์เรียบร้อยแล้ว', 'default', 'link')">
+                  <span class="material-symbols-outlined">contrast</span>Default (dark)
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="showToast('ส่งคำขอเรียบร้อยแล้ว', 'light', 'send')">
+                  <span class="material-symbols-outlined">light_mode</span>Light
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Static Preview ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Static Preview</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">ตัวอย่างแสดงผล toast แต่ละแบบแบบ static</p>
+            <div class="components-section">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md); max-width:400px">
+
+                <div class="toast toast--success">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span class="toast__message">บันทึกข้อมูลสำเร็จแล้ว</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+                <div class="toast toast--danger">
+                  <span class="material-symbols-outlined">error</span>
+                  <span class="toast__message">เกิดข้อผิดพลาด กรุณาลองใหม่</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+                <div class="toast toast--warning">
+                  <span class="material-symbols-outlined">warning</span>
+                  <span class="toast__message">กรุณาตรวจสอบข้อมูลก่อนดำเนินการ</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+                <div class="toast toast--info">
+                  <span class="material-symbols-outlined">info</span>
+                  <span class="toast__message">มีการอัปเดตใหม่พร้อมใช้งาน</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+                <div class="toast">
+                  <span class="material-symbols-outlined">link</span>
+                  <span class="toast__message">คัดลอกลิงก์เรียบร้อยแล้ว</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+                <div class="toast toast--light">
+                  <span class="material-symbols-outlined" style="color:var(--foreground-primary-default)">send</span>
+                  <span class="toast__message">ส่งคำขอเรียบร้อยแล้ว</span>
+                  <button class="toast__close"><span class="material-symbols-outlined">close</span></button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML — container (วางในระดับ body)</p>
+                <pre class="code-block">&lt;!-- วางใกล้ปิด &lt;/body&gt; --&gt;
+&lt;div class="toast-container" id="toast-container"&gt;&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">JavaScript — showToast() function</p>
+                <pre class="code-block">function showToast(message, type = 'default', icon = 'notifications', duration = 3000) {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  const variantClass = type !== 'default' ? ` toast--${type}` : '';
+  el.className = `toast${variantClass}`;
+  el.innerHTML = `
+    &lt;span class="material-symbols-outlined"&gt;${icon}&lt;/span&gt;
+    &lt;span class="toast__message"&gt;${message}&lt;/span&gt;
+    &lt;button class="toast__close" onclick="dismissToast(this.closest('.toast'))"&gt;
+      &lt;span class="material-symbols-outlined"&gt;close&lt;/span&gt;
+    &lt;/button&gt;`;
+  container.appendChild(el);
+  setTimeout(() => dismissToast(el), duration);
+}
+
+function dismissToast(el) {
+  if (!el || el.classList.contains('toast-exit')) return;
+  el.classList.add('toast-exit');
+  el.addEventListener('animationend', () => el.remove(), { once: true });
+}
+
+// ตัวอย่างการเรียกใช้:
+showToast('บันทึกสำเร็จ', 'success', 'check_circle');
+showToast('เกิดข้อผิดพลาด', 'danger', 'error');
+showToast('คำเตือน', 'warning', 'warning');
+showToast('ข้อมูล', 'info', 'info');
+showToast('ข้อความ', 'default', 'notifications');
+showToast('ข้อความ', 'light', 'send');</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">Colour variants</p>
+                <pre class="code-block">&lt;!-- สีเขียว (success) --&gt;
+&lt;div class="toast toast--success"&gt;...&lt;/div&gt;
+
+&lt;!-- สีแดง (danger) --&gt;
+&lt;div class="toast toast--danger"&gt;...&lt;/div&gt;
+
+&lt;!-- สีส้ม (warning) --&gt;
+&lt;div class="toast toast--warning"&gt;...&lt;/div&gt;
+
+&lt;!-- สีน้ำเงิน (info) --&gt;
+&lt;div class="toast toast--info"&gt;...&lt;/div&gt;
+
+&lt;!-- สีเข้ม (default) --&gt;
+&lt;div class="toast"&gt;...&lt;/div&gt;
+
+&lt;!-- สีขาว (light) --&gt;
+&lt;div class="toast toast--light"&gt;...&lt;/div&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function showToast(message, type, icon, duration) {
+      type = type || 'default';
+      icon = icon || 'notifications';
+      duration = duration !== undefined ? duration : 3000;
+      var container = document.getElementById('toast-container');
+      var el = document.createElement('div');
+      var variantClass = type !== 'default' ? ' toast--' + type : '';
+      el.className = 'toast' + variantClass;
+      el.innerHTML =
+        '<span class="material-symbols-outlined">' + icon + '</span>' +
+        '<span class="toast__message">' + message + '</span>' +
+        '<button class="toast__close" onclick="dismissToast(this.closest(\'.toast\'))">' +
+          '<span class="material-symbols-outlined">close</span>' +
+        '</button>';
+      container.appendChild(el);
+      setTimeout(function() { dismissToast(el); }, duration);
+    }
+
+    function dismissToast(el) {
+      if (!el || el.classList.contains('toast-exit')) return;
+      el.classList.add('toast-exit');
+      el.addEventListener('animationend', function() { el.remove(); }, { once: true });
+    }
+  </script>
+</body>
+</html>
