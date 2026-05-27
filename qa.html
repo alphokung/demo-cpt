@@ -433,33 +433,6 @@ Disallow: /</pre>
             <div class="qa-item" onclick="toggle(this)">
               <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
               <div class="qa-item-content">
-                <p class="qa-item-text">Dashboard grid แสดง 2 คอลัมน์ (6:3) บน ≥ 480px, และ stack เป็น 1 คอลัมน์บน &lt; 480px</p>
-                <p class="qa-item-detail">หน้า <code>index.html</code> — welcome box (2fr) และ คะแนน box (1fr)</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">Touch target ≥ 44×44px สำหรับทุก button, link, icon-button</p>
-                <p class="qa-item-detail">ใช้ Chrome DevTools → Rendering → Show layout shift regions หรือวัดด้วย inspector</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">Filter chip row เลื่อนซ้าย-ขวาได้บน mobile โดยไม่ขยาย layout</p>
-                <p class="qa-item-detail">หน้า <code>med-index.html</code> — overflow-x: auto บน .filter-row</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
                 <p class="qa-item-text">Sticky footer อยู่ติดด้านล่างของหน้าจอบนทุก breakpoint</p>
                 <p class="qa-item-detail">หน้า <code>detail.html</code>, <code>med-index.html</code> — ไม่ถูกเนื้อหาบัง</p>
               </div>
@@ -524,93 +497,6 @@ Disallow: /</pre>
                 <p class="qa-item-detail">ทดสอบบน mobile 375px กับข้อความยาวใน card body</p>
               </div>
               <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- ─── SECTION 5: PAGE-BY-PAGE ─── -->
-        <div class="qa-section" id="s5">
-          <div class="qa-section-header" onclick="toggleSection('s5')">
-            <div class="qa-section-icon" style="background:var(--primary-95); color:var(--primary-20)">
-              <span class="material-symbols-outlined" style="font-size:20px">article</span>
-            </div>
-            <span class="qa-section-title">Page-by-Page</span>
-            <span class="qa-section-count" id="s5-count"></span>
-            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
-          </div>
-          <div class="qa-section-body">
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>loading.html</strong> — animation แสดง, redirect ไป index.html หลังโหลดเสร็จ</p>
-                <p class="qa-item-detail">ไม่ค้างอยู่หน้า loading อย่างไม่มีกำหนด</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>index.html</strong> — รายการใบสั่งโหลดจาก localStorage, gauge แสดงคะแนนถูกต้อง</p>
-                <p class="qa-item-detail">ทดสอบ: กดปุ่ม "Demo toggle" สลับ มี/ไม่มีข้อมูล · empty state แสดงเมื่อไม่มีใบสั่ง</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>detail.html</strong> — แสดงข้อมูลใบสั่งถูกต้อง, modal ชำระเงินเปิด/ปิดได้</p>
-                <p class="qa-item-detail">ทดสอบ: คลิกปุ่มชำระเงิน → modal QR code เปิด · คลิก backdrop หรือ X ปิด modal</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>points.html</strong> — gauge แสดงคะแนน, ประวัติการตัด/คืนคะแนนแสดงครบ</p>
-                <p class="qa-item-detail">deduction = icon สีแดง, restoration = icon สีเขียว</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>med-index.html</strong> — fetch <code>med.json</code> สำเร็จ, รายการแสดงถูกต้อง</p>
-                <p class="qa-item-detail">ทดสอบ filter chips: ทั้งหมด / ตรวจสุขภาพ / ใบขับขี่ / โควิด / การทำงาน · empty state แสดงเมื่อไม่มีข้อมูลในหมวด</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>med-detail.html</strong> — status banner สีถูกต้องตามสถานะ (valid/expiring/expired)</p>
-                <p class="qa-item-detail">valid = เขียว, expiring = ส้ม, expired = แดง</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><strong>tutorial.html</strong> — ปุ่ม ก่อนหน้า/ถัดไป ทำงาน, progress bar อัปเดต, สไลด์สุดท้าย navigate ออก</p>
-                <p class="qa-item-detail">สไลด์แรก: ปุ่ม "ก่อนหน้า" ถูก disable · สไลด์สุดท้าย: ปุ่มเปลี่ยนเป็น "เริ่มใช้งาน"</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">ปุ่มย้อนกลับ (<code>.btn-back-circle</code>) นำกลับไปหน้าที่ถูกต้องทุกหน้า</p>
-                <p class="qa-item-detail">detail → index, points → index, med-detail → med-index, tutorial → med-index</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
             </div>
 
           </div>
@@ -698,57 +584,6 @@ Disallow: /</pre>
                 <p class="qa-item-detail">animation ไม่กระพริบ (flicker) บน low-end device</p>
               </div>
               <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- ─── SECTION 7: DATA ─── -->
-        <div class="qa-section" id="s7">
-          <div class="qa-section-header" onclick="toggleSection('s7')">
-            <div class="qa-section-icon" style="background:var(--neutral-94); color:var(--neutral-50)">
-              <span class="material-symbols-outlined" style="font-size:20px">storage</span>
-            </div>
-            <span class="qa-section-title">Data Layer</span>
-            <span class="qa-section-count" id="s7-count"></span>
-            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
-          </div>
-          <div class="qa-section-body">
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">ข้อมูล localStorage persist หลัง refresh หน้า</p>
-                <p class="qa-item-detail">ชำระใบสั่งแล้ว reload → status ยังเป็น "paid" · คะแนนที่ถูกตัดยังคงอยู่</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><code>DB.reset()</code> รีเซ็ตข้อมูลกลับเป็น default seed ได้ถูกต้อง</p>
-                <p class="qa-item-detail">เรียก <code>DB.reset()</code> ใน console แล้ว reload → ข้อมูลกลับเป็น 3 ใบสั่งเดิม</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text"><code>fetch('med.json')</code> โหลดข้อมูลและ render รายการใบรับรองแพทย์ถูกต้อง</p>
-                <p class="qa-item-detail">ทดสอบบน server จริง (npx serve) ไม่ใช่ double-click เปิดไฟล์ เพราะ fetch ต้องการ HTTP</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">Empty state แสดงเมื่อไม่มีข้อมูล (ทดสอบผ่านปุ่ม Demo toggle)</p>
-                <p class="qa-item-detail">ทั้ง index.html (ไม่มีใบสั่ง) และ med-index.html (ไม่มีใบรับรอง)</p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
             </div>
 
           </div>
@@ -876,7 +711,7 @@ Disallow: /</pre>
   </div>
 
   <script>
-    var STORAGE_KEY = 'qa-checklist-v2';
+    var STORAGE_KEY = 'qa-checklist-v3';
 
     // ─── Load saved state ────────────────────────────────────────────────────
     function loadState() {
@@ -926,7 +761,7 @@ Disallow: /</pre>
       document.getElementById('summary-text').textContent = checked.length + ' / ' + items.length + ' รายการผ่านแล้ว';
 
       // Section counts
-      ['s1','s2','s3','s4','s5','s6','s7','s8','s9'].forEach(function(sid) {
+      ['s1','s2','s3','s4','s6','s8','s9'].forEach(function(sid) {
         var sec = document.getElementById(sid);
         if (!sec) return;
         var all = sec.querySelectorAll('.qa-item').length;
