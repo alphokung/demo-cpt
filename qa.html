@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimum UI Test Cases — ทางรัฐ</title>
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Progress header */
+    .qa-hero {
+      background: linear-gradient(135deg, var(--primary-20) 0%, var(--secondary-20) 100%);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-3xl);
+      color: var(--neutral-100);
+      margin-bottom: var(--spacing-3xl);
+    }
+    .qa-hero h1 {
+      font-size: var(--font-size-headline-s);
+      font-weight: var(--font-weight-700);
+      margin-bottom: var(--spacing-xs);
+    }
+    .qa-hero p { font-size: var(--font-size-body-m); opacity: 0.85; }
+    .qa-progress-bar-wrap {
+      margin-top: var(--spacing-xl);
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--radius-full);
+      height: 8px;
+      overflow: hidden;
+    }
+    .qa-progress-fill {
+      height: 100%;
+      background: var(--neutral-100);
+      border-radius: var(--radius-full);
+      transition: width 0.3s ease;
+    }
+    .qa-progress-label {
+      margin-top: var(--spacing-sm);
+      font-size: var(--font-size-body-s);
+      opacity: 0.8;
+    }
+
+    /* Priority badge */
+    .badge-must    { background:var(--danger-95);   color:var(--danger-30);    font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); white-space:nowrap; }
+    .badge-should  { background:var(--warning-95);  color:var(--warning-30);   font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); white-space:nowrap; }
+    .badge-nice    { background:var(--secondary-95);color:var(--secondary-30); font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--radius-full); white-space:nowrap; }
+
+    /* Section header */
+    .qa-section {
+      border: 1px solid var(--stroke-neutral-lighter);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      background: var(--canvas-white);
+      margin-bottom: var(--spacing-xl);
+    }
+    .qa-section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-lg) var(--spacing-xl);
+      background: var(--background-neutral-medium);
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      cursor: pointer;
+      user-select: none;
+    }
+    .qa-section-header:hover { background: var(--neutral-94); }
+    .qa-section-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .qa-section-title {
+      font-size: var(--font-size-title-m);
+      font-weight: var(--font-weight-700);
+      flex: 1;
+    }
+    .qa-section-count {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+    }
+    .qa-section-chevron {
+      transition: transform 0.2s ease;
+      color: var(--foreground-neutral-lighter);
+    }
+    .qa-section.collapsed .qa-section-chevron { transform: rotate(-90deg); }
+    .qa-section-body { display: block; }
+    .qa-section.collapsed .qa-section-body { display: none; }
+
+    /* Test items */
+    .qa-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-xl);
+      border-bottom: 1px solid var(--stroke-neutral-lightest);
+      transition: background 0.15s ease;
+      cursor: pointer;
+    }
+    .qa-item:last-child { border-bottom: none; }
+    .qa-item:hover { background: var(--background-neutral-medium); }
+    .qa-item.checked { background: var(--background-positive-lighter); }
+    .qa-item.checked .qa-item-text { color: var(--foreground-neutral-lighter); text-decoration: line-through; }
+
+    /* Custom checkbox */
+    .qa-checkbox {
+      width: 20px; height: 20px;
+      border: 2px solid var(--stroke-neutral-default);
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .qa-item.checked .qa-checkbox {
+      background: var(--foreground-positive-default);
+      border-color: var(--foreground-positive-default);
+    }
+    .qa-checkbox-tick {
+      display: none;
+      color: white;
+      font-size: 14px;
+    }
+    .qa-item.checked .qa-checkbox-tick { display: block; }
+
+    .qa-item-content { flex: 1; }
+    .qa-item-text {
+      font-size: var(--font-size-body-m);
+      color: var(--foreground-neutral-default);
+      line-height: 1.5;
+    }
+    .qa-item-detail {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+    .qa-item-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    /* Device table */
+    .device-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-body-s); }
+    .device-table th, .device-table td {
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 1px solid var(--stroke-neutral-lighter);
+      text-align: left;
+    }
+    .device-table th { background: var(--background-neutral-medium); font-weight: var(--font-weight-600); }
+    .device-table tr:hover td { background: var(--background-neutral-medium); }
+    .dot-pass  { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--positive-40); }
+    .dot-check { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--warning-40); }
+
+    /* Reset button */
+    .reset-btn {
+      background: none; border: 1px solid var(--stroke-neutral-default);
+      border-radius: var(--radius-full); padding: var(--spacing-xs) var(--spacing-lg);
+      font-family: 'Anuphan', sans-serif; font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .reset-btn:hover { border-color: var(--stroke-primary-default); color: var(--foreground-primary-default); }
+
+    code { font-family: 'SFMono-Regular','Consolas',monospace; font-size: 12px; background:var(--neutral-96); padding: 1px 5px; border-radius:3px; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Header -->
+        <div class="page-header">
+          <a href="components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Minimum UI Test Cases</h2>
+            <p class="text-subheader">Checklist สำหรับ QA — รายการที่ต้องทดสอบก่อน release</p>
+          </div>
+        </div>
+
+        <!-- Progress hero -->
+        <div class="qa-hero">
+          <h1>QA Checklist</h1>
+          <p>ทางรัฐ — Citizen Portal Prototype · ครอบคลุมทุก page และ component หลัก</p>
+          <div class="qa-progress-bar-wrap">
+            <div class="qa-progress-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <p class="qa-progress-label" id="progress-label">0 / 0 passed</p>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-bottom:var(--spacing-lg); gap:var(--spacing-md); align-items:center">
+          <span id="summary-text" style="font-size:var(--font-size-body-s); color:var(--foreground-neutral-lighter)"></span>
+          <button class="reset-btn" onclick="resetAll()">
+            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-3px">refresh</span>
+            รีเซ็ต
+          </button>
+        </div>
+
+        <!-- ─── SECTION 1: HTML & HEAD ─── -->
+        <div class="qa-section" id="s1">
+          <div class="qa-section-header" onclick="toggleSection('s1')">
+            <div class="qa-section-icon" style="background:var(--secondary-95); color:var(--secondary-40-main)">
+              <span class="material-symbols-outlined" style="font-size:20px">code</span>
+            </div>
+            <span class="qa-section-title">HTML &amp; Head Tags</span>
+            <span class="qa-section-count" id="s1-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>&lt;html lang="th"&gt;</code> — ทุกหน้าต้องมี attribute <code>lang="th"</code></p>
+                <p class="qa-item-detail">ใช้สำหรับ screen reader และ browser auto-translate</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>&lt;meta charset="UTF-8"&gt;</code> — ต้องมีทุกหน้า</p>
+                <p class="qa-item-detail">ป้องกันภาษาไทยแสดงผลเป็น ???? หรือ □</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></p>
+                <p class="qa-item-detail">ขาดแล้วหน้าจะ zoom out บน mobile ทันที</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>&lt;title&gt;</code> — ทุกหน้าต้องมี title ที่สื่อความหมาย</p>
+                <p class="qa-item-detail">
+                  ตัวอย่าง title ที่ถูกต้อง:<br>
+                  · <code>ระบบใบสั่งจราจร — ตรวจสอบและชำระค่าปรับออนไลน์</code><br>
+                  · <code>ใบรับรองแพทย์ดิจิทัล — รายการ</code><br>
+                  · <code>ใบรับรองแพทย์ดิจิทัล — รายละเอียด</code><br>
+                  ห้ามใช้ title ว่างเปล่า หรือ default เช่น "Untitled"
+                </p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>&lt;meta name="description"&gt;</code> — คำอธิบายหน้าสั้น ๆ</p>
+                <p class="qa-item-detail">ใช้ใน SEO และ preview เมื่อแชร์ลิงก์ ควรมีความยาว 50–160 ตัวอักษร</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Open Graph meta tags ครบ 5 รายการ</p>
+                <p class="qa-item-detail">
+                  ต้องมี: <code>og:type</code>, <code>og:url</code>, <code>og:title</code>, <code>og:description</code>, <code>og:image</code><br>
+                  ทดสอบด้วย: <a href="https://developers.facebook.com/tools/debug/" target="_blank" rel="noopener" style="color:var(--foreground-primary-default)">Facebook Sharing Debugger</a>
+                </p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Twitter Card meta tags ครบ 4 รายการ</p>
+                <p class="qa-item-detail">ต้องมี: <code>twitter:card</code>, <code>twitter:url</code>, <code>twitter:title</code>, <code>twitter:description</code></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 2: FAVICON ─── -->
+        <div class="qa-section" id="s2">
+          <div class="qa-section-header" onclick="toggleSection('s2')">
+            <div class="qa-section-icon" style="background:var(--warning-95); color:var(--warning-30)">
+              <span class="material-symbols-outlined" style="font-size:20px">image</span>
+            </div>
+            <span class="qa-section-title">Favicon</span>
+            <span class="qa-section-count" id="s2-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ไอคอนแสดงใน browser tab — ทดสอบใน Chrome, Safari, Firefox</p>
+                <p class="qa-item-detail">ไฟล์ที่ต้องมี: <code>favicon/favicon.ico</code>, <code>favicon/favicon-32x32.png</code>, <code>favicon/favicon-16x16.png</code></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ทุกหน้ามี link tag ครบ 3 บรรทัด</p>
+                <p class="qa-item-detail">
+                  <code>&lt;link rel="icon" type="image/x-icon" href="favicon/favicon.ico"&gt;</code><br>
+                  <code>&lt;link rel="icon" sizes="32x32" href="favicon/favicon-32x32.png"&gt;</code><br>
+                  <code>&lt;link rel="icon" sizes="16x16" href="favicon/favicon-16x16.png"&gt;</code>
+                </p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Apple Touch Icon แสดงเมื่อ Add to Home Screen บน iOS</p>
+                <p class="qa-item-detail">ไฟล์: <code>favicon/apple-touch-icon.png</code> (180×180px)</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-nice">NICE</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 3: RESPONSIVE ─── -->
+        <div class="qa-section" id="s3">
+          <div class="qa-section-header" onclick="toggleSection('s3')">
+            <div class="qa-section-icon" style="background:var(--primary-95); color:var(--primary-30-base)">
+              <span class="material-symbols-outlined" style="font-size:20px">devices</span>
+            </div>
+            <span class="qa-section-title">Responsive Design</span>
+            <span class="qa-section-count" id="s3-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <!-- Device matrix -->
+            <div style="padding:var(--spacing-xl); border-bottom:1px solid var(--stroke-neutral-lightest)">
+              <p class="form-label" style="margin-bottom:var(--spacing-md)">Device &amp; Breakpoint Matrix</p>
+              <div style="overflow-x:auto">
+                <table class="device-table">
+                  <thead>
+                    <tr>
+                      <th>Device</th>
+                      <th>Width</th>
+                      <th>Layout</th>
+                      <th>Breakpoint</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>iPhone SE / small phone</td><td>375px</td><td>Single column, stacked</td><td>&lt; 480px</td></tr>
+                    <tr><td>iPhone 14 / 15</td><td>390px</td><td>Single column, stacked</td><td>&lt; 480px</td></tr>
+                    <tr><td>iPhone Plus / Android large</td><td>414–430px</td><td>Single column, stacked</td><td>&lt; 480px</td></tr>
+                    <tr><td>Tablet portrait</td><td>768px</td><td>Grid เริ่มขยาย</td><td>≥ 480px</td></tr>
+                    <tr><td>iPad / small laptop</td><td>1024px</td><td>Desktop layout</td><td>≥ 1024px</td></tr>
+                    <tr><td>Laptop HD</td><td>1280px</td><td>Desktop layout (max-width)</td><td>≥ 1024px</td></tr>
+                    <tr><td>Desktop FHD</td><td>1440px</td><td>Desktop layout (max-width)</td><td>≥ 1024px</td></tr>
+                    <tr><td>Desktop QHD / 4K</td><td>1920px+</td><td>Content centered, max-width ≤ 1100px</td><td>≥ 1024px</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ไม่มี horizontal scroll บน mobile (375px–430px)</p>
+                <p class="qa-item-detail">ทดสอบด้วย Chrome DevTools → Toggle device toolbar → iPhone SE (375px)</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Dashboard grid แสดง 2 คอลัมน์ (6:3) บน ≥ 480px, และ stack เป็น 1 คอลัมน์บน &lt; 480px</p>
+                <p class="qa-item-detail">หน้า <code>index.html</code> — welcome box (2fr) และ คะแนน box (1fr)</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Touch target ≥ 44×44px สำหรับทุก button, link, icon-button</p>
+                <p class="qa-item-detail">ใช้ Chrome DevTools → Rendering → Show layout shift regions หรือวัดด้วย inspector</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Filter chip row เลื่อนซ้าย-ขวาได้บน mobile โดยไม่ขยาย layout</p>
+                <p class="qa-item-detail">หน้า <code>med-index.html</code> — overflow-x: auto บน .filter-row</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Sticky footer อยู่ติดด้านล่างของหน้าจอบนทุก breakpoint</p>
+                <p class="qa-item-detail">หน้า <code>detail.html</code>, <code>med-index.html</code> — ไม่ถูกเนื้อหาบัง</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">เนื้อหา main มี padding เพียงพอ ไม่ชิดขอบบน ≥ 1024px</p>
+                <p class="qa-item-detail">Desktop: main ควรมี max-width ≤ 1100px และ centered</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 4: FONT & ICONS ─── -->
+        <div class="qa-section" id="s4">
+          <div class="qa-section-header" onclick="toggleSection('s4')">
+            <div class="qa-section-icon" style="background:var(--info-95); color:var(--info-30)">
+              <span class="material-symbols-outlined" style="font-size:20px">text_fields</span>
+            </div>
+            <span class="qa-section-title">Font &amp; Icons</span>
+            <span class="qa-section-count" id="s4-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Font <strong>Anuphan</strong> โหลดและแสดงผลถูกต้อง</p>
+                <p class="qa-item-detail">สังเกต: ตัวอักษรควรมีความโค้งมน ไม่ใช่ system font เช่น Tahoma หรือ Arial · เช็คใน DevTools → Network → filter "font"</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Material Symbols Outlined โหลดและแสดงไอคอนเป็นรูปภาพ ไม่ใช่ข้อความ</p>
+                <p class="qa-item-detail">หากโหลดไม่ได้จะเห็นข้อความเช่น "home", "search" แสดงแทนไอคอน</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ภาษาไทยแสดงผลถูกต้อง ไม่มีตัวอักษรแตก หรือขาดหาย</p>
+                <p class="qa-item-detail">ทดสอบข้อความยาว เช่น "ถนนมอเตอร์เวย์ M7 กิโลเมตรที่ 135+400 ห้วยใหญ่ บางละมุง ชลบุรี"</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ข้อความภาษาไทยไม่ตัดกลางคำ — ควร word-wrap ที่ช่องว่าง</p>
+                <p class="qa-item-detail">ทดสอบบน mobile 375px กับข้อความยาวใน card body</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 5: PAGE-BY-PAGE ─── -->
+        <div class="qa-section" id="s5">
+          <div class="qa-section-header" onclick="toggleSection('s5')">
+            <div class="qa-section-icon" style="background:var(--primary-95); color:var(--primary-20)">
+              <span class="material-symbols-outlined" style="font-size:20px">article</span>
+            </div>
+            <span class="qa-section-title">Page-by-Page</span>
+            <span class="qa-section-count" id="s5-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>loading.html</strong> — animation แสดง, redirect ไป index.html หลังโหลดเสร็จ</p>
+                <p class="qa-item-detail">ไม่ค้างอยู่หน้า loading อย่างไม่มีกำหนด</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>index.html</strong> — รายการใบสั่งโหลดจาก localStorage, gauge แสดงคะแนนถูกต้อง</p>
+                <p class="qa-item-detail">ทดสอบ: กดปุ่ม "Demo toggle" สลับ มี/ไม่มีข้อมูล · empty state แสดงเมื่อไม่มีใบสั่ง</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>detail.html</strong> — แสดงข้อมูลใบสั่งถูกต้อง, modal ชำระเงินเปิด/ปิดได้</p>
+                <p class="qa-item-detail">ทดสอบ: คลิกปุ่มชำระเงิน → modal QR code เปิด · คลิก backdrop หรือ X ปิด modal</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>points.html</strong> — gauge แสดงคะแนน, ประวัติการตัด/คืนคะแนนแสดงครบ</p>
+                <p class="qa-item-detail">deduction = icon สีแดง, restoration = icon สีเขียว</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>med-index.html</strong> — fetch <code>med.json</code> สำเร็จ, รายการแสดงถูกต้อง</p>
+                <p class="qa-item-detail">ทดสอบ filter chips: ทั้งหมด / ตรวจสุขภาพ / ใบขับขี่ / โควิด / การทำงาน · empty state แสดงเมื่อไม่มีข้อมูลในหมวด</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>med-detail.html</strong> — status banner สีถูกต้องตามสถานะ (valid/expiring/expired)</p>
+                <p class="qa-item-detail">valid = เขียว, expiring = ส้ม, expired = แดง</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><strong>tutorial.html</strong> — ปุ่ม ก่อนหน้า/ถัดไป ทำงาน, progress bar อัปเดต, สไลด์สุดท้าย navigate ออก</p>
+                <p class="qa-item-detail">สไลด์แรก: ปุ่ม "ก่อนหน้า" ถูก disable · สไลด์สุดท้าย: ปุ่มเปลี่ยนเป็น "เริ่มใช้งาน"</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ปุ่มย้อนกลับ (<code>.btn-back-circle</code>) นำกลับไปหน้าที่ถูกต้องทุกหน้า</p>
+                <p class="qa-item-detail">detail → index, points → index, med-detail → med-index, tutorial → med-index</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 6: INTERACTIONS ─── -->
+        <div class="qa-section" id="s6">
+          <div class="qa-section-header" onclick="toggleSection('s6')">
+            <div class="qa-section-icon" style="background:var(--positive-95); color:var(--positive-30)">
+              <span class="material-symbols-outlined" style="font-size:20px">touch_app</span>
+            </div>
+            <span class="qa-section-title">UI Interactions</span>
+            <span class="qa-section-count" id="s6-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Button states: hover (สีเปลี่ยน), active (scale), disabled (ไม่ตอบสนอง), loading (spinner หมุน)</p>
+                <p class="qa-item-detail">ทดสอบใน <code>components/form.html</code> → Buttons section</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Modal เปิด/ปิดด้วย animation, คลิก backdrop ปิดได้</p>
+                <p class="qa-item-detail">เปิด: scale-up animation · ปิด: scale-down · backdrop blur ทำงาน</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Bottom Sheet slide-up animation ทำงานบน mobile</p>
+                <p class="qa-item-detail">ทดสอบใน <code>components/modal.html</code> → Bottom Sheet</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Toast / Snackbar แสดงและหายไปเองใน 3 วินาที, กด X ปิดได้ก่อนกำหนด</p>
+                <p class="qa-item-detail">animation fade-in / fade-out ทำงาน · ทดสอบใน <code>components/toast.html</code></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Accordion ขยาย/ย่อด้วย smooth animation ไม่กระตุก</p>
+                <p class="qa-item-detail">max-height transition ทำงานถูกต้อง · ทดสอบใน <code>components/accordion.html</code></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Tabs สลับ panel ถูกต้อง ทั้ง underline และ pill style</p>
+                <p class="qa-item-detail">เฉพาะ tab ที่ active เท่านั้นที่แสดง panel · ทดสอบใน <code>components/tabs.html</code></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ThaiAlert (.alert / .confirm) แสดง dialog ถูกต้อง ไม่ใช้ native browser alert</p>
+                <p class="qa-item-detail">ทดสอบใน <code>components/alert.html</code> → ครบ 4 types: info, success, warning, danger</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Skeleton loading แสดง pulse animation ขณะรอข้อมูล แล้ว swap เป็น content จริง</p>
+                <p class="qa-item-detail">animation ไม่กระพริบ (flicker) บน low-end device</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 7: DATA ─── -->
+        <div class="qa-section" id="s7">
+          <div class="qa-section-header" onclick="toggleSection('s7')">
+            <div class="qa-section-icon" style="background:var(--neutral-94); color:var(--neutral-50)">
+              <span class="material-symbols-outlined" style="font-size:20px">storage</span>
+            </div>
+            <span class="qa-section-title">Data Layer</span>
+            <span class="qa-section-count" id="s7-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ข้อมูล localStorage persist หลัง refresh หน้า</p>
+                <p class="qa-item-detail">ชำระใบสั่งแล้ว reload → status ยังเป็น "paid" · คะแนนที่ถูกตัดยังคงอยู่</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>DB.reset()</code> รีเซ็ตข้อมูลกลับเป็น default seed ได้ถูกต้อง</p>
+                <p class="qa-item-detail">เรียก <code>DB.reset()</code> ใน console แล้ว reload → ข้อมูลกลับเป็น 3 ใบสั่งเดิม</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>fetch('med.json')</code> โหลดข้อมูลและ render รายการใบรับรองแพทย์ถูกต้อง</p>
+                <p class="qa-item-detail">ทดสอบบน server จริง (npx serve) ไม่ใช่ double-click เปิดไฟล์ เพราะ fetch ต้องการ HTTP</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Empty state แสดงเมื่อไม่มีข้อมูล (ทดสอบผ่านปุ่ม Demo toggle)</p>
+                <p class="qa-item-detail">ทั้ง index.html (ไม่มีใบสั่ง) และ med-index.html (ไม่มีใบรับรอง)</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 8: CONSOLE & ERRORS ─── -->
+        <div class="qa-section" id="s8">
+          <div class="qa-section-header" onclick="toggleSection('s8')">
+            <div class="qa-section-icon" style="background:var(--danger-95); color:var(--danger-30)">
+              <span class="material-symbols-outlined" style="font-size:20px">bug_report</span>
+            </div>
+            <span class="qa-section-title">Console &amp; Error Handling</span>
+            <span class="qa-section-count" id="s8-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ไม่มี JavaScript error (console.error / Uncaught) ใน DevTools Console</p>
+                <p class="qa-item-detail">เปิด DevTools → Console → ไม่มีข้อความสีแดง · ทดสอบทุกหน้า</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ไม่มี 404 resource error ใน DevTools Network tab</p>
+                <p class="qa-item-detail">styles.css, font, icon, _media ทุกไฟล์โหลดได้ status 200 · ไม่มีแถวสีแดงใน Network</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">ไม่มี SCSS ที่ยังไม่ได้ compile — <code>styles.css</code> ต้อง up-to-date</p>
+                <p class="qa-item-detail">รัน <code>npm run sass:build</code> แล้วตรวจว่า <code>styles.css</code> เปลี่ยนแปลงหรือไม่ หากมีการแก้ไข <code>styles.scss</code> แต่ยังไม่ compile จะไม่เห็นผลในหน้า</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">แอปพลิเคชันไม่ crash เมื่อ localStorage ว่างเปล่า (เปิดหน้าครั้งแรก)</p>
+                <p class="qa-item-detail">ใน DevTools → Application → Storage → Clear site data แล้ว reload · db.js ควร seed ข้อมูลให้อัตโนมัติ</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ─── SECTION 9: ACCESSIBILITY ─── -->
+        <div class="qa-section" id="s9">
+          <div class="qa-section-header" onclick="toggleSection('s9')">
+            <div class="qa-section-icon" style="background:var(--warning-95); color:var(--warning-20)">
+              <span class="material-symbols-outlined" style="font-size:20px">accessibility_new</span>
+            </div>
+            <span class="qa-section-title">Accessibility (พื้นฐาน)</span>
+            <span class="qa-section-count" id="s9-count"></span>
+            <span class="material-symbols-outlined qa-section-chevron">expand_more</span>
+          </div>
+          <div class="qa-section-body">
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Color contrast — ข้อความบนพื้นหลังสีอ่านออกได้ (contrast ratio ≥ 4.5:1 สำหรับ body text)</p>
+                <p class="qa-item-detail">ทดสอบด้วย Chrome DevTools → Accessibility → Contrast · หรือ <a href="https://color.a11y.com" target="_blank" rel="noopener" style="color:var(--foreground-primary-default)">color.a11y.com</a></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Image alt text — รูปภาพทุกรูปที่มีความหมายต้องมี <code>alt</code> attribute</p>
+                <p class="qa-item-detail">Decorative image ใช้ <code>alt=""</code> · รูปที่มีข้อมูลใช้ alt อธิบาย</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Focus visible — navigation ด้วย keyboard (Tab) เห็น focus ring ชัดเจน</p>
+                <p class="qa-item-detail">กด Tab เพื่อเดินผ่าน elements · ต้องเห็น outline หรือ highlight บน focused element</p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-nice">NICE</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="card" style="margin-top:var(--spacing-xl)">
+          <div class="section-title-container">
+            <div class="section-bar"></div>
+            <h3 class="section-title">Priority Legend</h3>
+          </div>
+          <div class="components-section">
+            <div style="display:flex; flex-direction:column; gap:var(--spacing-md)">
+              <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                <span class="badge-must">MUST</span>
+                <span style="font-size:var(--font-size-body-m); color:var(--foreground-neutral-light)">ต้องผ่าน 100% ก่อน release — หาก fail ถือว่า build ไม่ผ่าน</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                <span class="badge-should">SHOULD</span>
+                <span style="font-size:var(--font-size-body-m); color:var(--foreground-neutral-light)">ควรผ่าน — หาก fail รับได้แต่ต้องบันทึก bug ไว้ fix ใน sprint ถัดไป</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:var(--spacing-md)">
+                <span class="badge-nice">NICE</span>
+                <span style="font-size:var(--font-size-body-m); color:var(--foreground-neutral-light)">Nice to have — ปรับปรุงประสบการณ์ ไม่ block release</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    var STORAGE_KEY = 'qa-checklist-v1';
+
+    // ─── Load saved state ────────────────────────────────────────────────────
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+    }
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // ─── Toggle item ─────────────────────────────────────────────────────────
+    function toggle(el) {
+      el.classList.toggle('checked');
+      persistAndUpdate();
+    }
+
+    // ─── Toggle section collapse ─────────────────────────────────────────────
+    function toggleSection(id) {
+      document.getElementById(id).classList.toggle('collapsed');
+    }
+
+    // ─── Reset all ───────────────────────────────────────────────────────────
+    function resetAll() {
+      document.querySelectorAll('.qa-item.checked').forEach(function(el) {
+        el.classList.remove('checked');
+      });
+      saveState({});
+      updateProgress();
+    }
+
+    // ─── Persist and update UI ───────────────────────────────────────────────
+    function persistAndUpdate() {
+      var state = {};
+      document.querySelectorAll('.qa-item').forEach(function(el, i) {
+        state['item-' + i] = el.classList.contains('checked');
+      });
+      saveState(state);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      var items = document.querySelectorAll('.qa-item');
+      var checked = document.querySelectorAll('.qa-item.checked');
+      var pct = items.length ? Math.round(checked.length / items.length * 100) : 0;
+
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-label').textContent = checked.length + ' / ' + items.length + ' passed (' + pct + '%)';
+      document.getElementById('summary-text').textContent = checked.length + ' / ' + items.length + ' รายการผ่านแล้ว';
+
+      // Section counts
+      ['s1','s2','s3','s4','s5','s6','s7','s8','s9'].forEach(function(sid) {
+        var sec = document.getElementById(sid);
+        if (!sec) return;
+        var all = sec.querySelectorAll('.qa-item').length;
+        var done = sec.querySelectorAll('.qa-item.checked').length;
+        var el = document.getElementById(sid + '-count');
+        if (el) el.textContent = done + ' / ' + all;
+      });
+    }
+
+    // ─── Restore saved state ─────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', function() {
+      var state = loadState();
+      document.querySelectorAll('.qa-item').forEach(function(el, i) {
+        if (state['item-' + i]) el.classList.add('checked');
+      });
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
