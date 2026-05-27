@@ -554,6 +554,12 @@
                     <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60
                       ปีบริบูรณ์)</span>
                   </div>
+
+                  <button class="btn btn-tertiary-outline flex-center"
+                    style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                    onclick="alert('เปิด miniapp ที่เกี่ยวข้อง')">
+                    <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสวัสดิการของคุณ
+                  </button>
                 </div>
               </div>
             </div>
@@ -579,8 +585,9 @@
                 </div>
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
+
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="openTaxModal('รถยนต์ Honda Civic', 'กข 1234 กทม.', '15 ก.ค. 2569')">
+                onclick="alert('ไปเปิด miniapp ทะเบียนรถ')">
                 <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">directions_car</span>
@@ -616,7 +623,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="openTaxModal('รถจักรยานยนต์ Yamaha Grand Filano', '1กข 5678 เชียงใหม่', '30 พ.ย. 2569')">
+                onclick="alert('ไปเปิด miniapp ทะเบียนรถ')">
                 <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">two_wheeler</span>
@@ -672,7 +679,7 @@
           </div>
         </div>
 
-        
+
 
         <div class="footer-timestamp" style="margin-top: var(--spacing-2xl);">
           ศูนย์รวมข้อมูลพลเมืองบูรณาการระบบรัฐบาลดิจิทัล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
@@ -719,50 +726,7 @@
     </div>
   </div>
 
-  <!-- Modal: Tax Renewal -->
-  <div id="modal-tax-renewal" class="modal-overlay" onclick="closeModal('modal-tax-renewal')">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <button class="modal-close-btn modal-close-btn-absolute" onclick="closeModal('modal-tax-renewal')">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
 
-      <div class="modal-header-centered">
-        <div class="contact-icon-box modal-photo-icon-box"
-          style="background-color: var(--background-secondary-lighter); color: var(--foreground-secondary-default);">
-          <span class="material-symbols-outlined icon-24">local_taxi</span>
-        </div>
-        <h3 class="contact-modal-title modal-title-centered" id="tax-modal-title">-</h3>
-        <p class="contact-modal-description mt-xs mb-0" id="tax-modal-desc">
-          การต่อภาษีรถประจำปีออนไลน์ผ่านกรมการขนส่งทางบก
-        </p>
-      </div>
-
-      <div class="info-list mt-md">
-        <div class="info-item">
-          <div class="info-main">
-            <p class="info-title">ค่าภาษีรถประจำปี</p>
-            <p class="info-meta">คำนวณตามประเภทรถและขนาดเครื่องยนต์</p>
-          </div>
-          <span class="badge-primary-tint">1,650.00 บาท</span>
-        </div>
-        <div class="info-item">
-          <div class="info-main">
-            <p class="info-title">พ.ร.บ. คุ้มครองผู้ประสบภัยจากรถ</p>
-            <p class="info-meta">บังคับใช้ออนไลน์</p>
-          </div>
-          <span class="badge-primary-tint">645.21 บาท</span>
-        </div>
-      </div>
-
-      <button id="btn-pay-tax" class="btn btn-primary w-full mt-lg" onclick="simulateTaxPayment()">
-        <span class="material-symbols-outlined">credit_card</span>
-        <span>ชำระเงินชำระภาษีสะดวกรวดเร็ว</span>
-      </button>
-    </div>
-  </div>
 
   <script>
     function initLoading() {
@@ -802,11 +766,7 @@
       openModal('modal-bill-payment');
     }
 
-    function openTaxModal(vehicle, plate, dueDate) {
-      document.getElementById('tax-modal-title').textContent = 'ต่อภาษี ' + vehicle;
-      document.getElementById('tax-modal-desc').textContent = 'ทะเบียนรถ: ' + plate + ' | วันสิ้นอายุภาษีเดิม: ' + dueDate;
-      openModal('modal-tax-renewal');
-    }
+
 
     function simulatePaymentSave() {
       const btn = document.getElementById('btn-save-bill-qr');
