@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal & Bottom Sheet — Components</title>
+  <meta name="description" content="ตัวอย่าง Modal Dialog และ Bottom Sheet — overlay, animation, ขนาดต่าง ๆ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Modal &amp; Bottom Sheet</h2>
+            <p class="text-subheader">Overlay dialog ที่มี backdrop blur — ใช้กับ action ที่ต้องการ focus จากผู้ใช้</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic Modal ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic Modal</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">Modal พื้นฐาน — header, body, footer พร้อมปุ่มปิด</p>
+            <div class="components-section">
+              <div style="display:flex; flex-wrap:wrap; gap:var(--spacing-md)">
+                <button class="btn btn-primary" style="width:auto" onclick="openModal('modal-basic')">
+                  <span class="material-symbols-outlined">open_in_full</span>เปิด Modal
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="openModal('modal-confirm')">
+                  <span class="material-symbols-outlined">help</span>Confirm Modal
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="openModal('modal-form')">
+                  <span class="material-symbols-outlined">edit_note</span>Form Modal
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Bottom Sheet ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Bottom Sheet</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">Slide-up panel จากด้านล่าง — เหมาะกับ mobile action sheet</p>
+            <div class="components-section">
+              <div style="display:flex; flex-wrap:wrap; gap:var(--spacing-md)">
+                <button class="btn btn-primary" style="width:auto" onclick="openModal('sheet-basic')">
+                  <span class="material-symbols-outlined">expand_less</span>เปิด Bottom Sheet
+                </button>
+                <button class="btn btn-secondary" style="width:auto" onclick="openModal('sheet-actions')">
+                  <span class="material-symbols-outlined">more_horiz</span>Action Sheet
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML — Modal</p>
+                <pre class="code-block">&lt;!-- Overlay --&gt;
+&lt;div class="modal-overlay" id="my-modal"&gt;
+  &lt;div class="modal-content"&gt;
+
+    &lt;!-- Header --&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;h3 class="modal-title"&gt;ชื่อ Modal&lt;/h3&gt;
+      &lt;button class="modal-close-btn" onclick="closeModal('my-modal')"&gt;
+        &lt;span class="material-symbols-outlined"&gt;close&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Body --&gt;
+    &lt;div class="modal-body"&gt;เนื้อหา...&lt;/div&gt;
+
+    &lt;!-- Footer --&gt;
+    &lt;div class="modal-footer modal-footer--row"&gt;
+      &lt;button class="btn btn-secondary" onclick="closeModal('my-modal')"&gt;ยกเลิก&lt;/button&gt;
+      &lt;button class="btn btn-primary"&gt;ยืนยัน&lt;/button&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">HTML — Bottom Sheet</p>
+                <pre class="code-block">&lt;!-- เพิ่ม class .bottom-sheet บน .modal-overlay --&gt;
+&lt;div class="modal-overlay bottom-sheet" id="my-sheet"&gt;
+  &lt;div class="modal-content"&gt;
+    &lt;div class="bottom-sheet-handle"&gt;&lt;/div&gt;
+    &lt;div class="modal-header"&gt;...&lt;/div&gt;
+    &lt;div class="modal-body"&gt;...&lt;/div&gt;
+    &lt;div class="modal-footer"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">JavaScript</p>
+                <pre class="code-block">function openModal(id) {
+  document.getElementById(id).classList.add('active');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+// ปิดเมื่อคลิก backdrop
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal(overlay.id);
+  });
+});</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Basic ─── -->
+  <div class="modal-overlay" id="modal-basic">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">รายละเอียดข้อมูล</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-basic')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>นี่คือเนื้อหาของ Modal พื้นฐาน สามารถใส่ข้อความ รูปภาพ หรือ component ใด ๆ ลงไปใน <code>.modal-body</code> ได้ตามต้องการ</p>
+        <p style="margin-top:var(--spacing-md)">Modal จะมี backdrop blur และ scale animation เมื่อเปิด-ปิด</p>
+      </div>
+      <div class="modal-footer modal-footer--row">
+        <button class="btn btn-secondary" onclick="closeModal('modal-basic')">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Confirm ─── -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">ยืนยันการดำเนินการ</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-confirm')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        คุณต้องการดำเนินการนี้ต่อหรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+      </div>
+      <div class="modal-footer modal-footer--row">
+        <button class="btn btn-secondary" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+        <button class="btn btn-destructive" onclick="closeModal('modal-confirm')">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Form ─── -->
+  <div class="modal-overlay" id="modal-form">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">แก้ไขข้อมูล</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-form')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group" style="margin-bottom:var(--spacing-lg)">
+          <label class="form-label">ชื่อ-นามสกุล</label>
+          <input class="form-control" type="text" placeholder="กรอกชื่อ-นามสกุล">
+        </div>
+        <div class="form-group">
+          <label class="form-label">เบอร์โทรศัพท์</label>
+          <input class="form-control" type="tel" placeholder="0xx-xxx-xxxx">
+        </div>
+      </div>
+      <div class="modal-footer modal-footer--row">
+        <button class="btn btn-secondary" onclick="closeModal('modal-form')">ยกเลิก</button>
+        <button class="btn btn-primary" onclick="closeModal('modal-form')">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Bottom Sheet: Basic ─── -->
+  <div class="modal-overlay bottom-sheet" id="sheet-basic">
+    <div class="modal-content">
+      <div class="bottom-sheet-handle"></div>
+      <div class="modal-header">
+        <h3 class="modal-title">ข้อมูลเพิ่มเติม</h3>
+        <button class="modal-close-btn" onclick="closeModal('sheet-basic')">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bottom Sheet เหมาะสำหรับแสดงข้อมูลหรือ action ที่เกี่ยวข้องกับ context ปัจจุบัน โดยเฉพาะบนหน้าจอมือถือ</p>
+        <p style="margin-top:var(--spacing-md)">ใช้ <code>.modal-overlay.bottom-sheet</code> เพื่อเปิดใช้งาน animation แบบ slide-up</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">ดำเนินการ</button>
+        <button class="btn btn-secondary" onclick="closeModal('sheet-basic')">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Bottom Sheet: Action Sheet ─── -->
+  <div class="modal-overlay bottom-sheet" id="sheet-actions">
+    <div class="modal-content" style="gap:0">
+      <div class="bottom-sheet-handle"></div>
+      <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);text-align:center;padding:var(--spacing-md) 0 var(--spacing-xl)">เลือกการดำเนินการ</p>
+
+      <button class="accordion-header" style="border-radius:var(--radius-xl);border:none;width:100%;justify-content:flex-start;gap:var(--spacing-lg)">
+        <span class="material-symbols-outlined" style="color:var(--foreground-primary-default)">share</span>
+        <span style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-500)">แชร์ลิงก์</span>
+      </button>
+      <button class="accordion-header" style="border-radius:var(--radius-xl);border:none;width:100%;justify-content:flex-start;gap:var(--spacing-lg)">
+        <span class="material-symbols-outlined" style="color:var(--foreground-primary-default)">download</span>
+        <span style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-500)">ดาวน์โหลด PDF</span>
+      </button>
+      <button class="accordion-header" style="border-radius:var(--radius-xl);border:none;width:100%;justify-content:flex-start;gap:var(--spacing-lg)">
+        <span class="material-symbols-outlined" style="color:var(--foreground-neutral-lighter)">content_copy</span>
+        <span style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-500)">คัดลอกข้อมูล</span>
+      </button>
+
+      <div style="height:1px;background:var(--stroke-neutral-lighter);margin:var(--spacing-md) 0"></div>
+      <button class="accordion-header" style="border-radius:var(--radius-xl);border:none;width:100%;justify-content:flex-start;gap:var(--spacing-lg)" onclick="closeModal('sheet-actions')">
+        <span class="material-symbols-outlined" style="color:var(--foreground-negative-default)">close</span>
+        <span style="font-size:var(--font-size-body-m);font-weight:var(--font-weight-500);color:var(--foreground-negative-default)">ยกเลิก</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal(overlay.id);
+      });
+    });
+  </script>
+</body>
+</html>

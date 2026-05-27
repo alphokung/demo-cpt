@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion — Components</title>
+  <meta name="description" content="ตัวอย่าง Accordion component — ย่อ/ขยายเนื้อหาด้วย animation smooth">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Accordion</h2>
+            <p class="text-subheader">ย่อ/ขยายเนื้อหาด้วย smooth animation — เหมาะกับ FAQ และข้อมูลซ้อนชั้น</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic Accordion ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic Accordion</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">คลิกที่หัวข้อเพื่อขยาย/ย่อเนื้อหา</p>
+            <div class="components-section">
+
+              <div class="accordion" id="accordion-basic">
+                <div class="accordion-item open">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">ใบรับรองแพทย์ดิจิทัลคืออะไร?</span>
+                    <span class="accordion-icon">
+                      <span class="material-symbols-outlined">expand_more</span>
+                    </span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      ใบรับรองแพทย์ดิจิทัล คือเอกสารรับรองสุขภาพในรูปแบบอิเล็กทรอนิกส์ ออกโดยแพทย์ผ่านระบบหมอพร้อม สามารถใช้แทนเอกสารกระดาษได้ในหน่วยงานที่เข้าร่วมโครงการ
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">จะขอใบรับรองแพทย์ดิจิทัลได้อย่างไร?</span>
+                    <span class="accordion-icon">
+                      <span class="material-symbols-outlined">expand_more</span>
+                    </span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      สามารถขอรับที่โรงพยาบาลหรือคลินิกที่เข้าร่วมโครงการ โดยแพทย์จะออกใบรับรองผ่านระบบ และเอกสารจะปรากฏในแอปพลิเคชันของท่านภายใน 24 ชั่วโมง
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">ใบรับรองแพทย์ดิจิทัลหมดอายุเมื่อไร?</span>
+                    <span class="accordion-icon">
+                      <span class="material-symbols-outlined">expand_more</span>
+                    </span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      อายุของใบรับรองแพทย์ขึ้นอยู่กับประเภท เช่น ใบรับรองตรวจสุขภาพทั่วไปมักมีอายุ 1 ปี ส่วนใบรับรองสำหรับใบขับขี่มีอายุ 1 ปีเช่นกัน ระบบจะแจ้งเตือนเมื่อใกล้หมดอายุ
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">หากเอกสารหมดอายุจะต้องทำอย่างไร?</span>
+                    <span class="accordion-icon">
+                      <span class="material-symbols-outlined">expand_more</span>
+                    </span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      ติดต่อโรงพยาบาลหรือคลินิกเพื่อตรวจสุขภาพและออกใบรับรองแพทย์ใหม่ ไม่สามารถต่ออายุเอกสารเดิมได้ จะต้องออกเอกสารใหม่เท่านั้น
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Accordion with icons ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">With Icon</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">เพิ่มไอคอนนำหน้าหัวข้อเพื่อบ่งบอกประเภท</p>
+            <div class="components-section">
+
+              <div class="accordion">
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="material-symbols-outlined" style="color:var(--foreground-primary-default);flex-shrink:0">ecg_heart</span>
+                    <span class="accordion-title">ตรวจสุขภาพทั่วไป</span>
+                    <span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      ครอบคลุมการตรวจร่างกายทั่วไป ตรวจเลือด ตรวจปัสสาวะ วัดความดัน และตรวจสายตา ผลการตรวจจะปรากฏในใบรับรองแพทย์ดิจิทัล
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="material-symbols-outlined" style="color:var(--foreground-secondary-default);flex-shrink:0">directions_car</span>
+                    <span class="accordion-title">ใบรับรองสำหรับใบขับขี่</span>
+                    <span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      จำเป็นสำหรับการต่อใบขับขี่ ตรวจสอบการมองเห็น การได้ยิน และสภาพร่างกายที่เกี่ยวข้องกับการขับขี่ยานพาหนะอย่างปลอดภัย
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="material-symbols-outlined" style="color:var(--foreground-warning-default);flex-shrink:0">work</span>
+                    <span class="accordion-title">ใบรับรองการทำงาน</span>
+                    <span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>
+                  </div>
+                  <div class="accordion-body">
+                    <div class="accordion-body-inner">
+                      ออกให้สำหรับการสมัครงาน หรือตามข้อกำหนดของนายจ้าง ครอบคลุมการตรวจสุขภาพและความพร้อมในการทำงานตามประเภทงาน
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML</p>
+                <pre class="code-block">&lt;div class="accordion"&gt;
+
+  &lt;!-- เปิดค่าเริ่มต้น: เพิ่ม class .open --&gt;
+  &lt;div class="accordion-item open"&gt;
+    &lt;div class="accordion-header" onclick="toggleAccordion(this)"&gt;
+      &lt;span class="accordion-title"&gt;หัวข้อ&lt;/span&gt;
+      &lt;span class="accordion-icon"&gt;
+        &lt;span class="material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="accordion-body"&gt;
+      &lt;div class="accordion-body-inner"&gt;เนื้อหา...&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="accordion-item"&gt;
+    &lt;!-- ...รายการถัดไป --&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;</pre>
+              </div>
+              <div class="form-group">
+                <p class="form-label">JavaScript</p>
+                <pre class="code-block">function toggleAccordion(header) {
+  var item = header.closest('.accordion-item');
+  var body = item.querySelector('.accordion-body');
+  var isOpen = item.classList.contains('open');
+
+  // ปิดทุกรายการในกลุ่มเดียวกัน (exclusive mode)
+  // var accordion = item.closest('.accordion');
+  // accordion.querySelectorAll('.accordion-item.open').forEach(function(el) {
+  //   el.classList.remove('open');
+  //   el.querySelector('.accordion-body').style.maxHeight = null;
+  // });
+
+  if (isOpen) {
+    item.classList.remove('open');
+    body.style.maxHeight = null;
+  } else {
+    item.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function toggleAccordion(header) {
+      var item = header.closest('.accordion-item');
+      var body = item.querySelector('.accordion-body');
+      var isOpen = item.classList.contains('open');
+      if (isOpen) {
+        item.classList.remove('open');
+        body.style.maxHeight = null;
+      } else {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+
+    // Init open items on load
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.accordion-item.open').forEach(function(item) {
+        var body = item.querySelector('.accordion-body');
+        if (body) body.style.maxHeight = body.scrollHeight + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
