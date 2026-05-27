@@ -168,6 +168,21 @@
     .reset-btn:hover { border-color: var(--stroke-primary-default); color: var(--foreground-primary-default); }
 
     code { font-family: 'SFMono-Regular','Consolas',monospace; font-size: 12px; background:var(--neutral-96); padding: 1px 5px; border-radius:3px; }
+
+    pre.code-block {
+      font-family: 'SFMono-Regular','Consolas',monospace;
+      font-size: 11.5px;
+      line-height: 1.65;
+      background: var(--neutral-96);
+      border: 1px solid var(--stroke-neutral-lighter);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md) var(--spacing-lg);
+      margin-top: var(--spacing-sm);
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--foreground-neutral-default);
+    }
+    pre.code-block .cm { color: var(--foreground-neutral-lighter); }
   </style>
 </head>
 <body>
@@ -261,31 +276,61 @@
             <div class="qa-item" onclick="toggle(this)">
               <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
               <div class="qa-item-content">
-                <p class="qa-item-text"><code>&lt;meta name="description"&gt;</code> — คำอธิบายหน้าสั้น ๆ</p>
-                <p class="qa-item-detail">ใช้ใน SEO และ preview เมื่อแชร์ลิงก์ ควรมีความยาว 50–160 ตัวอักษร</p>
+                <p class="qa-item-text"><code>meta name="description"</code> และ <code>meta name="author"</code> — ทุกหน้า ทุกระบบต้องใช้ค่านี้เท่านั้น</p>
+                <pre class="code-block" onclick="event.stopPropagation()">&lt;meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย"&gt;
+&lt;meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)"&gt;</pre>
               </div>
-              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
             </div>
 
             <div class="qa-item" onclick="toggle(this)">
               <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
               <div class="qa-item-content">
-                <p class="qa-item-text">Open Graph meta tags ครบ 5 รายการ</p>
-                <p class="qa-item-detail">
-                  ต้องมี: <code>og:type</code>, <code>og:url</code>, <code>og:title</code>, <code>og:description</code>, <code>og:image</code><br>
-                  ทดสอบด้วย: <a href="https://developers.facebook.com/tools/debug/" target="_blank" rel="noopener" style="color:var(--foreground-primary-default)">Facebook Sharing Debugger</a>
+                <p class="qa-item-text">Open Graph meta tags — ทุกหน้า ทุกระบบต้องใช้ค่านี้เท่านั้น</p>
+                <pre class="code-block" onclick="event.stopPropagation()"><span class="cm">&lt;!-- Open Graph / Facebook --&gt;</span>
+&lt;meta property="og:type" content="article"&gt;
+&lt;meta property="og:url" content="https://thangrath.apps.go.th/th"&gt;
+&lt;meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว"&gt;
+&lt;meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย"&gt;
+&lt;meta property="og:image" content="_media/og-image.png"&gt;
+&lt;meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว"&gt;</pre>
+                <p class="qa-item-detail" style="margin-top:var(--spacing-sm)">ทดสอบด้วย: <a href="https://developers.facebook.com/tools/debug/" target="_blank" rel="noopener" style="color:var(--foreground-primary-default)">Facebook Sharing Debugger</a></p>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text">Twitter / X Card meta tags — ทุกหน้า ทุกระบบต้องใช้ค่านี้เท่านั้น</p>
+                <pre class="code-block" onclick="event.stopPropagation()"><span class="cm">&lt;!-- Twitter / X --&gt;</span>
+&lt;meta property="twitter:card" content="summary_large_image"&gt;
+&lt;meta property="twitter:url" content="https://thangrath.apps.go.th/th"&gt;
+&lt;meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว"&gt;
+&lt;meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย"&gt;
+&lt;meta property="twitter:image" content="_media/og-image.png"&gt;</pre>
+              </div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
+            </div>
+
+            <div class="qa-item" onclick="toggle(this)">
+              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
+              <div class="qa-item-content">
+                <p class="qa-item-text"><code>robots.txt</code> — ต้องมีไฟล์ที่ root ของ server และ deny crawler ทุก bot</p>
+                <pre class="code-block" onclick="event.stopPropagation()"><span class="cm"># robots.txt — วางไว้ที่ / (root ของ server)</span>
+User-agent: *
+Disallow: /</pre>
+                <p class="qa-item-detail" style="margin-top:var(--spacing-sm)">
+                  ป้องกัน Google / Bing index หน้าใน prototype นี้ก่อน go-live ·
+                  วางไว้ที่ <code>/robots.txt</code> (ระดับ root เดียวกับ <code>index.html</code>)<br>
+                  <a href="robots.txt" download="robots.txt" style="display:inline-flex; align-items:center; gap:4px; margin-top:4px; color:var(--foreground-primary-default); text-decoration:none; font-weight:var(--font-weight-500)"
+                     onclick="event.stopPropagation()">
+                    <span class="material-symbols-outlined" style="font-size:15px">download</span>
+                    ดาวน์โหลด robots.txt ตัวอย่าง
+                  </a>
                 </p>
               </div>
-              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
-            </div>
-
-            <div class="qa-item" onclick="toggle(this)">
-              <div class="qa-checkbox"><span class="material-symbols-outlined qa-checkbox-tick">check</span></div>
-              <div class="qa-item-content">
-                <p class="qa-item-text">Twitter Card meta tags ครบ 4 รายการ</p>
-                <p class="qa-item-detail">ต้องมี: <code>twitter:card</code>, <code>twitter:url</code>, <code>twitter:title</code>, <code>twitter:description</code></p>
-              </div>
-              <div class="qa-item-meta"><span class="badge-should">SHOULD</span></div>
+              <div class="qa-item-meta"><span class="badge-must">MUST</span></div>
             </div>
 
           </div>
@@ -831,7 +876,7 @@
   </div>
 
   <script>
-    var STORAGE_KEY = 'qa-checklist-v1';
+    var STORAGE_KEY = 'qa-checklist-v2';
 
     // ─── Load saved state ────────────────────────────────────────────────────
     function loadState() {

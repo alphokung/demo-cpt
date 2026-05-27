@@ -1,2 +1,6 @@
+# robots.txt — ทางรัฐ Citizen Portal Prototype
+# ปิดกั้น crawler ทุก bot ไม่ให้ index หน้านี้
+# (prototype / staging environment)
+
 User-agent: *
 Disallow: /
