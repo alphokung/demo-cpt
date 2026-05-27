@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>กำลังรวบรวมข้อมูล — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Layout ── */
+    body { background: var(--canvas-white); }
+    .dl-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-2xl);
+      box-sizing: border-box;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── Animated ring icon ── */
+    .dl-ring-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      margin-bottom: var(--spacing-2xl);
+      flex-shrink: 0;
+    }
+    .dl-ring-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .dl-ring-bg {
+      fill: none;
+      stroke: var(--neutral-92);
+      stroke-width: 4;
+    }
+    .dl-ring-progress {
+      fill: none;
+      stroke: var(--primary-40);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dl-ring-inner {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: var(--primary-95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dl-ring-inner .material-symbols-outlined {
+      font-size: 28px;
+      color: var(--primary-30-base);
+      font-variation-settings: 'FILL' 1;
+    }
+    /* pulse rings */
+    .dl-pulse {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--primary-70);
+      animation: dl-pulse 2.4s ease-out infinite;
+      opacity: 0;
+    }
+    .dl-pulse:nth-child(2) { animation-delay: 1.2s; }
+    @keyframes dl-pulse {
+      0%   { transform: scale(0.85); opacity: 0; }
+      20%  { opacity: 0.5; }
+      100% { transform: scale(1.45); opacity: 0; }
+    }
+
+    /* ── Title area ── */
+    .dl-title {
+      font-size: var(--font-size-headline-s);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      text-align: center;
+      margin: 0 0 var(--spacing-sm);
+      line-height: 1.3;
+    }
+    .dl-subtitle {
+      font-size: var(--font-size-body-m);
+      color: var(--foreground-neutral-lighter);
+      text-align: center;
+      line-height: 1.6;
+      margin: 0 0 var(--spacing-2xl);
+    }
+
+    /* ── Progress bar ── */
+    .dl-progress-wrap {
+      width: 100%;
+      margin-bottom: var(--spacing-xl);
+    }
+    .dl-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+    .dl-progress-label {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+    }
+    .dl-progress-pct {
+      font-size: var(--font-size-body-s);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-primary-default);
+    }
+    .dl-progress-track {
+      height: 6px;
+      background: var(--neutral-92);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .dl-progress-fill {
+      height: 100%;
+      background: var(--primary-40);
+      border-radius: var(--radius-full);
+      width: 0%;
+      transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Data source list ── */
+    .dl-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    /* ── Individual item ── */
+    .dl-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-radius: var(--radius-xl);
+      transition: background 0.25s ease, opacity 0.3s ease;
+      opacity: 0.38;
+      position: relative;
+      overflow: hidden;
+    }
+    .dl-item.is-loading {
+      background: var(--background-primary-lighter);
+      opacity: 1;
+    }
+    .dl-item.is-done {
+      background: transparent;
+      opacity: 0.72;
+    }
+    .dl-item.is-done .dl-item-name {
+      color: var(--foreground-neutral-lighter);
+    }
+    /* Shimmer on loading item */
+    .dl-item.is-loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.45) 50%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: dl-shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes dl-shimmer {
+      0%   { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* status indicator */
+    .dl-status {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .dl-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neutral-88, var(--neutral-90));
+    }
+    .dl-spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--primary-80);
+      border-top-color: var(--primary-30-base);
+      border-radius: 50%;
+      animation: dl-spin 0.65s linear infinite;
+    }
+    .dl-check {
+      display: none;
+      font-size: 18px;
+      color: var(--foreground-positive-default);
+      font-variation-settings: 'FILL' 1;
+    }
+    @keyframes dl-spin { to { transform: rotate(360deg); } }
+
+    /* state: loading */
+    .dl-item.is-loading .dl-dot    { display: none; }
+    .dl-item.is-loading .dl-spinner { display: block; }
+    .dl-item.is-loading .dl-check  { display: none; }
+    /* state: done */
+    .dl-item.is-done .dl-dot    { display: none; }
+    .dl-item.is-done .dl-spinner { display: none; }
+    .dl-item.is-done .dl-check  { display: flex; }
+
+    /* data icon */
+    .dl-data-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-lg);
+      background: var(--neutral-96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.25s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .dl-item.is-loading .dl-data-icon {
+      background: var(--primary-90);
+    }
+    .dl-item.is-loading .dl-data-icon .material-symbols-outlined {
+      color: var(--primary-30-base);
+    }
+    .dl-item.is-done .dl-data-icon {
+      background: var(--positive-95);
+    }
+    .dl-item.is-done .dl-data-icon .material-symbols-outlined {
+      color: var(--foreground-positive-default);
+    }
+    .dl-data-icon .material-symbols-outlined {
+      font-size: 17px;
+      color: var(--foreground-neutral-lighter);
+      transition: color 0.25s ease;
+    }
+
+    /* text */
+    .dl-item-content {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .dl-item-name {
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-500);
+      color: var(--foreground-neutral-default);
+      transition: color 0.25s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dl-item.is-loading .dl-item-name {
+      color: var(--foreground-primary-default);
+      font-weight: var(--font-weight-600);
+    }
+    .dl-item-source {
+      font-size: var(--font-size-label-s, 11px);
+      color: var(--foreground-neutral-lighter);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── All done state ── */
+    .dl-all-done {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-2xl);
+    }
+    .dl-all-done.visible { display: flex; }
+    .dl-done-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--background-positive-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: dl-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .dl-done-icon .material-symbols-outlined {
+      font-size: 24px;
+      color: var(--foreground-positive-default);
+      font-variation-settings: 'FILL' 1;
+    }
+    @keyframes dl-pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .dl-done-text {
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-positive-default);
+    }
+
+    /* ── Notification note ── */
+    .dl-note {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-lg) var(--spacing-xl);
+      background: var(--background-neutral-medium);
+      border-radius: var(--radius-2xl);
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      line-height: 1.6;
+    }
+    .dl-note .material-symbols-outlined {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      color: var(--foreground-neutral-lighter);
+    }
+  </style>
+</head>
+<body>
+  <div class="dl-page">
+
+    <!-- Animated ring -->
+    <div class="dl-ring-wrap">
+      <div class="dl-pulse"></div>
+      <div class="dl-pulse"></div>
+      <svg class="dl-ring-svg" viewBox="0 0 88 88">
+        <circle class="dl-ring-bg" cx="44" cy="44" r="38"/>
+        <circle class="dl-ring-progress" id="ring-progress" cx="44" cy="44" r="38"/>
+      </svg>
+      <div class="dl-ring-inner">
+        <span class="material-symbols-outlined">account_balance</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="dl-title">กำลังรวบรวมข้อมูลของคุณ</h1>
+    <p class="dl-subtitle">กรุณารอสักครู่</p>
+
+    <!-- Progress bar -->
+    <div class="dl-progress-wrap">
+      <div class="dl-progress-header">
+        <span class="dl-progress-label" id="prog-label">กำลังเริ่มต้น...</span>
+        <span class="dl-progress-pct" id="prog-pct">0%</span>
+      </div>
+      <div class="dl-progress-track">
+        <div class="dl-progress-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <!-- All done indicator (hidden until complete) -->
+    <div class="dl-all-done" id="all-done">
+      <div class="dl-done-icon">
+        <span class="material-symbols-outlined">check_circle</span>
+      </div>
+      <span class="dl-done-text">รวบรวมข้อมูลครบทุกรายการแล้ว</span>
+    </div>
+
+    <!-- Data source list -->
+    <div class="dl-list" id="dl-list"></div>
+
+    <!-- Notification note -->
+    <div class="dl-note">
+      <span class="material-symbols-outlined">notifications</span>
+      <span>สามารถปิดหน้าจอได้<br>เมื่อข้อมูลพร้อมแล้วจะมีแจ้งเตือนไปหา</span>
+    </div>
+
+  </div>
+
+  <script>
+    var SOURCES = [
+      { name: 'ข้อมูลใบขับขี่',                          source: 'กรมการขนส่ง',                                                               icon: 'badge' },
+      { name: 'ข้อมูลรถยนต์',                             source: 'กรมการขนส่ง',                                                               icon: 'directions_car' },
+      { name: 'ข้อมูลค่าไฟ',                              source: 'การไฟฟ้านครหลวง',                                                           icon: 'bolt' },
+      { name: 'ข้อมูลค่าน้ำ',                             source: 'การประปานครหลวง',                                                           icon: 'water_drop' },
+      { name: 'ข้อมูลค่าไฟ',                              source: 'การไฟฟ้าภูมิภาค',                                                           icon: 'bolt' },
+      { name: 'ข้อมูลค่าน้ำ',                             source: 'การประปาภูมิภาค',                                                           icon: 'water_drop' },
+      { name: 'ข้อมูลใบสั่งจราจร',                        source: 'สำนักงานตำรวจแห่งชาติ',                                                     icon: 'local_police' },
+      { name: 'สิทธิการรักษาพยาบาล',                      source: 'สำนักงานหลักประกันสุขภาพแห่งชาติ',                                         icon: 'health_and_safety' },
+      { name: 'บัตรสวัสดิการแห่งรัฐ',                     source: 'กระทรวงการคลัง',                                                           icon: 'credit_card' },
+      { name: 'เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด',  source: 'กรมกิจการเด็กและเยาวชน',                                                   icon: 'child_care' },
+      { name: 'เบี้ยยังชีพผู้สูงอายุ',                    source: 'กรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น',          icon: 'elderly' },
+      { name: 'เบี้ยคนพิการ',                             source: 'กรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น',          icon: 'accessible' }
+    ];
+
+    var TOTAL = SOURCES.length;
+    var ITEM_MS = 480;   // ms each item stays in "loading" before done
+    var NEXT_MS = 420;   // ms after an item completes before next starts loading
+
+    // ── Build SVG ring ──────────────────────────────────────────────────────
+    var RADIUS = 38;
+    var CIRC = 2 * Math.PI * RADIUS;
+    var ringEl = document.getElementById('ring-progress');
+    ringEl.style.strokeDasharray = CIRC;
+    ringEl.style.strokeDashoffset = CIRC;
+
+    // ── Build list ──────────────────────────────────────────────────────────
+    var listEl = document.getElementById('dl-list');
+    SOURCES.forEach(function(s, i) {
+      var div = document.createElement('div');
+      div.className = 'dl-item';
+      div.id = 'dl-item-' + i;
+      div.innerHTML =
+        '<div class="dl-status">' +
+          '<div class="dl-dot"></div>' +
+          '<div class="dl-spinner"></div>' +
+          '<span class="material-symbols-outlined dl-check">check_circle</span>' +
+        '</div>' +
+        '<div class="dl-data-icon">' +
+          '<span class="material-symbols-outlined">' + s.icon + '</span>' +
+        '</div>' +
+        '<div class="dl-item-content">' +
+          '<p class="dl-item-name">' + s.name + '</p>' +
+          '<p class="dl-item-source">' + s.source + '</p>' +
+        '</div>';
+      listEl.appendChild(div);
+    });
+
+    // ── Progress update ─────────────────────────────────────────────────────
+    function setProgress(done) {
+      var pct = Math.round(done / TOTAL * 100);
+      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('prog-pct').textContent = pct + '%';
+      ringEl.style.strokeDashoffset = CIRC * (1 - done / TOTAL);
+
+      if (done === TOTAL) {
+        document.getElementById('prog-label').textContent = 'ครบ ' + TOTAL + ' รายการ';
+      } else if (done === 0) {
+        document.getElementById('prog-label').textContent = 'กำลังเริ่มต้น...';
+      } else {
+        document.getElementById('prog-label').textContent = done + ' / ' + TOTAL + ' รายการ';
+      }
+    }
+
+    // ── Animate items sequentially ──────────────────────────────────────────
+    function runItem(i) {
+      if (i >= TOTAL) {
+        // All done
+        setProgress(TOTAL);
+        document.getElementById('all-done').classList.add('visible');
+        setTimeout(function() {
+          window.location.href = 'dashboard.html';
+        }, 1800);
+        return;
+      }
+
+      var el = document.getElementById('dl-item-' + i);
+
+      // → loading
+      el.classList.add('is-loading');
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      setTimeout(function() {
+        // → done
+        el.classList.remove('is-loading');
+        el.classList.add('is-done');
+        setProgress(i + 1);
+
+        // next item
+        setTimeout(function() { runItem(i + 1); }, NEXT_MS);
+      }, ITEM_MS);
+    }
+
+    // Kick off after brief pause
+    setTimeout(function() { runItem(0); }, 400);
+  </script>
+</body>
+</html>
