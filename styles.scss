@@ -1874,6 +1874,19 @@ main {
   100% { opacity: 0.6; }
 }
 
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
 .skeleton-loading {
   background-color: var(--stroke-neutral-lighter, #e2e8f0) !important;
   animation: skeleton-pulse 1.5s infinite ease-in-out !important;
@@ -3079,7 +3092,7 @@ main {
   flex-direction: column;
   gap: var(--spacing-md);
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
@@ -3090,17 +3103,35 @@ main {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-md) var(--spacing-lg);
-  padding-top: calc(var(--spacing-md) + 10px); // extra top space for the corner badge
+  padding: var(--spacing-lg) var(--spacing-xl);
   background-color: var(--canvas-white);
   border: 1px solid var(--stroke-neutral-lighter);
   border-radius: var(--radius-xl);
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   position: relative;
+  min-height: 72px;
+  box-sizing: border-box;
 
-  &:hover { background-color: var(--canvas-default); }
+  &:hover {
+    background-color: var(--canvas-default);
+    border-color: var(--stroke-primary-lighter);
+  }
+
+  // Adjust padding top and bottom if list-item has a corner badge to balance the spacing
+  &:has(.list-badge--corner) {
+    padding-top: calc(var(--spacing-lg) + 12px);
+    padding-bottom: calc(var(--spacing-lg) + 4px);
+  }
+
+  // Support defensive auto-width for any button inside list-item
+  .btn {
+    width: auto;
+    flex-shrink: 0;
+    align-self: center;
+    margin-left: var(--spacing-sm);
+  }
 }
 
 .list-icon {
@@ -3117,17 +3148,25 @@ main {
   &.driving { background-color: var(--background-secondary-lighter); color: var(--foreground-secondary-default); }
   &.covid   { background-color: var(--background-warning-light); color: var(--foreground-warning-default); }
   &.work    { background-color: var(--background-primary-lighter); color: var(--foreground-primary-default); }
+  &.danger  { background-color: var(--background-negative-light); color: var(--foreground-negative-default); }
 }
 
 // Expired card — override icon to neutral gray
-.list-item.is-expired .list-icon {
-  background-color: var(--background-neutral-dark) !important;
-  color: var(--foreground-neutral-lighter) !important;
+.list-item.is-expired {
+  opacity: 0.85;
+
+  .list-icon {
+    background-color: var(--background-neutral-dark) !important;
+    color: var(--foreground-neutral-lighter) !important;
+  }
 }
 
 .list-body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .list-title {
@@ -3146,14 +3185,15 @@ main {
   gap: var(--spacing-md);
   font-size: var(--font-size-body-s);
   color: var(--foreground-neutral-lighter);
-  margin-bottom: var(--spacing-xs);
   line-height: var(--line-height-body-s);
+  flex-wrap: wrap; // Allow metadata wrapping on small screens
 }
 
 .list-meta-item {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  white-space: nowrap;
 }
 
 .list-meta-icon {
@@ -3168,16 +3208,18 @@ main {
   border-radius: var(--radius-full);
   font-size: var(--font-size-label-s);
   font-weight: 500;
+  white-space: nowrap;
 
   &.valid    { background-color: var(--background-positive-light); color: var(--foreground-positive-default); }
   &.expiring { background-color: var(--background-warning-light); color: var(--foreground-warning-default); }
   &.expired  { background-color: var(--background-neutral-dark); color: var(--foreground-neutral-lighter); }
+  &.danger   { background-color: var(--background-negative-light); color: var(--foreground-negative-default); }
 
   // Absolute top-right corner variant
   &--corner {
     position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-lg);
+    top: var(--spacing-sm);
+    right: var(--spacing-md);
   }
 }
 
@@ -3185,6 +3227,7 @@ main {
   color: var(--foreground-neutral-lighter);
   flex-shrink: 0;
   font-size: 18px !important;
+  margin-left: var(--spacing-xs);
 }
 
 // Empty state
@@ -4605,3 +4648,4 @@ code {
 
   &:hover { opacity: 0.88; }
 }
+

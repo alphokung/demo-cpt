@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Components — Design System</title>
-  <meta name="description" content="รวม UI components ทั้งหมดของระบบ — Form, Table, Alert, Label, Timeline, Image Helper">
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
 
   <!-- Open Graph / Facebook -->
@@ -25,6 +25,7 @@
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  
   <link rel="stylesheet" href="styles.css">
 
   <style>
@@ -109,26 +110,13 @@
 
         <div class="comp-grid">
 
-          <!-- Form Inputs -->
-          <a href="components/form.html" class="comp-card">
+          <!-- Accordion -->
+          <a href="components/accordion.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">edit_note</span>
+              <span class="material-symbols-outlined">expand_circle_down</span>
             </div>
-            <p class="comp-card-title">Form &amp; Inputs</p>
-            <p class="comp-card-desc">Text, Date, Textarea, Select, Checkbox, Radio, Toggle, Range, Color, File Upload, Input States และ Buttons พร้อม loading state</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Table -->
-          <a href="components/table.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">table</span>
-            </div>
-            <p class="comp-card-title">Table</p>
-            <p class="comp-card-desc">ตาราง responsive — บนหน้าจอใหญ่แสดงเป็น table, บนมือถือพับเป็น card แต่ละแถวโดยอัตโนมัติ</p>
+            <p class="comp-card-title">Accordion</p>
+            <p class="comp-card-desc">ย่อ/ขยายเนื้อหาด้วย smooth animation — เหมาะกับ FAQ, เนื้อหาซ้อนชั้น และข้อมูลรายละเอียด</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -148,91 +136,39 @@
             </div>
           </a>
 
-          <!-- Label Display -->
-          <a href="components/label.html" class="comp-card">
+          <!-- Card -->
+          <a href="components/card.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">label</span>
+              <span class="material-symbols-outlined">credit_card</span>
             </div>
-            <p class="comp-card-title">Label Display</p>
-            <p class="comp-card-desc">Pattern สำหรับแสดงข้อมูล — details-list, value + sub-value, และ inline card-label/card-value</p>
+            <p class="comp-card-title">Card</p>
+            <p class="comp-card-desc">กล่องแสดงเนื้อหาข้อมูลพร้อมเงาและเอฟเฟกต์การโต้ตอบ — มีทั้งการ์ดทั่วไป, การ์ดโต้ตอบได้ และการ์ดข้อมูลแบบรายการ (Ticket)</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
             </div>
           </a>
 
-          <!-- Timeline -->
-          <a href="components/timeline.html" class="comp-card">
+          <!-- Color -->
+          <a href="components/color.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">timeline</span>
+              <span class="material-symbols-outlined">palette</span>
             </div>
-            <p class="comp-card-title">Timeline</p>
-            <p class="comp-card-desc">แสดงลำดับเหตุการณ์พร้อม stage — passed, active, future และ status colours: success, warning, danger, neutral</p>
+            <p class="comp-card-title">Color</p>
+            <p class="comp-card-desc">Primitive color scales (Primary, Secondary, Neutral, Danger, Positive, Warning, Info) และ semantic tokens</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
             </div>
           </a>
 
-          <!-- Image Helper -->
-          <a href="components/image.html" class="comp-card">
+          <!-- Empty State -->
+          <a href="components/empty-state.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">image</span>
+              <span class="material-symbols-outlined">inbox</span>
             </div>
-            <p class="comp-card-title">Image Helper</p>
-            <p class="comp-card-desc">Aspect ratio frames (16:9, 1:1, 4:3, 3:4), circle และ square ทุกขนาด, status rings และ placeholder</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Welcome Banner -->
-          <a href="components/welcome-banner.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">waving_hand</span>
-            </div>
-            <p class="comp-card-title">Welcome Banner</p>
-            <p class="comp-card-desc">แบนเนอร์ต้อนรับผู้ใช้ — gradient เข้ม แสดงชื่อ สถานะ และข้อมูลสรุป</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Status Banner -->
-          <a href="components/status-banner.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">verified</span>
-            </div>
-            <p class="comp-card-title">Status Banner</p>
-            <p class="comp-card-desc">แบนเนอร์แสดงสถานะเอกสาร/ใบอนุญาต — valid, expiring, expired พร้อมไอคอนและคำอธิบาย</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Tag / Badge -->
-          <a href="components/tag.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">sell</span>
-            </div>
-            <p class="comp-card-title">Tag &amp; Badge</p>
-            <p class="comp-card-desc">Pill label แสดงสถานะและหมวดหมู่ — colour variants, size variants, dot indicator และ list-badge</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- List Item -->
-          <a href="components/list-item.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">list</span>
-            </div>
-            <p class="comp-card-title">List Item</p>
-            <p class="comp-card-desc">รายการข้อมูลพร้อมไอคอน meta info badge (valid/expiring/expired) corner badge และ expired state</p>
+            <p class="comp-card-title">Empty State</p>
+            <p class="comp-card-desc">แสดงเมื่อไม่มีข้อมูล — ไอคอน หัวข้อ คำอธิบาย และ action button พร้อม context variants</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -252,13 +188,78 @@
             </div>
           </a>
 
-          <!-- Empty State -->
-          <a href="components/empty-state.html" class="comp-card">
+          <!-- Form Inputs -->
+          <a href="components/form.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">inbox</span>
+              <span class="material-symbols-outlined">edit_note</span>
             </div>
-            <p class="comp-card-title">Empty State</p>
-            <p class="comp-card-desc">แสดงเมื่อไม่มีข้อมูล — ไอคอน หัวข้อ คำอธิบาย และ action button พร้อม context variants</p>
+            <p class="comp-card-title">Form &amp; Inputs</p>
+            <p class="comp-card-desc">Text, Date, Textarea, Select, Checkbox, Radio, Toggle, Range, Color, File Upload, Input States และ Buttons พร้อม loading state</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Icons -->
+          <a href="components/icon.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">interests</span>
+            </div>
+            <p class="comp-card-title">Icons</p>
+            <p class="comp-card-desc">Material Symbols Outlined — วิธีใช้, ปรับขนาด/สี, variable font axes (FILL, wght, GRAD, opsz) พร้อม live customizer</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Image Helper -->
+          <a href="components/image.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">image</span>
+            </div>
+            <p class="comp-card-title">Image Helper</p>
+            <p class="comp-card-desc">Aspect ratio frames (16:9, 1:1, 4:3, 3:4), circle และ square ทุกขนาด, status rings และ placeholder</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Label Display -->
+          <a href="components/label.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">label</span>
+            </div>
+            <p class="comp-card-title">Label Display</p>
+            <p class="comp-card-desc">Pattern สำหรับแสดงข้อมูล — details-list, value + sub-value, และ inline card-label/card-value</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- List Item -->
+          <a href="components/list-item.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">list</span>
+            </div>
+            <p class="comp-card-title">List Item</p>
+            <p class="comp-card-desc">รายการข้อมูลพร้อมไอคอน meta info badge (valid/expiring/expired) corner badge และ expired state</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Modal & Bottom Sheet -->
+          <a href="components/modal.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">open_in_full</span>
+            </div>
+            <p class="comp-card-title">Modal &amp; Bottom Sheet</p>
+            <p class="comp-card-desc">Overlay dialog พร้อม backdrop blur และ scale animation — Bottom Sheet แบบ slide-up สำหรับ mobile</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -291,20 +292,7 @@
             </div>
           </a>
 
-          <!-- Color -->
-          <a href="components/color.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">palette</span>
-            </div>
-            <p class="comp-card-title">Color</p>
-            <p class="comp-card-desc">Primitive color scales (Primary, Secondary, Neutral, Danger, Positive, Warning, Info) และ semantic tokens</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Spacing -->
+          <!-- Spacing & Helpers -->
           <a href="components/spacing.html" class="comp-card">
             <div class="comp-card-icon">
               <span class="material-symbols-outlined">space_bar</span>
@@ -317,39 +305,26 @@
             </div>
           </a>
 
-          <!-- Modal & Bottom Sheet -->
-          <a href="components/modal.html" class="comp-card">
+          <!-- Status Banner -->
+          <a href="components/status-banner.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">open_in_full</span>
+              <span class="material-symbols-outlined">verified</span>
             </div>
-            <p class="comp-card-title">Modal &amp; Bottom Sheet</p>
-            <p class="comp-card-desc">Overlay dialog พร้อม backdrop blur และ scale animation — Bottom Sheet แบบ slide-up สำหรับ mobile</p>
+            <p class="comp-card-title">Status Banner</p>
+            <p class="comp-card-desc">แบนเนอร์แสดงสถานะเอกสาร/ใบอนุญาต — valid, expiring, expired พร้อมไอคอนและคำอธิบาย</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
             </div>
           </a>
 
-          <!-- Toast / Snackbar -->
-          <a href="components/toast.html" class="comp-card">
+          <!-- Table -->
+          <a href="components/table.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">notification_important</span>
+              <span class="material-symbols-outlined">table</span>
             </div>
-            <p class="comp-card-title">Toast / Snackbar</p>
-            <p class="comp-card-desc">การแจ้งเตือนสั้น ๆ ที่หายไปอัตโนมัติ — success, danger, warning, info, default, light</p>
-            <div class="comp-card-arrow">
-              ดูตัวอย่าง
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </div>
-          </a>
-
-          <!-- Accordion -->
-          <a href="components/accordion.html" class="comp-card">
-            <div class="comp-card-icon">
-              <span class="material-symbols-outlined">expand_circle_down</span>
-            </div>
-            <p class="comp-card-title">Accordion</p>
-            <p class="comp-card-desc">ย่อ/ขยายเนื้อหาด้วย smooth animation — เหมาะกับ FAQ, เนื้อหาซ้อนชั้น และข้อมูลรายละเอียด</p>
+            <p class="comp-card-title">Table</p>
+            <p class="comp-card-desc">ตาราง responsive — บนหน้าจอใหญ่แสดงเป็น table, บนมือถือพับเป็น card แต่ละแถวโดยอัตโนมัติ</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -369,13 +344,13 @@
             </div>
           </a>
 
-          <!-- Icons -->
-          <a href="components/icon.html" class="comp-card">
+          <!-- Tag & Badge -->
+          <a href="components/tag.html" class="comp-card">
             <div class="comp-card-icon">
-              <span class="material-symbols-outlined">interests</span>
+              <span class="material-symbols-outlined">sell</span>
             </div>
-            <p class="comp-card-title">Icons</p>
-            <p class="comp-card-desc">Material Symbols Outlined — วิธีใช้, ปรับขนาด/สี, variable font axes (FILL, wght, GRAD, opsz) พร้อม live customizer</p>
+            <p class="comp-card-title">Tag &amp; Badge</p>
+            <p class="comp-card-desc">Pill label แสดงสถานะและหมวดหมู่ — colour variants, size variants, dot indicator และ list-badge</p>
             <div class="comp-card-arrow">
               ดูตัวอย่าง
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -395,6 +370,45 @@
             </div>
           </a>
 
+          <!-- Timeline -->
+          <a href="components/timeline.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">timeline</span>
+            </div>
+            <p class="comp-card-title">Timeline</p>
+            <p class="comp-card-desc">แสดงลำดับเหตุการณ์พร้อม stage — passed, active, future และ status colours: success, warning, danger, neutral</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Toast / Snackbar -->
+          <a href="components/toast.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">notification_important</span>
+            </div>
+            <p class="comp-card-title">Toast / Snackbar</p>
+            <p class="comp-card-desc">การแจ้งเตือนสั้น ๆ ที่หายไปอัตโนมัติ — success, danger, warning, info, default, light</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Welcome Banner -->
+          <a href="components/welcome-banner.html" class="comp-card">
+            <div class="comp-card-icon">
+              <span class="material-symbols-outlined">waving_hand</span>
+            </div>
+            <p class="comp-card-title">Welcome Banner</p>
+            <p class="comp-card-desc">แบนเนอร์ต้อนรับผู้ใช้ — gradient เข้ม แสดงชื่อ สถานะ และข้อมูลสรุป</p>
+            <div class="comp-card-arrow">
+              ดูตัวอย่าง
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </div>
+          </a>
+
         </div>
 
         <!-- ─── Demo Pages ─── -->
@@ -404,6 +418,19 @@
             <p class="text-subheader">หน้าตัวอย่างแอปพลิเคชันจริง</p>
           </div>
           <div class="comp-grid">
+
+            <!-- แผงข้อมูลพลเมือง (Dashboard) -->
+            <a href="dashboard.html" class="comp-card">
+              <div class="comp-card-icon" style="background:var(--primary-95);color:var(--primary-40)">
+                <span class="material-symbols-outlined">dashboard</span>
+              </div>
+              <p class="comp-card-title">แผงข้อมูลพลเมือง</p>
+              <p class="comp-card-desc">หน้าแรกระบบแผงข้อมูลพลเมือง — รวบรวมข้อมูลส่วนบุคคล บิลและการชำระเงิน สิทธิรักษาพยาบาล ทรัพย์สิน และเอกสารราชการ</p>
+              <div class="comp-card-arrow">
+                ดูหน้าจริง
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </div>
+            </a>
 
             <!-- ใบสั่งจราจร -->
             <a href="index.html" class="comp-card">

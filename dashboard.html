@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าแรก — แผงข้อมูลพลเมืองดิจิทัล</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description"
+    content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="title-block">
+            <h2 class="text-header">ข้อมูลของคุณ</h2>
+            <p class="text-subheader">ศูนย์รวมข้อมูลส่วนบุคคล สิทธิประโยชน์ และเอกสารสำคัญของคุณ</p>
+          </div>
+        </div>
+
+        <!-- Status Banner -->
+        <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
+          <div class="status-banner expiring skeleton-item" style="pointer-events: none; opacity: 0.6;">
+            <div class="skeleton-loading skeleton-circle"
+              style="width: 24px; height: 24px; flex-shrink: 0; background: rgba(0,0,0,0.1) !important;"></div>
+            <div class="status-banner-text"
+              style="width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs);">
+              <div class="skeleton-loading skeleton-text"
+                style="height: 16px; width: 40%; background: rgba(0,0,0,0.1) !important; margin: 0;"></div>
+              <div class="skeleton-loading skeleton-text"
+                style="height: 12px; width: 60%; background: rgba(0,0,0,0.06) !important; margin: 0;"></div>
+            </div>
+          </div>
+          <div class="status-banner expiring loaded-item" style="display: none;">
+            <span class="material-symbols-outlined">warning</span>
+            <div class="status-banner-text">
+              <p class="status-banner-title">หนังสือเดินทางใกล้หมดอายุ</p>
+              <p class="status-banner-subtitle">กรุณาดำเนินการต่ออายุเอกสารภายใน 30 วัน</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Welcome Banner -->
+        <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
+          <div class="welcome-banner skeleton-item" style="pointer-events: none; opacity: 0.85;">
+            <span class="skeleton-loading"
+              style="height: 16px; width: 80px; display: block; background: rgba(255, 255, 255, 0.2) !important; border-radius: var(--radius-sm); margin-bottom: 8px;"></span>
+            <span class="skeleton-loading welcome-driver-name-skeleton"
+              style="height: 28px; width: 220px; display: block; background: rgba(255, 255, 255, 0.3) !important; border-radius: var(--radius-md); margin-bottom: 8px;"></span>
+            <span class="skeleton-loading"
+              style="height: 14px; width: 280px; display: block; background: rgba(255, 255, 255, 0.15) !important; border-radius: var(--radius-sm);"></span>
+          </div>
+          <div class="welcome-banner loaded-item" style="display: none;">
+            <p class="welcome-banner-greeting">สวัสดี</p>
+            <p class="welcome-banner-name">คุณสมชาย ใจดี</p>
+            <p class="welcome-banner-sub">เลขประจำตัวประชาชน: 1-1002-00345-67-8</p>
+          </div>
+        </div>
+
+
+        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
+          <p class="list-section-title">เอกสารราชการ</p>
+          <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+
+          <div class="cert-list">
+            <!-- ID Card -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('บัตรประจำตัวประชาชน\nเลขที่: 1-1002-00345-67-8\nวันหมดอายุ: 12 มี.ค. 2575')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon work">
+                  <span class="material-symbols-outlined">badge</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">บัตรประจำตัวประชาชน</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 12 มี.ค. 2575</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Driving License -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('ไปเปิด miniapp กระเป๋าเอกสาร')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ใบอนุญาตขับรถยนต์ส่วนบุคคล</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 5 พ.ค. 2572</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Passport -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('ไปเปิด miniapp กระเป๋าเอกสาร')">
+                <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                <div class="list-icon work">
+                  <span class="material-symbols-outlined">public</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">หนังสือเดินทาง (Passport)</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. Bills and Payments -->
+        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
+          <p class="list-section-title">บิลและการชำระเงิน</p>
+          <p class="list-section-note">รายการบิลค่าสาธารณูปโภคและใบสั่งจราจรที่ค้างชำระ</p>
+
+          <div class="cert-list">
+            <!-- Electricity Meter 1: MEA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openBillModal('ค่าไฟ การไฟฟ้านครหลวง', '1,245.50', 'บ้านพักอาศัย - เลขที่ผู้ใช้ไฟ: 020012345678')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าไฟ การไฟฟ้านครหลวง</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้ไฟ: 020012345678
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      ประเภท: มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ครบกำหนด: 15 มิ.ย. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดค้างชำระ: <strong
+                        style="color: var(--foreground-negative-default); font-weight: 700;">1,245.50</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 1: MWA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openBillModal('ค่าน้ำ การประปานครหลวง', '320.25', 'บ้านพักอาศัย - เลขทะเบียนผู้ใช้น้ำ: 102548976')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าน้ำ การประปานครหลวง</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้น้ำ: 102548976
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      ประเภท: มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ครบกำหนด: 20 มิ.ย. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดค้างชำระ: <strong
+                        style="color: var(--foreground-negative-default); font-weight: 700;">320.25</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Electricity Meter 2: PEA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openBillModal('ค่าไฟ การไฟฟ้าส่วนภูมิภาค', '4,890.00', 'ร้านค้า - เลขที่ผู้ใช้ไฟ: 020087654321')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon covid">
+                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าไฟ การไฟฟ้าส่วนภูมิภาค</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้ไฟ: 020087654321
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      ประเภท: มิเตอร์ร้านค้า
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ชำระเมื่อ: 10 พ.ค. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดชำระแล้ว: <strong
+                        style="color: var(--foreground-positive-default); font-weight: 700;">4,890.00</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 2: PWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('ไปเปิด miniapp ประปาส่วนภูมิภาค')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon driving">
+                  <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าน้ำ การประปาส่วนภูมิภาค</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้น้ำ: 552109876
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      ประเภท: มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ชำระเมื่อ: 14 พ.ค. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดชำระแล้ว: <strong
+                        style="color: var(--foreground-positive-default); font-weight: 700;">180.50</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Traffic Fines: 2 tickets, 1 unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('ไปเปิด miniapp ใบสั่งจราจร')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ 1 ใบ</span>
+                <div class="list-icon danger">
+                  <img src="_media/police.webp" alt="Police Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ใบสั่งจราจร (2 ใบ)</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">gavel</span>
+                      ประวัติ: ใบสั่งจราจรทั้งหมด 2 ใบ
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">info</span>
+                      สถานะ: ค้างชำระ 1 ใบ · ชำระแล้ว 1 ใบ
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ครบกำหนด: 10 มิ.ย. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดค้างชำระ: <strong
+                        style="color: var(--foreground-negative-default); font-weight: 700;">1,000.00</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Rights and Welfare -->
+        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
+          <p class="list-section-title">สิทธิ และสวัสดิการ</p>
+          <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
+
+          <div class="cert-list">
+            <!-- Card 1: Medical Benefits -->
+            <div class="loading-wrapper">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title"
+                  style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-button"
+                  style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--primary-50);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิการรักษาพยาบาล</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value"
+                      style="color: var(--primary-40); font-weight: 700;">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิหลักประกันสุขภาพ (บัตรทอง 30 บาท)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่เข้ารับการรักษาเบื้องต้น:</span>
+                    <span class="details-value">คลินิกชุมชนอบอุ่นลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประจำ:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่รับการส่งต่อ:</span>
+                    <span class="details-value">โรงพยาบาลรามาธิบดี</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="alert('เปิด miniapp ตรวจสอบสิทธิการรักษาพยาบาล')">
+                  <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Welfare Benefits -->
+            <div class="loading-wrapper">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title"
+                  style="height: 20px; width: 55%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--secondary-50);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (สถานะใช้งาน)</span>
+                    <span class="details-subvalue">วงเงินส่วนลดซื้อสินค้าอุปโภคบริโภคคงเหลือเดือนนี้: 300.00 บาท</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (โอนเงินสำเร็จ)</span>
+                    <span class="details-subvalue">โอนเงินช่วยเหลือประจำเดือน พ.ค. 2569 จำนวน 600.00 บาทสำเร็จ</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เบี้ยยังชีพผู้สูงอายุ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-neutral-lighter); font-weight: 500;">ยังไม่มีสิทธิ์</span>
+                    <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60
+                      ปีบริบูรณ์)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Assets -->
+        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
+          <p class="list-section-title">ทรัพย์สินของคุณ</p>
+          <p class="list-section-note">ข้อมูลรถยนต์และโฉนดที่ดินครอบครองในระบบ</p>
+
+          <div class="cert-list">
+            <!-- Honda Civic -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openTaxModal('รถยนต์ Honda Civic', 'กข 1234 กทม.', '15 ก.ค. 2569')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">รถยนต์ Honda Civic</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">badge</span>
+                      <span>กข 1234 กทม.</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>ภาษีหมดอายุ: 15 ก.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Yamaha Grand Filano -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openTaxModal('รถจักรยานยนต์ Yamaha Grand Filano', '1กข 5678 เชียงใหม่', '30 พ.ย. 2569')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">two_wheeler</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">Yamaha Grand Filano</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">badge</span>
+                      <span>1กข 5678 ชม.</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>ภาษีหมดอายุ: 30 พ.ย. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Land Deeds -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="alert('กำลังเชื่อมต่อไปยังแอปพลิเคชัน LandsMaps กรมที่ดิน...')">
+                <span class="list-badge work list-badge--corner">3 แปลง</span>
+                <div class="list-icon covid">
+                  <span class="material-symbols-outlined">map</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">โฉนดที่ดินครอบครอง</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">location_on</span>
+                      <span>กทม. (50 ตร.ว.), เชียงใหม่ (2 ไร่), ขอนแก่น (1 ไร่)</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="footer-timestamp" style="margin-top: var(--spacing-2xl);">
+          ศูนย์รวมข้อมูลพลเมืองบูรณาการระบบรัฐบาลดิจิทัล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Bill Payment -->
+  <div id="modal-bill-payment" class="modal-overlay" onclick="closeModal('modal-bill-payment')">
+    <div class="modal-content modal-content-payment" onclick="event.stopPropagation()">
+      <button class="modal-close-btn modal-close-btn-payment" onclick="closeModal('modal-bill-payment')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="qr-header-banner">
+        <img src="_media/thai-qr-payment.png" alt="Thai QR Payment" class="qr-payment-banner-img">
+      </div>
+
+      <div class="payment-modal-body">
+        <div class="payment-qr-container">
+          <img src="_media/qr.png" alt="QR Code" class="payment-qr-img">
+        </div>
+
+        <div class="payment-details-text">
+          <div id="bill-amount" class="payment-detail-amount">- บาท</div>
+          <div id="bill-title" class="payment-detail-ref">-</div>
+          <div id="bill-meta" class="payment-detail-date">-</div>
+        </div>
+
+        <p class="qr-help-text text-center mt-xs mb-0">
+          สแกนคิวอาร์โค้ดนี้ด้วยแอปพลิเคชันธนาคารเพื่อจ่ายบิลค่าบริการ
+        </p>
+
+        <button id="btn-save-bill-qr" class="btn btn-primary w-full mt-sm" onclick="simulatePaymentSave()">
+          <span class="material-symbols-outlined">download</span>
+          <span>บันทึกคิวอาร์โค้ดเพื่อชำระเงิน</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tax Renewal -->
+  <div id="modal-tax-renewal" class="modal-overlay" onclick="closeModal('modal-tax-renewal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close-btn modal-close-btn-absolute" onclick="closeModal('modal-tax-renewal')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-header-centered">
+        <div class="contact-icon-box modal-photo-icon-box"
+          style="background-color: var(--background-secondary-lighter); color: var(--foreground-secondary-default);">
+          <span class="material-symbols-outlined icon-24">local_taxi</span>
+        </div>
+        <h3 class="contact-modal-title modal-title-centered" id="tax-modal-title">-</h3>
+        <p class="contact-modal-description mt-xs mb-0" id="tax-modal-desc">
+          การต่อภาษีรถประจำปีออนไลน์ผ่านกรมการขนส่งทางบก
+        </p>
+      </div>
+
+      <div class="info-list mt-md">
+        <div class="info-item">
+          <div class="info-main">
+            <p class="info-title">ค่าภาษีรถประจำปี</p>
+            <p class="info-meta">คำนวณตามประเภทรถและขนาดเครื่องยนต์</p>
+          </div>
+          <span class="badge-primary-tint">1,650.00 บาท</span>
+        </div>
+        <div class="info-item">
+          <div class="info-main">
+            <p class="info-title">พ.ร.บ. คุ้มครองผู้ประสบภัยจากรถ</p>
+            <p class="info-meta">บังคับใช้ออนไลน์</p>
+          </div>
+          <span class="badge-primary-tint">645.21 บาท</span>
+        </div>
+      </div>
+
+      <button id="btn-pay-tax" class="btn btn-primary w-full mt-lg" onclick="simulateTaxPayment()">
+        <span class="material-symbols-outlined">credit_card</span>
+        <span>ชำระเงินชำระภาษีสะดวกรวดเร็ว</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function initLoading() {
+      document.querySelectorAll('.loading-wrapper').forEach(wrapper => {
+        const skeleton = wrapper.querySelector('.skeleton-item');
+        const loaded = wrapper.querySelector('.loaded-item');
+
+        if (skeleton) skeleton.style.display = '';
+        if (loaded) loaded.style.display = 'none';
+
+        // Random duration up to 2 seconds (between 400ms and 2000ms)
+        const randomDelay = 400 + Math.random() * 1600;
+
+        setTimeout(() => {
+          if (skeleton) skeleton.style.display = 'none';
+          if (loaded) {
+            loaded.style.display = '';
+          }
+        }, randomDelay);
+      });
+    }
+
+    window.addEventListener('pageshow', initLoading);
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function openBillModal(title, amount, meta) {
+      document.getElementById('bill-title').textContent = title;
+      document.getElementById('bill-amount').textContent = amount + ' บาท';
+      document.getElementById('bill-meta').textContent = meta;
+      openModal('modal-bill-payment');
+    }
+
+    function openTaxModal(vehicle, plate, dueDate) {
+      document.getElementById('tax-modal-title').textContent = 'ต่อภาษี ' + vehicle;
+      document.getElementById('tax-modal-desc').textContent = 'ทะเบียนรถ: ' + plate + ' | วันสิ้นอายุภาษีเดิม: ' + dueDate;
+      openModal('modal-tax-renewal');
+    }
+
+    function simulatePaymentSave() {
+      const btn = document.getElementById('btn-save-bill-qr');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="payment-modal-loader"></span> <span>กำลังบันทึกคิวอาร์โค้ด...</span>';
+      btn.style.backgroundColor = '#4a5568';
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined">download_done</span> <span>บันทึกสำเร็จ</span>';
+        btn.style.backgroundColor = '#059669';
+        setTimeout(() => {
+          alert('บันทึกรูปภาพคิวอาร์โค้ดสำหรับการจ่ายชำระเงินเรียบร้อยแล้ว');
+          closeModal('modal-bill-payment');
+          // reset button
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.backgroundColor = '';
+            btn.innerHTML = '<span class="material-symbols-outlined">download</span> <span>บันทึกคิวอาร์โค้ดเพื่อชำระเงิน</span>';
+          }, 300);
+        }, 300);
+      }, 1500);
+    }
+
+    function simulateTaxPayment() {
+      const btn = document.getElementById('btn-pay-tax');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="payment-modal-loader"></span> <span>กำลังส่งรายการต่อภาษี...</span>';
+      btn.style.backgroundColor = '#4a5568';
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> <span>ดำเนินการสำเร็จ</span>';
+        btn.style.backgroundColor = '#059669';
+        setTimeout(() => {
+          alert('ชำระค่าต่อภาษีและต่อ พ.ร.บ. ออนไลน์สำเร็จแล้ว! ข้อมูลจะอัปเดตเข้าระบบกรมการขนส่งทางบกทันที');
+          closeModal('modal-tax-renewal');
+          // reset button
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.backgroundColor = '';
+            btn.innerHTML = '<span class="material-symbols-outlined">credit_card</span> <span>ชำระเงินชำระภาษีสะดวกรวดเร็ว</span>';
+          }, 300);
+        }, 300);
+      }, 1500);
+    }
+  </script>
+</body>
+
+</html>

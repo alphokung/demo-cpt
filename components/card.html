@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card — Components</title>
+  <meta name="description" content="ตัวอย่าง Card component — การจัดกลุ่มข้อมูลและปุ่มดำเนินการ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">Card</h2>
+            <p class="text-subheader">กล่องแสดงเนื้อหาข้อมูล พร้อมขอบมน เงา และเอฟเฟกต์การโต้ตอบ</p>
+          </div>
+        </div>
+
+        <div class="components-layout">
+
+          <!-- ─── Basic & Interactive Card ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Basic &amp; Interactive Cards</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">
+              <code>.card</code> สำหรับการแสดงผลทั่วไป และ <code>.card.card-interactive</code> สำหรับการ์ดที่สามารถคลิก/โต้ตอบได้ (มีเอฟเฟกต์ยกตัวเมื่อ hover)
+            </p>
+            
+            <div class="cert-list">
+              <!-- Basic Card -->
+              <div class="card">
+                <h4 style="margin:0 0 var(--spacing-xs); font-size:var(--font-size-title-s)">การ์ดข้อมูลทั่วไป (Basic)</h4>
+                <p style="margin:0; font-size:var(--font-size-body-m); color:var(--foreground-neutral-lighter)">
+                  ใช้แสดงเนื้อหาคงที่ ข้อมูลประกอบ หรือฟอร์มที่ไม่ต้องการการกดเพื่อโต้ตอบทั้งแผ่นการ์ด
+                </p>
+              </div>
+
+              <!-- Interactive Card -->
+              <div class="card card-interactive">
+                <h4 style="margin:0 0 var(--spacing-xs); font-size:var(--font-size-title-s)">การ์ดโต้ตอบได้ (Interactive)</h4>
+                <p style="margin:0; font-size:var(--font-size-body-m); color:var(--foreground-neutral-lighter)">
+                  มี cursor pointer และเงา/ความสูงที่จะยกตัวขึ้นเล็กน้อยเมื่อผู้ใช้นำเมาส์มาวางทับ (hover)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Flat Card ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Flat Card — .card-flat</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">
+              <code>.card.card-flat</code> ลบขอบ เงา และสีพื้นหลังออก เพื่อจัดโครงสร้าง flex/grid ด้านในโดยไม่ต้องสร้างกรอบซ้อนกรอบ
+            </p>
+            
+            <div class="card card-flat">
+              <p style="margin:0; font-size:var(--font-size-body-m); color:var(--foreground-neutral-lighter)">
+                (พื้นที่การ์ดแบบ Flat — มีเพียง Layout ด้านใน ไม่มีกรอบ สีพื้นหลัง หรือเงาจริง)
+              </p>
+            </div>
+          </div>
+
+          <!-- ─── Complex Layout Card (Ticket Style) ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">Complex Layout (Ticket / List Card Style)</h3>
+            </div>
+            <p class="form-hint" style="margin-bottom:var(--spacing-lg)">
+              โครงสร้างระดับสูงสำหรับรายการข้อมูล เช่น บิล, ใบสั่งจราจร หรือทรัพย์สิน โดยมี <code>.card-header</code>, <code>.card-body</code> (ประกอบด้วย <code>.card-body-item</code> ที่มี <code>.card-label</code> และ <code>.card-value</code>) และปุ่มป้ายชื่อด้านล่าง
+            </p>
+            
+            <div class="cert-list">
+              <!-- Example Ticket Card -->
+              <div class="card card-interactive">
+                <div class="card-header">
+                  <div class="list-icon covid">
+                    <span class="material-symbols-outlined">bolt</span>
+                  </div>
+                  <div class="summary-info">
+                    <span class="list-title">ค่าไฟฟ้าประจำเดือน</span>
+                    <span class="fine-title">1,245.50 บาท</span>
+                  </div>
+                </div>
+                
+                <div class="card-body">
+                  <div class="card-body-item">
+                    <span class="card-label">ประเภทผู้ใช้ไฟฟ้า:</span>
+                    <span class="card-value">บ้านพักอาศัย</span>
+                  </div>
+                  <div class="card-body-item">
+                    <span class="card-label">ครบกำหนดชำระ:</span>
+                    <span class="card-value">15 มิ.ย. 2569</span>
+                  </div>
+                  <div class="card-body-item">
+                    <span class="card-label">สถานะ:</span>
+                    <span class="card-value">
+                      <span class="list-badge danger">ค้างชำระ</span>
+                    </span>
+                  </div>
+                </div>
+                
+                <button class="btn btn-secondary card-btn-action flex-center">
+                  <span class="material-symbols-outlined" style="font-size:18px; margin-right:4px;">qr_code</span>ชำระเงิน
+                </button>
+              </div>
+
+              <!-- Example Asset Card -->
+              <div class="card card-interactive">
+                <div class="card-header">
+                  <div class="list-icon driving">
+                    <span class="material-symbols-outlined">directions_car</span>
+                  </div>
+                  <div class="summary-info">
+                    <span class="list-title">รถยนต์ Honda Civic</span>
+                    <span class="due-title">ทะเบียน: กข 1234 กทม.</span>
+                  </div>
+                </div>
+                
+                <div class="card-body">
+                  <div class="card-body-item">
+                    <span class="card-label">วันสิ้นอายุภาษี:</span>
+                    <span class="card-value">15 ก.ค. 2569</span>
+                  </div>
+                  <div class="card-body-item">
+                    <span class="card-label">สถานะภาษี:</span>
+                    <span class="card-value">
+                      <span class="list-badge valid">ชำระภาษีแล้ว</span>
+                    </span>
+                  </div>
+                </div>
+                
+                <button class="btn btn-secondary card-btn-action flex-center">ต่อภาษีออนไลน์</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── Usage ─── -->
+          <div class="card">
+            <div class="section-title-container">
+              <div class="section-bar"></div>
+              <h3 class="section-title">วิธีใช้งาน</h3>
+            </div>
+            <div class="components-section">
+              <div class="form-group">
+                <p class="form-label">HTML Structure - Ticket Card</p>
+                <pre class="code-block">&lt;div class="card card-interactive"&gt;
+  &lt;!-- ส่วนหัวของการ์ด --&gt;
+  &lt;div class="card-header"&gt;
+    &lt;div class="list-icon health"&gt;
+      &lt;span class="material-symbols-outlined"&gt;medical_services&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="summary-info"&gt;
+      &lt;span class="list-title"&gt;ชื่อรายการ&lt;/span&gt;
+      &lt;span class="fine-title"&gt;ยอดเงินหรือข้อความหลัก&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- รายละเอียดข้างใน --&gt;
+  &lt;div class="card-body"&gt;
+    &lt;div class="card-body-item"&gt;
+      &lt;span class="card-label"&gt;หัวข้อหลักการแสดงข้อมูล:&lt;/span&gt;
+      &lt;span class="card-value"&gt;ข้อมูลรายละเอียด&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- ปุ่มดำเนินการด้านล่างสุด --&gt;
+  &lt;button class="btn btn-secondary card-btn-action"&gt;ปุ่มทำงาน&lt;/button&gt;
+&lt;/div&gt;</pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
