@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เบี้ยยังชีพผู้สูงอายุ — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Source list ── */
+    .src-list { display: flex; flex-direction: column; }
+
+    .src-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .src-item:first-child { padding-top: 0; }
+    .src-item:last-child  { border-bottom: none; padding-bottom: 0; }
+
+    .src-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    .src-icon--loading { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
+    .src-icon--found   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .src-icon--none    { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
+    .src-icon .material-symbols-outlined { font-size: 20px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .src-icon--loading .material-symbols-outlined { animation: spin 1.2s linear infinite; }
+
+    .src-info { flex: 1; min-width: 0; }
+    .src-name {
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-500);
+      color: var(--foreground-neutral-default);
+    }
+    .src-status { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin-top: 2px; }
+    .src-status.found {
+      color: var(--foreground-positive-default);
+      font-weight: var(--font-weight-500);
+    }
+
+    .src-shimmer {
+      display: inline-block; height: 10px; width: 72px; border-radius: 5px;
+      background: linear-gradient(90deg, var(--neutral-94) 25%, var(--neutral-90) 50%, var(--neutral-94) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ── Source pill/tag ── */
+    .src-pill {
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
+      padding: 3px var(--spacing-md);
+      border-radius: var(--radius-full);
+      background: var(--primary-95);
+      color: var(--primary-40);
+      font-size: var(--font-size-body-s);
+      font-weight: var(--font-weight-500);
+      white-space: nowrap;
+    }
+    .src-pill .material-symbols-outlined { font-size: 14px; }
+
+    /* ── Status hero ── */
+    .status-hero {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      padding: var(--spacing-xl) 0 var(--spacing-lg);
+      gap: var(--spacing-md);
+    }
+    .status-hero-icon {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: var(--background-positive-light);
+      color: var(--foreground-positive-default);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .status-hero-icon .material-symbols-outlined {
+      font-size: 40px;
+      font-variation-settings: 'FILL' 1;
+    }
+    .status-hero-label {
+      font-size: var(--font-size-body-m);
+      color: var(--foreground-neutral-lighter);
+      margin: 0;
+    }
+    .status-hero-amount {
+      font-size: var(--font-size-display-s);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      line-height: 1.1;
+      margin: 0;
+    }
+    .status-hero-amount .unit {
+      font-size: var(--font-size-title-m);
+      font-weight: var(--font-weight-400);
+      color: var(--foreground-neutral-lighter);
+    }
+
+    /* ── History table ── */
+    .history-year-header {
+      font-size: var(--font-size-title-l);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 2px solid var(--foreground-neutral-default);
+      margin: var(--spacing-lg) 0 0;
+    }
+    .history-row {
+      display: flex; align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .history-row:last-child { border-bottom: none; }
+    .history-month {
+      width: 44px; flex-shrink: 0;
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default);
+    }
+    .history-method {
+      flex: 1;
+      font-size: var(--font-size-body-m);
+      color: var(--foreground-neutral-lighter);
+    }
+    .history-amount {
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      display: flex; align-items: baseline; gap: 2px;
+    }
+    .history-amount .unit {
+      font-size: var(--font-size-body-s);
+      font-weight: var(--font-weight-400);
+      color: var(--foreground-neutral-lighter);
+    }
+
+    /* ── Warning notice ── */
+    .notice-chip {
+      display: inline-flex; align-items: center; gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: var(--radius-full);
+      background: var(--background-warning-lighter);
+      color: var(--foreground-warning-default);
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-600);
+      margin-bottom: var(--spacing-md);
+    }
+    .notice-chip .material-symbols-outlined { font-size: 16px; }
+
+    /* ── Fade-slide in ── */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeSlideIn 0.35s ease both; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <a href="javascript:history.back()" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="title-block">
+            <h2 class="text-header">เบี้ยยังชีพผู้สูงอายุ</h2>
+            <p class="text-subheader">กรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น</p>
+          </div>
+        </div>
+
+        <!-- ── Data Sources Card ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--info-40);"></div>
+            <h3 class="section-title">ตรวจสอบจากทุกแหล่งข้อมูล</h3>
+          </div>
+          <div class="src-list">
+
+            <div class="src-item" id="src-bkk">
+              <div class="src-icon src-icon--loading">
+                <span class="material-symbols-outlined">autorenew</span>
+              </div>
+              <div class="src-info">
+                <div class="src-name">กรุงเทพมหานคร (กทม.)</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+
+            <div class="src-item" id="src-pattaya">
+              <div class="src-icon src-icon--loading">
+                <span class="material-symbols-outlined">autorenew</span>
+              </div>
+              <div class="src-info">
+                <div class="src-name">เทศบาลเมืองพัทยา</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+
+            <div class="src-item" id="src-dla">
+              <div class="src-icon src-icon--loading">
+                <span class="material-symbols-outlined">autorenew</span>
+              </div>
+              <div class="src-info">
+                <div class="src-name">กรมส่งเสริมการปกครองท้องถิ่น (สถ.)</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── Dynamic result section ── -->
+        <div id="result-section"></div>
+
+        <!-- ── Warning Card (static) ── -->
+        <div class="card mb-xl">
+          <div class="notice-chip">
+            <span class="material-symbols-outlined">warning</span>
+            ย้ายทะเบียนบ้าน
+          </div>
+          <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); line-height: 1.7; margin: 0;">
+            ผู้สูงอายุที่ย้ายภูมิลำเนาจะต้องไปลงทะเบียนและยื่นคำขอรับเงินเบี้ยยังชีพผู้สูงอายุต่อองค์กรปกครองส่วนท้องถิ่นแห่งใหม่ นับตั้งแต่วันที่ย้าย แต่ไม่เกินเดือนพฤศจิกายนของปีนั้น ๆ
+          </p>
+        </div>
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align:center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6;">
+            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:-3px;">verified</span>
+            ข้อมูลจากกรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น<br>
+            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ── Mock data (กทม. is the source for this person) ──
+    var MOCK = {
+      source:      'กรุงเทพมหานคร (กทม.)',
+      sourceShort: 'กทม.',
+      amount:      700,
+      history: [
+        { month: 'พ.ค.',  method: 'โอนเข้าบัญชี', amount: 700 },
+        { month: 'เม.ย.', method: 'โอนเข้าบัญชี', amount: 700 },
+        { month: 'มี.ค.', method: 'โอนเข้าบัญชี', amount: 700 },
+        { month: 'ก.พ.',  method: 'โอนเข้าบัญชี', amount: 700 },
+        { month: 'ม.ค.',  method: 'โอนเข้าบัญชี', amount: 700 },
+      ],
+      bank: {
+        number: '465-0-26526-6',
+        name:   'ธนาคารกรุงไทย จำกัด (มหาชน)',
+      },
+    };
+
+    // ── Update a source row ──
+    function setSource(id, state) {
+      var el  = document.getElementById(id);
+      var ico = el.querySelector('.src-icon');
+      var st  = el.querySelector('.src-status');
+      var sym = ico.querySelector('.material-symbols-outlined');
+
+      ico.classList.remove('src-icon--loading', 'src-icon--found', 'src-icon--none');
+      sym.style.animation = 'none';
+
+      if (state === 'found') {
+        ico.classList.add('src-icon--found');
+        sym.textContent = 'check_circle';
+        st.className    = 'src-status found';
+        st.textContent  = 'พบข้อมูล';
+      } else {
+        ico.classList.add('src-icon--none');
+        sym.textContent = 'do_not_disturb_on';
+        st.className    = 'src-status';
+        st.textContent  = 'ไม่พบข้อมูล';
+      }
+    }
+
+    // ── Render result cards ──
+    function renderResult(d) {
+      var historyRows = d.history.map(function(r) {
+        return '<div class="history-row">' +
+          '<span class="history-month">' + r.month + '</span>' +
+          '<span class="history-method">' + r.method + '</span>' +
+          '<span class="history-amount">' + r.amount.toLocaleString() +
+            '<span class="unit"> บาท</span>' +
+          '</span>' +
+        '</div>';
+      }).join('');
+
+      var html =
+        // ── Status card ──
+        '<div class="card mb-xl fade-in" style="animation-delay:0s">' +
+          '<div class="status-hero">' +
+            '<span class="src-pill">' +
+              '<span class="material-symbols-outlined">location_city</span>' +
+              d.source +
+            '</span>' +
+            '<div class="status-hero-icon">' +
+              '<span class="material-symbols-outlined">elderly</span>' +
+            '</div>' +
+            '<p class="status-hero-label">ได้รับเบี้ยยังชีพผู้สูงอายุ</p>' +
+            '<p class="status-hero-amount">' +
+              d.amount.toLocaleString() +
+              ' <span class="unit">บาท/เดือน</span>' +
+            '</p>' +
+          '</div>' +
+          '<button class="btn btn-primary" style="width:100%"' +
+            ' onclick="document.getElementById(\'history-card\').scrollIntoView({behavior:\'smooth\'})">' +
+            'ดูประวัติการรับเบี้ยยังชีพ' +
+          '</button>' +
+        '</div>' +
+
+        // ── Payment history card ──
+        '<div class="card mb-xl fade-in" id="history-card" style="animation-delay:0.14s">' +
+          '<div class="section-title-container">' +
+            '<div class="section-bar" style="background-color:var(--primary-40)"></div>' +
+            '<h3 class="section-title">ประวัติการรับเบี้ยยังชีพ</h3>' +
+          '</div>' +
+          '<span class="src-pill">' +
+            '<span class="material-symbols-outlined">location_city</span>' +
+            d.sourceShort +
+          '</span>' +
+          '<p class="history-year-header">2569</p>' +
+          historyRows +
+          '<button class="btn btn-tertiary-outline" style="width:100%; margin-top:var(--spacing-xl)">' +
+            'ดูประวัติรับเบี้ยทั้งหมด' +
+          '</button>' +
+        '</div>' +
+
+        // ── Bank account card ──
+        '<div class="card mb-xl fade-in" style="animation-delay:0.28s">' +
+          '<div class="section-title-container">' +
+            '<div class="section-bar" style="background-color:var(--secondary-40-main)"></div>' +
+            '<h3 class="section-title">ข้อมูลบัญชีธนาคาร</h3>' +
+          '</div>' +
+          '<p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);margin:0 0 var(--spacing-lg)">บัญชีที่ได้รับเงินล่าสุด</p>' +
+          '<div class="details-list">' +
+            '<div class="details-item">' +
+              '<span class="details-label">เลขที่บัญชีธนาคาร</span>' +
+              '<span class="details-value">' + d.bank.number + '</span>' +
+            '</div>' +
+            '<div class="details-item">' +
+              '<span class="details-label">ธนาคาร</span>' +
+              '<span class="details-value">' + d.bank.name + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      document.getElementById('result-section').innerHTML = html;
+    }
+
+    // ── Simulate 3 independent API calls ──
+    // กทม. responds first (1 200 ms) → has data for this person
+    setTimeout(function() {
+      setSource('src-bkk', 'found');
+      renderResult(MOCK);
+    }, 1200);
+
+    // เทศบาลเมืองพัทยา responds second (1 700 ms) → no record
+    setTimeout(function() {
+      setSource('src-pattaya', 'none');
+    }, 1700);
+
+    // สถ. responds last (2 200 ms) → no record
+    setTimeout(function() {
+      setSource('src-dla', 'none');
+    }, 2200);
+  </script>
+</body>
+</html>
