@@ -105,7 +105,7 @@
         <div class="card welcome-card welcome-card--green mb-xl">
           <h2>สวัสดีคุณสมชาย</h2>
           <p>เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
-          <p>ยานพาหนะในครอบครอง 3 รายการ</p>
+          <p>ยานพาหนะในครอบครอง 4 รายการ</p>
         </div>
 
         
@@ -160,6 +160,22 @@
             <span class="tax-tag tax-tag--warn">
               <span class="material-symbols-outlined">schedule</span>
               ใกล้หมดอายุ
+            </span>
+          </div>
+
+          <div class="vehicle-row-divider"></div>
+
+          <div class="vehicle-row" id="pick-civic" onclick="switchVehicle('civic')">
+            <div class="vehicle-row-icon">
+              <span class="material-symbols-outlined">directions_car</span>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="vehicle-row-plate">ยก 3344 กรุงเทพมหานคร</p>
+              <p class="vehicle-row-model">HONDA CIVIC 1.8 E</p>
+            </div>
+            <span class="tax-tag tax-tag--exp">
+              <span class="material-symbols-outlined">cancel</span>
+              ภาษีหมดอายุ
             </span>
           </div>
         </div>
@@ -238,10 +254,10 @@
             <h3 class="section-title">วันที่จดทะเบียน & ภาษี</h3>
           </div>
 
-          <!-- Tax warning notice -->
-          <div id="tax-warning-notice" style="display:none; align-items:center; gap:var(--spacing-sm); padding:var(--spacing-sm) var(--spacing-md); background:var(--background-warning-lighter); border-radius:var(--radius-lg); margin-bottom:var(--spacing-md);">
-            <span class="material-symbols-outlined" style="color:var(--foreground-warning-default);font-size:20px;flex-shrink:0;font-variation-settings:'FILL' 1;">warning</span>
-            <p style="font-size:var(--font-size-body-s);color:var(--foreground-warning-default);margin:0;" id="tax-warning-text">ภาษีรถใกล้ถึงกำหนด กรุณาต่อภาษีก่อนวันสิ้นภาษี</p>
+          <!-- Tax status notice (warning / expired) -->
+          <div id="tax-warning-notice" style="display:none; align-items:center; gap:var(--spacing-sm); padding:var(--spacing-sm) var(--spacing-md); border-radius:var(--radius-lg); margin-bottom:var(--spacing-md);">
+            <span class="material-symbols-outlined" id="tax-notice-icon" style="font-size:20px;flex-shrink:0;font-variation-settings:'FILL' 1;">warning</span>
+            <p style="font-size:var(--font-size-body-s);margin:0;" id="tax-warning-text"></p>
           </div>
 
           <div class="details-list">
@@ -459,6 +475,42 @@
             avatarIcon: 'person'
           }
         ]
+      },
+      civic: {
+        plateNumber: 'ยก 3344',
+        plateProvince: 'กรุงเทพมหานคร',
+        model: 'HONDA CIVIC 1.8 E',
+        color: 'ดำ',
+        fuel: 'เบนซิน',
+        taxDate: '30 เมษายน 2568',
+        taxStatus: 'expired',
+        info: {
+          model: 'HONDA CIVIC 1.8 E',
+          color: 'ดำ',
+          type: 'รถยนต์นั่งส่วนบุคคลไม่เกิน 7 คน',
+          style: 'นั่งสี่ประตู',
+          engineBrand: 'HONDA',
+          fuelType: 'เบนซิน'
+        },
+        engine: {
+          engineNo: 'R18A2345678',
+          engineSpecs: '4 สูบ 1,798.00 ซีซี',
+          weight: '1,260 กิโลกรัม',
+          chassisNo: 'JHMFD1650KS012345'
+        },
+        registration: {
+          regDate: '15 มีนาคม 2560',
+          expDate: '30 เมษายน 2568'
+        },
+        owners: [
+          {
+            role: 'ผู้ถือกรรมสิทธิ์และผู้ถือครอง',
+            name: 'สมชาย ใจดี',
+            address: '999 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210',
+            avatarClass: 'person',
+            avatarIcon: 'person'
+          }
+        ]
       }
     };
 
@@ -472,6 +524,7 @@
       document.getElementById('pick-car').classList.toggle('vehicle-row--active', type === 'car');
       document.getElementById('pick-motorcycle').classList.toggle('vehicle-row--active', type === 'motorcycle');
       document.getElementById('pick-truck').classList.toggle('vehicle-row--active', type === 'truck');
+      document.getElementById('pick-civic').classList.toggle('vehicle-row--active', type === 'civic');
 
       // Trigger fade animations again
       var animBlocks = [
@@ -523,18 +576,35 @@
       document.getElementById('reg-date').textContent = v.registration.regDate;
       var expDateEl = document.getElementById('reg-exp-date');
       expDateEl.textContent = v.registration.expDate;
-      var isWarning = v.taxStatus === 'warning';
-      expDateEl.style.color = isWarning ? 'var(--foreground-warning-default)' : 'var(--foreground-positive-default)';
+      var taxStatus = v.taxStatus || 'ok';
       expDateEl.style.fontWeight = 'var(--font-weight-700)';
-
-      // Tax warning notice
-      var warningEl = document.getElementById('tax-warning-notice');
-      warningEl.style.display = isWarning ? 'flex' : 'none';
-      if (isWarning) {
-        document.getElementById('tax-warning-text').textContent = 'ภาษีรถใกล้ถึงกำหนด · สิ้นสุด ' + v.registration.expDate + ' กรุณาต่อภาษีก่อนวันสิ้นภาษี';
+      if (taxStatus === 'expired') {
+        expDateEl.style.color = 'var(--foreground-negative-default)';
+      } else if (taxStatus === 'warning') {
+        expDateEl.style.color = 'var(--foreground-warning-default)';
+      } else {
+        expDateEl.style.color = 'var(--foreground-positive-default)';
       }
 
-      var btnLabelMap = { car: 'รถยนต์', motorcycle: 'รถจักรยานยนต์', truck: 'รถยนต์' };
+      // Tax status notice
+      var noticeEl = document.getElementById('tax-warning-notice');
+      if (taxStatus === 'warning' || taxStatus === 'expired') {
+        var isExp = taxStatus === 'expired';
+        noticeEl.style.display = 'flex';
+        noticeEl.style.background = isExp ? 'var(--background-negative-light)' : 'var(--background-warning-lighter)';
+        var noticeIcon = document.getElementById('tax-notice-icon');
+        noticeIcon.textContent = isExp ? 'error' : 'warning';
+        noticeIcon.style.color = isExp ? 'var(--foreground-negative-default)' : 'var(--foreground-warning-default)';
+        var noticeText = document.getElementById('tax-warning-text');
+        noticeText.style.color = isExp ? 'var(--foreground-negative-default)' : 'var(--foreground-warning-default)';
+        noticeText.textContent = isExp
+          ? 'ภาษีรถหมดอายุแล้ว · สิ้นสุด ' + v.registration.expDate + ' กรุณาต่อภาษีโดยด่วน'
+          : 'ภาษีรถใกล้ถึงกำหนด · สิ้นสุด ' + v.registration.expDate + ' กรุณาต่อภาษีก่อนวันสิ้นภาษี';
+      } else {
+        noticeEl.style.display = 'none';
+      }
+
+      var btnLabelMap = { car: 'รถยนต์', motorcycle: 'รถจักรยานยนต์', truck: 'รถยนต์', civic: 'รถยนต์' };
       var btnLabel = btnLabelMap[type] || 'รถยนต์';
       var regBtn = document.getElementById('reg-tax-btn');
       regBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + btnLabel + "')");
