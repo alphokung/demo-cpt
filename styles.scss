@@ -4649,3 +4649,193 @@ code {
   &:hover { opacity: 0.88; }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ID Card Banner — แสดงข้อมูลประจำตัวบุคคลในรูปแบบ banner
+// ใช้กับหน้าที่แสดงข้อมูลเอกสารราชการ เช่น ทะเบียนราษฎร, บัตรประชาชน
+// ─────────────────────────────────────────────────────────────────────────────
+.id-card-banner {
+  background: linear-gradient(135deg, var(--primary-20) 0%, var(--primary-10) 100%);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  position: relative;
+  overflow: hidden;
+
+  // decorative circles
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  &::before {
+    width: 140px;
+    height: 140px;
+    right: -30px;
+    top: -40px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  &::after {
+    width: 80px;
+    height: 80px;
+    right: 60px;
+    bottom: -30px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.id-card-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+
+  .material-symbols-outlined {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.6);
+    font-variation-settings: 'FILL' 1;
+  }
+}
+
+.id-card-info {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.id-card-label {
+  font-size: var(--font-size-label-s);
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: var(--font-weight-400);
+  margin-bottom: var(--spacing-xxs);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.id-card-name {
+  font-size: var(--font-size-title-l);
+  font-weight: var(--font-weight-700);
+  color: var(--neutral-100);
+  line-height: 1.3;
+  margin-bottom: var(--spacing-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.id-card-number {
+  font-size: var(--font-size-body-s);
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.8px;
+  font-family: 'SFMono-Regular', 'Consolas', monospace;
+}
+
+.id-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-full);
+  padding: 2px var(--spacing-md);
+  font-size: var(--font-size-label-s);
+  font-weight: var(--font-weight-500);
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: var(--spacing-sm);
+
+  .material-symbols-outlined {
+    font-size: 13px;
+    font-variation-settings: 'FILL' 1;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Details Separator — เส้นคั่นระหว่างกลุ่มข้อมูลใน section เดียวกัน
+// ─────────────────────────────────────────────────────────────────────────────
+.details-separator {
+  border: none;
+  border-top: 1px solid var(--stroke-neutral-lighter);
+  margin: var(--spacing-xl) 0 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Person Pair — แสดงข้อมูล 2 บุคคลคู่กัน เช่น บิดา/มารดา, ผู้ค้ำ/ผู้กู้
+// - Desktop: 2 column grid
+// - Mobile: stacked
+// ─────────────────────────────────────────────────────────────────────────────
+.person-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+
+  @media (max-width: 479px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.person-pair-card {
+  background: var(--background-neutral-medium);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.person-pair-role {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-label-s);
+  font-weight: var(--font-weight-700);
+  color: var(--foreground-primary-default);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  .material-symbols-outlined {
+    font-size: 14px;
+    font-variation-settings: 'FILL' 1;
+  }
+}
+
+.person-pair-name {
+  font-size: var(--font-size-body-l);
+  font-weight: var(--font-weight-700);
+  color: var(--foreground-neutral-default);
+  line-height: 1.4;
+}
+
+.person-pair-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--stroke-neutral-lighter);
+}
+
+.person-pair-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.person-pair-detail-label {
+  font-size: var(--font-size-label-s);
+  color: var(--foreground-neutral-lighter);
+}
+
+.person-pair-detail-value {
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-500);
+  color: var(--foreground-neutral-default);
+}
+
