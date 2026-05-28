@@ -123,9 +123,13 @@
           </div>
         </div>
 
-        <!-- Sync Timestamp -->
-        <div class="footer-timestamp">
-          ข้อมูลจาก สำนักงานตำรวจแห่งชาติ ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+        <!-- Source note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจากสำนักงานตำรวจแห่งชาติ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
         </div>
 
 
@@ -332,6 +336,14 @@
     });
 
     initPage();
+  </script>
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+' เวลา '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
   </script>
 </body>
 </html>
