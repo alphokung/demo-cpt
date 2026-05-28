@@ -12,6 +12,7 @@
   <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
   <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
   <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
   <meta property="twitter:card" content="summary_large_image">
 
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
@@ -20,182 +21,34 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* ── MEA brand ── */
-    :root {
-      --mea:      #E05A23;
-      --mea-dark: #B83D0E;
-      --mea-bg:   #FFF4EC;
-      --mea-bg2:  #FFE8D6;
-    }
-
     /* ── View switcher ── */
     .view { display: none; }
     .view.active { display: block; }
 
-    /* ── MEA logo circle ── */
-    .mea-logo {
-      width: 48px; height: 48px; border-radius: 50%;
-      border: 2px solid var(--mea);
-      background: var(--mea-bg);
+    /* ── Meter icon badge ── */
+    .meter-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-lg);
+      background: var(--background-warning-lighter);
+      color: var(--foreground-warning-default);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .mea-logo .material-symbols-outlined { font-size: 24px; color: var(--mea); }
-    .mea-logo-lg {
-      width: 72px; height: 72px; border-radius: 50%;
-      border: 2px solid var(--mea);
-      background: var(--mea-bg);
+    .meter-icon .material-symbols-outlined { font-size: 22px; font-variation-settings: 'FILL' 1; }
+    .meter-icon-lg {
+      width: 64px; height: 64px; border-radius: var(--radius-xl);
+      background: var(--background-warning-lighter);
+      color: var(--foreground-warning-default);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .mea-logo-lg .material-symbols-outlined { font-size: 38px; color: var(--mea); }
+    .meter-icon-lg .material-symbols-outlined { font-size: 32px; font-variation-settings: 'FILL' 1; }
 
-    /* ── MEA card ── */
-    .mea-card {
-      background: var(--mea-bg);
-      border-radius: var(--radius-2xl);
-      padding: var(--spacing-xl);
-      margin-bottom: var(--spacing-xl);
-    }
-    .mea-card-header {
-      display: flex; align-items: center;
-      gap: var(--spacing-md); margin-bottom: var(--spacing-lg);
-    }
-    .mea-card-title {
-      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default); margin: 0;
-    }
-    .mea-card-subtitle {
-      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
-      margin: 0;
-    }
-
-    /* ── Detail rows ── */
-    .mea-row {
-      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
-      line-height: 1.65; margin-bottom: var(--spacing-sm);
-    }
-    .mea-row:last-of-type { margin-bottom: 0; }
-    .mea-row b { font-weight: var(--font-weight-700); }
-
-    /* ── Buttons ── */
-    .btn-mea {
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: var(--spacing-sm);
-      background: var(--mea); color: #fff;
-      border: none; border-radius: var(--radius-xl);
-      padding: var(--spacing-md) var(--spacing-xl);
-      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
-      cursor: pointer; transition: background 0.18s; white-space: nowrap;
-    }
-    .btn-mea:active { background: var(--mea-dark); }
-    .btn-mea .material-symbols-outlined { font-size: 20px; }
-    .btn-mea-full { width: 100%; box-sizing: border-box; }
-    .btn-mea-icon {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: var(--mea); color: #fff;
-      border: none; cursor: pointer; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.18s;
-    }
-    .btn-mea-icon:active { background: var(--mea-dark); }
-    .btn-mea-icon .material-symbols-outlined { font-size: 22px; }
-
-    /* ── FAB ── */
-    .mea-fab {
-      display: flex; align-items: center; justify-content: center;
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--mea); color: #fff;
-      border: none; cursor: pointer;
-      margin: var(--spacing-lg) auto;
-      box-shadow: 0 4px 16px rgba(224, 90, 35, 0.42);
-      transition: background 0.18s, transform 0.15s;
-    }
-    .mea-fab:active { background: var(--mea-dark); transform: scale(0.94); }
-    .mea-fab .material-symbols-outlined { font-size: 28px; }
-
-    /* ── Back button ── */
-    .mea-back {
-      display: inline-flex; align-items: center; gap: 4px;
-      color: var(--mea); font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-500);
-      background: none; border: none; cursor: pointer;
-      padding: 0; margin-bottom: var(--spacing-lg);
-    }
-    .mea-back .material-symbols-outlined { font-size: 20px; }
-
-    /* ── Form fields ── */
-    .mea-field { margin-bottom: var(--spacing-lg); }
-    .mea-label {
-      display: block; font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default);
-      margin-bottom: var(--spacing-sm);
-    }
-    .mea-input-wrap { position: relative; }
-    .mea-input {
-      width: 100%; box-sizing: border-box;
-      border: 2px solid var(--stroke-neutral-default);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-md) 42px var(--spacing-md) var(--spacing-lg);
-      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
-      background: var(--neutral-100); outline: none;
-      transition: border-color 0.18s;
-    }
-    .mea-input::placeholder { color: var(--foreground-neutral-lighter); }
-    .mea-input:focus { border-color: var(--mea); }
-    .mea-input.err { border-color: #D93030; }
-    .mea-input-err-icon {
-      position: absolute; right: var(--spacing-md); top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px; color: #D93030;
-      pointer-events: none; display: none;
-      font-variation-settings: 'FILL' 1;
-    }
-    .mea-input.err + .mea-input-err-icon { display: block; }
-    .mea-field-errmsg {
-      font-size: var(--font-size-body-s); color: #D93030;
-      margin-top: var(--spacing-xs); display: none;
-    }
-    .mea-field-errmsg.show { display: block; }
-
-    /* ── Loading spinner ── */
-    @keyframes mea-spin { to { transform: rotate(360deg); } }
-    .mea-spinner {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 3px solid var(--mea-bg2); border-top-color: var(--mea);
-      animation: mea-spin 0.8s linear infinite;
-    }
-    .mea-loading-state {
-      display: flex; flex-direction: column; align-items: center;
-      gap: var(--spacing-md); padding: var(--spacing-2xl) 0 var(--spacing-lg);
-    }
-
-    /* ── History table ── */
-    .mea-table { width: 100%; border-collapse: collapse; }
-    .mea-table th {
-      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
-      color: var(--foreground-neutral-lighter);
-      padding: 0 0 var(--spacing-sm); text-align: left;
-    }
-    .mea-table th:not(:first-child) { text-align: right; }
-    .mea-table td {
-      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-    }
-    .mea-table td:not(:first-child) { text-align: right; }
-    .mea-table tr:last-child td { border-bottom: none; }
-
-    /* ── Meter list card ── */
+    /* ── Meter list item card ── */
     .meter-item {
-      background: var(--mea-bg); border-radius: var(--radius-2xl);
-      padding: var(--spacing-xl);
-      margin-bottom: var(--spacing-lg);
-      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-      border: 1.5px solid transparent;
+      display: flex; align-items: center; gap: var(--spacing-md);
+      cursor: pointer;
     }
-    .meter-item:active { transform: scale(0.98); }
+    .meter-item-body { flex: 1; min-width: 0; }
     .meter-item-title {
       font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
       color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xs);
@@ -203,52 +56,116 @@
     .meter-item-address {
       font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
       margin: 0 0 var(--spacing-md); line-height: 1.5;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .meter-item-amount {
-      display: flex; align-items: center; gap: var(--spacing-sm);
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
       font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
     }
-    .meter-item-amount .material-symbols-outlined {
-      font-size: 20px; color: var(--mea);
-      font-variation-settings: 'FILL' 1;
-    }
+    .meter-item-amount .material-symbols-outlined { font-size: 16px; color: var(--foreground-warning-default); font-variation-settings: 'FILL' 1; }
+    .meter-item-chevron { color: var(--foreground-neutral-lighter); flex-shrink: 0; }
+    .meter-item-chevron .material-symbols-outlined { font-size: 20px; }
 
-    /* ── QR screen ── */
-    .qr-masked {
-      text-align: center; font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-600); margin-bottom: var(--spacing-xs);
+    /* ── Add button row ── */
+    .add-meter-row { margin-bottom: var(--spacing-xl); }
+
+    /* ── Amount outstanding tag ── */
+    .amount-tag-due {
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
+      padding: 3px var(--spacing-md); border-radius: var(--radius-full);
+      background: var(--background-negative-light); color: var(--foreground-negative-default);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
     }
-    .qr-block {
-      display: inline-block; width: 11px; height: 11px;
-      background: #aaa; border-radius: 2px; vertical-align: middle;
-      margin: 0 1px;
+    .amount-tag-due .material-symbols-outlined { font-size: 14px; font-variation-settings: 'FILL' 1; }
+    .amount-tag-nil {
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
+      padding: 3px var(--spacing-md); border-radius: var(--radius-full);
+      background: var(--background-positive-light); color: var(--foreground-positive-default);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
     }
-    .qr-info-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-xs) 0;
-      font-size: var(--font-size-body-s); color: var(--foreground-neutral-default);
-      margin: var(--spacing-lg) 0;
+    .amount-tag-nil .material-symbols-outlined { font-size: 14px; font-variation-settings: 'FILL' 1; }
+
+    /* ── Payment hero (QR screen) ── */
+    .payment-hero {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: var(--spacing-xl) 0 var(--spacing-lg);
+      gap: var(--spacing-sm);
     }
-    .qr-info-grid div:nth-child(even) { text-align: right; }
+    .payment-hero-label { font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0; }
+    .payment-hero-amount { font-size: var(--font-size-display-s); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); line-height: 1.1; margin: 0; }
+    .payment-hero-amount .unit { font-size: var(--font-size-title-l); font-weight: var(--font-weight-400); color: var(--foreground-neutral-lighter); }
+
+    /* ── QR code block ── */
     .qr-code-box {
       display: flex; justify-content: center;
-      padding: var(--spacing-md) 0 var(--spacing-lg);
+      padding: var(--spacing-lg) 0;
     }
     .qr-code-box img {
       width: 200px; height: 200px;
-      border: 6px solid #fff;
+      border: 6px solid var(--neutral-100);
       border-radius: var(--radius-lg);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-      background: #fff;
-    }
-    .qr-amount {
-      text-align: center;
-      font-size: var(--font-size-headline-s); font-weight: var(--font-weight-700);
-      color: var(--mea);
-      padding: 0 0 var(--spacing-xl);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      background: var(--neutral-100);
     }
 
-    /* ── Modals (alert / confirm) ── */
+    /* ── Masked value (QR screen) ── */
+    .masked-val {
+      display: inline-flex; align-items: center; gap: 2px;
+    }
+    .masked-block {
+      display: inline-block; width: 10px; height: 10px;
+      background: var(--neutral-70); border-radius: 2px;
+    }
+
+    /* ── Loading state ── */
+    @keyframes ds-spin { to { transform: rotate(360deg); } }
+    .ds-spinner {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid var(--neutral-90); border-top-color: var(--warning-40);
+      animation: ds-spin 0.8s linear infinite; margin: 0 auto;
+    }
+    .loading-state {
+      display: flex; flex-direction: column; align-items: center;
+      gap: var(--spacing-md); padding: var(--spacing-2xl) 0 var(--spacing-xl);
+      text-align: center;
+    }
+
+    /* ── History table ── */
+    .history-table { width: 100%; border-collapse: collapse; }
+    .history-table th {
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
+      color: var(--foreground-neutral-lighter); text-align: left;
+      padding-bottom: var(--spacing-sm);
+    }
+    .history-table th:not(:first-child) { text-align: right; }
+    .history-table td {
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .history-table td:not(:first-child) { text-align: right; }
+    .history-table tr:last-child td { border-bottom: none; }
+
+    /* ── Icon-only destructive button ── */
+    .btn-icon-destructive {
+      width: 44px; height: 44px; min-height: 44px;
+      padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--background-negative-light); color: var(--foreground-negative-default);
+      border: none; cursor: pointer; flex-shrink: 0;
+      transition: background 0.18s;
+    }
+    .btn-icon-destructive:hover { background: var(--background-negative-medium); }
+    .btn-icon-destructive .material-symbols-outlined { font-size: 20px; }
+
+    /* ── Bottom action row ── */
+    .detail-actions {
+      display: flex; align-items: center;
+      gap: var(--spacing-md); margin-top: var(--spacing-xl);
+    }
+    .detail-actions .btn { flex: 1; }
+
+    /* ── Modal overlay ── */
     .modal-overlay {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.45);
@@ -258,14 +175,15 @@
     }
     .modal-overlay.show { opacity: 1; pointer-events: auto; }
     .modal-box {
-      background: var(--neutral-100); border-radius: var(--radius-xl);
+      background: var(--background-neutral-lighter);
+      border-radius: var(--radius-2xl);
       padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl);
-      width: 100%; max-width: 300px; text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      width: 100%; max-width: 320px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
     }
     .modal-title {
       font-size: var(--font-size-title-l); font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-md);
+      color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-sm);
     }
     .modal-body {
       font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter);
@@ -273,57 +191,10 @@
     }
     .modal-btns { display: flex; gap: var(--spacing-md); }
     .modal-btns.single { justify-content: center; }
-    .btn-modal {
-      flex: 1; padding: var(--spacing-md);
-      border: 1px solid var(--stroke-neutral-default);
-      border-radius: var(--radius-lg);
-      font-size: var(--font-size-body-m); font-weight: var(--font-weight-500);
-      background: var(--neutral-100); color: var(--foreground-neutral-default);
-      cursor: pointer;
-    }
-    .btn-modal-primary {
-      flex: 1; padding: var(--spacing-md);
-      border: none; border-radius: var(--radius-lg);
-      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
-      background: var(--mea); color: #fff; cursor: pointer;
-    }
-    .btn-modal-danger {
-      flex: 1; padding: var(--spacing-md);
-      border: none; border-radius: var(--radius-lg);
-      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
-      background: #D93030; color: #fff; cursor: pointer;
-    }
 
-    /* ── Page title ── */
-    .mea-page-title {
-      text-align: center;
-      font-size: var(--font-size-headline-s);
-      font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default);
-      margin: 0 0 var(--spacing-xl);
-      padding-top: var(--spacing-xl);
-    }
-
-    /* ── Empty state ── */
-    .mea-empty {
-      display: flex; flex-direction: column; align-items: center;
-      gap: var(--spacing-md); padding: var(--spacing-2xl) 0;
-      text-align: center;
-    }
-    .mea-empty-icon {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: var(--mea-bg); color: var(--mea);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mea-empty-icon .material-symbols-outlined { font-size: 36px; }
-
-    /* ── Source note ── */
-    .mea-source-note {
-      text-align: center; padding: var(--spacing-md) 0 var(--spacing-4xl);
-      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
-      line-height: 1.6;
-    }
-    .mea-source-note .material-symbols-outlined { font-size: 14px; vertical-align: -3px; }
+    /* ── Fade-slide in ── */
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeSlideIn 0.3s ease both; }
   </style>
 </head>
 <body>
@@ -331,119 +202,160 @@
     <div class="main-layout">
       <main>
 
-        <!-- ════════════════════════════════════════
+        <!-- ════════════════════════════
              VIEW 1 — Meter List
-        ════════════════════════════════════════ -->
+        ════════════════════════════ -->
         <div class="view active" id="view-list">
 
-          <p class="mea-page-title">เลือกเครื่องวัดเพื่อทำรายการ</p>
+          <div class="page-header">
+            <div class="title-block">
+              <h2 class="text-header">ค่าไฟฟ้า กฟน.</h2>
+              <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+            </div>
+          </div>
 
+          <!-- Meter cards -->
           <div id="meter-list-container"></div>
 
-          <button class="mea-fab" onclick="goAddMeter()" aria-label="เพิ่มเครื่องวัด">
-            <span class="material-symbols-outlined">add</span>
-          </button>
+          <!-- Add meter button -->
+          <div class="add-meter-row">
+            <button class="btn btn-tertiary-outline" onclick="goAddMeter()">
+              <span class="material-symbols-outlined">add</span>
+              เพิ่มเครื่องวัด
+            </button>
+          </div>
 
-          <div class="mea-source-note">
-            <span class="material-symbols-outlined">verified</span>
-            ข้อมูลจากการไฟฟ้านครหลวง (กฟน.)<br>
-            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          <!-- Source note -->
+          <div class="card-flat" style="text-align:center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
+            <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);line-height:1.6;">
+              <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-3px;">verified</span>
+              ข้อมูลจากการไฟฟ้านครหลวง (กฟน.)<br>
+              อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+            </p>
           </div>
         </div>
 
-        <!-- ════════════════════════════════════════
+        <!-- ════════════════════════════
              VIEW 2 — Add Meter
-        ════════════════════════════════════════ -->
+        ════════════════════════════ -->
         <div class="view" id="view-add">
 
-          <button class="mea-back" onclick="showView('view-list')">
-            <span class="material-symbols-outlined">arrow_back</span>
-            กลับ
-          </button>
+          <div class="page-header">
+            <button class="btn-back-circle" onclick="showView('view-list')" aria-label="กลับ">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="title-block">
+              <h2 class="text-header">เพิ่มเครื่องวัด</h2>
+              <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+            </div>
+          </div>
 
-          <div class="mea-card">
-            <!-- Card header -->
-            <div class="mea-card-header">
-              <div class="mea-logo">
-                <span class="material-symbols-outlined">electric_bolt</span>
-              </div>
-              <div>
-                <p class="mea-card-title">เพิ่มเครื่องวัด</p>
-              </div>
+          <div class="card mb-xl">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--warning-40);"></div>
+              <h3 class="section-title">ข้อมูลเครื่องวัด</h3>
             </div>
 
             <!-- Form -->
             <div id="add-form">
-              <div class="mea-field">
-                <label class="mea-label" for="in-account">บัญชีแสดงสัญญา</label>
-                <div class="mea-input-wrap">
-                  <input type="tel" id="in-account" class="mea-input" placeholder="บัญชีแสดงสัญญา" maxlength="9" inputmode="numeric">
-                  <span class="material-symbols-outlined mea-input-err-icon">error</span>
+              <div class="form-group mb-xl">
+                <label class="form-label" for="in-account">บัญชีแสดงสัญญา</label>
+                <div class="input-wrapper has-suffix">
+                  <input type="tel" id="in-account" class="input" placeholder="ระบุตัวเลข 9 หลัก" maxlength="9" inputmode="numeric">
+                  <span class="input-icon-right material-symbols-outlined" id="icon-account" style="display:none;color:var(--foreground-negative-default);font-variation-settings:'FILL' 1;">error</span>
                 </div>
-                <div class="mea-field-errmsg" id="err-account">กรุณาระบุบัญชีแสดงสัญญา, ระบุตัวเลข 9 ตัว</div>
+                <span class="form-error-msg" id="err-account" style="display:none;">
+                  <span class="material-symbols-outlined">error</span>
+                  กรุณาระบุบัญชีแสดงสัญญา, ระบุตัวเลข 9 ตัว
+                </span>
               </div>
 
-              <div class="mea-field">
-                <label class="mea-label" for="in-meter">รหัสเครื่องวัด</label>
-                <div class="mea-input-wrap">
-                  <input type="tel" id="in-meter" class="mea-input" placeholder="รหัสเครื่องวัด" maxlength="8" inputmode="numeric">
-                  <span class="material-symbols-outlined mea-input-err-icon">error</span>
+              <div class="form-group mb-xl">
+                <label class="form-label" for="in-meter">รหัสเครื่องวัด</label>
+                <div class="input-wrapper has-suffix">
+                  <input type="tel" id="in-meter" class="input" placeholder="ระบุตัวเลข 8 หลัก" maxlength="8" inputmode="numeric">
+                  <span class="input-icon-right material-symbols-outlined" id="icon-meter" style="display:none;color:var(--foreground-negative-default);font-variation-settings:'FILL' 1;">error</span>
                 </div>
-                <div class="mea-field-errmsg" id="err-meter">กรุณาระบุรหัสเครื่องวัด, ระบุตัวเลข 8 ตัว</div>
+                <span class="form-error-msg" id="err-meter" style="display:none;">
+                  <span class="material-symbols-outlined">error</span>
+                  กรุณาระบุรหัสเครื่องวัด, ระบุตัวเลข 8 ตัว
+                </span>
               </div>
 
-              <button class="btn-mea" onclick="submitAddMeter()">ยืนยัน</button>
+              <button class="btn btn-primary" onclick="submitAddMeter()">ยืนยัน</button>
             </div>
 
             <!-- Loading state -->
-            <div class="mea-loading-state" id="add-loading" style="display: none;">
-              <div class="mea-spinner"></div>
-              <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0;">กำลังค้นหาข้อมูลจาก กฟน. ...</p>
+            <div class="loading-state" id="add-loading" style="display:none;">
+              <div class="ds-spinner"></div>
+              <p style="font-size:var(--font-size-body-m);color:var(--foreground-neutral-lighter);margin:0;">กำลังค้นหาข้อมูลจาก กฟน. ...</p>
             </div>
           </div>
         </div>
 
-        <!-- ════════════════════════════════════════
+        <!-- ════════════════════════════
              VIEW 3 — Meter Detail
-        ════════════════════════════════════════ -->
+        ════════════════════════════ -->
         <div class="view" id="view-detail">
 
-          <button class="mea-back" onclick="showView('view-list')">
-            <span class="material-symbols-outlined">arrow_back</span>
-            กลับ
-          </button>
+          <div class="page-header">
+            <button class="btn-back-circle" onclick="showView('view-list')" aria-label="กลับ">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="title-block">
+              <h2 class="text-header" id="detail-page-title">รายละเอียดเครื่องวัด</h2>
+              <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+            </div>
+          </div>
 
-          <!-- Info card -->
-          <div class="mea-card">
-            <div class="mea-card-header">
-              <div class="mea-logo">
-                <span class="material-symbols-outlined">electric_bolt</span>
+          <!-- ── Info card ── -->
+          <div class="card mb-xl">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--warning-40);"></div>
+              <h3 class="section-title">ข้อมูลเครื่องวัด</h3>
+            </div>
+
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">หมายเลขเครื่องวัด</span>
+                <span class="details-value" id="detail-meter-no">—</span>
               </div>
-              <div>
-                <p class="mea-card-title" id="detail-meter-title">—</p>
-                <p class="mea-card-subtitle" id="detail-account-sub">—</p>
+              <div class="details-item">
+                <span class="details-label">บัญชีแสดงสัญญา</span>
+                <span class="details-value" id="detail-account-no">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ครบกำหนดชำระ</span>
+                <span class="details-value" id="detail-due-date">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ที่อยู่</span>
+                <span class="details-value" id="detail-address">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ยอดเงินที่ต้องชำระ</span>
+                <span class="details-value" id="detail-amount">—</span>
               </div>
             </div>
 
-            <div class="mea-row" id="detail-due-row"><b>ครบกำหนดชำระ</b> : —</div>
-            <div class="mea-row" id="detail-addr-row"><b>ที่อยู่</b> : —</div>
-            <div class="mea-row" id="detail-amt-row"><b>ยอดเงินที่ต้องชำระ</b> : —</div>
-
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: var(--spacing-xl);">
-              <button class="btn-mea" onclick="goQr()">
+            <div class="detail-actions">
+              <button class="btn btn-primary" onclick="goQr()">
                 <span class="material-symbols-outlined">qr_code_2</span>
                 ชำระเงินโดย QR Code
               </button>
-              <button class="btn-mea-icon" onclick="confirmDeleteMeter()" title="ลบเครื่องวัด" aria-label="ลบเครื่องวัด">
+              <button class="btn-icon-destructive" onclick="confirmDeleteMeter()" aria-label="ลบเครื่องวัด">
                 <span class="material-symbols-outlined">delete</span>
               </button>
             </div>
           </div>
 
-          <!-- History card -->
-          <div class="mea-card">
-            <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-md);">ดูข้อมูลย้อนหลัง 6 เดือน</p>
-            <table class="mea-table">
+          <!-- ── History card ── -->
+          <div class="card mb-xl">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--secondary-40-main);"></div>
+              <h3 class="section-title">ข้อมูลย้อนหลัง 6 เดือน</h3>
+            </div>
+            <table class="history-table">
               <thead>
                 <tr>
                   <th>บิลประจำเดือน</th>
@@ -455,54 +367,81 @@
             </table>
           </div>
 
-          <div class="mea-source-note">
-            <span class="material-symbols-outlined">verified</span>
-            ข้อมูลจากการไฟฟ้านครหลวง (กฟน.)<br>
-            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          <!-- Source note -->
+          <div class="card-flat" style="text-align:center; padding:var(--spacing-md) 0 var(--spacing-4xl);">
+            <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);line-height:1.6;">
+              <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-3px;">verified</span>
+              ข้อมูลจากการไฟฟ้านครหลวง (กฟน.)<br>
+              อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+            </p>
           </div>
         </div>
 
-        <!-- ════════════════════════════════════════
+        <!-- ════════════════════════════
              VIEW 4 — QR Payment
-        ════════════════════════════════════════ -->
+        ════════════════════════════ -->
         <div class="view" id="view-qr">
 
-          <button class="mea-back" onclick="showView('view-detail')">
-            <span class="material-symbols-outlined">arrow_back</span>
-            กลับ
-          </button>
+          <div class="page-header">
+            <button class="btn-back-circle" onclick="showView('view-detail')" aria-label="กลับ">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="title-block">
+              <h2 class="text-header">ชำระเงินผ่าน QR Code</h2>
+              <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+            </div>
+          </div>
 
-          <div class="mea-card">
-            <!-- Header -->
-            <div class="mea-card-header" style="justify-content: center; flex-direction: column; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
-              <div class="mea-logo-lg">
-                <span class="material-symbols-outlined">electric_bolt</span>
+          <!-- ── QR card ── -->
+          <div class="card mb-xl">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--primary-40);"></div>
+              <h3 class="section-title">รายละเอียดการชำระเงิน</h3>
+            </div>
+
+            <!-- Masked meter / account numbers -->
+            <div class="details-list" style="margin-bottom:var(--spacing-lg);">
+              <div class="details-item">
+                <span class="details-label">หมายเลขเครื่องวัด</span>
+                <span class="details-value" id="qr-meter-masked">—</span>
               </div>
-              <p class="mea-card-title" style="font-size: var(--font-size-title-l);">ชำระเงินผ่าน QR Code</p>
+              <div class="details-item">
+                <span class="details-label">บัญชีแสดงสัญญา</span>
+                <span class="details-value" id="qr-account-masked">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">เลขที่ใบแจ้งค่าไฟฟ้า</span>
+                <span class="details-value" id="qr-invoice">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">วันที่จดหน่วย</span>
+                <span class="details-value" id="qr-bill-date">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ครบกำหนดชำระ</span>
+                <span class="details-value" id="qr-pay-due">—</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">จำนวนหน่วย</span>
+                <span class="details-value" id="qr-units">—</span>
+              </div>
             </div>
 
-            <!-- Masked meter / account -->
-            <div class="qr-masked" id="qr-meter-masked">หมายเลขเครื่องวัด —</div>
-            <div class="qr-masked" id="qr-account-masked">หมายเลขบัญชีแสดงสัญญา —</div>
-
-            <!-- Bill info grid -->
-            <div class="qr-info-grid">
-              <div id="qr-invoice-cell">เลขที่ใบแจ้งค่าไฟฟ้า —</div>
-              <div id="qr-billdate-cell">วันที่จดหน่วย —</div>
-              <div id="qr-duedate-cell">ครบกำหนดชำระ: —</div>
-              <div id="qr-units-cell">จำนวนหน่วย —</div>
-            </div>
-
-            <!-- QR code image -->
+            <!-- QR code -->
             <div class="qr-code-box">
               <img id="qr-img" src="" alt="QR Code สำหรับชำระเงิน">
             </div>
 
-            <!-- Amount -->
-            <div class="qr-amount" id="qr-amount">จำนวน : — บาท</div>
+            <!-- Payment amount hero -->
+            <div class="payment-hero">
+              <p class="payment-hero-label">ยอดที่ต้องชำระ</p>
+              <p class="payment-hero-amount" id="qr-amount-display">—<span class="unit"> บาท</span></p>
+            </div>
 
-            <!-- Save button -->
-            <button class="btn-mea btn-mea-full" onclick="onSaveQr()">บันทึก QR Code</button>
+            <button class="btn btn-primary" onclick="onSaveQr()">
+              <span class="material-symbols-outlined">download</span>
+              บันทึก QR Code
+            </button>
           </div>
         </div>
 
@@ -510,44 +449,42 @@
     </div>
   </div>
 
-  <!-- ── Alert Modal ── -->
-  <div class="modal-overlay" id="alert-modal">
+  <!-- ── Alert modal ── -->
+  <div class="modal-overlay" id="modal-alert">
     <div class="modal-box">
-      <p class="modal-title" id="alert-title">แจ้งเตือน</p>
-      <p class="modal-body" id="alert-body"></p>
+      <p class="modal-title" id="modal-alert-title">แจ้งเตือน</p>
+      <p class="modal-body"  id="modal-alert-body"></p>
       <div class="modal-btns single">
-        <button class="btn-modal" style="max-width: 120px;" onclick="closeModal('alert-modal')">ปิด</button>
+        <button class="btn btn-tertiary-outline" style="width:auto;min-width:120px;" onclick="closeModal('modal-alert')">ปิด</button>
       </div>
     </div>
   </div>
 
-  <!-- ── Confirm Delete Modal ── -->
-  <div class="modal-overlay" id="confirm-modal">
+  <!-- ── Confirm delete modal ── -->
+  <div class="modal-overlay" id="modal-confirm">
     <div class="modal-box">
       <p class="modal-title">ลบเครื่องวัด</p>
       <p class="modal-body">ต้องการลบเครื่องวัดนี้ออกจากรายการ?</p>
       <div class="modal-btns">
-        <button class="btn-modal" onclick="closeModal('confirm-modal')">ยกเลิก</button>
-        <button class="btn-modal-danger" onclick="doDeleteMeter()">ลบ</button>
+        <button class="btn btn-tertiary-outline" style="min-width:0;" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+        <button class="btn btn-destructive"      style="min-width:0;" onclick="doDeleteMeter()">ลบ</button>
       </div>
     </div>
   </div>
 
-  <!-- ── Save QR Success Modal ── -->
-  <div class="modal-overlay" id="save-modal">
+  <!-- ── Save QR success modal ── -->
+  <div class="modal-overlay" id="modal-save">
     <div class="modal-box">
       <p class="modal-title">บันทึกสำเร็จ</p>
       <p class="modal-body">บันทึก QR Code เรียบร้อยแล้ว สามารถนำไปชำระเงินผ่านแอปธนาคารได้</p>
       <div class="modal-btns single">
-        <button class="btn-modal" style="max-width: 120px;" onclick="closeModal('save-modal')">ปิด</button>
+        <button class="btn btn-tertiary-outline" style="width:auto;min-width:120px;" onclick="closeModal('modal-save')">ปิด</button>
       </div>
     </div>
   </div>
 
   <script>
-    /* ══════════════════════════════════════════
-       Mock Data
-    ══════════════════════════════════════════ */
+    /* ── Mock data ── */
     var meters = [
       {
         id: 'mea-1',
@@ -555,7 +492,7 @@
         accountNo: '011965102',
         address:   '258/2 ซ.มิตรอนันต์ ถ.เทอดดำริห์ แขวงถนนนครไชยศรี ดุสต 10300',
         amountDue: 0,
-        dueDate:   null,          /* null = ไม่พบยอดค้างชำระ */
+        dueDate:   null,
         invoice:   '000560582096',
         billDate:  '23/05/69',
         payDue:    '04/06/69',
@@ -572,67 +509,68 @@
       },
     ];
 
-    /* ── State ── */
-    var currentId        = null;
-    var showedNilAlert   = false;   /* alert only once per session */
+    var currentId      = null;
+    var showedNilAlert = false;
 
-    /* ══════════════════════════════════════════
-       Navigation helpers
-    ══════════════════════════════════════════ */
+    /* ── Navigation ── */
     function showView(id) {
-      document.querySelectorAll('.view').forEach(function(v) {
-        v.classList.remove('active');
-      });
+      document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
       document.getElementById(id).classList.add('active');
       window.scrollTo(0, 0);
       if (id === 'view-list') renderMeterList();
     }
 
-    /* ══════════════════════════════════════════
-       VIEW 1 — Meter List
-    ══════════════════════════════════════════ */
+    /* ══ VIEW 1: Meter list ══ */
     function renderMeterList() {
       var wrap = document.getElementById('meter-list-container');
 
       if (meters.length === 0) {
         wrap.innerHTML =
-          '<div class="mea-empty">' +
-            '<div class="mea-empty-icon"><span class="material-symbols-outlined">electric_meter</span></div>' +
-            '<p style="font-size:var(--font-size-title-m);font-weight:var(--font-weight-700);margin:0;">ยังไม่มีเครื่องวัด</p>' +
-            '<p style="font-size:var(--font-size-body-m);color:var(--foreground-neutral-lighter);margin:0;">กด + เพื่อเพิ่มเครื่องวัดของท่าน</p>' +
+          '<div class="card mb-xl" style="text-align:center;padding:var(--spacing-2xl) var(--spacing-xl);">' +
+            '<div style="width:64px;height:64px;border-radius:var(--radius-xl);background:var(--background-warning-lighter);color:var(--foreground-warning-default);display:flex;align-items:center;justify-content:center;margin:0 auto var(--spacing-lg);">' +
+              '<span class="material-symbols-outlined" style="font-size:32px;font-variation-settings:\'FILL\' 1;">electric_meter</span>' +
+            '</div>' +
+            '<p style="font-size:var(--font-size-title-m);font-weight:var(--font-weight-700);margin:0 0 var(--spacing-xs);">ยังไม่มีเครื่องวัด</p>' +
+            '<p style="font-size:var(--font-size-body-m);color:var(--foreground-neutral-lighter);margin:0;">กด "เพิ่มเครื่องวัด" เพื่อเริ่มต้นใช้งาน</p>' +
           '</div>';
         return;
       }
 
       wrap.innerHTML = meters.map(function(m) {
-        var amtText = m.amountDue > 0
-          ? m.amountDue.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' บาท'
-          : '0.00 บาท';
+        var fmt    = function(n) { return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+        var hasAmt = m.amountDue > 0;
+        var tagHtml = hasAmt
+          ? '<span class="amount-tag-due"><span class="material-symbols-outlined">warning</span>' + fmt(m.amountDue) + ' บาท</span>'
+          : '<span class="amount-tag-nil"><span class="material-symbols-outlined">check_circle</span>ไม่มียอดค้างชำระ</span>';
+
         return (
-          '<div class="meter-item" onclick="viewMeter(\'' + m.id + '\')" role="button" tabindex="0">' +
-            '<p class="meter-item-title">หมายเลขเครื่องวัด : ' + m.meterNo + '</p>' +
-            '<p class="meter-item-address">' + m.address + '</p>' +
-            '<div class="meter-item-amount">' +
-              '<span class="material-symbols-outlined">shopping_basket</span>' +
-              '<span>ยอดเงินที่ต้องชำระ : ' + amtText + '</span>' +
+          '<div class="card card-interactive mb-lg fade-in" onclick="viewMeter(\'' + m.id + '\')" role="button" tabindex="0">' +
+            '<div class="meter-item">' +
+              '<div class="meter-icon"><span class="material-symbols-outlined">electric_bolt</span></div>' +
+              '<div class="meter-item-body">' +
+                '<p class="meter-item-title">เครื่องวัด ' + m.meterNo + '</p>' +
+                '<p class="meter-item-address">' + m.address + '</p>' +
+                tagHtml +
+              '</div>' +
+              '<div class="meter-item-chevron"><span class="material-symbols-outlined">chevron_right</span></div>' +
             '</div>' +
           '</div>'
         );
       }).join('');
     }
 
-    /* ══════════════════════════════════════════
-       VIEW 2 — Add Meter
-    ══════════════════════════════════════════ */
+    /* ══ VIEW 2: Add meter ══ */
     function goAddMeter() {
-      /* reset form */
       document.getElementById('in-account').value = '';
       document.getElementById('in-meter').value   = '';
-      ['in-account','in-meter'].forEach(function(id) {
-        document.getElementById(id).classList.remove('err');
+      ['in-account', 'in-meter'].forEach(function(id) {
+        document.getElementById(id).classList.remove('input-error');
       });
-      ['err-account','err-meter'].forEach(function(id) {
-        document.getElementById(id).classList.remove('show');
+      ['err-account', 'err-meter'].forEach(function(id) {
+        document.getElementById(id).style.display = 'none';
+      });
+      ['icon-account', 'icon-meter'].forEach(function(id) {
+        document.getElementById(id).style.display = 'none';
       });
       document.getElementById('add-form').style.display    = '';
       document.getElementById('add-loading').style.display = 'none';
@@ -644,73 +582,78 @@
       var meter = document.getElementById('in-meter').value.trim();
       var ok    = true;
 
-      function setErr(inputId, errId, invalid) {
-        var inp = document.getElementById(inputId);
-        var msg = document.getElementById(errId);
-        if (invalid) { inp.classList.add('err'); msg.classList.add('show'); ok = false; }
-        else          { inp.classList.remove('err'); msg.classList.remove('show'); }
+      function validate(inputId, iconId, errId, invalid) {
+        var inp  = document.getElementById(inputId);
+        var ico  = document.getElementById(iconId);
+        var msg  = document.getElementById(errId);
+        if (invalid) {
+          inp.classList.add('input-error');
+          ico.style.display = '';
+          msg.style.display = '';
+          ok = false;
+        } else {
+          inp.classList.remove('input-error');
+          ico.style.display = 'none';
+          msg.style.display = 'none';
+        }
       }
 
-      setErr('in-account', 'err-account', acct.length  !== 9  || !/^\d+$/.test(acct));
-      setErr('in-meter',   'err-meter',   meter.length !== 8  || !/^\d+$/.test(meter));
+      validate('in-account', 'icon-account', 'err-account', acct.length  !== 9 || !/^\d+$/.test(acct));
+      validate('in-meter',   'icon-meter',   'err-meter',   meter.length !== 8 || !/^\d+$/.test(meter));
       if (!ok) return;
 
-      /* Show loading / simulate API */
       document.getElementById('add-form').style.display    = 'none';
       document.getElementById('add-loading').style.display = 'block';
 
       setTimeout(function() {
-        var newId = 'mea-' + Date.now();
         var rnd   = function(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; };
-        var has   = Math.random() > 0.4;   /* 60% chance of outstanding bill */
-
+        var hasAmt = Math.random() > 0.4;
+        var newId  = 'mea-' + Date.now();
         meters.push({
           id:        newId,
           meterNo:   meter,
           accountNo: acct,
           address:   '456/7 ถ.สาธุประดิษฐ์ แขวงช่องนนทรี เขตยานนาวา กรุงเทพฯ 10120',
-          amountDue: has ? rnd(800, 8000) + Math.round(Math.random() * 99) / 100 : 0,
-          dueDate:   has ? '15/06/69' : null,
+          amountDue: hasAmt ? rnd(800, 8000) + rnd(0, 99) / 100 : 0,
+          dueDate:   hasAmt ? '15/06/69' : null,
           invoice:   '000560' + rnd(100000, 999999),
           billDate:  '23/05/69',
-          payDue:    has ? '15/06/69' : '—',
+          payDue:    hasAmt ? '15/06/69' : '—',
           units:     rnd(400, 1800),
-          payAmount: has ? rnd(800, 8000) + Math.round(Math.random() * 99) / 100 : 0,
-          history: [
-            { month: '04/2569', units: rnd(380,1900), amount: 0 },
-            { month: '03/2569', units: rnd(380,1900), amount: 0 },
-            { month: '02/2569', units: rnd(380,1900), amount: 0 },
-            { month: '01/2569', units: rnd(380,1900), amount: 0 },
-            { month: '12/2568', units: rnd(380,1900), amount: 0 },
-            { month: '11/2568', units: rnd(380,1900), amount: 0 },
-          ].map(function(h) {
-            h.amount = parseFloat((h.units * 4.72 + 38.22).toFixed(2));
-            return h;
+          payAmount: hasAmt ? rnd(800, 8000) + rnd(0, 99) / 100 : 0,
+          history: [2569, 2569, 2569, 2569, 2568, 2568].map(function(yr, i) {
+            var u = rnd(380, 1900);
+            return { month: ['04','03','02','01','12','11'][i] + '/' + yr, units: u, amount: parseFloat((u * 4.72 + 38.22).toFixed(2)) };
           }),
         });
-
         document.getElementById('add-loading').style.display = 'none';
         document.getElementById('add-form').style.display    = '';
-        showedNilAlert = false;   /* allow alert to show for new meter */
+        showedNilAlert = false;
         viewMeter(newId);
       }, 1800);
     }
 
-    /* ══════════════════════════════════════════
-       VIEW 3 — Meter Detail
-    ══════════════════════════════════════════ */
+    /* ══ VIEW 3: Detail ══ */
     function viewMeter(id) {
       var m = meters.find(function(x) { return x.id === id; });
       if (!m) return;
       currentId = id;
 
-      document.getElementById('detail-meter-title').textContent   = 'หมายเลขเครื่องวัด : ' + m.meterNo;
-      document.getElementById('detail-account-sub').textContent   = 'หมายเลขบัญชีแสดงสัญญา : ' + m.accountNo;
-      document.getElementById('detail-due-row').innerHTML         = '<b>ครบกำหนดชำระ</b> : ' + (m.dueDate || 'ไม่พบยอดค้างชำระ');
-      document.getElementById('detail-addr-row').innerHTML        = '<b>ที่อยู่</b> : ' + m.address;
-      document.getElementById('detail-amt-row').innerHTML         = '<b>ยอดเงินที่ต้องชำระ</b> : ' + m.amountDue.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' บาท';
+      document.getElementById('detail-page-title').textContent = 'เครื่องวัด ' + m.meterNo;
+      document.getElementById('detail-meter-no').textContent   = m.meterNo;
+      document.getElementById('detail-account-no').textContent = m.accountNo;
+      document.getElementById('detail-address').textContent    = m.address;
 
-      /* History rows */
+      var dueEl = document.getElementById('detail-due-date');
+      dueEl.textContent = m.dueDate || 'ไม่พบยอดค้างชำระ';
+      dueEl.style.color = m.dueDate ? 'var(--foreground-negative-default)' : 'var(--foreground-positive-default)';
+
+      var amtEl = document.getElementById('detail-amount');
+      var fmt = function(n) { return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+      amtEl.textContent = fmt(m.amountDue) + ' บาท';
+      amtEl.style.fontWeight = m.amountDue > 0 ? 'var(--font-weight-700)' : '';
+      amtEl.style.color      = m.amountDue > 0 ? 'var(--foreground-negative-default)' : '';
+
       document.getElementById('detail-history-body').innerHTML = m.history.map(function(h) {
         return '<tr>' +
           '<td>' + h.month + '</td>' +
@@ -721,7 +664,6 @@
 
       showView('view-detail');
 
-      /* Alert when amount = 0 (first time per meter) */
       if (!showedNilAlert && m.amountDue === 0) {
         showedNilAlert = true;
         setTimeout(function() {
@@ -730,79 +672,66 @@
       }
     }
 
-    /* ══════════════════════════════════════════
-       VIEW 4 — QR Payment
-    ══════════════════════════════════════════ */
+    /* ══ VIEW 4: QR ══ */
     function goQr() {
       var m = meters.find(function(x) { return x.id === currentId; });
       if (!m) return;
 
-      /* Masked text using ▪ blocks */
-      function maskedHtml(label, value) {
-        var keep  = 2;
-        var shown = value.substring(0, keep);
-        var tail  = value.substring(Math.floor(value.length * 0.65));
-        var blocks = '';
-        for (var i = 0; i < 2; i++) blocks += '<span class="qr-block"></span>';
-        return label + ' ' + shown + blocks + tail;
+      function maskHtml(val) {
+        var head   = val.substring(0, 2);
+        var tail   = val.substring(Math.ceil(val.length * 0.65));
+        var blocks = '<span class="masked-val">' + head;
+        for (var i = 0; i < 2; i++) blocks += '<span class="masked-block"></span>';
+        blocks += tail + '</span>';
+        return blocks;
       }
 
-      document.getElementById('qr-meter-masked').innerHTML   = maskedHtml('หมายเลขเครื่องวัด',          m.meterNo);
-      document.getElementById('qr-account-masked').innerHTML = maskedHtml('หมายเลขบัญชีแสดงสัญญา', m.accountNo);
+      document.getElementById('qr-meter-masked').innerHTML   = maskHtml(m.meterNo);
+      document.getElementById('qr-account-masked').innerHTML = maskHtml(m.accountNo);
+      document.getElementById('qr-invoice').textContent      = m.invoice;
+      document.getElementById('qr-bill-date').textContent    = m.billDate;
+      document.getElementById('qr-pay-due').textContent      = m.payDue;
+      document.getElementById('qr-units').textContent        = m.units.toLocaleString() + ' KWH';
 
-      document.getElementById('qr-invoice-cell').textContent  = 'เลขที่ใบแจ้งค่าไฟฟ้า ' + m.invoice;
-      document.getElementById('qr-billdate-cell').textContent = 'วันที่จดหน่วย ' + m.billDate;
-      document.getElementById('qr-duedate-cell').textContent  = 'ครบกำหนดชำระ: ' + m.payDue;
-      document.getElementById('qr-units-cell').textContent    = 'จำนวนหน่วย ' + m.units.toLocaleString();
+      var fmt = function(n) { return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+      document.getElementById('qr-amount-display').innerHTML =
+        fmt(m.payAmount) + '<span class="unit"> บาท</span>';
 
-      var amountStr = m.payAmount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('qr-amount').textContent = 'จำนวน : ' + amountStr + ' บาท';
-
-      /* Generate QR via public API */
-      var qrPayload = 'MEA|' + m.meterNo + '|' + m.accountNo + '|' + m.invoice + '|' + m.payAmount;
+      var payload = 'MEA|' + m.meterNo + '|' + m.accountNo + '|' + m.invoice + '|' + m.payAmount;
       document.getElementById('qr-img').src =
         'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=' +
-        encodeURIComponent(qrPayload);
+        encodeURIComponent(payload);
 
       showView('view-qr');
     }
 
     function onSaveQr() {
-      document.getElementById('save-modal').classList.add('show');
+      document.getElementById('modal-save').classList.add('show');
     }
 
-    /* ══════════════════════════════════════════
-       Delete meter
-    ══════════════════════════════════════════ */
+    /* ── Delete ── */
     function confirmDeleteMeter() {
-      document.getElementById('confirm-modal').classList.add('show');
+      document.getElementById('modal-confirm').classList.add('show');
     }
-
     function doDeleteMeter() {
-      meters = meters.filter(function(m) { return m.id !== currentId; });
+      meters    = meters.filter(function(m) { return m.id !== currentId; });
       currentId = null;
       showedNilAlert = false;
-      closeModal('confirm-modal');
+      closeModal('modal-confirm');
       showView('view-list');
     }
 
-    /* ══════════════════════════════════════════
-       Modal helpers
-    ══════════════════════════════════════════ */
+    /* ── Modals ── */
     function showAlert(title, body) {
-      document.getElementById('alert-title').textContent = title;
-      document.getElementById('alert-body').textContent  = body;
-      document.getElementById('alert-modal').classList.add('show');
+      document.getElementById('modal-alert-title').textContent = title;
+      document.getElementById('modal-alert-body').textContent  = body;
+      document.getElementById('modal-alert').classList.add('show');
     }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
-
-    /* ── Close any open modal on overlay click ── */
-    document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) overlay.classList.remove('show');
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (e.target === el) el.classList.remove('show');
       });
     });
 
