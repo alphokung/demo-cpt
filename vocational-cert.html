@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>มาตรฐานอาชีพและคุณวุฒิวิชาชีพ — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Level badge ── */
+    .qual-level {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 64px; height: 64px; flex-shrink: 0;
+      border-radius: var(--radius-xl);
+      background: var(--info-40); color: #fff;
+      gap: 1px;
+    }
+    .qual-level-label  { font-size: 10px; font-weight: var(--font-weight-500); letter-spacing: 0.5px; opacity: 0.88; line-height: 1; }
+    .qual-level-number { font-size: 28px; font-weight: var(--font-weight-700); line-height: 1; }
+
+    /* ── Certificate body (holds watermark) ── */
+    .cert-body { position: relative; overflow: hidden; }
+    .cert-watermark {
+      position: absolute; right: -16px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 180px; line-height: 1;
+      opacity: 0.045; color: var(--info-40);
+      pointer-events: none; user-select: none;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    /* ── Certificate header (level + name block) ── */
+    .cert-header { display: flex; gap: var(--spacing-lg); align-items: flex-start; margin-bottom: var(--spacing-xl); }
+    .cert-title  { font-size: var(--font-size-title-l); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xs); line-height: 1.3; }
+    .cert-field  { font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.55; }
+
+    /* ── Certificate number ── */
+    .cert-number-val {
+      font-size: var(--font-size-body-l); font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default);
+      overflow-wrap: break-word; word-break: break-all;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Validity status tag ── */
+    .cert-tag {
+      display: inline-flex; align-items: center; gap: var(--spacing-xs);
+      padding: 4px var(--spacing-md); border-radius: var(--radius-full);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
+      white-space: nowrap;
+    }
+    .cert-tag .material-symbols-outlined { font-size: 14px; font-variation-settings: 'FILL' 1; }
+    .cert-tag--valid    { background: var(--background-positive-light);    color: var(--foreground-positive-default); }
+    .cert-tag--expiring { background: var(--background-warning-lighter);   color: var(--foreground-warning-default); }
+    .cert-tag--expired  { background: var(--background-negative-light);    color: var(--foreground-negative-default); }
+
+    /* ── Validity footer row ── */
+    .cert-validity-row {
+      display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;
+      padding-top: var(--spacing-lg); margin-top: var(--spacing-lg);
+      border-top: 1px solid var(--stroke-neutral-lighter);
+    }
+    .cert-validity-note { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); }
+
+    /* ── Action row ── */
+    .cert-actions { display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl); }
+    .cert-actions .btn { flex: 1; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          
+          <div class="title-block">
+            <h2 class="text-header">มาตรฐานอาชีพและคุณวุฒิวิชาชีพ</h2>
+            <p class="text-subheader">ข้อมูลจากสถาบันคุณวุฒิวิชาชีพ (องค์การมหาชน)</p>
+          </div>
+        </div>
+
+        <!-- ── Certificate Card ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--info-40);"></div>
+            <h3 class="section-title">หนังสือรับรองมาตรฐานอาชีพ</h3>
+          </div>
+
+          <div class="cert-body">
+            <!-- Watermark -->
+            <span class="cert-watermark material-symbols-outlined" aria-hidden="true">workspace_premium</span>
+
+            <!-- Level + Profession name -->
+            <div class="cert-header">
+              <div class="qual-level">
+                <span class="qual-level-label">ระดับ</span>
+                <span class="qual-level-number">4</span>
+              </div>
+              <div>
+                <p class="cert-title">อาชีพนักพัฒนาระบบ</p>
+                <p class="cert-field">
+                  สาขาวิชาชีพอุตสาหกรรมดิจิทัล 
+                  สาขาซอฟต์แวร์และการประยุกต์
+                </p>
+              </div>
+            </div>
+
+            <!-- Certificate details -->
+            <div class="details-list">
+
+              <div class="details-item">
+                <span class="details-label">ผู้ถือใบรับรอง</span>
+                <span class="details-value">นายสมชาย ใจดี</span>
+              </div>
+
+              <div class="details-item">
+                <span class="details-label">เลขประจำตัวประชาชน</span>
+                <span class="details-value">1-1002-00345-67-8</span>
+              </div>
+
+              <div class="details-item">
+                <span class="details-label">หนังสือรับรองมาตรฐานอาชีพเลขที่</span>
+                <span class="details-value cert-number-val">OSCN-0301A/ICT-SWA-14--B-64/000091</span>
+              </div>
+
+              <div class="details-item">
+                <span class="details-label">วันที่ออกใบประกาศ</span>
+                <span class="details-value">18 พฤศจิกายน 2564</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Branch / Profession Details Card ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+            <h3 class="section-title">รายละเอียดสาขาวิชาชีพ</h3>
+          </div>
+
+          <div class="details-list">
+
+            <div class="details-item">
+              <span class="details-label">กลุ่มสาขาวิชาชีพ</span>
+              <span class="details-value">สาขาวิชาชีพอุตสาหกรรมดิจิทัล</span>
+            </div>
+
+            <div class="details-item">
+              <span class="details-label">สาขา</span>
+              <span class="details-value">ซอฟต์แวร์และการประยุกต์</span>
+            </div>
+
+            <div class="details-item">
+              <span class="details-label">อาชีพ</span>
+              <span class="details-value">นักพัฒนาระบบ (System Developer)</span>
+            </div>
+
+            <div class="details-item">
+              <span class="details-label">ระดับคุณวุฒิวิชาชีพ</span>
+              <span class="details-value">ระดับ 4</span>
+            </div>
+
+            <div class="details-item">
+              <span class="details-label">ผู้ออกใบรับรอง</span>
+              <span class="details-value">สถาบันคุณวุฒิวิชาชีพ (องค์การมหาชน)</span>
+            </div>
+
+          </div>
+        </div>
+
+      
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align:center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6;">
+            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:-3px;">verified</span>
+            ข้อมูลจากสถาบันคุณวุฒิวิชาชีพ (องค์การมหาชน)<br>
+            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
