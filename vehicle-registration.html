@@ -105,7 +105,7 @@
         <div class="card welcome-card welcome-card--green mb-xl">
           <h2>สวัสดีคุณสมชาย</h2>
           <p>เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
-          <p>ยานพาหนะในครอบครอง 2 รายการ</p>
+          <p>ยานพาหนะในครอบครอง 3 รายการ</p>
         </div>
 
         
@@ -144,6 +144,22 @@
             <span class="tax-tag tax-tag--ok">
               <span class="material-symbols-outlined">verified</span>
               ภาษีปกติ
+            </span>
+          </div>
+
+          <div class="vehicle-row-divider"></div>
+
+          <div class="vehicle-row" id="pick-truck" onclick="switchVehicle('truck')">
+            <div class="vehicle-row-icon">
+              <span class="material-symbols-outlined">local_shipping</span>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="vehicle-row-plate">บน 5678 นครราชสีมา</p>
+              <p class="vehicle-row-model">ISUZU D-MAX 1.9 HI-LANDER</p>
+            </div>
+            <span class="tax-tag tax-tag--warn">
+              <span class="material-symbols-outlined">schedule</span>
+              ใกล้หมดอายุ
             </span>
           </div>
         </div>
@@ -220,6 +236,12 @@
           <div class="section-title-container">
             <div class="section-bar" style="background-color:var(--primary-40);"></div>
             <h3 class="section-title">วันที่จดทะเบียน & ภาษี</h3>
+          </div>
+
+          <!-- Tax warning notice -->
+          <div id="tax-warning-notice" style="display:none; align-items:center; gap:var(--spacing-sm); padding:var(--spacing-sm) var(--spacing-md); background:var(--background-warning-lighter); border-radius:var(--radius-lg); margin-bottom:var(--spacing-md);">
+            <span class="material-symbols-outlined" style="color:var(--foreground-warning-default);font-size:20px;flex-shrink:0;font-variation-settings:'FILL' 1;">warning</span>
+            <p style="font-size:var(--font-size-body-s);color:var(--foreground-warning-default);margin:0;" id="tax-warning-text">ภาษีรถใกล้ถึงกำหนด กรุณาต่อภาษีก่อนวันสิ้นภาษี</p>
           </div>
 
           <div class="details-list">
@@ -399,6 +421,44 @@
             avatarIcon: 'person'
           }
         ]
+      },
+      truck: {
+        plateNumber: 'บน 5678',
+        plateProvince: 'นครราชสีมา',
+        model: 'ISUZU D-MAX 1.9 HI-LANDER',
+        color: 'ขาว',
+        fuel: 'ดีเซล',
+        taxDate: '15 กรกฎาคม 2569',
+        taxStatus: 'warning',
+        taxStatusIcon: 'schedule',
+        taxStatusLabel: 'ภาษีรถยนต์ใกล้ถึงกำหนด',
+        info: {
+          model: 'ISUZU D-MAX 1.9 HI-LANDER',
+          color: 'ขาว',
+          type: 'รถยนต์บรรทุกส่วนบุคคล',
+          style: 'กระบะสี่ประตู',
+          engineBrand: 'ISUZU',
+          fuelType: 'ดีเซล'
+        },
+        engine: {
+          engineNo: 'RZ4E0123456',
+          engineSpecs: '4 สูบ 1,898.00 ซีซี',
+          weight: '1,810 กิโลกรัม',
+          chassisNo: 'MPATFS85SK1012345'
+        },
+        registration: {
+          regDate: '20 กรกฎาคม 2566',
+          expDate: '15 กรกฎาคม 2569'
+        },
+        owners: [
+          {
+            role: 'ผู้ถือกรรมสิทธิ์',
+            name: 'สมชาย ใจดี',
+            address: '999 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210',
+            avatarClass: 'person',
+            avatarIcon: 'person'
+          }
+        ]
       }
     };
 
@@ -411,6 +471,7 @@
       // Toggle active states on picker rows
       document.getElementById('pick-car').classList.toggle('vehicle-row--active', type === 'car');
       document.getElementById('pick-motorcycle').classList.toggle('vehicle-row--active', type === 'motorcycle');
+      document.getElementById('pick-truck').classList.toggle('vehicle-row--active', type === 'truck');
 
       // Trigger fade animations again
       var animBlocks = [
@@ -440,11 +501,12 @@
 
 
       // Info Card
-      document.getElementById('info-title').textContent = type === 'car' ? 'ข้อมูลรถยนต์' : 'ข้อมูลรถจักรยานยนต์';
+      var titleMap = { car: 'ข้อมูลรถยนต์', motorcycle: 'ข้อมูลรถจักรยานยนต์', truck: 'ข้อมูลรถยนต์' };
+      document.getElementById('info-title').textContent = titleMap[type] || 'ข้อมูลรถยนต์';
       document.getElementById('info-model').textContent = v.info.model;
 
       var infoColor = document.getElementById('info-color');
-      infoColor.innerHTML =  v.info.color;
+      infoColor.innerHTML = v.info.color;
 
       document.getElementById('info-type').textContent = v.info.type;
       document.getElementById('info-style').textContent = v.info.style;
@@ -459,11 +521,24 @@
 
       // Registration Card
       document.getElementById('reg-date').textContent = v.registration.regDate;
-      document.getElementById('reg-exp-date').textContent = v.registration.expDate;
+      var expDateEl = document.getElementById('reg-exp-date');
+      expDateEl.textContent = v.registration.expDate;
+      var isWarning = v.taxStatus === 'warning';
+      expDateEl.style.color = isWarning ? 'var(--foreground-warning-default)' : 'var(--foreground-positive-default)';
+      expDateEl.style.fontWeight = 'var(--font-weight-700)';
 
+      // Tax warning notice
+      var warningEl = document.getElementById('tax-warning-notice');
+      warningEl.style.display = isWarning ? 'flex' : 'none';
+      if (isWarning) {
+        document.getElementById('tax-warning-text').textContent = 'ภาษีรถใกล้ถึงกำหนด · สิ้นสุด ' + v.registration.expDate + ' กรุณาต่อภาษีก่อนวันสิ้นภาษี';
+      }
+
+      var btnLabelMap = { car: 'รถยนต์', motorcycle: 'รถจักรยานยนต์', truck: 'รถยนต์' };
+      var btnLabel = btnLabelMap[type] || 'รถยนต์';
       var regBtn = document.getElementById('reg-tax-btn');
-      regBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์') + "')");
-      document.getElementById('reg-tax-btn-text').textContent = 'ต่อภาษี' + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์');
+      regBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + btnLabel + "')");
+      document.getElementById('reg-tax-btn-text').textContent = 'ต่อภาษี' + btnLabel;
 
       // Owners
       var ownersHtml = '';
