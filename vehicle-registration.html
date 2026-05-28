@@ -23,14 +23,70 @@
   <style>
     .color-dot {
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 12px; height: 12px;
       border-radius: 50%;
       border: 1px solid var(--stroke-neutral-default, #ccc);
       vertical-align: middle;
       margin-right: 6px;
       flex-shrink: 0;
     }
+
+    /* ── Vehicle Picker ── */
+    .vehicle-row {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-sm);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+      margin: 0 calc(-1 * var(--spacing-sm));
+    }
+    .vehicle-row:hover { background: var(--background-neutral-subtle); }
+    .vehicle-row--active {
+      background: var(--primary-99);
+      border-color: var(--primary-40);
+    }
+    .vehicle-row-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      border-radius: var(--radius-lg);
+      background: var(--background-neutral-light);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--foreground-neutral-lighter);
+      transition: background 0.15s, color 0.15s;
+    }
+    .vehicle-row--active .vehicle-row-icon {
+      background: var(--primary-95);
+      color: var(--primary-20);
+    }
+    .vehicle-row-plate {
+      font-size: var(--font-size-body-l);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default);
+      margin: 0;
+    }
+    .vehicle-row-model {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      margin: 2px 0 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .vehicle-row-divider {
+      height: 1px;
+      background: var(--stroke-neutral-lighter);
+      margin: var(--spacing-xs) 0;
+    }
+
+    /* ── Tax status tag ── */
+    .tax-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px var(--spacing-sm); border-radius: var(--radius-full);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .tax-tag .material-symbols-outlined { font-size: 14px; font-variation-settings: 'FILL' 1; }
+    .tax-tag--ok   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .tax-tag--warn { background: var(--background-warning-lighter); color: var(--foreground-warning-default); }
+    .tax-tag--exp  { background: var(--background-negative-light);  color: var(--foreground-negative-default); }
   </style>
 </head>
 <body>
@@ -54,17 +110,42 @@
 
         
 
-        <!-- ── Vehicle Selector ── -->
-        
-        <div class="filter-row fade-in-2" style="margin-bottom: var(--spacing-xl); display: flex; gap: var(--spacing-sm); overflow-x: auto; padding-bottom: var(--spacing-xs);">
-          <button class="filter-chip active" id="chip-car" onclick="switchVehicle('car')">
-            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px; vertical-align: middle;">directions_car</span>
-            กต 9921 แพร่ (รถยนต์)
-          </button>
-          <button class="filter-chip" id="chip-motorcycle" onclick="switchVehicle('motorcycle')">
-            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px; vertical-align: middle;">two_wheeler</span>
-            1กข 4567 แพร่ (รถจักรยานยนต์)
-          </button>
+        <!-- ── Vehicle Picker ── -->
+        <div class="card mb-xl fade-in-1">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">ยานพาหนะในครอบครอง</h3>
+          </div>
+
+          <div class="vehicle-row vehicle-row--active" id="pick-car" onclick="switchVehicle('car')">
+            <div class="vehicle-row-icon">
+              <span class="material-symbols-outlined">directions_car</span>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="vehicle-row-plate">กต 9921 แพร่</p>
+              <p class="vehicle-row-model">TOYOTA COROLLA CROSS</p>
+            </div>
+            <span class="tax-tag tax-tag--ok">
+              <span class="material-symbols-outlined">verified</span>
+              ภาษีปกติ
+            </span>
+          </div>
+
+          <div class="vehicle-row-divider"></div>
+
+          <div class="vehicle-row" id="pick-motorcycle" onclick="switchVehicle('motorcycle')">
+            <div class="vehicle-row-icon">
+              <span class="material-symbols-outlined">two_wheeler</span>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="vehicle-row-plate">1กข 4567 แพร่</p>
+              <p class="vehicle-row-model">HONDA FORZA 350</p>
+            </div>
+            <span class="tax-tag tax-tag--ok">
+              <span class="material-symbols-outlined">verified</span>
+              ภาษีปกติ
+            </span>
+          </div>
         </div>
 
 
@@ -327,9 +408,9 @@
       if (type === currentVehicleType) return;
       currentVehicleType = type;
 
-      // Toggle active states on chips
-      document.getElementById('chip-car').classList.toggle('active', type === 'car');
-      document.getElementById('chip-motorcycle').classList.toggle('active', type === 'motorcycle');
+      // Toggle active states on picker rows
+      document.getElementById('pick-car').classList.toggle('vehicle-row--active', type === 'car');
+      document.getElementById('pick-motorcycle').classList.toggle('vehicle-row--active', type === 'motorcycle');
 
       // Trigger fade animations again
       var animBlocks = [
