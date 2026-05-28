@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทะเบียนรถ — ทางรัฐ</title>
+  <meta name="description" content="ข้อมูลทะเบียนรถยนต์ส่วนบุคคล ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Vehicle hero card ── */
+    .vehicle-hero {
+      background: linear-gradient(135deg, #1b2a4a 0%, #1e3a5f 55%, #1565c0 100%);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .vehicle-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .vehicle-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -20px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .vehicle-hero-plate {
+      display: inline-flex; align-items: center; gap: var(--spacing-sm);
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 6px var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    .vehicle-hero-plate-flag {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      flex-shrink: 0;
+    }
+    .plate-flag-bar {
+      width: 18px; height: 4px; border-radius: 2px;
+    }
+    .vehicle-hero-plate-number {
+      font-size: var(--font-size-title-l);
+      font-weight: var(--font-weight-700);
+      color: #111;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .vehicle-hero-plate-province {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      font-weight: var(--font-weight-500);
+      letter-spacing: 0.5px;
+    }
+    .vehicle-hero-model {
+      font-size: var(--font-size-title-l);
+      font-weight: var(--font-weight-700);
+      color: #fff;
+      margin: 0 0 var(--spacing-xs);
+    }
+    .vehicle-hero-sub {
+      font-size: var(--font-size-body-s);
+      color: rgba(255,255,255,0.7);
+      margin: 0;
+      display: flex; align-items: center; gap: var(--spacing-xs);
+    }
+    .vehicle-hero-sub .material-symbols-outlined { font-size: 14px; }
+
+    /* ── Color dot ── */
+    .color-dot {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--stroke-neutral-light);
+      vertical-align: middle;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── Tax status banner ── */
+    .tax-status-banner {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-md) var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    .tax-status-banner.valid {
+      background: var(--background-positive-light);
+      border: 1px solid var(--stroke-positive-light, #a7f3d0);
+    }
+    .tax-status-banner.warning {
+      background: var(--background-warning-lighter);
+      border: 1px solid var(--stroke-warning-light, #fde68a);
+    }
+    .tax-status-banner.expired {
+      background: var(--background-negative-light);
+      border: 1px solid var(--stroke-negative-light, #fca5a5);
+    }
+    .tax-status-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .tax-status-banner.valid   .tax-status-icon { background: var(--background-positive-medium, #d1fae5); color: var(--foreground-positive-default); }
+    .tax-status-banner.warning .tax-status-icon { background: var(--background-warning-light); color: var(--foreground-warning-default); }
+    .tax-status-banner.expired .tax-status-icon { background: var(--background-negative-medium, #fee2e2); color: var(--foreground-negative-default); }
+    .tax-status-icon .material-symbols-outlined { font-size: 20px; font-variation-settings: 'FILL' 1; }
+    .tax-status-body { flex: 1; min-width: 0; }
+    .tax-status-label {
+      font-size: var(--font-size-body-s); margin: 0 0 2px;
+    }
+    .tax-status-banner.valid   .tax-status-label { color: var(--foreground-positive-default); }
+    .tax-status-banner.warning .tax-status-label { color: var(--foreground-warning-default); }
+    .tax-status-banner.expired .tax-status-label { color: var(--foreground-negative-default); }
+    .tax-status-date {
+      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); margin: 0;
+    }
+    .tax-status-banner.valid   .tax-status-date { color: var(--foreground-positive-default); }
+    .tax-status-banner.warning .tax-status-date { color: var(--foreground-warning-default); }
+    .tax-status-banner.expired .tax-status-date { color: var(--foreground-negative-default); }
+
+    /* ── Owner block inside card ── */
+    .owner-block {
+      display: flex; gap: var(--spacing-md); align-items: flex-start;
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .owner-block:last-child { border-bottom: none; padding-bottom: 0; }
+    .owner-block:first-child { padding-top: 0; }
+    .owner-avatar {
+      width: 40px; height: 40px; border-radius: var(--radius-full);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px; font-variation-settings: 'FILL' 1;
+    }
+    .owner-avatar.person {
+      background: var(--background-primary-lighter, #e8f0fe);
+      color: var(--foreground-primary-default, #1a56db);
+    }
+    .owner-avatar.company {
+      background: var(--background-warning-lighter);
+      color: var(--foreground-warning-default);
+    }
+    .owner-body { flex: 1; min-width: 0; }
+    .owner-role {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0 0 2px;
+    }
+    .owner-name {
+      font-size: var(--font-size-body-m); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xs);
+    }
+    .owner-address {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      line-height: 1.55; margin: 0;
+    }
+
+    /* ── Spec chip row ── */
+    .spec-chips {
+      display: flex; flex-wrap: wrap; gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-lg);
+    }
+    .spec-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--background-neutral-light, #f5f5f5);
+      border: 1px solid var(--stroke-neutral-lighter);
+      border-radius: var(--radius-full);
+      padding: 4px var(--spacing-sm);
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-default);
+    }
+    .spec-chip .material-symbols-outlined { font-size: 14px; color: var(--foreground-neutral-lighter); font-variation-settings: 'FILL' 1; }
+
+    /* ── Fade-slide in ── */
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeSlideIn 0.3s ease both; }
+    .fade-in-2 { animation: fadeSlideIn 0.3s ease 0.08s both; }
+    .fade-in-3 { animation: fadeSlideIn 0.3s ease 0.16s both; }
+    .fade-in-4 { animation: fadeSlideIn 0.3s ease 0.24s both; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page header -->
+        <div class="page-header">
+          <button class="btn-back-circle" onclick="history.back()" aria-label="กลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <div class="title-block">
+            <h2 class="text-header">ทะเบียนรถ</h2>
+            <p class="text-subheader">กรมการขนส่งทางบก</p>
+          </div>
+        </div>
+
+        <!-- ── Welcome Box ── -->
+        <div class="welcome-banner fade-in" style="margin-bottom: var(--spacing-xl); height: auto; padding: var(--spacing-md) var(--spacing-lg);">
+          <p class="welcome-banner-greeting">สวัสดี</p>
+          <p class="welcome-banner-name">คุณเพชร เครือพานิช</p>
+          <p class="welcome-banner-sub">เลขประจำตัวประชาชน: 3-5403-XXXXX-XX-X</p>
+        </div>
+
+        <!-- ── Vehicle Selector ── -->
+        <div class="section-title-container fade-in-2" style="margin-bottom: var(--spacing-sm);">
+          <h3 class="section-title" style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-700);">ยานพาหนะครอบครอง (2 คัน)</h3>
+        </div>
+        <div class="filter-row fade-in-2" style="margin-bottom: var(--spacing-xl); display: flex; gap: var(--spacing-sm); overflow-x: auto; padding-bottom: var(--spacing-xs);">
+          <button class="filter-chip active" id="chip-car" onclick="switchVehicle('car')">
+            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px; vertical-align: middle;">directions_car</span>
+            กต 9921 แพร่ (รถยนต์)
+          </button>
+          <button class="filter-chip" id="chip-motorcycle" onclick="switchVehicle('motorcycle')">
+            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px; vertical-align: middle;">two_wheeler</span>
+            1กข 4567 แพร่ (รถจักรยานยนต์)
+          </button>
+        </div>
+
+        <!-- ── Vehicle Hero Card ── -->
+        <div id="vehicle-hero-card" class="vehicle-hero fade-in">
+          <!-- Plate -->
+          <div class="vehicle-hero-plate">
+            <div class="vehicle-hero-plate-flag">
+              <div class="plate-flag-bar" style="background:#003580;"></div>
+              <div class="plate-flag-bar" style="background:#fff;"></div>
+              <div class="plate-flag-bar" style="background:#c00;"></div>
+            </div>
+            <div>
+              <div class="vehicle-hero-plate-number" id="hero-plate-number">กต 9921</div>
+              <div class="vehicle-hero-plate-province" id="hero-plate-province">แพร่</div>
+            </div>
+          </div>
+
+          <!-- Model & meta -->
+          <h3 class="vehicle-hero-model" id="hero-model">TOYOTA COROLLA CROSS</h3>
+          <p class="vehicle-hero-sub" id="hero-sub">
+            <span class="material-symbols-outlined" style="vertical-align: middle;">palette</span>
+            <span class="color-dot" id="hero-color-dot" style="background:#9e9e9e;border-color:#bbb; vertical-align: middle;"></span>
+            <span id="hero-color-text" style="vertical-align: middle;">สีเทา</span> &nbsp;·&nbsp;
+            <span class="material-symbols-outlined" id="hero-fuel-icon" style="vertical-align: middle;">local_gas_station</span>
+            <span id="hero-fuel-text" style="vertical-align: middle;">เบนซิน-ไฟฟ้า (Hybrid)</span>
+          </p>
+        </div>
+
+        <!-- ── Tax Status Banner ── -->
+        <div id="tax-status-banner-card" class="tax-status-banner valid fade-in-2">
+          <div class="tax-status-icon">
+            <span class="material-symbols-outlined" id="tax-icon">verified</span>
+          </div>
+          <div class="tax-status-body">
+            <p class="tax-status-label" id="tax-label">ภาษีรถยนต์มีผลถึง</p>
+            <p class="tax-status-date" id="tax-date">31 พฤษภาคม 2570</p>
+          </div>
+          <button class="btn btn-primary" id="tax-btn" style="flex-shrink:0;padding:0 var(--spacing-md);min-height:36px;font-size:var(--font-size-body-s);" onclick="alert('ไปเปิด miniapp ต่อภาษีรถยนต์')">
+            ต่อภาษี
+          </button>
+        </div>
+
+        <!-- ── Spec chips ── -->
+        <div class="spec-chips fade-in-2" id="spec-chips-container">
+          <span class="spec-chip"><span class="material-symbols-outlined">directions_car</span>รถยนต์นั่งส่วนบุคคลไม่เกิน 7 คน</span>
+          <span class="spec-chip"><span class="material-symbols-outlined">airline_seat_recline_extra</span>นั่งสองตอนแวน</span>
+          <span class="spec-chip"><span class="material-symbols-outlined">settings</span>4 สูบ 1,798 ซีซี</span>
+          <span class="spec-chip"><span class="material-symbols-outlined">scale</span>1,400 กก.</span>
+        </div>
+
+        <!-- ── Vehicle Info Card ── -->
+        <div class="card mb-xl fade-in-2" id="info-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--secondary-40-main);"></div>
+            <h3 class="section-title" id="info-title">ข้อมูลรถยนต์</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">รุ่นรถ</span>
+              <span class="details-value" id="info-model">TOYOTA COROLLA CROSS</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">สี</span>
+              <span class="details-value" id="info-color" style="display:inline-flex;align-items:center;gap:6px;">
+                <span class="color-dot" id="info-color-dot" style="background:#9e9e9e;border-color:#bbb;"></span>เทา
+              </span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ประเภทรถ</span>
+              <span class="details-value" id="info-type">รถยนต์นั่งส่วนบุคคลไม่เกิน 7 คน</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ลักษณะรถ</span>
+              <span class="details-value" id="info-style">นั่งสองตอนแวน</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ยี่ห้อเครื่องยนต์</span>
+              <span class="details-value" id="info-engine-brand">TOYOTA</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เชื้อเพลิง</span>
+              <span class="details-value" id="info-fuel-type">เบนซิน-ไฟฟ้า</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Engine & Chassis Card ── -->
+        <div class="card mb-xl fade-in-3" id="engine-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--warning-40);"></div>
+            <h3 class="section-title">เครื่องยนต์ & ตัวถัง</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">เลขเครื่องยนต์</span>
+              <span class="details-value" id="engine-no" style="font-family:monospace;letter-spacing:0.5px;">2ZRZ153816</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เครื่องยนต์</span>
+              <span class="details-value" id="engine-specs">4 สูบ 1,798.00 ซีซี</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">น้ำหนักรถ</span>
+              <span class="details-value" id="engine-weight">1,400 กิโลกรัม</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เลขตัวรถ</span>
+              <span class="details-value" id="engine-chassis-no" style="font-family:monospace;letter-spacing:0.5px;word-break:break-all;">MR2KZAAGX00086328</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Registration Date Card ── -->
+        <div class="card mb-xl fade-in-3" id="registration-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--primary-40);"></div>
+            <h3 class="section-title">วันที่จดทะเบียน & ภาษี</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">วันที่จดทะเบียน</span>
+              <span class="details-value" id="reg-date">31 พฤษภาคม 2567</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">วันที่สิ้นภาษี</span>
+              <span class="details-value" id="reg-exp-date" style="color:var(--foreground-positive-default);font-weight:var(--font-weight-700);">
+                31 พฤษภาคม 2570
+              </span>
+            </div>
+          </div>
+
+          <div style="margin-top:var(--spacing-lg);">
+            <button class="btn btn-primary" id="reg-tax-btn" onclick="alert('ไปเปิด miniapp ต่อภาษีรถยนต์')">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span id="reg-tax-btn-text">ต่อภาษีรถยนต์</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Ownership Card ── -->
+        <div class="card mb-xl fade-in-4" id="ownership-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--foreground-neutral-lighter);"></div>
+            <h3 class="section-title">ผู้ถือกรรมสิทธิ์ & ผู้ถือครอง</h3>
+          </div>
+
+          <div id="owners-container">
+            <!-- Owner: Company (leasing) -->
+            <div class="owner-block">
+              <div class="owner-avatar company">
+                <span class="material-symbols-outlined">corporate_fare</span>
+              </div>
+              <div class="owner-body">
+                <p class="owner-role">ผู้ถือกรรมสิทธิ์</p>
+                <p class="owner-name">บริษัทโตโยต้า ลีสซิ่ง (ประเทศไทย) จำกัด</p>
+                <p class="owner-address">990 ชั้น 18-19 ถ.พระราม 4 แขวงสีลม เขตบางรัก จังหวัดกรุงเทพมหานคร 10500</p>
+              </div>
+            </div>
+
+            <!-- Owner: Person (holder) -->
+            <div class="owner-block">
+              <div class="owner-avatar person">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div class="owner-body">
+                <p class="owner-role">ผู้ถือครอง</p>
+                <p class="owner-name">นายเพชร เครือพานิช</p>
+                <p class="owner-address">193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align:center; padding:var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);line-height:1.6;">
+            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-3px;">verified</span>
+            ข้อมูลจากกรมการขนส่งทางบก<br>
+            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    var vehicles = {
+      car: {
+        plateNumber: 'กต 9921',
+        plateProvince: 'แพร่',
+        model: 'TOYOTA COROLLA CROSS',
+        color: 'เทา',
+        colorHex: '#9e9e9e',
+        fuel: 'เบนซิน-ไฟฟ้า (Hybrid)',
+        taxDate: '31 พฤษภาคม 2570',
+        taxStatusClass: 'valid',
+        taxStatusIcon: 'verified',
+        taxStatusLabel: 'ภาษีรถยนต์มีผลถึง',
+        specChips: [
+          { icon: 'directions_car', text: 'รถยนต์นั่งส่วนบุคคลไม่เกิน 7 คน' },
+          { icon: 'airline_seat_recline_extra', text: 'นั่งสองตอนแวน' },
+          { icon: 'settings', text: '4 สูบ 1,798 ซีซี' },
+          { icon: 'scale', text: '1,400 กก.' }
+        ],
+        info: {
+          model: 'TOYOTA COROLLA CROSS',
+          color: 'เทา',
+          type: 'รถยนต์นั่งส่วนบุคคลไม่เกิน 7 คน',
+          style: 'นั่งสองตอนแวน',
+          engineBrand: 'TOYOTA',
+          fuelType: 'เบนซิน-ไฟฟ้า'
+        },
+        engine: {
+          engineNo: '2ZRZ153816',
+          engineSpecs: '4 สูบ 1,798.00 ซีซี',
+          weight: '1,400 กิโลกรัม',
+          chassisNo: 'MR2KZAAGX00086328'
+        },
+        registration: {
+          regDate: '31 พฤษภาคม 2567',
+          expDate: '31 พฤษภาคม 2570'
+        },
+        owners: [
+          {
+            role: 'ผู้ถือกรรมสิทธิ์',
+            name: 'บริษัทโตโยต้า ลีสซิ่ง (ประเทศไทย) จำกัด',
+            address: '990 ชั้น 18-19 ถ.พระราม 4 แขวงสีลม เขตบางรัก จังหวัดกรุงเทพมหานคร 10500',
+            avatarClass: 'company',
+            avatarIcon: 'corporate_fare'
+          },
+          {
+            role: 'ผู้ถือครอง',
+            name: 'นายเพชร เครือพานิช',
+            address: '193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150',
+            avatarClass: 'person',
+            avatarIcon: 'person'
+          }
+        ]
+      },
+      motorcycle: {
+        plateNumber: '1กข 4567',
+        plateProvince: 'แพร่',
+        model: 'HONDA FORZA 350',
+        color: 'ดำ-เทา',
+        colorHex: '#374151',
+        fuel: 'เบนซิน',
+        taxDate: '15 สิงหาคม 2569',
+        taxStatusClass: 'valid',
+        taxStatusIcon: 'verified',
+        taxStatusLabel: 'ภาษีรถจักรยานยนต์มีผลถึง',
+        specChips: [
+          { icon: 'two_wheeler', text: 'รถจักรยานยนต์ส่วนบุคคล' },
+          { icon: 'motorcycle', text: 'จักรยานยนต์สองล้อ' },
+          { icon: 'settings', text: '1 สูบ 329.60 ซีซี' },
+          { icon: 'scale', text: '185 กก.' }
+        ],
+        info: {
+          model: 'HONDA FORZA 350',
+          color: 'ดำ-เทา',
+          type: 'รถจักรยานยนต์ส่วนบุคคล',
+          style: 'จักรยานยนต์',
+          engineBrand: 'HONDA',
+          fuelType: 'เบนซิน'
+        },
+        engine: {
+          engineNo: 'ND16E0123456',
+          engineSpecs: '1 สูบ 329.60 ซีซี',
+          weight: '185 กิโลกรัม',
+          chassisNo: 'MLHND16A1K0001234'
+        },
+        registration: {
+          regDate: '15 สิงหาคม 2567',
+          expDate: '15 สิงหาคม 2569'
+        },
+        owners: [
+          {
+            role: 'ผู้ถือกรรมสิทธิ์',
+            name: 'บริษัท ฮอนด้า ลีสซิ่ง (ประเทศไทย) จำกัด',
+            address: '100 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110',
+            avatarClass: 'company',
+            avatarIcon: 'corporate_fare'
+          },
+          {
+            role: 'ผู้ถือครอง',
+            name: 'นายเพชร เครือพานิช',
+            address: '193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150',
+            avatarClass: 'person',
+            avatarIcon: 'person'
+          }
+        ]
+      }
+    };
+
+    var currentVehicleType = 'car';
+
+    function switchVehicle(type) {
+      if (type === currentVehicleType) return;
+      currentVehicleType = type;
+
+      // Toggle active states on chips
+      document.getElementById('chip-car').classList.toggle('active', type === 'car');
+      document.getElementById('chip-motorcycle').classList.toggle('active', type === 'motorcycle');
+
+      // Trigger fade animations again
+      var animBlocks = [
+        document.getElementById('vehicle-hero-card'),
+        document.getElementById('tax-status-banner-card'),
+        document.getElementById('spec-chips-container'),
+        document.getElementById('info-card'),
+        document.getElementById('engine-card'),
+        document.getElementById('registration-card'),
+        document.getElementById('ownership-card')
+      ];
+
+      animBlocks.forEach(function(el) {
+        if (el) {
+          el.style.animation = 'none';
+          el.offsetHeight; // trigger reflow
+          el.style.animation = '';
+        }
+      });
+
+      renderVehicleData(type);
+    }
+
+    function renderVehicleData(type) {
+      var v = vehicles[type];
+      if (!v) return;
+
+      // Hero Card
+      document.getElementById('hero-plate-number').textContent = v.plateNumber;
+      document.getElementById('hero-plate-province').textContent = v.plateProvince;
+      document.getElementById('hero-model').textContent = v.model;
+
+      var dot = document.getElementById('hero-color-dot');
+      dot.style.background = v.colorHex;
+      dot.style.borderColor = type === 'car' ? '#bbb' : '#555';
+
+      document.getElementById('hero-color-text').textContent = 'สี' + v.color;
+
+      var fuelIcon = document.getElementById('hero-fuel-icon');
+      fuelIcon.textContent = type === 'car' ? 'local_gas_station' : 'two_wheeler';
+      document.getElementById('hero-fuel-text').textContent = v.fuel;
+
+      var heroCard = document.getElementById('vehicle-hero-card');
+      if (type === 'car') {
+        heroCard.style.background = 'linear-gradient(135deg, #1b2a4a 0%, #1e3a5f 55%, #1565c0 100%)';
+      } else {
+        heroCard.style.background = 'linear-gradient(135deg, #1a2732 0%, #2c3a47 55%, #3d4a56 100%)';
+      }
+
+      // Tax Status Banner
+      var banner = document.getElementById('tax-status-banner-card');
+      banner.className = 'tax-status-banner ' + v.taxStatusClass;
+      document.getElementById('tax-icon').textContent = v.taxStatusIcon;
+      document.getElementById('tax-label').textContent = v.taxStatusLabel;
+      document.getElementById('tax-date').textContent = v.taxDate;
+
+      var taxBtn = document.getElementById('tax-btn');
+      taxBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์') + "')");
+
+      // Spec Chips
+      var chipsHtml = '';
+      v.specChips.forEach(function(chip) {
+        chipsHtml += '<span class="spec-chip"><span class="material-symbols-outlined">' + chip.icon + '</span>' + chip.text + '</span>';
+      });
+      document.getElementById('spec-chips-container').innerHTML = chipsHtml;
+
+      // Info Card
+      document.getElementById('info-title').textContent = type === 'car' ? 'ข้อมูลรถยนต์' : 'ข้อมูลรถจักรยานยนต์';
+      document.getElementById('info-model').textContent = v.info.model;
+
+      var infoColor = document.getElementById('info-color');
+      infoColor.innerHTML = '<span class="color-dot" style="background:' + v.colorHex + ';border-color:' + (type === 'car' ? '#bbb' : '#555') + ';"></span>' + v.info.color;
+
+      document.getElementById('info-type').textContent = v.info.type;
+      document.getElementById('info-style').textContent = v.info.style;
+      document.getElementById('info-engine-brand').textContent = v.info.engineBrand;
+      document.getElementById('info-fuel-type').textContent = v.info.fuelType;
+
+      // Engine & Chassis Card
+      document.getElementById('engine-no').textContent = v.engine.engineNo;
+      document.getElementById('engine-specs').textContent = v.engine.engineSpecs;
+      document.getElementById('engine-weight').textContent = v.engine.weight;
+      document.getElementById('engine-chassis-no').textContent = v.engine.chassisNo;
+
+      // Registration Card
+      document.getElementById('reg-date').textContent = v.registration.regDate;
+      document.getElementById('reg-exp-date').textContent = v.registration.expDate;
+
+      var regBtn = document.getElementById('reg-tax-btn');
+      regBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์') + "')");
+      document.getElementById('reg-tax-btn-text').textContent = 'ต่อภาษี' + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์');
+
+      // Owners
+      var ownersHtml = '';
+      v.owners.forEach(function(owner) {
+        ownersHtml += '<div class="owner-block">' +
+          '<div class="owner-avatar ' + owner.avatarClass + '">' +
+            '<span class="material-symbols-outlined">' + owner.avatarIcon + '</span>' +
+          '</div>' +
+          '<div class="owner-body">' +
+            '<p class="owner-role">' + owner.role + '</p>' +
+            '<p class="owner-name">' + owner.name + '</p>' +
+            '<p class="owner-address">' + owner.address + '</p>' +
+          '</div>' +
+        '</div>';
+      });
+      document.getElementById('owners-container').innerHTML = ownersHtml;
+    }
+  </script>
+</body>
+</html>
