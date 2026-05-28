@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edge Cases — System States — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Keyframe animations ── */
+
+    /* Slow continuous rotation — gear icon */
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Pendulum swing — clock/schedule icon */
+    @keyframes swing {
+      0%, 100% { transform: rotate(-14deg); }
+      50%       { transform: rotate( 14deg); }
+    }
+
+    /* Triple bounce dots — high traffic */
+    @keyframes bounce-dot {
+      0%, 80%, 100% { transform: translateY(0);    opacity: 0.4; }
+      40%            { transform: translateY(-10px); opacity: 1;   }
+    }
+
+    /* Soft fade-in-up for card content */
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ── State card ── */
+    /* Full-page-feel card centred content */
+    .state-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: var(--spacing-4xl) var(--spacing-2xl) var(--spacing-3xl);
+      animation: fade-in-up 0.45s ease both;
+    }
+
+    /* Large icon container with colour theming */
+    .state-icon-wrap {
+      width: 88px;
+      height: 88px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-2xl);
+      flex-shrink: 0;
+    }
+    .state-icon-wrap .material-symbols-outlined {
+      font-size: 44px;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    }
+
+    /* Colour variants */
+    .state-icon-wrap--warning {
+      background: var(--background-warning-light);
+      color: var(--foreground-warning-default);
+    }
+    .state-icon-wrap--info {
+      background: var(--background-info-light);
+      color: var(--foreground-info-default);
+    }
+    .state-icon-wrap--danger {
+      background: var(--background-negative-light);
+      color: var(--foreground-negative-default);
+    }
+
+    /* Icon animation classes */
+    .anim-spin-slow  { animation: spin-slow 6s linear infinite; }
+    .anim-swing      { animation: swing 1.8s ease-in-out infinite; transform-origin: center top; }
+
+    /* ── State heading & description ── */
+    .state-title {
+      font-size: var(--font-size-headline-s);
+      font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      margin: 0 0 var(--spacing-md);
+      line-height: 1.35;
+    }
+    .state-desc {
+      font-size: var(--font-size-body-l);
+      color: var(--foreground-neutral-lighter);
+      line-height: 1.65;
+      margin: 0 0 var(--spacing-2xl);
+      max-width: 340px;
+    }
+
+    /* ── Duration badge (case 2) ── */
+    .duration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: var(--radius-xl);
+      background: var(--background-warning-lighter);
+      color: var(--foreground-warning-dark);
+      font-size: var(--font-size-body-m);
+      font-weight: var(--font-weight-500);
+      margin-bottom: var(--spacing-2xl);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .duration-badge .material-symbols-outlined {
+      font-size: 18px;
+      flex-shrink: 0;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    /* ── Bounce dots (case 3) ── */
+    .bounce-dots {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-2xl);
+    }
+    .bounce-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--foreground-negative-default);
+      animation: bounce-dot 1.4s ease-in-out infinite;
+    }
+    .bounce-dot:nth-child(1) { animation-delay: 0s;    }
+    .bounce-dot:nth-child(2) { animation-delay: 0.18s; }
+    .bounce-dot:nth-child(3) { animation-delay: 0.36s; }
+
+    /* ── Info chips row (supporting details) ── */
+    .state-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-2xl);
+    }
+    .state-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: 5px var(--spacing-md);
+      border-radius: var(--radius-full);
+      background: var(--background-neutral-medium);
+      color: var(--foreground-neutral-lighter);
+      font-size: var(--font-size-body-s);
+      font-weight: var(--font-weight-500);
+    }
+    .state-chip .material-symbols-outlined {
+      font-size: 14px;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    /* ── Retry counter (case 3) ── */
+    .retry-hint {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      margin-top: var(--spacing-lg);
+    }
+    #retry-countdown {
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-negative-default);
+    }
+
+    /* ── Divider label (section label between cases) ── */
+    .case-label {
+      font-size: var(--font-size-label-m);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-lighter);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: var(--spacing-4xl) 0 var(--spacing-lg);
+    }
+    .case-label:first-of-type {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Title Block -->
+        <div class="title-block">
+          <h2 class="text-header">Edge Cases — System States</h2>
+          <p class="text-subheader">สถานะพิเศษของระบบที่ต้องแสดงต่อผู้ใช้งาน</p>
+        </div>
+
+
+        <!-- ════════════════════════════════════════
+             Case 1 · ปิดปรับปรุง (no duration)
+             ════════════════════════════════════════ -->
+        <p class="case-label">Case 1 — ปิดปรับปรุง</p>
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--warning-40);"></div>
+            <h3 class="section-title">ระบบปิดปรับปรุง</h3>
+          </div>
+
+          <div class="state-card">
+            <!-- Gear icon spinning slowly -->
+            <div class="state-icon-wrap state-icon-wrap--warning">
+              <span class="material-symbols-outlined anim-spin-slow">settings</span>
+            </div>
+
+            <h3 class="state-title">ปิดปรับปรุงระบบชั่วคราว</h3>
+            <p class="state-desc">
+              ขออภัยในความไม่สะดวก ระบบอยู่ระหว่างการปรับปรุงเพื่อพัฒนาประสิทธิภาพและความปลอดภัย กรุณากลับมาใหม่ในภายหลัง
+            </p>
+
+            <!-- Supporting info chips -->
+            <div class="state-chips">
+              <span class="state-chip">
+                <span class="material-symbols-outlined">update</span>
+                อาจใช้เวลาไม่นาน
+              </span>
+              <span class="state-chip">
+                <span class="material-symbols-outlined">notifications</span>
+                ข้อมูลของคุณปลอดภัย
+              </span>
+            </div>
+
+            <button class="btn btn-secondary" style="max-width:240px;" onclick="window.history.back()">
+              <span class="material-symbols-outlined">arrow_back</span>
+              กลับหน้าก่อนหน้า
+            </button>
+          </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════
+             Case 2 · ปิดปรับปรุง + ระยะเวลา
+             ════════════════════════════════════════ -->
+        <p class="case-label">Case 2 — ปิดปรับปรุง พร้อมระยะเวลา</p>
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--info-40);"></div>
+            <h3 class="section-title">ระบบปิดปรับปรุงตามกำหนด</h3>
+          </div>
+
+          <div class="state-card">
+            <!-- Clock with pendulum swing -->
+            <div class="state-icon-wrap state-icon-wrap--info">
+              <span class="material-symbols-outlined anim-swing">schedule</span>
+            </div>
+
+            <h3 class="state-title">ปิดปรับปรุงระบบตามกำหนด</h3>
+            <p class="state-desc">
+              ระบบงดให้บริการชั่วคราวตามช่วงเวลาที่กำหนด เราจะกลับมาให้บริการตามปกติเมื่อการปรับปรุงเสร็จสิ้น
+            </p>
+
+            <!-- Duration badge -->
+            <div class="duration-badge">
+              <span class="material-symbols-outlined">calendar_clock</span>
+              <span>
+                <strong>ช่วงเวลาปิดปรับปรุง</strong><br>
+                15 มิ.ย. 2568 เวลา 22:00 น. — 16 มิ.ย. 2568 เวลา 06:00 น.
+              </span>
+            </div>
+
+            <!-- Supporting info chips -->
+            <div class="state-chips">
+              <span class="state-chip">
+                <span class="material-symbols-outlined">hourglass_top</span>
+                ระยะเวลาประมาณ 8 ชั่วโมง
+              </span>
+              <span class="state-chip">
+                <span class="material-symbols-outlined">notifications_active</span>
+                แจ้งล่วงหน้าแล้ว
+              </span>
+              <span class="state-chip">
+                <span class="material-symbols-outlined">lock</span>
+                ข้อมูลของคุณปลอดภัย
+              </span>
+            </div>
+
+            <button class="btn btn-secondary" style="max-width:240px;" onclick="window.history.back()">
+              <span class="material-symbols-outlined">arrow_back</span>
+              กลับหน้าก่อนหน้า
+            </button>
+          </div>
+        </div>
+
+
+        <!-- ════════════════════════════════════════
+             Case 3 · ผู้ใช้งานเกิน (High Traffic)
+             ════════════════════════════════════════ -->
+        <p class="case-label">Case 3 — ผู้ใช้งานเกินกำลัง (High Traffic)</p>
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--danger-40);"></div>
+            <h3 class="section-title">ผู้ใช้งานเป็นจำนวนมาก</h3>
+          </div>
+
+          <div class="state-card">
+            <!-- People icon (static — the bounce dots carry the motion) -->
+            <div class="state-icon-wrap state-icon-wrap--danger">
+              <span class="material-symbols-outlined">groups</span>
+            </div>
+
+            <h3 class="state-title">มีผู้ใช้งานเป็นจำนวนมาก</h3>
+            <p class="state-desc">
+              ขณะนี้มีผู้ใช้งานระบบพร้อมกันเป็นจำนวนมาก กรุณารอสักครู่แล้วลองใหม่อีกครั้ง
+            </p>
+
+            <!-- Animated bounce dots -->
+            <div class="bounce-dots" aria-hidden="true">
+              <div class="bounce-dot"></div>
+              <div class="bounce-dot"></div>
+              <div class="bounce-dot"></div>
+            </div>
+
+            <!-- Supporting info chips -->
+            <div class="state-chips">
+              <span class="state-chip">
+                <span class="material-symbols-outlined">avg_pace</span>
+                รอคิวโดยประมาณ 2–5 นาที
+              </span>
+              <span class="state-chip">
+                <span class="material-symbols-outlined">save</span>
+                ข้อมูลของคุณไม่สูญหาย
+              </span>
+            </div>
+
+            <button class="btn btn-primary" id="retry-btn" style="max-width:240px;" onclick="startRetryCountdown()">
+              <span class="material-symbols-outlined" id="retry-icon">refresh</span>
+              ลองใหม่อีกครั้ง
+            </button>
+
+            <p class="retry-hint" id="retry-hint" style="display:none;">
+              กำลังลองใหม่อัตโนมัติใน <span id="retry-countdown">5</span> วินาที
+            </p>
+          </div>
+        </div>
+
+
+        <!-- Source Note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">design_services</span>
+            Design Reference — Edge Cases &amp; System States<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /* ── Retry countdown (Case 3) ── */
+    var retryTimer = null;
+
+    function startRetryCountdown() {
+      var btn = document.getElementById('retry-btn');
+      var hint = document.getElementById('retry-hint');
+      var countEl = document.getElementById('retry-countdown');
+      var icon = document.getElementById('retry-icon');
+
+      if (retryTimer) return; // already running
+
+      var secs = 5;
+      btn.disabled = true;
+      icon.style.animation = 'spin-slow 1s linear infinite';
+      hint.style.display = 'block';
+      countEl.textContent = secs;
+
+      retryTimer = setInterval(function() {
+        secs--;
+        countEl.textContent = secs;
+        if (secs <= 0) {
+          clearInterval(retryTimer);
+          retryTimer = null;
+          btn.disabled = false;
+          icon.style.animation = '';
+          hint.style.display = 'none';
+          // In a real app, trigger the actual reload/retry here
+        }
+      }, 1000);
+    }
+  </script>
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+' เวลา '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
+  </script>
+</body>
+</html>
