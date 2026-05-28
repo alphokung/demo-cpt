@@ -158,35 +158,7 @@
                 <span class="details-label">วันที่ออกใบประกาศ</span>
                 <span class="details-value">18 พฤศจิกายน 2564</span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── Branch / Profession Details Card ── -->
-        <div class="card mb-xl">
-          <div class="section-title-container">
-            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-            <h3 class="section-title">รายละเอียดสาขาวิชาชีพ</h3>
-          </div>
-
-          <div class="details-list">
-
-            <div class="details-item">
-              <span class="details-label">กลุ่มสาขาวิชาชีพ</span>
-              <span class="details-value">สาขาวิชาชีพอุตสาหกรรมดิจิทัล</span>
-            </div>
-
-            <div class="details-item">
-              <span class="details-label">สาขา</span>
-              <span class="details-value">ซอฟต์แวร์และการประยุกต์</span>
-            </div>
-
-            <div class="details-item">
-              <span class="details-label">อาชีพ</span>
-              <span class="details-value">นักพัฒนาระบบ (System Developer)</span>
-            </div>
-
-            <div class="details-item">
+              <div class="details-item">
               <span class="details-label">ระดับคุณวุฒิวิชาชีพ</span>
               <span class="details-value">ระดับ 4</span>
             </div>
@@ -195,23 +167,32 @@
               <span class="details-label">ผู้ออกใบรับรอง</span>
               <span class="details-value">สถาบันคุณวุฒิวิชาชีพ (องค์การมหาชน)</span>
             </div>
-
+            </div>
           </div>
         </div>
 
+    
       
 
         <!-- Source note -->
-        <div class="card-flat" style="text-align:center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
-          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6;">
-            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:-3px;">verified</span>
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
             ข้อมูลจากสถาบันคุณวุฒิวิชาชีพ (องค์การมหาชน)<br>
-            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
           </p>
         </div>
 
       </main>
     </div>
   </div>
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+' เวลา '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
+  </script>
 </body>
 </html>

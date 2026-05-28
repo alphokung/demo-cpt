@@ -641,6 +641,21 @@ main {
   background-color: transparent !important;
 }
 
+/* ── Source Note ── */
+.source-note {
+  text-align: center;
+  padding: var(--spacing-md) 0 var(--spacing-4xl);
+}
+.source-note-text {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
+  line-height: 1.6;
+}
+.source-note-icon {
+  font-size: 14px;
+  vertical-align: -3px;
+}
+
 .detail-main-card {
   padding: var(--spacing-xl);
   display: flex;
