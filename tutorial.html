@@ -26,6 +26,25 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Desktop override: keep sticky footer pinned inside the 480px tutorial frame ──
+       styles.css changes sticky-footer to position:static at ≥1024px (for other pages),
+       but on tutorial the slide content can be taller than the viewport so the button
+       scrolls out of view. Fix: keep it fixed and centre it over the narrow column. */
+    @media (min-width: 1024px) {
+      .sticky-footer {
+        position: fixed !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        width: 480px;
+        padding: var(--spacing-xl);
+        background-color: var(--background-neutral-lighter);
+        border-top: 1px solid var(--stroke-neutral-lighter);
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+      }
+    }
+  </style>
 </head>
 <body class="tutorial-body">
   <div class="tutorial-page">
