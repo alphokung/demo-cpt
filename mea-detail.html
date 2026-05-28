@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดเครื่องวัด กฟน. — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Icon-only destructive button ── */
+    .btn-icon-destructive {
+      width: 44px; height: 44px; min-height: 44px;
+      padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--background-negative-light); color: var(--foreground-negative-default);
+      border: none; cursor: pointer; flex-shrink: 0;
+      transition: background 0.18s;
+    }
+    .btn-icon-destructive:hover { background: var(--background-negative-medium); }
+    .btn-icon-destructive .material-symbols-outlined { font-size: 20px; }
+
+    /* ── Bottom action row ── */
+    .detail-actions {
+      display: flex; align-items: center;
+      gap: var(--spacing-md); margin-top: var(--spacing-xl);
+    }
+    .detail-actions .btn { flex: 1; }
+
+    /* ── History table ── */
+    .history-table { width: 100%; border-collapse: collapse; }
+    .history-table th {
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
+      color: var(--foreground-neutral-lighter); text-align: left;
+      padding-bottom: var(--spacing-sm);
+    }
+    .history-table th:not(:first-child) { text-align: right; }
+    .history-table td {
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .history-table td:not(:first-child) { text-align: right; }
+    .history-table tr:last-child td { border-bottom: none; }
+
+    /* ── Modal overlay (base) ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--spacing-xl); z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .modal-overlay.show { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: var(--background-neutral-lighter);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl);
+      width: 100%; max-width: 320px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .modal-title {
+      font-size: var(--font-size-title-l); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-sm);
+    }
+    .modal-body {
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter);
+      line-height: 1.65; margin: 0 0 var(--spacing-xl);
+    }
+    .modal-btns { display: flex; gap: var(--spacing-md); }
+    .modal-btns.single { justify-content: center; }
+
+    /* ── QR Payment Modal ── */
+    .modal-qr-box {
+      background: var(--background-neutral-lighter);
+      border-radius: var(--radius-2xl);
+      width: 100%; max-width: 360px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+    }
+
+    /* QR header banner */
+    .qr-modal-header {
+      background: linear-gradient(135deg, #e65100 0%, #ef6c00 60%, #f57c00 100%);
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-md);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .qr-modal-header-title {
+      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
+      color: #fff; margin: 0;
+    }
+    .qr-modal-header-sub {
+      font-size: var(--font-size-body-s); color: rgba(255,255,255,0.75); margin: 0;
+    }
+    .qr-modal-close {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; flex-shrink: 0;
+    }
+    .qr-modal-close:hover { background: rgba(255,255,255,0.3); }
+    .qr-modal-close .material-symbols-outlined { font-size: 18px; }
+
+    /* QR body */
+    .qr-modal-body {
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+    }
+
+    /* Info rows inside QR modal */
+    .qr-info-list {
+      background: var(--background-neutral-light, #f5f5f5);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-sm) var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .qr-info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: var(--spacing-xs) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      gap: var(--spacing-sm);
+    }
+    .qr-info-row:last-child { border-bottom: none; }
+    .qr-info-label {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .qr-info-value {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-default);
+      font-weight: var(--font-weight-500); text-align: right;
+    }
+
+    /* QR code image */
+    .qr-code-center {
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: var(--spacing-md);
+    }
+    .qr-code-center img {
+      width: 200px; height: 200px;
+      border: 6px solid var(--neutral-100);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+
+    /* Amount hero */
+    .qr-amount-hero {
+      text-align: center; margin-bottom: var(--spacing-lg);
+    }
+    .qr-amount-label {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0 0 2px;
+    }
+    .qr-amount-value {
+      font-size: var(--font-size-display-s); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default); margin: 0; line-height: 1.1;
+    }
+    .qr-amount-unit {
+      font-size: var(--font-size-title-l); font-weight: var(--font-weight-400);
+      color: var(--foreground-neutral-lighter);
+    }
+    .qr-help-text {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      text-align: center; margin-bottom: var(--spacing-md); line-height: 1.5;
+    }
+
+    /* Masked value */
+    .masked-val { display: inline-flex; align-items: center; gap: 2px; }
+    .masked-block {
+      display: inline-block; width: 10px; height: 10px;
+      background: var(--neutral-70); border-radius: 2px;
+    }
+
+    /* ── Loading state ── */
+    @keyframes ds-spin { to { transform: rotate(360deg); } }
+    .ds-spinner {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid var(--neutral-90); border-top-color: var(--warning-40);
+      animation: ds-spin 0.8s linear infinite; margin: 0 auto;
+    }
+
+    /* ── Payment loader inside button ── */
+    .payment-modal-loader {
+      display: inline-block; width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+      animation: ds-spin 0.7s linear infinite; vertical-align: middle;
+    }
+
+    /* ── Fade-slide in ── */
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeSlideIn 0.3s ease both; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <div class="page-header">
+          <button class="btn-back-circle" onclick="goBack()" aria-label="กลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <div class="title-block">
+            <h2 class="text-header" id="detail-page-title">รายละเอียดเครื่องวัด</h2>
+            <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+          </div>
+        </div>
+
+        <!-- ── Info card ── -->
+        <div class="card mb-xl fade-in">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--warning-40);"></div>
+            <h3 class="section-title">ข้อมูลเครื่องวัด</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">หมายเลขเครื่องวัด</span>
+              <span class="details-value" id="detail-meter-no">—</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">บัญชีแสดงสัญญา</span>
+              <span class="details-value" id="detail-account-no">—</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ครบกำหนดชำระ</span>
+              <span class="details-value" id="detail-due-date">—</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ที่อยู่</span>
+              <span class="details-value" id="detail-address">—</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ยอดเงินที่ต้องชำระ</span>
+              <span class="details-value" id="detail-amount">—</span>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button class="btn btn-primary" id="btn-pay-qr" onclick="openQrModal()">
+              <span class="material-symbols-outlined">qr_code_2</span>
+              ชำระเงินโดย QR Code
+            </button>
+            <button class="btn-icon-destructive" onclick="confirmDeleteMeter()" aria-label="ลบเครื่องวัด">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── History card ── -->
+        <div class="card mb-xl fade-in">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--secondary-40-main);"></div>
+            <h3 class="section-title">ข้อมูลย้อนหลัง 6 เดือน</h3>
+          </div>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>บิลประจำเดือน</th>
+                <th>หน่วย (KWH)</th>
+                <th>บาท</th>
+              </tr>
+            </thead>
+            <tbody id="detail-history-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align:center; padding:var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);line-height:1.6;">
+            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-3px;">verified</span>
+            ข้อมูลจากการไฟฟ้านครหลวง (กฟน.)<br>
+            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── QR Payment Modal ── -->
+  <div class="modal-overlay" id="modal-qr-payment">
+    <div class="modal-qr-box">
+
+      <!-- Header -->
+      <div class="qr-modal-header">
+        <div>
+          <p class="qr-modal-header-title">ชำระเงินผ่าน QR Code</p>
+          <p class="qr-modal-header-sub">การไฟฟ้านครหลวง (กฟน.)</p>
+        </div>
+        <button class="qr-modal-close" onclick="closeModal('modal-qr-payment')" aria-label="ปิด">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="qr-modal-body">
+      
+
+        <!-- QR Code -->
+        <div class="qr-code-center">
+          <img id="qr-img" src="" alt="QR Code สำหรับชำระเงิน">
+        </div>
+
+        <!-- Amount hero -->
+        <div class="qr-amount-hero">
+          <p class="qr-amount-label">ยอดที่ต้องชำระ</p>
+          <p class="qr-amount-value" id="qr-amount-display">—<span class="qr-amount-unit"> บาท</span></p>
+        </div>
+
+          <!-- Info rows -->
+        <div class="qr-info-list">
+          <div class="qr-info-row">
+            <span class="qr-info-label">หมายเลขเครื่องวัด</span>
+            <span class="qr-info-value" id="qr-meter-masked">—</span>
+          </div>
+          <div class="qr-info-row">
+            <span class="qr-info-label">บัญชีแสดงสัญญา</span>
+            <span class="qr-info-value" id="qr-account-masked">—</span>
+          </div>
+          <div class="qr-info-row">
+            <span class="qr-info-label">เลขที่ใบแจ้งค่าไฟฟ้า</span>
+            <span class="qr-info-value" id="qr-invoice">—</span>
+          </div>
+          <div class="qr-info-row">
+            <span class="qr-info-label">วันที่จดหน่วย</span>
+            <span class="qr-info-value" id="qr-bill-date">—</span>
+          </div>
+          <div class="qr-info-row">
+            <span class="qr-info-label">ครบกำหนดชำระ</span>
+            <span class="qr-info-value" id="qr-pay-due">—</span>
+          </div>
+          <div class="qr-info-row">
+            <span class="qr-info-label">จำนวนหน่วย</span>
+            <span class="qr-info-value" id="qr-units">—</span>
+          </div>
+        </div>
+
+        <p class="qr-help-text">สแกนคิวอาร์โค้ดด้วยแอปพลิเคชันธนาคารเพื่อชำระค่าไฟฟ้า</p>
+
+        <button class="btn btn-primary" id="btn-save-qr" onclick="onSaveQr()">
+          <span class="material-symbols-outlined">download</span>
+          บันทึก QR Code
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Alert modal ── -->
+  <div class="modal-overlay" id="modal-alert">
+    <div class="modal-box">
+      <p class="modal-title" id="modal-alert-title">แจ้งเตือน</p>
+      <p class="modal-body"  id="modal-alert-body"></p>
+      <div class="modal-btns single">
+        <button class="btn btn-tertiary-outline" style="width:auto;min-width:120px;" onclick="closeModal('modal-alert')">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Confirm delete modal ── -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-box">
+      <p class="modal-title">ลบเครื่องวัด</p>
+      <p class="modal-body">ต้องการลบเครื่องวัดนี้ออกจากรายการ?</p>
+      <div class="modal-btns">
+        <button class="btn btn-tertiary-outline" style="min-width:0;" onclick="closeModal('modal-confirm')">ยกเลิก</button>
+        <button class="btn btn-destructive"      style="min-width:0;" onclick="doDeleteMeter()">ลบ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Save QR success modal ── -->
+  <div class="modal-overlay" id="modal-save">
+    <div class="modal-box">
+      <p class="modal-title">บันทึกสำเร็จ</p>
+      <p class="modal-body">บันทึก QR Code เรียบร้อยแล้ว สามารถนำไปชำระเงินผ่านแอปธนาคารได้</p>
+      <div class="modal-btns single">
+        <button class="btn btn-tertiary-outline" style="width:auto;min-width:120px;" onclick="closeModal('modal-save')">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Load data from sessionStorage ── */
+    var meters    = [];
+    var currentId = null;
+
+    var storedMeters = sessionStorage.getItem('mea_meters');
+    var storedId     = sessionStorage.getItem('mea_current_id');
+    if (storedMeters) {
+      try { meters = JSON.parse(storedMeters); } catch(e) {}
+    }
+    if (storedId) {
+      currentId = storedId;
+    }
+
+    /* ── Navigation ── */
+    function goBack() {
+      window.location.href = 'mea-index.html';
+    }
+
+    function saveMeters() {
+      sessionStorage.setItem('mea_meters', JSON.stringify(meters));
+    }
+
+    /* ── Render detail ── */
+    function renderDetail() {
+      var m = meters.find(function(x) { return x.id === currentId; });
+      if (!m) {
+        // No data: redirect back to list
+        window.location.href = 'mea-index.html';
+        return;
+      }
+
+      var fmt = function(n) { return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+      document.getElementById('detail-page-title').textContent = 'เครื่องวัด ' + m.meterNo;
+      document.getElementById('detail-meter-no').textContent   = m.meterNo;
+      document.getElementById('detail-account-no').textContent = m.accountNo;
+      document.getElementById('detail-address').textContent    = m.address;
+
+      var dueEl = document.getElementById('detail-due-date');
+      dueEl.textContent = m.dueDate || 'ไม่พบยอดค้างชำระ';
+      dueEl.style.color = m.dueDate ? 'var(--foreground-negative-default)' : 'var(--foreground-positive-default)';
+
+      var amtEl = document.getElementById('detail-amount');
+      amtEl.textContent = fmt(m.amountDue) + ' บาท';
+      amtEl.style.fontWeight = m.amountDue > 0 ? 'var(--font-weight-700)' : '';
+      amtEl.style.color      = m.amountDue > 0 ? 'var(--foreground-negative-default)' : '';
+
+      // Disable payment button if no amount due
+      var payBtn = document.getElementById('btn-pay-qr');
+      if (m.amountDue === 0) {
+        payBtn.disabled = true;
+        payBtn.style.opacity = '0.5';
+        payBtn.title = 'ไม่มียอดค้างชำระ';
+      }
+
+      document.getElementById('detail-history-body').innerHTML = m.history.map(function(h) {
+        return '<tr>' +
+          '<td>' + h.month + '</td>' +
+          '<td>' + h.units.toLocaleString() + '</td>' +
+          '<td>' + h.amount.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</td>' +
+        '</tr>';
+      }).join('');
+
+    }
+
+    /* ── QR Payment Modal ── */
+    function openQrModal() {
+      var m = meters.find(function(x) { return x.id === currentId; });
+      if (!m) return;
+
+      function maskHtml(val) {
+        var head   = val.substring(0, 2);
+        var tail   = val.substring(Math.ceil(val.length * 0.65));
+        var blocks = '<span class="masked-val">' + head;
+        for (var i = 0; i < 2; i++) blocks += '<span class="masked-block"></span>';
+        blocks += tail + '</span>';
+        return blocks;
+      }
+
+      document.getElementById('qr-meter-masked').innerHTML   = m.meterNo;
+      document.getElementById('qr-account-masked').innerHTML = m.accountNo;
+      document.getElementById('qr-invoice').textContent      = m.invoice;
+      document.getElementById('qr-bill-date').textContent    = m.billDate;
+      document.getElementById('qr-pay-due').textContent      = m.payDue;
+      document.getElementById('qr-units').textContent        = m.units.toLocaleString() + ' KWH';
+
+      var fmt = function(n) { return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+      document.getElementById('qr-amount-display').innerHTML =
+        fmt(m.payAmount) + '<span class="qr-amount-unit"> บาท</span>';
+
+      var payload = 'MEA|' + m.meterNo + '|' + m.accountNo + '|' + m.invoice + '|' + m.payAmount;
+      document.getElementById('qr-img').src =
+        'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=' +
+        encodeURIComponent(payload);
+
+      // Reset save button
+      var btn = document.getElementById('btn-save-qr');
+      btn.disabled = false;
+      btn.style.backgroundColor = '';
+      btn.innerHTML = '<span class="material-symbols-outlined">download</span> บันทึก QR Code';
+
+      document.getElementById('modal-qr-payment').classList.add('show');
+    }
+
+    function onSaveQr() {
+      var btn = document.getElementById('btn-save-qr');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="payment-modal-loader"></span> <span>กำลังบันทึก...</span>';
+      btn.style.backgroundColor = '#4a5568';
+
+      setTimeout(function() {
+        btn.innerHTML = '<span class="material-symbols-outlined">download_done</span> <span>บันทึกสำเร็จ</span>';
+        btn.style.backgroundColor = '#059669';
+        setTimeout(function() {
+          closeModal('modal-qr-payment');
+          document.getElementById('modal-save').classList.add('show');
+          setTimeout(function() {
+            btn.disabled = false;
+            btn.style.backgroundColor = '';
+            btn.innerHTML = '<span class="material-symbols-outlined">download</span> บันทึก QR Code';
+          }, 300);
+        }, 400);
+      }, 1500);
+    }
+
+    /* ── Delete ── */
+    function confirmDeleteMeter() {
+      document.getElementById('modal-confirm').classList.add('show');
+    }
+    function doDeleteMeter() {
+      meters = meters.filter(function(m) { return m.id !== currentId; });
+      saveMeters();
+      sessionStorage.removeItem('mea_current_id');
+      closeModal('modal-confirm');
+      window.location.href = 'mea-index.html';
+    }
+
+    /* ── Modals ── */
+    function showAlert(title, body) {
+      document.getElementById('modal-alert-title').textContent = title;
+      document.getElementById('modal-alert-body').textContent  = body;
+      document.getElementById('modal-alert').classList.add('show');
+    }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (e.target === el) el.classList.remove('show');
+      });
+    });
+
+    /* ── Init ── */
+    renderDetail();
+  </script>
+</body>
+</html>
