@@ -21,7 +21,16 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    
+    .color-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid var(--stroke-neutral-default, #ccc);
+      vertical-align: middle;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -164,28 +173,34 @@
             <h3 class="section-title">ผู้ถือกรรมสิทธิ์ & ผู้ถือครอง</h3>
           </div>
 
-          <div id="owners-container">
+          <div class="person-pair" id="owners-container">
             <!-- Owner: Company (leasing) -->
-            <div class="owner-block">
-              <div class="owner-avatar company">
+            <div class="person-pair-card">
+              <span class="person-pair-role">
                 <span class="material-symbols-outlined">corporate_fare</span>
-              </div>
-              <div class="owner-body">
-                <p class="owner-role">ผู้ถือกรรมสิทธิ์</p>
-                <p class="owner-name">บริษัทโตโยต้า ลีสซิ่ง (ประเทศไทย) จำกัด</p>
-                <p class="owner-address">990 ชั้น 18-19 ถ.พระราม 4 แขวงสีลม เขตบางรัก จังหวัดกรุงเทพมหานคร 10500</p>
+                ผู้ถือกรรมสิทธิ์
+              </span>
+              <p class="person-pair-name" style="font-size: var(--font-size-body-l);">บริษัทโตโยต้า ลีสซิ่ง (ประเทศไทย) จำกัด</p>
+              <div class="person-pair-details">
+                <div class="person-pair-detail">
+                  <span class="person-pair-detail-label">ที่อยู่</span>
+                  <span class="person-pair-detail-value" style="white-space: normal; line-height: 1.5;">990 ชั้น 18-19 ถ.พระราม 4 แขวงสีลม เขตบางรัก จังหวัดกรุงเทพมหานคร 10500</span>
+                </div>
               </div>
             </div>
 
             <!-- Owner: Person (holder) -->
-            <div class="owner-block">
-              <div class="owner-avatar person">
+            <div class="person-pair-card">
+              <span class="person-pair-role">
                 <span class="material-symbols-outlined">person</span>
-              </div>
-              <div class="owner-body">
-                <p class="owner-role">ผู้ถือครอง</p>
-                <p class="owner-name">นายเพชร เครือพานิช</p>
-                <p class="owner-address">193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150</p>
+                ผู้ถือครอง
+              </span>
+              <p class="person-pair-name" style="font-size: var(--font-size-body-l);">นายเพชร เครือพานิช</p>
+              <div class="person-pair-details">
+                <div class="person-pair-detail">
+                  <span class="person-pair-detail-label">ที่อยู่</span>
+                  <span class="person-pair-detail-value" style="white-space: normal; line-height: 1.5;">193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150</span>
+                </div>
               </div>
             </div>
           </div>
@@ -378,14 +393,17 @@
       // Owners
       var ownersHtml = '';
       v.owners.forEach(function(owner) {
-        ownersHtml += '<div class="owner-block">' +
-          '<div class="owner-avatar ' + owner.avatarClass + '">' +
+        ownersHtml += '<div class="person-pair-card">' +
+          '<span class="person-pair-role">' +
             '<span class="material-symbols-outlined">' + owner.avatarIcon + '</span>' +
-          '</div>' +
-          '<div class="owner-body">' +
-            '<p class="owner-role">' + owner.role + '</p>' +
-            '<p class="owner-name">' + owner.name + '</p>' +
-            '<p class="owner-address">' + owner.address + '</p>' +
+            owner.role +
+          '</span>' +
+          '<p class="person-pair-name" style="font-size: var(--font-size-body-l);">' + owner.name + '</p>' +
+          '<div class="person-pair-details">' +
+            '<div class="person-pair-detail">' +
+              '<span class="person-pair-detail-label">ที่อยู่</span>' +
+              '<span class="person-pair-detail-value" style="white-space: normal; line-height: 1.5;">' + owner.address + '</span>' +
+            '</div>' +
           '</div>' +
         '</div>';
       });
