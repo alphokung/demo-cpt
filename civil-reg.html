@@ -192,5 +192,13 @@
       document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
     })();
   </script>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
 </body>
 </html>

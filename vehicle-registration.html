@@ -87,45 +87,6 @@
     .tax-tag--ok   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
     .tax-tag--warn { background: var(--background-warning-lighter); color: var(--foreground-warning-default); }
     .tax-tag--exp  { background: var(--background-negative-light);  color: var(--foreground-negative-default); }
-
-    /* ── Back to top FAB ── */
-    .back-to-top {
-      position: fixed;
-      bottom: var(--spacing-2xl);
-      right: var(--spacing-xl);
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-full);
-      background: var(--neutral-25);
-      color: var(--neutral-100);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-custom-lg);
-      z-index: 100;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    .back-to-top.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .back-to-top:hover {
-      background: var(--neutral-10);
-    }
-    .back-to-top .material-symbols-outlined {
-      font-size: 22px;
-    }
-    @media (min-width: 1024px) {
-      .back-to-top {
-        bottom: var(--spacing-3xl);
-      }
-    }
   </style>
 </head>
 <body>
