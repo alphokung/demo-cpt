@@ -102,7 +102,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp กระเป๋าเอกสาร')">
+                onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
                 <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">directions_car</span>
@@ -134,7 +134,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp กระเป๋าเอกสาร')">
+                onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
                 <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
                 <div class="list-icon work">
                   <span class="material-symbols-outlined">public</span>
@@ -316,7 +316,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp ประปาส่วนภูมิภาค')">
+                onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
                 <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
                 <div class="list-icon driving">
                   <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
@@ -363,7 +363,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp ใบสั่งจราจร')">
+                onclick="window.czpSdk.openMiniApp('afef3a10-fea9-4d9a-af39-d37a5e02a998')">
                 <span class="list-badge danger list-badge--corner">ค้างชำระ 1 ใบ</span>
                 <div class="list-icon danger">
                   <img src="_media/police.webp" alt="Police Logo" class="img-helper-frame circle size-sm">
@@ -460,7 +460,7 @@
                 </div>
                 <button class="btn btn-tertiary-outline flex-center"
                   style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
-                  onclick="alert('เปิด miniapp ตรวจสอบสิทธิการรักษาพยาบาล')">
+                  onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
                   <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
                 </button>
               </div>
@@ -555,7 +555,7 @@
               </div>
 
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp ทะเบียนรถ')">
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
                 <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">directions_car</span>
@@ -591,7 +591,7 @@
                 <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="alert('ไปเปิด miniapp ทะเบียนรถ')">
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
                 <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">two_wheeler</span>
@@ -750,6 +750,8 @@
       }, 1500);
     }
   </script>
+
+  <script src="https://cpt.superapps-th.cloud/cportal/sdk/iu/v5/sdk.js"></script>
 </body>
 
 </html>
