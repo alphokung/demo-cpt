@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เบี้ยยังชีพผู้สูงอายุ — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Source list ── */
+    .src-list { display: flex; flex-direction: column; }
+    .src-item {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .src-item:first-child { padding-top: 0; }
+    .src-item:last-child  { border-bottom: none; padding-bottom: 0; }
+    .src-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.3s, color 0.3s;
+    }
+    .src-icon--loading { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
+    .src-icon--found   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .src-icon--none    { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
+    .src-icon .material-symbols-outlined { font-size: 20px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .src-icon--loading .material-symbols-outlined { animation: spin 1.2s linear infinite; }
+    .src-info { flex: 1; min-width: 0; }
+    .src-name { font-size: var(--font-size-body-m); font-weight: var(--font-weight-500); color: var(--foreground-neutral-default); }
+    .src-status { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin-top: 2px; }
+    .src-status.found { color: var(--foreground-positive-default); font-weight: var(--font-weight-500); }
+    .src-shimmer {
+      display: inline-block; height: 10px; width: 72px; border-radius: 5px;
+      background: linear-gradient(90deg, var(--neutral-94) 25%, var(--neutral-90) 50%, var(--neutral-94) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s ease infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ── Complete hero ── */
+    .complete-hero {
+      display: flex; flex-direction: column; align-items: center;
+      gap: var(--spacing-md); padding: var(--spacing-xl) 0 var(--spacing-lg);
+      text-align: center;
+    }
+    .complete-hero-icon {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: var(--background-positive-light);
+      color: var(--foreground-positive-default);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .complete-hero-icon .material-symbols-outlined { font-size: 40px; font-variation-settings: 'FILL' 1; }
+
+    /* ── Fade-slide in ── */
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeSlideIn 0.35s ease both; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="title-block">
+            <h2 class="text-header">เบี้ยยังชีพผู้สูงอายุ</h2>
+            <p class="text-subheader">กรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น</p>
+          </div>
+        </div>
+
+        <!-- ── Data Sources Card ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--info-40);"></div>
+            <h3 class="section-title">ตรวจสอบจากทุกแหล่งข้อมูล</h3>
+          </div>
+          <div class="src-list">
+            <div class="src-item" id="src-bkk">
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
+              <div class="src-info">
+                <div class="src-name">กรุงเทพมหานคร (กทม.)</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+            <div class="src-item" id="src-pattaya">
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
+              <div class="src-info">
+                <div class="src-name">เทศบาลเมืองพัทยา</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+            <div class="src-item" id="src-dla">
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
+              <div class="src-info">
+                <div class="src-name">กรมส่งเสริมการปกครองท้องถิ่น (สถ.)</div>
+                <div class="src-status"><span class="src-shimmer"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Completion Card (hidden until all sources resolve) ── -->
+        <div class="card mb-xl fade-in" id="complete-card" style="display: none;">
+          <div class="complete-hero">
+            <div class="complete-hero-icon">
+              <span class="material-symbols-outlined">check_circle</span>
+            </div>
+            <div>
+              <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xs);">ตรวจสอบเสร็จสิ้น</p>
+              <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0;">พบข้อมูลจาก 2 แหล่ง</p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    var doneCount = 0;
+
+    function setSource(elId, state) {
+      var el  = document.getElementById(elId);
+      if (!el) return;
+      var ico = el.querySelector('.src-icon');
+      var st  = el.querySelector('.src-status');
+      var sym = ico.querySelector('.material-symbols-outlined');
+      ico.classList.remove('src-icon--loading', 'src-icon--found', 'src-icon--none');
+      sym.style.animation = 'none';
+      if (state === 'found') {
+        ico.classList.add('src-icon--found');
+        sym.textContent = 'check_circle';
+        st.className    = 'src-status found';
+        st.textContent  = 'พบข้อมูล';
+      } else {
+        ico.classList.add('src-icon--none');
+        sym.textContent = 'do_not_disturb_on';
+        st.className    = 'src-status';
+        st.textContent  = 'ไม่พบข้อมูล';
+      }
+      doneCount++;
+      if (doneCount >= 3) showComplete();
+    }
+
+    function showComplete() {
+      var card = document.getElementById('complete-card');
+      card.style.display = '';
+      setTimeout(function() { window.location.href = 'elderly.html'; }, 1200);
+    }
+
+    // กทม. responds first (1 200 ms) → found
+    setTimeout(function() { setSource('src-bkk', 'found'); }, 1200);
+    // สถ. responds second (1 900 ms) → found
+    setTimeout(function() { setSource('src-dla', 'found'); }, 1900);
+    // พัทยา responds last (2 400 ms) → not found
+    setTimeout(function() { setSource('src-pattaya', 'none'); }, 2400);
+  </script>
+</body>
+</html>

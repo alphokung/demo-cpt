@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เบี้ยความพิการ — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Empty hero ── */
+    .empty-hero {
+      display: flex; flex-direction: column; align-items: center;
+      gap: var(--spacing-lg); padding: var(--spacing-2xl) 0 var(--spacing-xl);
+      text-align: center;
+    }
+    .empty-hero-icon {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: var(--background-info-light); color: var(--info-40);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .empty-hero-icon .material-symbols-outlined { font-size: 40px; font-variation-settings: 'FILL' 1; }
+
+    /* ── Bottom sheet overlay ── */
+    .bs-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s; z-index: 100;
+    }
+    .bs-overlay.active { opacity: 1; pointer-events: auto; }
+
+    /* ── Bottom sheet ── */
+    .bs-sheet {
+      position: fixed; bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 480px;
+      background: var(--background-neutral-lighter);
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      max-height: 85vh; display: flex; flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+      z-index: 101;
+    }
+    .bs-sheet.active { transform: translateX(-50%) translateY(0); }
+
+    .bs-handle {
+      width: 36px; height: 4px; border-radius: 2px;
+      background: var(--neutral-90);
+      margin: 12px auto 0; flex-shrink: 0;
+    }
+    .bs-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-md);
+      flex-shrink: 0;
+    }
+    .bs-title {
+      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default); margin: 0;
+    }
+    .bs-close {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--neutral-94); color: var(--foreground-neutral-lighter);
+      border: none; cursor: pointer; flex-shrink: 0;
+      transition: background 0.18s, color 0.18s;
+    }
+    .bs-close:hover { background: var(--neutral-90); color: var(--foreground-neutral-default); }
+    .bs-close .material-symbols-outlined { font-size: 18px; }
+    .bs-body {
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding: 0 var(--spacing-xl) var(--spacing-xl); flex: 1;
+    }
+    .bs-footer {
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-2xl);
+      border-top: 1px solid var(--stroke-neutral-lighter);
+      flex-shrink: 0;
+    }
+
+    /* ── Section header inside sheet ── */
+    .bs-section-title {
+      font-size: var(--font-size-title-s); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default);
+      margin: 0 0 var(--spacing-md); padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--stroke-neutral-lighter);
+    }
+    .bs-section-title:first-child { border-top: none; padding-top: 0; }
+
+    /* ── Eligibility list ── */
+    .benefit-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: var(--spacing-sm);
+    }
+    .benefit-list li {
+      display: flex; gap: var(--spacing-md);
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-default);
+      line-height: 1.6;
+    }
+    .benefit-list li::before {
+      content: attr(data-idx);
+      display: flex; align-items: flex-start; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--primary-95); color: var(--primary-40);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-700);
+      line-height: 22px;
+    }
+    .benefit-sub-list {
+      list-style: none; padding: 0; margin: var(--spacing-sm) 0 0 0;
+      display: flex; flex-direction: column; gap: var(--spacing-xs);
+    }
+    .benefit-sub-list li {
+      display: flex; align-items: flex-start; gap: var(--spacing-sm);
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter);
+      line-height: 1.6;
+    }
+    .benefit-sub-list li::before {
+      content: '•'; flex-shrink: 0; color: var(--foreground-neutral-lighter);
+    }
+
+    /* ── Amount boxes ── */
+    .amount-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
+    .amount-box {
+      background: var(--background-neutral-default);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg); text-align: center;
+    }
+    .amount-box-age {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0 0 var(--spacing-xs); line-height: 1.4;
+    }
+    .amount-box-value {
+      font-size: var(--font-size-display-xs); font-weight: var(--font-weight-700);
+      color: var(--foreground-neutral-default); margin: 0; line-height: 1.1;
+    }
+    .amount-box-unit {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: var(--spacing-xs) 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="title-block">
+            <h2 class="text-header">เบี้ยความพิการ</h2>
+            <p class="text-subheader">กรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น</p>
+          </div>
+        </div>
+
+        <!-- ── Empty State Card ── -->
+        <div class="card mb-xl">
+          <div class="empty-hero">
+            <div class="empty-hero-icon">
+              <span class="material-symbols-outlined">disability_new</span>
+            </div>
+            <div>
+              <p style="font-size: var(--font-size-title-l); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xs);">ยังไม่พบข้อมูลของท่าน</p>
+              <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0;">ในฐานข้อมูลผู้พิการ</p>
+            </div>
+            <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); line-height: 1.7; margin: 0;">
+              หากท่านมีบัตรประจำตัวคนพิการ สามารถลงทะเบียนเพื่อรับสิทธิเบี้ยความพิการได้ที่สำนักงานเขตหรือองค์กรปกครองส่วนท้องถิ่น ภายใน<strong style="color: var(--foreground-neutral-default);">กันยายน 2569</strong>
+            </p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="openSheet()">
+              ดูข้อมูลการรับสิทธิ
+            </button>
+          </div>
+        </div>
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align: center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6;">
+            <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: -3px;">verified</span>
+            ข้อมูลจากกรุงเทพมหานคร · เทศบาลเมืองพัทยา · กรมส่งเสริมการปกครองท้องถิ่น<br>
+            อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 10:30 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── Bottom Sheet Overlay ── -->
+  <div class="bs-overlay" id="bs-overlay" onclick="closeSheet()"></div>
+
+  <!-- ── Bottom Sheet ── -->
+  <div class="bs-sheet" id="bs-sheet" role="dialog" aria-modal="true" aria-labelledby="bs-title">
+    <div class="bs-handle" aria-hidden="true"></div>
+
+    <div class="bs-header">
+      <h3 class="bs-title" id="bs-title">ข้อมูลการรับสิทธิเบี้ยความพิการ</h3>
+      <button class="bs-close" onclick="closeSheet()" aria-label="ปิด">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="bs-body">
+
+      <!-- Section 1: คุณสมบัติผู้มีสิทธิ -->
+      <h4 class="bs-section-title">คุณสมบัติผู้มีสิทธิ</h4>
+      <ul class="benefit-list">
+        <li data-idx="1">มีสัญชาติไทย</li>
+        <li data-idx="2">มีความพิการตามกฎหมายว่าด้วยการส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</li>
+        <li data-idx="3">มีบัตรประจำตัวคนพิการที่ออกโดยหน่วยงานที่มีอำนาจตามกฎหมาย</li>
+        <li data-idx="4">ลงทะเบียนกับองค์กรปกครองส่วนท้องถิ่นในเขตพื้นที่ที่มีชื่อในทะเบียนบ้าน</li>
+      </ul>
+
+      <!-- Section 2: จำนวนเงิน -->
+      <h4 class="bs-section-title">จำนวนเงิน</h4>
+      <div class="amount-grid">
+        <div class="amount-box">
+          <p class="amount-box-age">ผู้พิการอายุ<br>ต่ำกว่า 18 ปี</p>
+          <p class="amount-box-value">1,000</p>
+          <p class="amount-box-unit">บาท/เดือน</p>
+        </div>
+        <div class="amount-box">
+          <p class="amount-box-age">ผู้พิการอายุ<br>18 ปีขึ้นไป</p>
+          <p class="amount-box-value">800</p>
+          <p class="amount-box-unit">บาท/เดือน</p>
+        </div>
+      </div>
+
+      <!-- Section 3: สถานที่ลงทะเบียน -->
+      <h4 class="bs-section-title">สถานที่ลงทะเบียน</h4>
+      <p style="font-size: var(--font-size-body-m); color: var(--foreground-neutral-default); line-height: 1.7; margin: 0;">
+        ยื่นคำขอลงทะเบียนได้ที่สำนักงานเขตหรือที่ว่าการอำเภอ หรือองค์กรปกครองส่วนท้องถิ่นในพื้นที่ที่มีชื่อในทะเบียนบ้าน ภายในเดือนกันยายนของทุกปี เพื่อรับสิทธิในปีงบประมาณถัดไป
+      </p>
+
+      <!-- Section 4: เอกสารประกอบ -->
+      <h4 class="bs-section-title">เอกสารประกอบ</h4>
+      <ul class="benefit-list">
+        <li data-idx="1">บัตรประจำตัวคนพิการ</li>
+        <li data-idx="2">บัตรประจำตัวประชาชน หรือเอกสารอื่นที่ออกโดยหน่วยงานของรัฐ</li>
+        <li data-idx="3">สมุดบัญชีเงินฝากธนาคาร</li>
+        <li data-idx="4" style="flex-direction: column; align-items: flex-start;">
+          <span style="display: flex; gap: var(--spacing-md);">
+            <span style="display: flex; align-items: flex-start; justify-content: center; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--primary-95); color: var(--primary-40); font-size: var(--font-size-body-s); font-weight: var(--font-weight-700); line-height: 22px; margin-top: 1px;">4</span>
+            <span>กรณีผู้พิการไม่สามารถยื่นด้วยตนเองได้ ต้องมีเอกสารเพิ่มเติม</span>
+          </span>
+          <ul class="benefit-sub-list" style="padding-left: 34px;">
+            <li>หนังสือมอบอำนาจ</li>
+            <li>บัตรประจำตัวประชาชนของผู้รับมอบอำนาจ</li>
+          </ul>
+        </li>
+      </ul>
+
+    </div><!-- /.bs-body -->
+
+    <div class="bs-footer">
+      <a href="https://miniapps-th.superapps-th.cloud/cp/dep/dispension/info-view"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn-primary"
+         style="display: flex; width: 100%; justify-content: center; text-decoration: none;">
+        ดูข้อมูลการรับสิทธิแบบเต็ม
+        <span class="material-symbols-outlined" style="font-size: 18px; margin-left: var(--spacing-xs);">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function openSheet() {
+      document.getElementById('bs-overlay').classList.add('active');
+      document.getElementById('bs-sheet').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSheet() {
+      document.getElementById('bs-overlay').classList.remove('active');
+      document.getElementById('bs-sheet').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>
