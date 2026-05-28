@@ -150,7 +150,7 @@
         
 
         <!-- ── Vehicle Picker ── -->
-        <div class="card mb-xl fade-in-1">
+        <div class="card mb-xl fade-in-1" id="vehicle-picker">
           <div class="section-title-container">
             <div class="section-bar" style="background-color: var(--primary-40);"></div>
             <h3 class="section-title">ยานพาหนะในครอบครอง</h3>
@@ -374,7 +374,7 @@
   </div>
 
   <!-- Back to top FAB -->
-  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <button class="back-to-top" id="back-to-top" aria-label="กลับไปที่รายการรถ" onclick="document.getElementById('vehicle-picker').scrollIntoView({behavior:'smooth',block:'start'})">
     <span class="material-symbols-outlined">arrow_upward</span>
   </button>
 
