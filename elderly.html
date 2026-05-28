@@ -30,61 +30,41 @@
   <style>
     /* ── Source list ── */
     .src-list { display: flex; flex-direction: column; }
-
     .src-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
+      display: flex; align-items: center; gap: var(--spacing-md);
       padding: var(--spacing-md) 0;
       border-bottom: 1px solid var(--stroke-neutral-lighter);
     }
     .src-item:first-child { padding-top: 0; }
     .src-item:last-child  { border-bottom: none; padding-bottom: 0; }
-
     .src-icon {
-      width: 36px; height: 36px;
-      border-radius: 50%;
+      width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.3s, color 0.3s;
+      flex-shrink: 0; transition: background 0.3s, color 0.3s;
     }
     .src-icon--loading { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
     .src-icon--found   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
     .src-icon--none    { background: var(--neutral-94); color: var(--foreground-neutral-lighter); }
     .src-icon .material-symbols-outlined { font-size: 20px; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
     .src-icon--loading .material-symbols-outlined { animation: spin 1.2s linear infinite; }
-
     .src-info { flex: 1; min-width: 0; }
-    .src-name {
-      font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-500);
-      color: var(--foreground-neutral-default);
-    }
+    .src-name { font-size: var(--font-size-body-m); font-weight: var(--font-weight-500); color: var(--foreground-neutral-default); }
     .src-status { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin-top: 2px; }
-    .src-status.found {
-      color: var(--foreground-positive-default);
-      font-weight: var(--font-weight-500);
-    }
-
+    .src-status.found { color: var(--foreground-positive-default); font-weight: var(--font-weight-500); }
     .src-shimmer {
       display: inline-block; height: 10px; width: 72px; border-radius: 5px;
       background: linear-gradient(90deg, var(--neutral-94) 25%, var(--neutral-90) 50%, var(--neutral-94) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s ease infinite;
+      background-size: 200% 100%; animation: shimmer 1.4s ease infinite;
     }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    /* ── Source pill/tag ── */
+    /* ── Source pill ── */
     .src-pill {
       display: inline-flex; align-items: center; gap: var(--spacing-xs);
-      padding: 3px var(--spacing-md);
-      border-radius: var(--radius-full);
-      background: var(--primary-95);
-      color: var(--primary-40);
-      font-size: var(--font-size-body-s);
-      font-weight: var(--font-weight-500);
+      padding: 3px var(--spacing-md); border-radius: var(--radius-full);
+      background: var(--primary-95); color: var(--primary-40);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
       white-space: nowrap;
     }
     .src-pill .material-symbols-outlined { font-size: 14px; }
@@ -92,96 +72,67 @@
     /* ── Status hero ── */
     .status-hero {
       display: flex; flex-direction: column; align-items: center;
-      text-align: center;
-      padding: var(--spacing-xl) 0 var(--spacing-lg);
+      text-align: center; padding: var(--spacing-xl) 0 var(--spacing-lg);
       gap: var(--spacing-md);
     }
     .status-hero-icon {
-      width: 76px; height: 76px;
-      border-radius: 50%;
+      width: 76px; height: 76px; border-radius: 50%;
       background: var(--background-positive-light);
       color: var(--foreground-positive-default);
       display: flex; align-items: center; justify-content: center;
     }
-    .status-hero-icon .material-symbols-outlined {
-      font-size: 40px;
-      font-variation-settings: 'FILL' 1;
-    }
-    .status-hero-label {
-      font-size: var(--font-size-body-m);
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-    }
-    .status-hero-amount {
-      font-size: var(--font-size-display-s);
-      font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default);
-      line-height: 1.1;
-      margin: 0;
-    }
-    .status-hero-amount .unit {
-      font-size: var(--font-size-title-m);
-      font-weight: var(--font-weight-400);
-      color: var(--foreground-neutral-lighter);
-    }
+    .status-hero-icon .material-symbols-outlined { font-size: 40px; font-variation-settings: 'FILL' 1; }
+    .status-hero-label { font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); margin: 0; }
+    .status-hero-amount { font-size: var(--font-size-display-s); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); line-height: 1.1; margin: 0; }
+    .status-hero-amount .unit { font-size: var(--font-size-title-m); font-weight: var(--font-weight-400); color: var(--foreground-neutral-lighter); }
 
-    /* ── History table ── */
-    .history-year-header {
-      font-size: var(--font-size-title-l);
-      font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default);
+    /* ── History: active sources row ── */
+    .history-sources-row { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-lg); }
+
+    /* ── History: year group ── */
+    .history-year-header-row {
+      display: flex; align-items: center; justify-content: space-between;
       padding-bottom: var(--spacing-sm);
-      border-bottom: 2px solid var(--foreground-neutral-default);
-      margin: var(--spacing-lg) 0 0;
+      border-bottom: 2px solid var(--stroke-neutral-default);
+      margin: var(--spacing-xl) 0 0;
     }
+    .history-year-group:first-child .history-year-header-row { margin-top: 0; }
+    .history-year-label { font-size: var(--font-size-title-l); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); }
+
+    /* ── History: rows ── */
     .history-row {
-      display: flex; align-items: center;
-      gap: var(--spacing-md);
+      display: flex; align-items: center; gap: var(--spacing-md);
       padding: var(--spacing-md) 0;
       border-bottom: 1px solid var(--stroke-neutral-lighter);
     }
     .history-row:last-child { border-bottom: none; }
-    .history-month {
-      width: 44px; flex-shrink: 0;
-      font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-600);
-      color: var(--foreground-neutral-default);
+    .history-month { width: 44px; flex-shrink: 0; font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); color: var(--foreground-neutral-default); }
+    .history-method { flex: 1; font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter); }
+    .history-amount { font-size: var(--font-size-body-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); display: flex; align-items: baseline; gap: 2px; }
+    .history-amount .unit { font-size: var(--font-size-body-s); font-weight: var(--font-weight-400); color: var(--foreground-neutral-lighter); }
+
+    /* ── History: infinite scroll chrome ── */
+    .history-loading-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--spacing-sm); padding: var(--spacing-xl) 0;
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
     }
-    .history-method {
-      flex: 1;
-      font-size: var(--font-size-body-m);
-      color: var(--foreground-neutral-lighter);
-    }
-    .history-amount {
-      font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-700);
-      color: var(--foreground-neutral-default);
-      display: flex; align-items: baseline; gap: 2px;
-    }
-    .history-amount .unit {
-      font-size: var(--font-size-body-s);
-      font-weight: var(--font-weight-400);
-      color: var(--foreground-neutral-lighter);
-    }
+    .history-loading-row .material-symbols-outlined { font-size: 18px; animation: spin 1.2s linear infinite; }
+    .history-end-msg { text-align: center; padding: var(--spacing-xl) 0; font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); }
+    .history-sentinel { height: 1px; }
 
     /* ── Warning notice ── */
     .notice-chip {
       display: inline-flex; align-items: center; gap: var(--spacing-sm);
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border-radius: var(--radius-full);
-      background: var(--background-warning-lighter);
-      color: var(--foreground-warning-default);
-      font-size: var(--font-size-body-m);
-      font-weight: var(--font-weight-600);
+      padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-full);
+      background: var(--background-warning-lighter); color: var(--foreground-warning-default);
+      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
       margin-bottom: var(--spacing-md);
     }
     .notice-chip .material-symbols-outlined { font-size: 16px; }
 
     /* ── Fade-slide in ── */
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .fade-in { animation: fadeSlideIn 0.35s ease both; }
   </style>
 </head>
@@ -208,37 +159,27 @@
             <h3 class="section-title">ตรวจสอบจากทุกแหล่งข้อมูล</h3>
           </div>
           <div class="src-list">
-
             <div class="src-item" id="src-bkk">
-              <div class="src-icon src-icon--loading">
-                <span class="material-symbols-outlined">autorenew</span>
-              </div>
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
               <div class="src-info">
                 <div class="src-name">กรุงเทพมหานคร (กทม.)</div>
                 <div class="src-status"><span class="src-shimmer"></span></div>
               </div>
             </div>
-
             <div class="src-item" id="src-pattaya">
-              <div class="src-icon src-icon--loading">
-                <span class="material-symbols-outlined">autorenew</span>
-              </div>
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
               <div class="src-info">
                 <div class="src-name">เทศบาลเมืองพัทยา</div>
                 <div class="src-status"><span class="src-shimmer"></span></div>
               </div>
             </div>
-
             <div class="src-item" id="src-dla">
-              <div class="src-icon src-icon--loading">
-                <span class="material-symbols-outlined">autorenew</span>
-              </div>
+              <div class="src-icon src-icon--loading"><span class="material-symbols-outlined">autorenew</span></div>
               <div class="src-info">
                 <div class="src-name">กรมส่งเสริมการปกครองท้องถิ่น (สถ.)</div>
                 <div class="src-status"><span class="src-shimmer"></span></div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -270,34 +211,105 @@
   </div>
 
   <script>
-    // ── Mock data (กทม. is the source for this person) ──
-    var MOCK = {
-      source:      'กรุงเทพมหานคร (กทม.)',
+    // ── Constants ──
+    var MONTHS_TH = ['ธ.ค.','พ.ย.','ต.ค.','ก.ย.','ส.ค.','ก.ค.','มิ.ย.','พ.ค.','เม.ย.','มี.ค.','ก.พ.','ม.ค.'];
+
+    // ── Mock data ──
+    // กทม. is the current paying agency (2569)
+    var MOCK_BKK = {
+      sourceFull:  'กรุงเทพมหานคร (กทม.)',
       sourceShort: 'กทม.',
-      amount:      700,
-      history: [
-        { month: 'พ.ค.',  method: 'โอนเข้าบัญชี', amount: 700 },
-        { month: 'เม.ย.', method: 'โอนเข้าบัญชี', amount: 700 },
-        { month: 'มี.ค.', method: 'โอนเข้าบัญชี', amount: 700 },
-        { month: 'ก.พ.',  method: 'โอนเข้าบัญชี', amount: 700 },
-        { month: 'ม.ค.',  method: 'โอนเข้าบัญชี', amount: 700 },
+      amount: 700,
+      records: [
+        { month: 'พ.ค.',  year: 2569, amount: 700 },
+        { month: 'เม.ย.', year: 2569, amount: 700 },
+        { month: 'มี.ค.', year: 2569, amount: 700 },
+        { month: 'ก.พ.',  year: 2569, amount: 700 },
+        { month: 'ม.ค.',  year: 2569, amount: 700 },
       ],
-      bank: {
-        number: '465-0-26526-6',
-        name:   'ธนาคารกรุงไทย จำกัด (มหาชน)',
-      },
+      bank: { number: '465-0-26526-6', name: 'ธนาคารกรุงไทย จำกัด (มหาชน)' },
     };
 
-    // ── Update a source row ──
-    function setSource(id, state) {
-      var el  = document.getElementById(id);
+    // สถ. has historical data from before the person moved to Bangkok (2568)
+    var MOCK_DLA = {
+      sourceFull:  'กรมส่งเสริมการปกครองท้องถิ่น (สถ.)',
+      sourceShort: 'สถ.',
+      amount: 700,
+      // 5 most-recent months shown in collapsed view
+      initialRecords: [
+        { month: 'ธ.ค.', year: 2568, amount: 700 },
+        { month: 'พ.ย.', year: 2568, amount: 700 },
+        { month: 'ต.ค.', year: 2568, amount: 700 },
+        { month: 'ก.ย.', year: 2568, amount: 700 },
+        { month: 'ส.ค.', year: 2568, amount: 700 },
+      ],
+      // remaining months revealed on expand
+      remainingRecords: [
+        { month: 'ก.ค.',  year: 2568, amount: 700 },
+        { month: 'มิ.ย.', year: 2568, amount: 700 },
+        { month: 'พ.ค.',  year: 2568, amount: 700 },
+        { month: 'เม.ย.', year: 2568, amount: 700 },
+        { month: 'มี.ค.', year: 2568, amount: 700 },
+        { month: 'ก.พ.',  year: 2568, amount: 700 },
+        { month: 'ม.ค.',  year: 2568, amount: 700 },
+      ],
+    };
+
+    // Years available for infinite scroll (สถ., older history)
+    var OLDER_YEARS = [2567, 2566, 2565, 2564];
+
+    // ── State ──
+    var resolvedSources = {};
+    var isExpanded     = false;
+    var olderYearIdx   = 0;
+    var loadingMore    = false;
+    var scrollObserver = null;
+
+    // ── Helper: single history row HTML ──
+    function rowHtml(r) {
+      return '<div class="history-row">' +
+        '<span class="history-month">'  + r.month + '</span>' +
+        '<span class="history-method">โอนเข้าบัญชี</span>' +
+        '<span class="history-amount">' + r.amount.toLocaleString() +
+          '<span class="unit"> บาท</span></span>' +
+      '</div>';
+    }
+
+    // ── Helper: full year-group HTML (header + rows) ──
+    function yearGroupHtml(year, records, sourceShort) {
+      return '<div class="history-year-group" id="year-group-' + year + '">' +
+        '<div class="history-year-header-row">' +
+          '<span class="history-year-label">' + year + '</span>' +
+          '<span class="src-pill">' +
+            '<span class="material-symbols-outlined">location_city</span>' + sourceShort +
+          '</span>' +
+        '</div>' +
+        records.map(rowHtml).join('') +
+      '</div>';
+    }
+
+    // ── Helper: append a year group to #history-groups ──
+    // Inserts before #history-sentinel if it exists; otherwise appends.
+    function appendYearGroup(year, records, sourceShort, fadeIn) {
+      var container = document.getElementById('history-groups');
+      if (!container) return;
+      var tmp = document.createElement('div');
+      tmp.innerHTML = yearGroupHtml(year, records, sourceShort);
+      var group = tmp.firstChild;
+      if (fadeIn) group.classList.add('fade-in');
+      var sentinel = document.getElementById('history-sentinel');
+      sentinel ? container.insertBefore(group, sentinel) : container.appendChild(group);
+    }
+
+    // ── Update a source-row UI ──
+    function setSource(elId, state) {
+      var el  = document.getElementById(elId);
+      if (!el) return;
       var ico = el.querySelector('.src-icon');
       var st  = el.querySelector('.src-status');
       var sym = ico.querySelector('.material-symbols-outlined');
-
       ico.classList.remove('src-icon--loading', 'src-icon--found', 'src-icon--none');
       sym.style.animation = 'none';
-
       if (state === 'found') {
         ico.classList.add('src-icon--found');
         sym.textContent = 'check_circle';
@@ -311,59 +323,41 @@
       }
     }
 
-    // ── Render result cards ──
-    function renderResult(d) {
-      var historyRows = d.history.map(function(r) {
-        return '<div class="history-row">' +
-          '<span class="history-month">' + r.month + '</span>' +
-          '<span class="history-method">' + r.method + '</span>' +
-          '<span class="history-amount">' + r.amount.toLocaleString() +
-            '<span class="unit"> บาท</span>' +
-          '</span>' +
-        '</div>';
-      }).join('');
-
+    // ── Render the full result section (called by first source) ──
+    function renderResultSection(data) {
       var html =
-        // ── Status card ──
-        '<div class="card mb-xl fade-in" style="animation-delay:0s">' +
+        // Status hero card
+        '<div class="card mb-xl fade-in">' +
           '<div class="status-hero">' +
-            '<span class="src-pill">' +
-              '<span class="material-symbols-outlined">location_city</span>' +
-              d.source +
-            '</span>' +
-            '<div class="status-hero-icon">' +
-              '<span class="material-symbols-outlined">elderly</span>' +
-            '</div>' +
+            '<span class="src-pill"><span class="material-symbols-outlined">location_city</span>' + data.sourceFull + '</span>' +
+            '<div class="status-hero-icon"><span class="material-symbols-outlined">elderly</span></div>' +
             '<p class="status-hero-label">ได้รับเบี้ยยังชีพผู้สูงอายุ</p>' +
-            '<p class="status-hero-amount">' +
-              d.amount.toLocaleString() +
-              ' <span class="unit">บาท/เดือน</span>' +
-            '</p>' +
+            '<p class="status-hero-amount">' + data.amount.toLocaleString() + ' <span class="unit">บาท/เดือน</span></p>' +
           '</div>' +
           '<button class="btn btn-primary" style="width:100%"' +
             ' onclick="document.getElementById(\'history-card\').scrollIntoView({behavior:\'smooth\'})">' +
-            'ดูประวัติการรับเบี้ยยังชีพ' +
-          '</button>' +
+            'ดูประวัติการรับเบี้ยยังชีพ</button>' +
         '</div>' +
 
-        // ── Payment history card ──
+        // History card
         '<div class="card mb-xl fade-in" id="history-card" style="animation-delay:0.14s">' +
           '<div class="section-title-container">' +
             '<div class="section-bar" style="background-color:var(--primary-40)"></div>' +
             '<h3 class="section-title">ประวัติการรับเบี้ยยังชีพ</h3>' +
           '</div>' +
-          '<span class="src-pill">' +
-            '<span class="material-symbols-outlined">location_city</span>' +
-            d.sourceShort +
-          '</span>' +
-          '<p class="history-year-header">2569</p>' +
-          historyRows +
-          '<button class="btn btn-tertiary-outline" style="width:100%; margin-top:var(--spacing-xl)">' +
+          '<div class="history-sources-row" id="history-sources-row">' +
+            '<span class="src-pill"><span class="material-symbols-outlined">location_city</span>' + data.sourceShort + '</span>' +
+          '</div>' +
+          '<div id="history-groups">' +
+            yearGroupHtml(2569, data.records, data.sourceShort) +
+          '</div>' +
+          '<button id="history-expand-btn" class="btn btn-tertiary-outline"' +
+            ' style="width:100%;margin-top:var(--spacing-xl)" onclick="expandHistory()">' +
             'ดูประวัติรับเบี้ยทั้งหมด' +
           '</button>' +
         '</div>' +
 
-        // ── Bank account card ──
+        // Bank card
         '<div class="card mb-xl fade-in" style="animation-delay:0.28s">' +
           '<div class="section-title-container">' +
             '<div class="section-bar" style="background-color:var(--secondary-40-main)"></div>' +
@@ -373,11 +367,11 @@
           '<div class="details-list">' +
             '<div class="details-item">' +
               '<span class="details-label">เลขที่บัญชีธนาคาร</span>' +
-              '<span class="details-value">' + d.bank.number + '</span>' +
+              '<span class="details-value">' + data.bank.number + '</span>' +
             '</div>' +
             '<div class="details-item">' +
               '<span class="details-label">ธนาคาร</span>' +
-              '<span class="details-value">' + d.bank.name + '</span>' +
+              '<span class="details-value">' + data.bank.name + '</span>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -385,22 +379,126 @@
       document.getElementById('result-section').innerHTML = html;
     }
 
+    // ── Add a second source's data to the existing history card ──
+    function addSecondSource(data) {
+      // Append source pill to the sources row
+      var sourcesRow = document.getElementById('history-sources-row');
+      if (sourcesRow) {
+        var span = document.createElement('span');
+        span.className = 'src-pill fade-in';
+        span.innerHTML = '<span class="material-symbols-outlined">location_city</span>' + data.sourceShort;
+        sourcesRow.appendChild(span);
+      }
+      // If already expanded: show full year; otherwise show only initial 5 months
+      var records = isExpanded
+        ? data.initialRecords.concat(data.remainingRecords)
+        : data.initialRecords;
+      appendYearGroup(data.initialRecords[0].year, records, data.sourceShort, true);
+    }
+
+    // ── Expand: reveal all records + wire up infinite scroll ──
+    function expandHistory() {
+      isExpanded = true;
+
+      // Hide the expand button
+      var btn = document.getElementById('history-expand-btn');
+      if (btn) btn.style.display = 'none';
+
+      // Complete 2568 year group with remaining months (if สถ. has already responded)
+      if (resolvedSources.dla) {
+        var yrGroup = document.getElementById('year-group-2568');
+        if (yrGroup && MOCK_DLA.remainingRecords.length) {
+          var frag = document.createDocumentFragment();
+          MOCK_DLA.remainingRecords.forEach(function(r) {
+            var div = document.createElement('div');
+            div.innerHTML = rowHtml(r);
+            frag.appendChild(div.firstChild);
+          });
+          yrGroup.appendChild(frag);
+        }
+      }
+
+      // Append the infinite-scroll sentinel
+      var container = document.getElementById('history-groups');
+      if (container && !document.getElementById('history-sentinel')) {
+        var sentinel = document.createElement('div');
+        sentinel.id        = 'history-sentinel';
+        sentinel.className = 'history-sentinel';
+        container.appendChild(sentinel);
+        setupInfiniteScroll();
+      }
+    }
+
+    // ── Load the next older year (called by IntersectionObserver) ──
+    function loadMoreYears() {
+      if (olderYearIdx >= OLDER_YEARS.length || loadingMore) return;
+      loadingMore = true;
+
+      var container = document.getElementById('history-groups');
+      var sentinel  = document.getElementById('history-sentinel');
+
+      // Show loading spinner row
+      var loader = document.createElement('div');
+      loader.id        = 'history-loader';
+      loader.className = 'history-loading-row';
+      loader.innerHTML = '<span class="material-symbols-outlined">autorenew</span>กำลังโหลด...';
+      container.insertBefore(loader, sentinel);
+
+      setTimeout(function() {
+        var year    = OLDER_YEARS[olderYearIdx];
+        var records = MONTHS_TH.map(function(m) { return { month: m, year: year, amount: 700 }; });
+
+        // Remove spinner
+        var ld = document.getElementById('history-loader');
+        if (ld) ld.remove();
+
+        // Append year group
+        appendYearGroup(year, records, 'สถ.', true);
+        olderYearIdx++;
+        loadingMore = false;
+
+        // If all older years exhausted, remove sentinel and show end message
+        if (olderYearIdx >= OLDER_YEARS.length) {
+          var s = document.getElementById('history-sentinel');
+          if (s) s.remove();
+          if (scrollObserver) scrollObserver.disconnect();
+          var endDiv = document.createElement('div');
+          endDiv.className = 'history-end-msg';
+          endDiv.textContent = '— แสดงประวัติทั้งหมดแล้ว —';
+          container.appendChild(endDiv);
+        }
+      }, 700);
+    }
+
+    // ── Wire IntersectionObserver to the sentinel ──
+    function setupInfiniteScroll() {
+      if (scrollObserver) return;
+      scrollObserver = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) loadMoreYears();
+      }, { rootMargin: '0px 0px 120px 0px', threshold: 0 });
+      var sentinel = document.getElementById('history-sentinel');
+      if (sentinel) scrollObserver.observe(sentinel);
+    }
+
     // ── Simulate 3 independent API calls ──
-    // กทม. responds first (1 200 ms) → has data for this person
+    // กทม. responds first (1 200 ms) → has data, renders the result section
     setTimeout(function() {
       setSource('src-bkk', 'found');
-      renderResult(MOCK);
+      resolvedSources.bkk = true;
+      renderResultSection(MOCK_BKK);
     }, 1200);
 
-    // เทศบาลเมืองพัทยา responds second (1 700 ms) → no record
+    // สถ. responds second (1 900 ms) → also has data (older history)
+    setTimeout(function() {
+      setSource('src-dla', 'found');
+      resolvedSources.dla = true;
+      addSecondSource(MOCK_DLA);
+    }, 1900);
+
+    // พัทยา responds last (2 400 ms) → no record for this person
     setTimeout(function() {
       setSource('src-pattaya', 'none');
-    }, 1700);
-
-    // สถ. responds last (2 200 ms) → no record
-    setTimeout(function() {
-      setSource('src-dla', 'none');
-    }, 2200);
+    }, 2400);
   </script>
 </body>
 </html>
