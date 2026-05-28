@@ -39,27 +39,30 @@
       <main>
 
         <!-- Page header -->
-        <div class="page-header">
-          <button class="btn-back-circle" onclick="history.back()" aria-label="กลับ">
-            <span class="material-symbols-outlined">arrow_back</span>
-          </button>
+        <div class="page-header">          
           <div class="title-block">
             <h2 class="text-header">ทะเบียนรถ</h2>
-            <p class="text-subheader">กรมการขนส่งทางบก</p>
+            <p class="text-subheader">ข้อมูลจากกรมการขนส่งทางบก</p>
+          </div>
+        </div>
+        <div class="id-card-banner mb-xl">
+          <div class="id-card-avatar">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="id-card-info">
+            <p class="id-card-label">สวัสดี</p>
+            <p class="id-card-name">คุณสมชาย ใจดี</p>
+            <p class="id-card-number">1-1002-00345-67-8</p>
+            <span class="id-card-tag">
+              คุณมียานพาหนะครอบครอง 2 รายการ
+            </span>
           </div>
         </div>
 
-        <!-- ── Welcome Box ── -->
-        <div class="welcome-banner fade-in" style="margin-bottom: var(--spacing-xl); height: auto; padding: var(--spacing-md) var(--spacing-lg);">
-          <p class="welcome-banner-greeting">สวัสดี</p>
-          <p class="welcome-banner-name">คุณเพชร เครือพานิช</p>
-          <p class="welcome-banner-sub">เลขประจำตัวประชาชน: 3-5403-XXXXX-XX-X</p>
-        </div>
+        
 
         <!-- ── Vehicle Selector ── -->
-        <div class="section-title-container fade-in-2" style="margin-bottom: var(--spacing-sm);">
-          <h3 class="section-title" style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-700);">ยานพาหนะครอบครอง (2 คัน)</h3>
-        </div>
+        
         <div class="filter-row fade-in-2" style="margin-bottom: var(--spacing-xl); display: flex; gap: var(--spacing-sm); overflow-x: auto; padding-bottom: var(--spacing-xs);">
           <button class="filter-chip active" id="chip-car" onclick="switchVehicle('car')">
             <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px; vertical-align: middle;">directions_car</span>
@@ -89,7 +92,7 @@
             <div class="details-item">
               <span class="details-label">สี</span>
               <span class="details-value" id="info-color" style="display:inline-flex;align-items:center;gap:6px;">
-                <span class="color-dot" id="info-color-dot" style="background:#9e9e9e;border-color:#bbb;"></span>เทา
+                เทา
               </span>
             </div>
             <div class="details-item">
@@ -121,7 +124,7 @@
           <div class="details-list">
             <div class="details-item">
               <span class="details-label">เลขเครื่องยนต์</span>
-              <span class="details-value" id="engine-no" style="font-family:monospace;letter-spacing:0.5px;">2ZRZ153816</span>
+              <span class="details-value" id="engine-no" style="font-family:monospace;letter-spacing:0.5px;">2ZRZ159999</span>
             </div>
             <div class="details-item">
               <span class="details-label">เครื่องยนต์</span>
@@ -133,7 +136,7 @@
             </div>
             <div class="details-item">
               <span class="details-label">เลขตัวรถ</span>
-              <span class="details-value" id="engine-chassis-no" style="font-family:monospace;letter-spacing:0.5px;word-break:break-all;">MR2KZAAGX00086328</span>
+              <span class="details-value" id="engine-chassis-no" style="font-family:monospace;letter-spacing:0.5px;word-break:break-all;">MR2KZAAGX0999928</span>
             </div>
           </div>
         </div>
@@ -195,11 +198,11 @@
                 <span class="material-symbols-outlined">person</span>
                 ผู้ถือครอง
               </span>
-              <p class="person-pair-name" style="font-size: var(--font-size-body-l);">นายเพชร เครือพานิช</p>
+              <p class="person-pair-name" style="font-size: var(--font-size-body-l);">สมชาย ใจดี</p>
               <div class="person-pair-details">
                 <div class="person-pair-detail">
                   <span class="person-pair-detail-label">ที่อยู่</span>
-                  <span class="person-pair-detail-value" style="white-space: normal; line-height: 1.5;">193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150</span>
+                  <span class="person-pair-detail-value" style="white-space: normal; line-height: 1.5;">999 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210</span>
                 </div>
               </div>
             </div>
@@ -225,8 +228,7 @@
         plateNumber: 'กต 9921',
         plateProvince: 'แพร่',
         model: 'TOYOTA COROLLA CROSS',
-        color: 'เทา',
-        colorHex: '#9e9e9e',
+        color: 'เทา',        
         fuel: 'เบนซิน-ไฟฟ้า (Hybrid)',
         taxDate: '31 พฤษภาคม 2570',
         taxStatusClass: 'valid',
@@ -247,10 +249,10 @@
           fuelType: 'เบนซิน-ไฟฟ้า'
         },
         engine: {
-          engineNo: '2ZRZ153816',
+          engineNo: '2ZRZ159999',
           engineSpecs: '4 สูบ 1,798.00 ซีซี',
           weight: '1,400 กิโลกรัม',
-          chassisNo: 'MR2KZAAGX00086328'
+          chassisNo: 'MR2KZAAGX0999928'
         },
         registration: {
           regDate: '31 พฤษภาคม 2567',
@@ -266,8 +268,8 @@
           },
           {
             role: 'ผู้ถือครอง',
-            name: 'นายเพชร เครือพานิช',
-            address: '193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150',
+            name: 'สมชาย ใจดี',
+            address: '999 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210',
             avatarClass: 'person',
             avatarIcon: 'person'
           }
@@ -277,8 +279,7 @@
         plateNumber: '1กข 4567',
         plateProvince: 'แพร่',
         model: 'HONDA FORZA 350',
-        color: 'ดำ-เทา',
-        colorHex: '#374151',
+        color: 'ดำ-เทา',        
         fuel: 'เบนซิน',
         taxDate: '15 สิงหาคม 2569',
         taxStatusClass: 'valid',
@@ -318,8 +319,8 @@
           },
           {
             role: 'ผู้ถือครอง',
-            name: 'นายเพชร เครือพานิช',
-            address: '193 หมู่ 5 ตำบลบ้านปิน อำเภอลอง จังหวัดแพร่ 54150',
+            name: 'สมชาย ใจดี',
+            address: '999 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210',
             avatarClass: 'person',
             avatarIcon: 'person'
           }
@@ -369,7 +370,7 @@
       document.getElementById('info-model').textContent = v.info.model;
 
       var infoColor = document.getElementById('info-color');
-      infoColor.innerHTML = '<span class="color-dot" style="background:' + v.colorHex + ';border-color:' + (type === 'car' ? '#bbb' : '#555') + ';"></span>' + v.info.color;
+      infoColor.innerHTML =  v.info.color;
 
       document.getElementById('info-type').textContent = v.info.type;
       document.getElementById('info-style').textContent = v.info.style;
