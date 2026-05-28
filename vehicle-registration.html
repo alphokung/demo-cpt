@@ -698,17 +698,11 @@
   <script>
     (function() {
       var btn = document.getElementById('back-to-top');
-      var scrollEl = document.querySelector('.main-layout') || window;
       var threshold = 240;
 
-      function onScroll() {
-        var scrollTop = scrollEl === window
-          ? window.pageYOffset
-          : scrollEl.scrollTop;
-        btn.classList.toggle('visible', scrollTop > threshold);
-      }
-
-      scrollEl.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', window.pageYOffset > threshold);
+      }, { passive: true });
     })();
   </script>
 </body>
