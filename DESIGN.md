@@ -74,7 +74,24 @@ Every page must use this exact shell. Do not omit any element.
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Title — ทางรัฐ</title>
+  <title>ชื่อหน้า — ทางรัฐ</title>
+  <meta name="description" content="คำอธิบายหน้า — ทางรัฐ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
@@ -783,6 +800,98 @@ For multiple buttons:
 </div>
 ```
 
+### 6.17 Welcome Card (Green) — Mini-app Header
+
+Used at the top of every mini-app / data-detail page, **after** `page-header` and **before** the first content card. Provides a personal greeting and context for what data the page is showing.
+
+**Classes:** `card welcome-card welcome-card--green mb-xl`
+
+```html
+<!-- After page-header, before first content card -->
+<div class="card welcome-card welcome-card--green mb-xl">
+  <h2>สวัสดีคุณสมชาย</h2>
+  <p>เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
+  <p>{{บริบทของหน้า เช่น หน่วยงาน หรือจำนวนรายการ}}</p>
+</div>
+```
+
+**Rules:**
+
+| Rule | Detail |
+|------|--------|
+| Greeting format | `สวัสดีคุณ{ชื่อ}` — no title prefix (นาย/นาง) |
+| Line 1 (p) | เลขประจำตัวประชาชน หรือ เลขสมาชิก/เลขอ้างอิงหลัก |
+| Line 2 (p) | ชื่อหน่วยงาน หรือ สรุปสั้น เช่น "หนังสือรับรอง 3 ฉบับ" |
+| Position | ต้องอยู่หลัง `page-header` เสมอ — ก่อน card แรก |
+| Colour | ใช้ `welcome-card--green` เสมอสำหรับหน้า mini-app |
+| ห้ามใช้ | ห้ามใช้ `id-card-banner` แทน welcome-card |
+
+**CSS gradient** (defined in `styles.css`, do not override):
+
+```css
+.welcome-card--green {
+  background: radial-gradient(...), linear-gradient(135deg, #003d28, #006643) !important;
+}
+```
+
+---
+
+### 6.18 Source Note — Data Attribution Footer
+
+**Required on every page that displays government data.** Must be the **last element inside `<main>`**, immediately before `</main>`.
+
+```html
+<!-- Source note — last element inside <main> -->
+<div class="source-note">
+  <p class="source-note-text">
+    <span class="material-symbols-outlined source-note-icon">verified</span>
+    ข้อมูลจาก{{หน่วยงาน}}<br>
+    อัปเดตล่าสุด: <span class="source-note-time"></span>
+  </p>
+</div>
+```
+
+The `.source-note-time` span is filled at runtime. Add this script **once per page, just before `</body>`**:
+
+```html
+<script>
+  (function() {
+    var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+             'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    var d = new Date();
+    var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+            ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+            String(d.getMinutes()).padStart(2,'0')+' น.';
+    document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+  })();
+</script>
+```
+
+**Output example:**
+
+```
+✓ ข้อมูลจากกรมการปกครอง กระทรวงมหาดไทย
+  อัปเดตล่าสุด: 28 พฤษภาคม 2569 เวลา 14:35 น.
+```
+
+**Rules:**
+
+| Rule | Detail |
+|------|--------|
+| ตำแหน่ง | element สุดท้ายใน `<main>` เสมอ |
+| ห้ามใช้ inline style | ใช้ class `source-note`, `source-note-text`, `source-note-icon` เท่านั้น |
+| วันที่ | ต้องเป็น dynamic (JS) — ห้าม hardcode |
+| รูปแบบวันที่ | พุทธศักราช (ปีคริสต์ + 543), เวลา 24 ชั่วโมง, ลงท้าย " น." |
+| icon | ใช้ `verified` (Material Symbols Outlined) เสมอ |
+
+**CSS tokens (defined in `styles.css`):**
+
+```css
+.source-note        { text-align: center; padding: var(--spacing-md) 0 var(--spacing-4xl); }
+.source-note-text   { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6; }
+.source-note-icon   { font-size: 14px; vertical-align: -3px; }
+```
+
 ---
 
 ## 7. Utility Classes
@@ -955,7 +1064,7 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
 
 ## 10. Creating a New Page
 
-### Step 1 — Copy the page shell
+### Step 1 — Copy the page shell (with meta tags)
 
 ```html
 <!DOCTYPE html>
@@ -963,7 +1072,20 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>หน้าใหม่ — ทางรัฐ</title>
+  <title>ชื่อหน้า — ทางรัฐ</title>
+  <meta name="description" content="คำอธิบายหน้า — ทางรัฐ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -977,6 +1099,17 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
       </main>
     </div>
   </div>
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+               'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+              ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+              String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+    })();
+  </script>
 </body>
 </html>
 ```
@@ -994,6 +1127,20 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
   </div>
 </div>
 ```
+
+### Step 2b — Add welcome card (data pages only)
+
+If the page shows personal government data, add a green welcome card **immediately after `page-header`**:
+
+```html
+<div class="card welcome-card welcome-card--green mb-xl">
+  <h2>สวัสดีคุณสมชาย</h2>
+  <p>เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
+  <p>{{หน่วยงานหรือบริบทของหน้า}}</p>
+</div>
+```
+
+See **§ 6.17** for full rules.
 
 ### Step 3 — Add content using `.card` blocks
 
@@ -1035,7 +1182,23 @@ border-radius: 12px;
 </script>
 ```
 
-### Step 6 — Register the new page
+### Step 6 — Add source note (data pages only)
+
+If the page displays government data, add a source note as the **last element inside `<main>`**:
+
+```html
+<div class="source-note">
+  <p class="source-note-text">
+    <span class="material-symbols-outlined source-note-icon">verified</span>
+    ข้อมูลจาก{{หน่วยงาน}}<br>
+    อัปเดตล่าสุด: <span class="source-note-time"></span>
+  </p>
+</div>
+```
+
+The date script is already included in the page shell (Step 1) — no extra work needed. See **§ 6.18** for full rules.
+
+### Step 7 — Register the new page
 
 Add a card entry to the appropriate section in `components.html` (for component demos) or link from the navigation flow for app pages.
 
