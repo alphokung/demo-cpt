@@ -594,7 +594,109 @@
               </div>
             </div>
 
-            <!-- Card 2: Welfare Benefits -->
+            <!-- Card 2: สิทธิประกันสังคม -->
+            <div class="loading-wrapper">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 50%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--info-40);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิประกันสังคม</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สถานะผู้ประกันตน:</span>
+                    <span class="details-value" style="color: var(--foreground-positive-default); font-weight: 700;">ผู้ประกันตน มาตรา 33</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">เลขที่ผู้ประกันตน:</span>
+                    <span class="details-value">1-1002-00345-67-8</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประกันสังคม:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิประโยชน์:</span>
+                    <span class="details-value">รักษาพยาบาล · ว่างงาน · ชราภาพ · คลอดบุตร · สงเคราะห์บุตร</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="alert('เปิด miniapp ประกันสังคม')">
+                  <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: สิทธิข้าราชการ (กบข.) -->
+            <div class="loading-wrapper">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--warning-40);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิข้าราชการ (กบข.)</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">ประเภทสมาชิก:</span>
+                    <span class="details-value" style="color: var(--foreground-warning-default); font-weight: 700;">สมาชิก กบข. (พ.ร.บ. กบข. 2539)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">เลขที่สมาชิก กบข.:</span>
+                    <span class="details-value">1134831</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="alert('เปิด miniapp กบข.')">
+                  <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Welfare Benefits (commented out) -->
              <!-- <div class="loading-wrapper">
               
               <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
