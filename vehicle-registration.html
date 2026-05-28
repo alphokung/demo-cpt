@@ -237,45 +237,6 @@
           </button>
         </div>
 
-        <!-- ── Vehicle Hero Card ── -->
-        <div id="vehicle-hero-card" class="vehicle-hero fade-in">
-          <!-- Plate -->
-          <div class="vehicle-hero-plate">
-            <div class="vehicle-hero-plate-flag">
-              <div class="plate-flag-bar" style="background:#003580;"></div>
-              <div class="plate-flag-bar" style="background:#fff;"></div>
-              <div class="plate-flag-bar" style="background:#c00;"></div>
-            </div>
-            <div>
-              <div class="vehicle-hero-plate-number" id="hero-plate-number">กต 9921</div>
-              <div class="vehicle-hero-plate-province" id="hero-plate-province">แพร่</div>
-            </div>
-          </div>
-
-          <!-- Model & meta -->
-          <h3 class="vehicle-hero-model" id="hero-model">TOYOTA COROLLA CROSS</h3>
-          <p class="vehicle-hero-sub" id="hero-sub">
-            <span class="material-symbols-outlined" style="vertical-align: middle;">palette</span>
-            <span class="color-dot" id="hero-color-dot" style="background:#9e9e9e;border-color:#bbb; vertical-align: middle;"></span>
-            <span id="hero-color-text" style="vertical-align: middle;">สีเทา</span> &nbsp;·&nbsp;
-            <span class="material-symbols-outlined" id="hero-fuel-icon" style="vertical-align: middle;">local_gas_station</span>
-            <span id="hero-fuel-text" style="vertical-align: middle;">เบนซิน-ไฟฟ้า (Hybrid)</span>
-          </p>
-        </div>
-
-        <!-- ── Tax Status Banner ── -->
-        <div id="tax-status-banner-card" class="tax-status-banner valid fade-in-2">
-          <div class="tax-status-icon">
-            <span class="material-symbols-outlined" id="tax-icon">verified</span>
-          </div>
-          <div class="tax-status-body">
-            <p class="tax-status-label" id="tax-label">ภาษีรถยนต์มีผลถึง</p>
-            <p class="tax-status-date" id="tax-date">31 พฤษภาคม 2570</p>
-          </div>
-          <button class="btn btn-primary" id="tax-btn" style="flex-shrink:0;padding:0 var(--spacing-md);min-height:36px;font-size:var(--font-size-body-s);" onclick="alert('ไปเปิด miniapp ต่อภาษีรถยนต์')">
-            ต่อภาษี
-          </button>
-        </div>
 
         <!-- ── Spec chips ── -->
         <div class="spec-chips fade-in-2" id="spec-chips-container">
@@ -544,8 +505,6 @@
 
       // Trigger fade animations again
       var animBlocks = [
-        document.getElementById('vehicle-hero-card'),
-        document.getElementById('tax-status-banner-card'),
         document.getElementById('spec-chips-container'),
         document.getElementById('info-card'),
         document.getElementById('engine-card'),
@@ -568,37 +527,7 @@
       var v = vehicles[type];
       if (!v) return;
 
-      // Hero Card
-      document.getElementById('hero-plate-number').textContent = v.plateNumber;
-      document.getElementById('hero-plate-province').textContent = v.plateProvince;
-      document.getElementById('hero-model').textContent = v.model;
 
-      var dot = document.getElementById('hero-color-dot');
-      dot.style.background = v.colorHex;
-      dot.style.borderColor = type === 'car' ? '#bbb' : '#555';
-
-      document.getElementById('hero-color-text').textContent = 'สี' + v.color;
-
-      var fuelIcon = document.getElementById('hero-fuel-icon');
-      fuelIcon.textContent = type === 'car' ? 'local_gas_station' : 'two_wheeler';
-      document.getElementById('hero-fuel-text').textContent = v.fuel;
-
-      var heroCard = document.getElementById('vehicle-hero-card');
-      if (type === 'car') {
-        heroCard.style.background = 'linear-gradient(135deg, #1b2a4a 0%, #1e3a5f 55%, #1565c0 100%)';
-      } else {
-        heroCard.style.background = 'linear-gradient(135deg, #1a2732 0%, #2c3a47 55%, #3d4a56 100%)';
-      }
-
-      // Tax Status Banner
-      var banner = document.getElementById('tax-status-banner-card');
-      banner.className = 'tax-status-banner ' + v.taxStatusClass;
-      document.getElementById('tax-icon').textContent = v.taxStatusIcon;
-      document.getElementById('tax-label').textContent = v.taxStatusLabel;
-      document.getElementById('tax-date').textContent = v.taxDate;
-
-      var taxBtn = document.getElementById('tax-btn');
-      taxBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + (type === 'car' ? 'รถยนต์' : 'รถจักรยานยนต์') + "')");
 
       // Spec Chips
       var chipsHtml = '';
