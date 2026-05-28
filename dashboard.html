@@ -75,7 +75,10 @@
             <span class="skeleton-loading"
               style="height: 14px; width: 280px; display: block; background: rgba(255, 255, 255, 0.15) !important; border-radius: var(--radius-sm);"></span>
           </div>
-          <div class="welcome-banner loaded-item" style="display: none;">
+          <div class="welcome-banner loaded-item" style="display: none; position: relative;">
+            <button onclick="openModal('modal-permissions')" aria-label="ตั้งค่า" style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.25); border-radius: var(--radius-full); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.85); padding: 0;">
+              <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+            </button>
             <p class="welcome-banner-greeting">สวัสดี</p>
             <p class="welcome-banner-name">คุณสมชาย ใจดี</p>
             <p class="welcome-banner-sub">เลขประจำตัวประชาชน: 1-1002-00345-67-8</p>
@@ -145,6 +148,37 @@
                     <div class="list-meta-item">
                       <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
                       <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Disability Card -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                <div class="list-icon" style="background: var(--background-info-light); color: var(--info-40);">
+                  <span class="material-symbols-outlined">accessible</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-title">บัตรประจำตัวคนพิการ</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 14 ก.พ. 2571</span>
                     </div>
                   </div>
                 </div>
@@ -255,7 +289,101 @@
               </a>
             </div>
 
-            <!-- Electricity Meter 2: PEA Paid -->
+            <!-- Electricity Meter 2: MEA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openBillModal('ค่าไฟ การไฟฟ้านครหลวง', '3,580.00', 'ร้านค้า - เลขที่ผู้ใช้ไฟ: 020098765432')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าไฟ การไฟฟ้านครหลวง</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้ไฟ: 020098765432
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      ประเภท: มิเตอร์ร้านค้า
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ชำระเมื่อ: 8 พ.ค. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดชำระแล้ว: <strong
+                        style="color: var(--foreground-positive-default); font-weight: 700;">3,580.00</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 2: MWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                <div class="skeleton-loading"
+                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
+                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="openBillModal('ค่าน้ำ การประปานครหลวง', '215.75', 'ร้านค้า - เลขทะเบียนผู้ใช้น้ำ: 102661234')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-title">ค่าน้ำ การประปานครหลวง</p>
+                  <div class="list-meta mb-sm">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      เลขผู้ใช้น้ำ: 102661234
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      ประเภท: มิเตอร์ร้านค้า
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ชำระเมื่อ: 12 พ.ค. 2569
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">payments</span>
+                      ยอดชำระแล้ว: <strong
+                        style="color: var(--foreground-positive-default); font-weight: 700;">215.75</strong> บาท
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Electricity Meter 3: PEA Paid -->
             <div class="loading-wrapper">
               <div class="list-item skeleton-item" style="pointer-events: none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
@@ -624,6 +752,178 @@
         </div>
 
       </main>
+    </div>
+  </div>
+
+  <!-- Modal: Permissions Management -->
+  <div id="modal-permissions" class="modal-overlay" onclick="closeModal('modal-permissions')">
+    <div class="modal-content" onclick="event.stopPropagation()" style="padding: 0; max-height: 82vh; overflow: hidden; display: flex; flex-direction: column;">
+
+      <!-- Header -->
+      <div style="padding: var(--spacing-lg) var(--spacing-xl); border-bottom: 1px solid var(--stroke-neutral-lighter); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-shrink: 0;">
+        <div>
+          <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); margin: 0 0 2px; color: var(--foreground-neutral-default);">การจัดการสิทธิ์</p>
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.4;">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+        </div>
+        <button onclick="closeModal('modal-permissions')" style="background: var(--background-neutral-subtle); border: none; border-radius: var(--radius-full); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--foreground-neutral-lighter); padding: 0; flex-shrink: 0;">
+          <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div style="overflow-y: auto; padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl); -webkit-overflow-scrolling: touch;">
+
+        <!-- Section: Connected -->
+        <p style="font-size: 11px; font-weight: var(--font-weight-600); color: var(--foreground-neutral-lighter); letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 var(--spacing-md);">เชื่อมต่อแล้ว</p>
+
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl);">
+
+          <!-- ใบอนุญาตขับรถยนต์ -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">directions_car</span></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ใบอนุญาตขับรถยนต์</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการขนส่งทางบก</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- หนังสือเดินทาง -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2');">
+            <div class="list-icon work" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">public</span></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">หนังสือเดินทาง</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการกงสุล</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- บัตรประจำตัวคนพิการ -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-info-light); color: var(--info-40);"><span class="material-symbols-outlined" style="font-size: 20px;">accessible</span></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">บัตรประจำตัวคนพิการ</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- สิทธิการรักษาพยาบาล -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-positive-light); color: var(--foreground-positive-default);"><span class="material-symbols-outlined" style="font-size: 20px;">health_and_safety</span></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สิทธิการรักษาพยาบาล</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ใบสั่งจราจร -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('afef3a10-fea9-4d9a-af39-d37a5e02a998');">
+            <div class="list-icon danger" style="flex-shrink: 0;"><img src="_media/police.webp" alt="Police" class="img-helper-frame circle size-sm"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ใบสั่งจราจร</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">สำนักงานตำรวจแห่งชาติ</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ทะเบียนยานพาหนะ -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">car_tag</span></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ทะเบียนยานพาหนะ</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการขนส่งทางบก</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ค่าไฟ MEA -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e');">
+            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/mea.png" alt="MEA" class="img-helper-frame circle size-sm"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าไฟฟ้า</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การไฟฟ้านครหลวง (MEA)</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ค่าน้ำ MWA -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/mwa.svg" alt="MWA" class="img-helper-frame circle size-sm"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าน้ำประปา</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การประปานครหลวง (MWA)</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ค่าไฟ PEA -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a');">
+            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/pea.png" alt="PEA" class="img-helper-frame circle size-sm"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าไฟฟ้า</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การไฟฟ้าส่วนภูมิภาค (PEA)</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+          <!-- ค่าน้ำ PWA -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/pwa.png" alt="PWA" class="img-helper-frame circle size-sm"></div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าน้ำประปา</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การประปาส่วนภูมิภาค (PWA)</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+
+        </div>
+
+        <!-- Section: Not Connected -->
+        <p style="font-size: 11px; font-weight: var(--font-weight-600); color: var(--foreground-neutral-lighter); letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 var(--spacing-md);">ยังไม่ได้เชื่อมต่อ</p>
+
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+
+          <!-- บัตรสวัสดิการแห่งรัฐ -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('d4e5f6a7-b8c9-0123-defa-012345678901');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" style="font-size: 20px;">credit_card</span>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">บัตรสวัสดิการแห่งรัฐ</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมบัญชีกลาง กระทรวงการคลัง</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+          <!-- ประกันสังคม -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e5f6a7b8-c9d0-1234-efab-123456789012');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" style="font-size: 20px;">shield_person</span>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ประกันสังคม</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">สำนักงานประกันสังคม</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+          <!-- ที่ดินและสิ่งปลูกสร้าง -->
+          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f6a7b8c9-d0e1-2345-fabc-234567890123');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" style="font-size: 20px;">home_work</span>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ที่ดินและสิ่งปลูกสร้าง</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมที่ดิน</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 
