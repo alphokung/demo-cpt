@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>กองทุนบำเหน็จบำนาญข้าราชการ — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Fund balance table ── */
+    .fund-table { width: 100%; border-collapse: collapse; }
+    .fund-table th {
+      padding: 9px var(--spacing-md);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-600);
+      text-align: left; white-space: nowrap;
+    }
+    .fund-table th:not(:first-child),
+    .fund-table td:not(:first-child) { text-align: right; }
+    .fund-table td {
+      padding: 10px var(--spacing-md);
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-default);
+    }
+    .fund-table .row-group td {
+      background: var(--background-neutral-subtle);
+      font-weight: var(--font-weight-600);
+      font-size: var(--font-size-body-s);
+      padding: 7px var(--spacing-md);
+    }
+    .fund-table .row-total td {
+      background: var(--background-neutral-light);
+      font-weight: var(--font-weight-700);
+      border-top: 2px solid var(--stroke-neutral-lighter);
+      border-bottom: none;
+    }
+    .fund-table td.amount { font-variant-numeric: tabular-nums; }
+
+    /* ── Balance highlight ── */
+    .balance-hero {
+      text-align: center;
+      padding: var(--spacing-lg) 0 var(--spacing-xl);
+    }
+    .balance-hero-label {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0 0 var(--spacing-xs);
+    }
+    .balance-hero-amount {
+      font-size: 40px; font-weight: var(--font-weight-700);
+      color: var(--primary-40); margin: 0; line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .balance-hero-unit {
+      font-size: var(--font-size-body-m); color: var(--foreground-neutral-lighter);
+      margin: var(--spacing-xs) 0 0;
+    }
+    .balance-stat-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    .balance-stat-cell {
+      text-align: center; padding: var(--spacing-md);
+      border-radius: var(--radius-lg); background: var(--background-neutral-subtle);
+    }
+    .balance-stat-label { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0 0 4px; }
+    .balance-stat-value { font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0; line-height: 1.2; }
+    .balance-stat-unit  { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 2px 0 0; }
+
+    /* ── Portfolio bar ── */
+    .alloc-bar-track {
+      height: 10px; border-radius: var(--radius-full);
+      background: var(--background-neutral-light);
+      overflow: hidden; margin-top: var(--spacing-xs);
+    }
+    .alloc-bar-fill { height: 100%; border-radius: var(--radius-full); }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <main>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="title-block">
+            <h2 class="text-header">กองทุนบำเหน็จบำนาญข้าราชการ</h2>
+            <p class="text-subheader">ข้อมูลจากกองทุนบำเหน็จบำนาญข้าราชการ (กบข.)</p>
+          </div>
+        </div>
+
+        <!-- ── Welcome Card ── -->
+        <div class="card welcome-card welcome-card--green mb-xl">
+          <h2>นายสมชาย ใจดี</h2>
+          <p>เลขที่สมาชิก กบข. 1134831</p>
+          <p>กองทุนบำเหน็จบำนาญข้าราชการ (กบข.)</p>
+        </div>
+
+        <!-- ── Card 1: Member Info ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--warning-40);"></div>
+            <h3 class="section-title">ข้อมูลส่วนบุคคลสมาชิก</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">เลขประจำตัวประชาชน</span>
+              <span class="details-value">1-1002-00345-67-8</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">วันที่เข้าเป็นสมาชิก</span>
+              <span class="details-value">1 ตุลาคม 2553</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ระยะเวลาเป็นสมาชิก</span>
+              <span class="details-value">15 ปี 7 เดือน</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ประเภทข้าราชการ</span>
+              <span class="details-value">ข้าราชการพลเรือนสามัญ</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ประเภทสะสมเงิน</span>
+              <span class="details-value">ประเภทสะสม (3% ของเงินเดือน)</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">การออมเงินสะสมส่วนเพิ่ม</span>
+              <span class="details-value">0% ของเงินเดือน</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">แผนการลงทุนปัจจุบัน</span>
+              <span class="details-value">แผนลงทุนพื้นฐานทั่วไป</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Card 2: Balance Summary ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">ยอดเงินรวม</h3>
+          </div>
+
+          <!-- Hero total -->
+          <div class="balance-hero">
+            <p class="balance-hero-label">ยอดเงินรวมทั้งหมด ณ 26 พ.ค. 2569</p>
+            <p class="balance-hero-amount">795,369.00</p>
+            <p class="balance-hero-unit">บาท</p>
+          </div>
+
+          <!-- 2-col split -->
+          <div class="balance-stat-grid">
+            <div class="balance-stat-cell">
+              <p class="balance-stat-label">เงินสะสมของท่าน</p>
+              <p class="balance-stat-value">397,684.50</p>
+              <p class="balance-stat-unit">บาท</p>
+            </div>
+            <div class="balance-stat-cell">
+              <p class="balance-stat-label">เงินจากภาครัฐ</p>
+              <p class="balance-stat-value">397,684.50</p>
+              <p class="balance-stat-unit">บาท</p>
+            </div>
+          </div>
+
+          <!-- Return breakdown -->
+          <div class="details-list" style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-lg); margin-top: 0;">
+            <div class="details-item">
+              <span class="details-label">เงินต้นรวม</span>
+              <span class="details-value" style="font-weight: var(--font-weight-600);">624,900.00 บาท</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ผลประโยชน์สะสม</span>
+              <span class="details-value" style="color: var(--foreground-positive-default); font-weight: var(--font-weight-600);">+170,469.00 บาท</span>
+              <span class="details-subvalue" style="color: var(--foreground-positive-default);">ผลตอบแทน +27.28% จากเงินต้น</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Card 3: Balance Detail ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">ยอดเงินปัจจุบัน</h3>
+          </div>
+
+          <div class="details-list" style="margin-bottom: var(--spacing-lg);">
+            <div class="details-item">
+              <span class="details-label">เลขบัญชี</span>
+              <span class="details-value">1134831</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ประเภทสมาชิก</span>
+              <span class="details-value">สมาชิก</span>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--stroke-neutral-lighter);">
+            <table class="fund-table">
+              <thead>
+                <tr style="background: var(--primary-40); color: #fff;">
+                  <th style="background: var(--primary-40); color: #fff; border-radius: 0;">รายการ</th>
+                  <th style="background: var(--primary-40); color: #fff;">เงินต้น (บาท)</th>
+                  <th style="background: var(--primary-40); color: #fff;">ผลประโยชน์ (บาท)</th>
+                  <th style="background: var(--primary-40); color: #fff;">รวม (บาท)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-group">
+                  <td colspan="4">เงินสะสมของท่าน</td>
+                </tr>
+                <tr>
+                  <td>เงินสะสม</td>
+                  <td class="amount">312,450.00</td>
+                  <td class="amount">85,234.50</td>
+                  <td class="amount">397,684.50</td>
+                </tr>
+                <tr>
+                  <td>เงินสะสมส่วนเพิ่ม</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                </tr>
+                <tr class="row-group">
+                  <td colspan="4">เงินจากภาครัฐ</td>
+                </tr>
+                <tr>
+                  <td>เงินประเดิม</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                </tr>
+                <tr>
+                  <td>เงินสมทบ</td>
+                  <td class="amount">312,450.00</td>
+                  <td class="amount">85,234.50</td>
+                  <td class="amount">397,684.50</td>
+                </tr>
+                <tr>
+                  <td>เงินชดเชย</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                  <td class="amount">0.00</td>
+                </tr>
+                <tr class="row-total">
+                  <td>รวมทั้งหมด</td>
+                  <td class="amount">624,900.00</td>
+                  <td class="amount">170,469.00</td>
+                  <td class="amount">795,369.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: var(--spacing-md) 0 var(--spacing-xs); line-height: 1.65;">
+            * เงินประเดิม + เงินชดเชย เป็นเงินที่ลงทุนในแผนหลักและจะจ่ายให้สมาชิกที่ออกจากราชการซึ่งมีสิทธิรับและเลือกรับบำนาญเท่านั้น
+          </p>
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">
+            ยอดเงิน ณ วันที่ 26 พฤษภาคม 2569
+          </p>
+        </div>
+
+        <!-- ── Card 4: Investment Plan ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+            <h3 class="section-title">จำนวนเงินแยกตามแผนลงทุน</h3>
+          </div>
+
+          <div style="overflow-x: auto; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--stroke-neutral-lighter); margin-bottom: var(--spacing-xl);">
+            <table class="fund-table">
+              <thead>
+                <tr>
+                  <th style="background: var(--secondary-40-main); color: #fff;">แผนการลงทุน</th>
+                  <th style="background: var(--secondary-40-main); color: #fff;">จำนวนหน่วย (หน่วย)</th>
+                  <th style="background: var(--secondary-40-main); color: #fff;">มูลค่าต่อหน่วย (บาท)</th>
+                  <th style="background: var(--secondary-40-main); color: #fff;">รวม (บาท)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>แผนลงทุนพื้นฐานทั่วไป</td>
+                  <td class="amount">62,481.84</td>
+                  <td class="amount">12.7296</td>
+                  <td class="amount">795,369.00</td>
+                </tr>
+                <tr class="row-total">
+                  <td>รวม</td>
+                  <td class="amount">62,481.84</td>
+                  <td class="amount">—</td>
+                  <td class="amount">795,369.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Portfolio allocation -->
+          <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+            <h3 class="section-title">สัดส่วนการลงทุน — แผนลงทุนพื้นฐานทั่วไป</h3>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+
+            <!-- Stocks 30% -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                <span style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-default); font-weight: var(--font-weight-500);">หุ้นในประเทศและต่างประเทศ</span>
+                <span style="font-size: var(--font-size-body-s); font-weight: var(--font-weight-600); color: var(--foreground-neutral-default);">30%</span>
+              </div>
+              <div class="alloc-bar-track">
+                <div class="alloc-bar-fill" style="width: 30%; background: var(--secondary-40-main);"></div>
+              </div>
+            </div>
+
+            <!-- Fixed income 60% -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                <span style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-default); font-weight: var(--font-weight-500);">ตราสารหนี้และเงินฝาก</span>
+                <span style="font-size: var(--font-size-body-s); font-weight: var(--font-weight-600); color: var(--foreground-neutral-default);">60%</span>
+              </div>
+              <div class="alloc-bar-track">
+                <div class="alloc-bar-fill" style="width: 60%; background: var(--primary-40);"></div>
+              </div>
+            </div>
+
+            <!-- Other 10% -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                <span style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-default); font-weight: var(--font-weight-500);">สินทรัพย์ทางเลือก</span>
+                <span style="font-size: var(--font-size-body-s); font-weight: var(--font-weight-600); color: var(--foreground-neutral-default);">10%</span>
+              </div>
+              <div class="alloc-bar-track">
+                <div class="alloc-bar-fill" style="width: 10%; background: var(--warning-40);"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Source note -->
+        <div class="card-flat" style="text-align: center; padding: var(--spacing-md) 0 var(--spacing-4xl);">
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); line-height: 1.6;">
+            <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: -3px;">verified</span>
+            ข้อมูลจากกองทุนบำเหน็จบำนาญข้าราชการ (กบข.)<br>
+            อัปเดตล่าสุด: 26 พฤษภาคม 2569 เวลา 09:00 น.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
