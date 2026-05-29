@@ -5183,4 +5183,98 @@ code {
   .back-to-top--raised { bottom: var(--spacing-3xl); }
 }
 
+/* ── Dashboard list-item card hierarchy ── */
+.list-item-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--foreground-neutral-lighter);
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+.list-item-hero {
+  font-size: var(--font-size-title-m);
+  font-weight: var(--font-weight-700);
+  color: var(--foreground-neutral-default);
+  margin: 0 0 var(--spacing-xxs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-item-hero--positive { color: var(--foreground-positive-default); }
+.list-item-hero--negative { color: var(--foreground-negative-default); }
+
+/* ── Settings button (welcome banner) ── */
+.welcome-settings-btn {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255,255,255,0.85);
+  padding: 0;
+}
+
+/* ── Permissions modal ── */
+.section-label-xs {
+  font-size: 11px;
+  font-weight: var(--font-weight-600);
+  color: var(--foreground-neutral-lighter);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0 0 var(--spacing-md);
+}
+.perm-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background: var(--background-neutral-subtle);
+  cursor: pointer;
+}
+.perm-item-body { flex: 1; min-width: 0; }
+.perm-item-title {
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-600);
+  margin: 0;
+  color: var(--foreground-neutral-default);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.perm-item-sub {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+}
+.perm-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.perm-icon-check {
+  font-size: 22px;
+  color: var(--foreground-positive-default);
+  flex-shrink: 0;
+  font-variation-settings: 'FILL' 1;
+}
+.perm-icon-pending {
+  font-size: 22px;
+  color: var(--foreground-warning-default);
+  flex-shrink: 0;
+  font-variation-settings: 'FILL' 0;
+}
+
+/* ── Skeleton helpers ── */
+.skeleton-badge-sm { width: 60px; height: 18px; border-radius: var(--radius-sm); }
+.skeleton-icon-md  { width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0; }
+.skeleton-body-gap { gap: var(--spacing-sm); margin-left: var(--spacing-md); }
+.skeleton-dot-sm   { width: 20px; height: 20px; flex-shrink: 0; }
+
 /*# sourceMappingURL=styles.css.map */

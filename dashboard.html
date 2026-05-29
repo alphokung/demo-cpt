@@ -76,8 +76,8 @@
               style="height: 14px; width: 280px; display: block; background: rgba(255, 255, 255, 0.15) !important; border-radius: var(--radius-sm);"></span>
           </div>
           <div class="welcome-banner loaded-item" style="display: none; position: relative;">
-            <button onclick="openModal('modal-permissions')" aria-label="ตั้งค่า" style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.25); border-radius: var(--radius-full); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.85); padding: 0;">
-              <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+            <button onclick="openModal('modal-permissions')" aria-label="ตั้งค่า" class="welcome-settings-btn">
+              <span class="material-symbols-outlined" class="perm-icon">settings</span>
             </button>
             <p class="welcome-banner-greeting" id="welcome-greeting">สวัสดี</p>
             <p class="welcome-banner-name">คุณสมชาย ใจดี</p>
@@ -95,14 +95,14 @@
             <div class="loading-wrapper">
               <div class="list-item skeleton-item" style="pointer-events: none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                  class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
                   <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
                   <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
                 </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                 onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
@@ -111,8 +111,8 @@
                   <span class="material-symbols-outlined">directions_car</span>
                 </div>
                 <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ใบอนุญาตเลขที่: 12345678</p>
+                  <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                  <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
                   <div class="list-meta">
                     <div class="list-meta-item">
                       <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
@@ -133,14 +133,14 @@
             <div class="loading-wrapper">
               <div class="list-item skeleton-item" style="pointer-events: none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                  class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
                   <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
                   <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
                 </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                 onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
@@ -149,8 +149,8 @@
                   <span class="material-symbols-outlined">public</span>
                 </div>
                 <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">หนังสือเดินทาง (Passport)</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">เลขหนังสือเดินทาง: A1234567</p>
+                  <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                  <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
                   <div class="list-meta">
                     <div class="list-meta-item">
                       <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
@@ -171,14 +171,14 @@
             <div class="loading-wrapper">
               <div class="list-item skeleton-item" style="pointer-events: none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
+                  class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
                   <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
                   <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
                 </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                 onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
@@ -187,7 +187,8 @@
                   <span class="material-symbols-outlined">accessible</span>
                 </div>
                 <div class="list-body">
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" style="color: var(--foreground-positive-default);">บัตรประจำตัวคนพิการ</p>
+                  <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                  <p class="list-item-hero list-item-hero--positive">ใช้งานได้</p>
                   <div class="list-meta">
                     <div class="list-meta-item">
                       <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
@@ -205,6 +206,336 @@
             </div>
           </div>
 
+        </div>
+
+            <!-- Traffic Fines: 2 tickets, 1 unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                <div class="skeleton-loading skeleton-icon-md"></div>
+                <div class="list-body skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('afef3a10-fea9-4d9a-af39-d37a5e02a998')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ 1 ใบ</span>
+                <div class="list-icon danger">
+                  <img src="_media/police.webp" alt="Police Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ใบสั่งจราจร</p>
+                  <p class="list-item-hero list-item-hero--negative">2 ใบ (ค้างชำระ 1 · ชำระแล้ว 1)</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+        <!-- 4. Assets -->
+        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
+          <p class="list-section-title">ทรัพย์สินของคุณ</p>
+          <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+          <div class="cert-list">
+            <!-- Electricity Meter 1: MEA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
+                  <p class="list-item-hero">เลขผู้ใช้ไฟ: 020012345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+
+                  <div class="list-meta">
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 1: MWA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
+                  <p class="list-item-hero">เลขผู้ใช้น้ำ: 102548976</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+       
+
+            <!-- Water Meter 2: MWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
+                  <p class="list-item-hero">102661234</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      มิเตอร์ร้านค้า
+                    </div>
+                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Electricity Meter 3: PEA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon covid">
+                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
+                  <p class="list-item-hero">020087654321</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      มิเตอร์ร้านค้า
+                    </div>
+                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 2: PWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon driving">
+                  <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
+                  <p class="list-item-hero">เลขผู้ใช้น้ำ: 552109876</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+
+            <!-- Honda Civic -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถยนต์</p>
+                  <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                      <span>รุ่นรถ: Honda Civic</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Yamaha Grand Filano -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">two_wheeler</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถจักรยานยนต์</p>
+                  <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                      <span>รุ่นรถ: Yamaha Grand Filano</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+          
+          </div>
         </div>
 
 
@@ -443,304 +774,7 @@
           </div>
         </div>
 
-        <!-- 4. Assets -->
-        <div class="list-section" style="margin-bottom: var(--spacing-2xl);">
-          <p class="list-section-title">ทรัพย์สินของคุณ</p>
-          <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
-
-          <div class="cert-list">
-            <!-- Electricity Meter 1: MEA Unpaid -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
-                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
-                <div class="list-icon covid">
-                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">เลขผู้ใช้ไฟ: 020012345678</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">home</span>
-                      มิเตอร์บ้านพักอาศัย
-                    </div>
-                  </div>
-
-                  <div class="list-meta">
-
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      ข้อมูล ณ 29 พ.ค. 2569
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-            <!-- Water Meter 1: MWA Unpaid -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
-                <span class="list-badge danger list-badge--corner">ค้างชำระ</span>
-                <div class="list-icon driving">
-                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">มิเตอร์น้ำ การประปานครหลวง</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">เลขผู้ใช้น้ำ: 102548976</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">home</span>
-                      มิเตอร์บ้านพักอาศัย
-                    </div>                    
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      ข้อมูล ณ 29 พ.ค. 2569
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-       
-
-            <!-- Water Meter 2: MWA Paid -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
-                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
-                <div class="list-icon driving">
-                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">มิเตอร์น้ำ การประปานครหลวง</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">102661234</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
-                      มิเตอร์ร้านค้า
-                    </div>
-                    
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      ข้อมูล ณ 29 พ.ค. 2569
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-            <!-- Electricity Meter 3: PEA Paid -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
-                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
-                <div class="list-icon covid">
-                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">020087654321</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
-                      มิเตอร์ร้านค้า
-                    </div>
-                    
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      ข้อมูล ณ 29 พ.ค. 2569
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-            <!-- Water Meter 2: PWA Paid -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
-                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
-                <div class="list-icon driving">
-                  <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">เลขผู้ใช้น้ำ: 552109876</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">home</span>
-                      มิเตอร์บ้านพักอาศัย
-                    </div>                    
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      ข้อมูล ณ 29 พ.ค. 2569
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-
-            <!-- Honda Civic -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
-                <div class="list-icon driving">
-                  <span class="material-symbols-outlined">directions_car</span>
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">รถยนต์</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ทะเบียน กข 1234 กทม.</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
-                      <span>รุ่นรถ: Honda Civic</span>
-                    </div>
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                      <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
-                    </div>
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-            <!-- Yamaha Grand Filano -->
-            <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
-                <span class="list-badge skeleton-loading list-badge--corner"
-                  style="width: 60px; height: 18px; border-radius: var(--radius-sm);"></span>
-                <div class="skeleton-loading"
-                  style="width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0;"></div>
-                <div class="list-body" style="gap: var(--spacing-sm); margin-left: var(--spacing-md);">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
-                </div>
-                <div class="skeleton-loading skeleton-circle" style="width: 20px; height: 20px; flex-shrink: 0;"></div>
-              </div>
-              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
-                <div class="list-icon driving">
-                  <span class="material-symbols-outlined">two_wheeler</span>
-                </div>
-                <div class="list-body">
-                  <p style="font-size: 12px; font-weight: 400; color: var(--foreground-neutral-lighter); margin: 0 0 2px; line-height: 1.3;">รถจักรยานยนต์</p>
-                  <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); color: var(--foreground-neutral-default); margin: 0 0 var(--spacing-xxs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ทะเบียน 1กข 5678 ชม.</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
-                      <span>รุ่นรถ: Yamaha Grand Filano</span>
-                    </div>
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                      <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
-                    </div>
-                  </div>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
-          
-          </div>
-        </div>
+        
 
 
 
@@ -771,140 +805,140 @@
       <div style="overflow-y: auto; padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl); -webkit-overflow-scrolling: touch;">
 
         <!-- Section: Connected -->
-        <p style="font-size: 11px; font-weight: var(--font-weight-600); color: var(--foreground-neutral-lighter); letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 var(--spacing-md);">เชื่อมต่อแล้ว</p>
+        <p class="section-label-xs">เชื่อมต่อแล้ว</p>
 
         <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl);">
 
           <!-- ใบอนุญาตขับรถยนต์ -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">directions_car</span></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ใบอนุญาตขับรถยนต์</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการขนส่งทางบก</p>
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">directions_car</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ใบอนุญาตขับรถยนต์</p>
+              <p class="perm-item-sub">กรมการขนส่งทางบก</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- หนังสือเดินทาง -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2');">
-            <div class="list-icon work" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">public</span></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">หนังสือเดินทาง</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการกงสุล</p>
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2');">
+            <div class="list-icon work" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">public</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">หนังสือเดินทาง</p>
+              <p class="perm-item-sub">กรมการกงสุล</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- บัตรประจำตัวคนพิการ -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706');">
-            <div class="list-icon" style="flex-shrink: 0; background: var(--background-info-light); color: var(--info-40);"><span class="material-symbols-outlined" style="font-size: 20px;">accessible</span></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">บัตรประจำตัวคนพิการ</p>
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-info-light); color: var(--info-40);"><span class="material-symbols-outlined" class="perm-icon">accessible</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">บัตรประจำตัวคนพิการ</p>
               <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- สิทธิการรักษาพยาบาล -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12');">
-            <div class="list-icon" style="flex-shrink: 0; background: var(--background-positive-light); color: var(--foreground-positive-default);"><span class="material-symbols-outlined" style="font-size: 20px;">health_and_safety</span></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สิทธิการรักษาพยาบาล</p>
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-positive-light); color: var(--foreground-positive-default);"><span class="material-symbols-outlined" class="perm-icon">health_and_safety</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">สิทธิการรักษาพยาบาล</p>
               <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           
           <!-- ทะเบียนยานพาหนะ -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" style="font-size: 20px;">car_tag</span></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ทะเบียนยานพาหนะ</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมการขนส่งทางบก</p>
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">car_tag</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ทะเบียนยานพาหนะ</p>
+              <p class="perm-item-sub">กรมการขนส่งทางบก</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- ค่าไฟ MEA -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e');">
             <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/mea.png" alt="MEA" class="img-helper-frame circle size-sm"></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าไฟฟ้า</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การไฟฟ้านครหลวง (MEA)</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าไฟฟ้า</p>
+              <p class="perm-item-sub">การไฟฟ้านครหลวง (MEA)</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- ค่าน้ำ MWA -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f');">
             <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/mwa.svg" alt="MWA" class="img-helper-frame circle size-sm"></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าน้ำประปา</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การประปานครหลวง (MWA)</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าน้ำประปา</p>
+              <p class="perm-item-sub">การประปานครหลวง (MWA)</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- ค่าไฟ PEA -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a');">
             <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/pea.png" alt="PEA" class="img-helper-frame circle size-sm"></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าไฟฟ้า</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การไฟฟ้าส่วนภูมิภาค (PEA)</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าไฟฟ้า</p>
+              <p class="perm-item-sub">การไฟฟ้าส่วนภูมิภาค (PEA)</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- ค่าน้ำ PWA -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe');">
             <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/pwa.png" alt="PWA" class="img-helper-frame circle size-sm"></div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ค่าน้ำประปา</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">การประปาส่วนภูมิภาค (PWA)</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าน้ำประปา</p>
+              <p class="perm-item-sub">การประปาส่วนภูมิภาค (PWA)</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 22px; color: var(--foreground-positive-default); flex-shrink: 0; font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
         </div>
 
         <!-- Section: Not Connected -->
-        <p style="font-size: 11px; font-weight: var(--font-weight-600); color: var(--foreground-neutral-lighter); letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 var(--spacing-md);">ยังไม่ได้เชื่อมต่อ</p>
+        <p class="section-label-xs">ยังไม่ได้เชื่อมต่อ</p>
 
         <div style="display: flex; flex-direction: column; gap: 6px;">
 
           <!-- บัตรสวัสดิการแห่งรัฐ -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('d4e5f6a7-b8c9-0123-defa-012345678901');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('d4e5f6a7-b8c9-0123-defa-012345678901');">
             <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
-              <span class="material-symbols-outlined" style="font-size: 20px;">credit_card</span>
+              <span class="material-symbols-outlined" class="perm-icon">credit_card</span>
             </div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">บัตรสวัสดิการแห่งรัฐ</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมบัญชีกลาง กระทรวงการคลัง</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">บัตรสวัสดิการแห่งรัฐ</p>
+              <p class="perm-item-sub">กรมบัญชีกลาง กระทรวงการคลัง</p>
             </div>
             <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
           </div>
 
           <!-- ประกันสังคม -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e5f6a7b8-c9d0-1234-efab-123456789012');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e5f6a7b8-c9d0-1234-efab-123456789012');">
             <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
-              <span class="material-symbols-outlined" style="font-size: 20px;">shield_person</span>
+              <span class="material-symbols-outlined" class="perm-icon">shield_person</span>
             </div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ประกันสังคม</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">สำนักงานประกันสังคม</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ประกันสังคม</p>
+              <p class="perm-item-sub">สำนักงานประกันสังคม</p>
             </div>
             <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
           </div>
 
           <!-- ที่ดินและสิ่งปลูกสร้าง -->
-          <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-lg); background: var(--background-neutral-subtle); cursor: pointer;" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f6a7b8c9-d0e1-2345-fabc-234567890123');">
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f6a7b8c9-d0e1-2345-fabc-234567890123');">
             <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
-              <span class="material-symbols-outlined" style="font-size: 20px;">home_work</span>
+              <span class="material-symbols-outlined" class="perm-icon">home_work</span>
             </div>
-            <div style="flex: 1; min-width: 0;">
-              <p style="font-size: var(--font-size-body-m); font-weight: var(--font-weight-600); margin: 0; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ที่ดินและสิ่งปลูกสร้าง</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0;">กรมที่ดิน</p>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ที่ดินและสิ่งปลูกสร้าง</p>
+              <p class="perm-item-sub">กรมที่ดิน</p>
             </div>
             <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
           </div>
