@@ -65,6 +65,28 @@
           </div>
         </div>
 
+        <!-- Status Banner 2: Motorcycle Tax -->
+        <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
+          <div class="status-banner expiring skeleton-item" style="pointer-events: none; opacity: 0.6;">
+            <div class="skeleton-loading skeleton-circle"
+              style="width: 24px; height: 24px; flex-shrink: 0; background: rgba(0,0,0,0.1) !important;"></div>
+            <div class="status-banner-text"
+              style="width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs);">
+              <div class="skeleton-loading skeleton-text"
+                style="height: 16px; width: 40%; background: rgba(0,0,0,0.1) !important; margin: 0;"></div>
+              <div class="skeleton-loading skeleton-text"
+                style="height: 12px; width: 60%; background: rgba(0,0,0,0.06) !important; margin: 0;"></div>
+            </div>
+          </div>
+          <div class="status-banner expiring loaded-item" style="display: none;">
+            <span class="material-symbols-outlined">schedule</span>
+            <div class="status-banner-text">
+              <p class="status-banner-title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+              <p class="status-banner-subtitle">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Welcome Banner -->
         <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
           <div class="welcome-banner skeleton-item" style="pointer-events: none; opacity: 0.85;">
@@ -432,7 +454,7 @@
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                 onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
                 <div class="list-icon driving">
                   <span class="material-symbols-outlined">two_wheeler</span>
                 </div>
