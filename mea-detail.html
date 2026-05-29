@@ -207,17 +207,21 @@
 <body>
   <div class="app-container">
     <div class="main-layout">
-      <main>
 
-        <div class="page-header">
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
           <button class="btn-back-circle" onclick="goBack()" aria-label="กลับ">
             <span class="material-symbols-outlined">arrow_back</span>
           </button>
-          <div class="title-block">
-            <h2 class="text-header" id="detail-page-title">รายละเอียดเครื่องวัด</h2>
-            <p class="text-subheader">การไฟฟ้านครหลวง (กฟน.)</p>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">bolt</span>
           </div>
+          <p class="top-nav-bar-title" id="detail-page-title">รายละเอียดเครื่องวัด</p>
         </div>
+      </div>
+
+      <main>
 
         <!-- ── Info card ── -->
         <div class="card mb-xl fade-in">
