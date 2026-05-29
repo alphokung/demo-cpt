@@ -79,7 +79,7 @@
             <button onclick="openModal('modal-permissions')" aria-label="ตั้งค่า" style="position: absolute; top: var(--spacing-md); right: var(--spacing-md); background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.25); border-radius: var(--radius-full); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.85); padding: 0;">
               <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
             </button>
-            <p class="welcome-banner-greeting">สวัสดี</p>
+            <p class="welcome-banner-greeting" id="welcome-greeting">สวัสดี</p>
             <p class="welcome-banner-name">คุณสมชาย ใจดี</p>
             <p class="welcome-banner-sub">เลขประจำตัวประชาชน: 1-1002-00345-67-8</p>
           </div>
@@ -1181,6 +1181,18 @@
   <script src="https://cpt.superapps-th.cloud/cportal/sdk/iu/v5/sdk.js"></script>
 
   <!-- Back to top -->
+  <script>
+    (function() {
+      var h = new Date().getHours();
+      var greeting = h >= 5 && h < 12  ? 'สวัสดีตอนเช้า'
+                   : h >= 12 && h < 17 ? 'สวัสดีตอนกลางวัน'
+                   : h >= 17 && h < 21 ? 'สวัสดีตอนเย็น'
+                   :                     'สวัสดีตอนกลางคืน';
+      var el = document.getElementById('welcome-greeting');
+      if (el) el.textContent = greeting;
+    })();
+  </script>
+
   <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="material-symbols-outlined">arrow_upward</span>
   </button>
