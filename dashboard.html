@@ -43,42 +43,16 @@
           </div>
         </div>
 
-        <!-- Status Banner -->
-        <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
-          <div class="status-banner expiring skeleton-item" style="pointer-events: none; opacity: 0.6;">
-            <div class="skeleton-loading skeleton-circle"
-              style="width: 24px; height: 24px; flex-shrink: 0; background: rgba(0,0,0,0.1) !important;"></div>
-            <div class="status-banner-text"
-              style="width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs);">
-              <div class="skeleton-loading skeleton-text"
-                style="height: 16px; width: 40%; background: rgba(0,0,0,0.1) !important; margin: 0;"></div>
-              <div class="skeleton-loading skeleton-text"
-                style="height: 12px; width: 60%; background: rgba(0,0,0,0.06) !important; margin: 0;"></div>
-            </div>
-          </div>
-          <div class="status-banner expiring loaded-item" style="display: none;">
+        <!-- Status Banners (shown after page load completes) -->
+        <div id="status-banners" style="display:none; flex-direction:column; gap:var(--spacing-sm); margin-bottom:var(--spacing-xl);">
+          <div class="status-banner expiring">
             <span class="material-symbols-outlined">warning</span>
             <div class="status-banner-text">
               <p class="status-banner-title">หนังสือเดินทางใกล้หมดอายุ</p>
               <p class="status-banner-subtitle">กรุณาดำเนินการต่ออายุเอกสารภายใน 30 วัน</p>
             </div>
           </div>
-        </div>
-
-        <!-- Status Banner 2: Motorcycle Tax -->
-        <div class="loading-wrapper" style="margin-bottom: var(--spacing-xl);">
-          <div class="status-banner expiring skeleton-item" style="pointer-events: none; opacity: 0.6;">
-            <div class="skeleton-loading skeleton-circle"
-              style="width: 24px; height: 24px; flex-shrink: 0; background: rgba(0,0,0,0.1) !important;"></div>
-            <div class="status-banner-text"
-              style="width: 100%; display: flex; flex-direction: column; gap: var(--spacing-xs);">
-              <div class="skeleton-loading skeleton-text"
-                style="height: 16px; width: 40%; background: rgba(0,0,0,0.1) !important; margin: 0;"></div>
-              <div class="skeleton-loading skeleton-text"
-                style="height: 12px; width: 60%; background: rgba(0,0,0,0.06) !important; margin: 0;"></div>
-            </div>
-          </div>
-          <div class="status-banner expiring loaded-item" style="display: none;">
+          <div class="status-banner expiring">
             <span class="material-symbols-outlined">schedule</span>
             <div class="status-banner-text">
               <p class="status-banner-title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
@@ -903,7 +877,18 @@
 
   <script>
     function initLoading() {
-      document.querySelectorAll('.loading-wrapper').forEach(wrapper => {
+      const wrappers = document.querySelectorAll('.loading-wrapper');
+      let remaining = wrappers.length;
+
+      function onWrapperDone() {
+        remaining--;
+        if (remaining === 0) {
+          const sb = document.getElementById('status-banners');
+          if (sb) sb.style.display = 'flex';
+        }
+      }
+
+      wrappers.forEach(wrapper => {
         const skeleton = wrapper.querySelector('.skeleton-item');
         const loaded = wrapper.querySelector('.loaded-item');
 
@@ -915,9 +900,8 @@
 
         setTimeout(() => {
           if (skeleton) skeleton.style.display = 'none';
-          if (loaded) {
-            loaded.style.display = '';
-          }
+          if (loaded) loaded.style.display = '';
+          onWrapperDone();
         }, randomDelay);
       });
     }
