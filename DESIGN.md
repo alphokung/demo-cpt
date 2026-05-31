@@ -14,7 +14,7 @@
 | Primary language | Thai (th) |
 | Stack | HTML5 · SCSS (compiled) · Vanilla JS (no bundler, no framework) |
 | Entry point | `index.html` |
-| Style source | `styles.scss` → `styles.css` (compiled, DO NOT edit the CSS) |
+| Style source | `styles.css` (edit directly — no Sass compilation step) |
 | Icons | Material Symbols Outlined (Google CDN, variable font) |
 | Font | Anuphan (Google Fonts, weights 100–800) |
 
@@ -104,6 +104,21 @@ Every page must use this exact shell. Do not omit any element.
 <body>
   <div class="app-container">
     <div class="main-layout">
+
+      <!-- Top Nav Bar (outside <main> — spans full width) -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <!-- Optional back button -->
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">ICON_NAME</span>
+          </div>
+          <p class="top-nav-bar-title">ชื่อหน้า</p>
+        </div>
+      </div>
+
       <main>
 
         <!-- page content goes here -->
@@ -116,6 +131,27 @@ Every page must use this exact shell. Do not omit any element.
       <!-- action buttons -->
     </div>
   </div>
+
+  <!-- Back to top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- Dynamic Thai date for source-note-time -->
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+               'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+              ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+              String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+    })();
+  </script>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
 </body>
 </html>
 ```
@@ -132,8 +168,55 @@ For **component demo pages** (inside `components/`), adjust the stylesheet path 
 body
 └── .app-container          max-width:100%, flex-direction:column
     └── .main-layout        flex:1, min-height:100vh
+        ├── .top-nav-bar    full-width sticky header (100vw)
+        │   └── .top-nav-bar-content  max-width:1100px, same padding as main
         └── main            padding:16px (mobile) → 32px (desktop), max-width:1100px (desktop)
 ```
+
+### Top Nav Bar
+
+The page-level navigation header. Must be placed **inside `.main-layout` but BEFORE `<main>`** so it spans 100% viewport width while its content aligns with the page body.
+
+```html
+<!-- Without back button -->
+<div class="top-nav-bar">
+  <div class="top-nav-bar-content">
+    <div class="top-nav-bar-icon">
+      <span class="material-symbols-outlined">ICON</span>
+    </div>
+    <p class="top-nav-bar-title">ชื่อหน้า</p>
+  </div>
+</div>
+
+<!-- With back button -->
+<div class="top-nav-bar">
+  <div class="top-nav-bar-content">
+    <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <div class="top-nav-bar-icon">
+      <span class="material-symbols-outlined">ICON</span>
+    </div>
+    <p class="top-nav-bar-title">ชื่อหน้า</p>
+  </div>
+</div>
+```
+
+**Icon choices by page type:**
+
+| Page type | Icon |
+|-----------|------|
+| Traffic tickets | `local_police` |
+| Documents (passport, ID) | `badge` |
+| Vehicle | `directions_car` |
+| Medical | `medical_information` |
+| Electricity | `bolt` |
+| Pension / fund | `account_balance` |
+| Credit / finance | `credit_score` |
+| Welfare | `accessible` |
+| Driving score | `speed` |
+| Settings / components | `design_services` |
+| Personal dashboard | `person` |
 
 ### Breakpoints
 
@@ -191,28 +274,35 @@ The fundamental content container. Use `.card` for any grouped section.
 </div>
 ```
 
-### Page header with back button
+### List item card hierarchy (passport style)
+
+Every list-item card uses a two-level text hierarchy:
 
 ```html
-<div class="page-header">
-  <a href="../components.html" class="btn-back-circle" title="ย้อนกลับ">
-    <span class="material-symbols-outlined">arrow_back</span>
-  </a>
-  <div class="title-block">
-    <h2 class="text-header">Page Title</h2>
-    <p class="text-subheader">Sub-description</p>
+<div class="list-body">
+  <!-- Small muted label at top -->
+  <p class="list-item-label">ประเภทเอกสาร / ชื่อบริการ</p>
+  <!-- Bold hero value below -->
+  <p class="list-item-hero">A1234567</p>
+  <!-- Optional colour modifiers -->
+  <p class="list-item-hero list-item-hero--positive">ใช้งานได้</p>
+  <p class="list-item-hero list-item-hero--negative">1,000.00 บาท</p>
+  <!-- Meta row (small, muted) -->
+  <div class="list-meta">
+    <div class="list-meta-item">
+      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+      <span>หมดอายุ: 27 มิ.ย. 2569</span>
+    </div>
+    <!-- ข้อมูล ณ วันที่ must always be last -->
+    <div class="list-meta-item">
+      <span class="material-symbols-outlined list-meta-icon">update</span>
+      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+    </div>
   </div>
 </div>
 ```
 
-### Title block (no back button)
-
-```html
-<div class="title-block">
-  <h2 class="text-header">Title</h2>
-  <p class="text-subheader">Sub-description</p>
-</div>
-```
+**Rule:** `ข้อมูล ณ วันที่` is always the last `list-meta-item`.
 
 ---
 
@@ -802,7 +892,7 @@ For multiple buttons:
 
 ### 6.17 Welcome Card (Green) — Mini-app Header
 
-Used at the top of every mini-app / data-detail page, **after** `page-header` and **before** the first content card. Provides a personal greeting and context for what data the page is showing.
+Used at the top of every mini-app / data-detail page, **after** the `top-nav-bar` and **before** the first content card. Provides a personal greeting and context for what data the page is showing.
 
 **Classes:** `card welcome-card welcome-card--green mb-xl`
 
@@ -822,7 +912,7 @@ Used at the top of every mini-app / data-detail page, **after** `page-header` an
 | Greeting format | `สวัสดีคุณ{ชื่อ}` — no title prefix (นาย/นาง) |
 | Line 1 (p) | เลขประจำตัวประชาชน หรือ เลขสมาชิก/เลขอ้างอิงหลัก |
 | Line 2 (p) | ชื่อหน่วยงาน หรือ สรุปสั้น เช่น "หนังสือรับรอง 3 ฉบับ" |
-| Position | ต้องอยู่หลัง `page-header` เสมอ — ก่อน card แรก |
+| Position | ต้องอยู่หลัง `top-nav-bar` เสมอ — ก่อน card แรกใน `<main>` |
 | Colour | ใช้ `welcome-card--green` เสมอสำหรับหน้า mini-app |
 | ห้ามใช้ | ห้ามใช้ `id-card-banner` แทน welcome-card |
 
@@ -1064,6 +1154,8 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
 
 ## 10. Creating a New Page
 
+> For a more detailed walkthrough, see **`SKILL.md`**.
+
 ### Step 1 — Copy the page shell (with meta tags)
 
 ```html
@@ -1114,16 +1206,20 @@ Certificate `typeKey`: `health` · `driving` · `covid` · `work`
 </html>
 ```
 
-### Step 2 — Add page header
+### Step 2 — Add top nav bar (outside `<main>`)
 
 ```html
-<div class="page-header">
-  <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
-    <span class="material-symbols-outlined">arrow_back</span>
-  </a>
-  <div class="title-block">
-    <h2 class="text-header">ชื่อหน้า</h2>
-    <p class="text-subheader">คำอธิบายสั้น ๆ</p>
+<!-- Place between .main-layout opening tag and <main> -->
+<div class="top-nav-bar">
+  <div class="top-nav-bar-content">
+    <!-- include back button if there is a parent page -->
+    <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <div class="top-nav-bar-icon">
+      <span class="material-symbols-outlined">ICON</span>
+    </div>
+    <p class="top-nav-bar-title">ชื่อหน้า</p>
   </div>
 </div>
 ```
@@ -1278,27 +1374,26 @@ After creating the file, add a card to the Components grid in `components.html`.
 
 ## 12. Adding New Styles
 
-1. Open `styles.scss` — never `styles.css`
-2. Find the relevant component section (search by component name comment)
-3. Use existing design tokens only
-4. Run `npm run sass:build` to compile
+1. Open `styles.css` — add new rules at the end of the file (before the `/*# sourceMappingURL` line)
+2. Use existing design tokens only — no raw hex values or pixel sizes
+3. Prefer classes in `styles.css` over page-level `<style>` blocks
+4. Use page-level `<style>` only for animations or truly page-specific overrides
 5. Verify in the browser at 375px width first
 
-**SCSS nesting is supported:**
-
-```scss
+```css
+/* ── My new component ── */
 .my-component {
   background: var(--background-neutral-lighter);
   border-radius: var(--radius-xl);
-
-  &__title {
-    font-size: var(--font-size-title-m);
-    font-weight: var(--font-weight-600);
-  }
-
-  &--active {
-    border-color: var(--stroke-primary-default);
-  }
+  padding: var(--spacing-lg);
+}
+.my-component-title {
+  font-size: var(--font-size-title-m);
+  font-weight: var(--font-weight-600);
+  color: var(--foreground-neutral-default);
+}
+.my-component--active {
+  border: 1px solid var(--stroke-primary-default);
 }
 ```
 

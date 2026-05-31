@@ -1,9 +1,6 @@
 # ทางรัฐ — Citizen Portal Prototype
 
-A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digital-services platform, developed under **สำนักงานพัฒนารัฐบาลดิจิทัล (DGA)**. The prototype demonstrates two core service modules:
-
-1. **ระบบใบสั่งจราจร** — Online traffic-ticket lookup, fine payment, and driving-point management
-2. **ใบรับรองแพทย์ดิจิทัล** — Digital medical-certificate (หมอพร้อม) browsing and detail view
+A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digital-services platform, developed under **สำนักงานพัฒนารัฐบาลดิจิทัล (DGA)**. The prototype demonstrates a suite of government mini-app screens, unified under a shared design system.
 
 ---
 
@@ -14,19 +11,34 @@ A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digita
 | File | Description |
 |------|-------------|
 | `loading.html` | Splash / connection screen shown before the main dashboard |
-| `index.html` | Main dashboard — traffic-ticket list + driving-score gauge |
-| `detail.html` | Traffic-ticket detail — offense info, evidence photos, fine payment (QR Code) |
-| `points.html` | Driving score gauge + full deduction/restoration history |
-| `med-index.html` | Digital medical-certificate list with filter chips (all / valid / expired) |
-| `med-detail.html` | Medical-certificate detail — patient info, validity, verification status, usage history |
-| `tutorial.html` | Onboarding guide explaining the digital medical-certificate service |
+| `dashboard.html` | Personal data hub — documents, utilities, rights, assets |
+| `index.html` | Traffic-ticket list + driving-score gauge |
+| `detail.html` | Traffic-ticket detail — offense info, evidence photos, fine payment (QR) |
+| `points.html` | Driving-score gauge + full deduction/restoration history |
+| `med-index.html` | Digital medical-certificate list with filter chips |
+| `med-detail.html` | Medical-certificate detail — patient info, validity, usage history |
+| `tutorial.html` | Onboarding guide for the medical-certificate service |
+| `civil-reg.html` | Civil registration data (กรมการปกครอง) |
+| `elderly.html` | Elderly welfare allowance (เบี้ยยังชีพผู้สูงอายุ) |
+| `elderly-empty.html` | Elderly welfare — no-data / not-registered state |
+| `elderly-loading.html` | Elderly welfare — loading skeleton state |
+| `vehicle-registration.html` | Vehicle registration detail with multi-vehicle picker |
+| `vocational-cert.html` | Vocational qualifications (สถาบันคุณวุฒิวิชาชีพ) |
+| `gpf.html` | Government pension fund (กบข.) member data |
+| `mea-index.html` | MEA electricity bill index |
+| `mea-detail.html` | MEA electricity meter detail |
+| `ncb.html` | Credit bureau summary (NCB) |
+| `edge-cases.html` | System-state edge cases — maintenance, high-traffic |
 
 ### Component Library
 
 | File | Description |
 |------|-------------|
-| `components.html` | Hub page — card grid linking to all component demos |
+| `components.html` | Hub page — card grid linking to all component demos and demo pages |
+| `qa.html` | Minimum UI test-case checklist |
+| `components/accordion.html` | Accordion / expand-collapse component |
 | `components/alert.html` | ThaiAlert dialog variants |
+| `components/card.html` | Card component patterns |
 | `components/color.html` | Interactive color palette — all 7 primitive scales + semantic tokens |
 | `components/empty-state.html` | Empty-state patterns |
 | `components/filter-chip.html` | Filter chip component |
@@ -50,40 +62,16 @@ A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digita
 | Layer | Technology |
 |-------|-----------|
 | Markup | HTML5 (plain, no framework) |
-| Styling | SCSS → compiled CSS (design-token based) |
+| Styling | CSS custom properties (design-token based), edited directly in `styles.css` |
 | Scripting | Vanilla JavaScript (ES6+, no bundler) |
 | State | `localStorage` via `db.js` |
-| Icons | Google Material Symbols Outlined |
+| Icons | Google Material Symbols Outlined (variable font) |
 | Font | Anuphan (Google Fonts) |
-| Build | Sass CLI (`npm run sass:build`) |
-| Dev server | `npx serve` |
+| Dev server | `npx serve` or any static file server |
 
 ---
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (for Sass compilation)
-- `npx` available (comes with npm)
-
-### Install
-
-```bash
-npm install
-```
-
-### Compile styles
-
-One-time build:
-```bash
-npm run sass:build
-```
-
-Watch mode (auto-recompile on save):
-```bash
-npm run sass:watch
-```
 
 ### Run locally
 
@@ -93,7 +81,7 @@ npx serve -l 3900 .
 
 Then open [http://localhost:3900](http://localhost:3900) in your browser.
 
-> **Important:** Always edit `styles.scss`, never `styles.css`. The CSS file is compiler output and will be overwritten.
+> **Note:** `styles.css` is edited directly — there is no Sass compilation step. Do not run `npm run sass:build` as it will overwrite hand-authored CSS.
 
 ---
 
@@ -101,30 +89,42 @@ Then open [http://localhost:3900](http://localhost:3900) in your browser.
 
 ```
 .
-├── index.html              # Main dashboard (traffic tickets + driving score)
-├── loading.html            # Splash screen
-├── detail.html             # Traffic-ticket detail + QR payment
-├── points.html             # Driving points history
-├── med-index.html          # Digital medical-certificate list
-├── med-detail.html         # Medical-certificate detail
-├── tutorial.html           # Onboarding guide
+├── index.html                  # Traffic-ticket list
+├── dashboard.html              # Personal data hub
+├── loading.html                # Splash screen
+├── detail.html                 # Traffic-ticket detail + QR payment
+├── points.html                 # Driving-points history
+├── med-index.html              # Medical-certificate list
+├── med-detail.html             # Medical-certificate detail
+├── tutorial.html               # Onboarding guide
+├── civil-reg.html              # Civil registration
+├── elderly.html                # Elderly welfare allowance
+├── elderly-empty.html          # Elderly welfare — empty state
+├── elderly-loading.html        # Elderly welfare — loading state
+├── vehicle-registration.html   # Vehicle registration
+├── vocational-cert.html        # Vocational qualifications
+├── gpf.html                    # Government pension fund
+├── mea-index.html              # MEA electricity bills
+├── mea-detail.html             # MEA meter detail
+├── ncb.html                    # Credit bureau (NCB)
+├── edge-cases.html             # System-state edge cases
 │
-├── components.html         # Component hub — card-grid landing page
-├── components/             # 16 component demo pages (see table above)
+├── components.html             # Component hub
+├── qa.html                     # UI test-case checklist
+├── components/                 # Component demo pages
 │
-├── styles.scss             # Source styles — design system + all components
-├── styles.css              # Compiled output — DO NOT edit directly
-├── styles.css.map          # Source map for browser DevTools
+├── styles.css                  # ALL styles — edit this file directly
 │
-├── db.js                   # Mock database (localStorage) — traffic tickets + driving points
-├── alert.js                # ThaiAlert IIFE — custom alert/confirm dialogs
-├── med.js                  # Medical-certificate list logic (fetch + render)
-├── med.json                # Mock data for digital medical certificates
+├── db.js                       # Mock database (localStorage) — tickets + points
+├── alert.js                    # ThaiAlert IIFE — custom alert/confirm dialogs
+├── med.js                      # Medical-certificate list logic
+├── med.json                    # Mock data for digital medical certificates
 │
-├── _media/                 # SVG illustrations, OG image
-├── favicon/                # Favicon assets (ico, 16×16, 32×32)
-├── robots.txt              # Disallow all crawlers (prototype)
-└── package.json
+├── _media/                     # Images, SVGs, logos, media assets
+├── favicon/                    # Favicon assets (ico, 16×16, 32×32)
+├── DESIGN.md                   # Design-system spec for AI assistants and developers
+├── SKILL.md                    # Step-by-step guide for creating new pages
+└── robots.txt                  # Disallow all crawlers (prototype)
 ```
 
 ---
@@ -149,7 +149,7 @@ DB.reset()                                   // restore default seed data
 
 ### Digital Medical Certificates — `med.json` + `med.js`
 
-`med.json` is static JSON fetched at runtime by `med.js`. Structure:
+`med.json` is static JSON fetched at runtime by `med.js`:
 
 ```json
 {
@@ -164,14 +164,6 @@ DB.reset()                                   // restore default seed data
     }
   ]
 }
-```
-
-`med.js` exposes three functions called from `med-index.html`:
-
-```js
-initFilterDemo()     // fetch med.json → populate USER + ALL_CERTS → render
-setFilter(filter)    // filter chips → re-render cert sections
-toggleDemoState()    // toggle between data / no-data state (dev helper)
 ```
 
 ### ThaiAlert — `alert.js`
@@ -189,36 +181,25 @@ const confirmed = await ThaiAlert.confirm({ title, message, type, confirmText, c
 
 ## Design System
 
-All design tokens (colors, spacing, typography, radius, shadows) are CSS custom properties defined in `styles.scss :root {}`. Key namespaces:
+All design tokens (colors, spacing, typography, radius, shadows) are CSS custom properties defined in `styles.css :root {}`. Key namespaces:
 
 | Namespace | Description |
 |-----------|-------------|
-| `--primary-*` | Brand green scale (0 → 100) |
+| `--primary-*` | Brand green scale |
 | `--secondary-*` | Brand blue scale |
 | `--neutral-*` | Grey / surface scale |
-| `--danger-*` | Destructive / error (red) |
+| `--danger-*` | Error / destructive (red) |
 | `--positive-*` | Success (green) |
 | `--warning-*` | Warning (orange) |
 | `--info-*` | Informational (sky blue) |
 | `--background-*` | Semantic surface tokens |
 | `--foreground-*` | Semantic text/icon tokens |
 | `--stroke-*` | Semantic border tokens |
-| `--button-*` | Button-specific tokens |
 | `--spacing-*` | 4 px base spacing scale (`xxs` → `7xl`) |
 | `--radius-*` | Border-radius scale (`none` → `full`) |
 | `--font-size-*` | Type scale (`label-s` → `display-m`) |
-| `--shadow-*` | Drop-shadow presets |
 
-Responsive breakpoints: **480 px** (grid stack on mobile) · **1024 px** (desktop layout)
-
-See `components/color.html` for the full interactive palette and `components/spacing.html` for the complete spacing/utility reference.
-
----
-
-## SEO & Crawling
-
-- All pages share unified Open Graph / Twitter Card meta (brand: **ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว**)
-- `robots.txt` denies all crawlers — this prototype is not intended for public indexing
+See `DESIGN.md` for the full specification and `SKILL.md` for a step-by-step page-creation guide.
 
 ---
 
