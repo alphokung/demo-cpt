@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบลงทะเบียนสวัสดิการแห่งรัฐ ปี 2569 — ทางรัฐ</title>
+  <meta name="description" content="ขณะนี้มีผู้เข้าใช้งานระบบเป็นจำนวนมาก กระทรวงการคลังและธนาคารกรุงไทยกำลังดำเนินการแก้ไข">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  <!-- Single stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Centering layout overrides ── */
+    .main-layout {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: var(--spacing-xl) !important;
+      box-sizing: border-box !important;
+    }
+
+    .card {
+      width: 100% !important;
+      max-width: 600px !important;
+      margin: auto 0 !important;
+      box-sizing: border-box !important;
+      animation: fade-in-up 0.45s ease both;
+    }
+
+    .source-note {
+      width: 100%;
+      margin-top: auto;
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-md) !important;
+    }
+
+    /* ── Keyframe animations ── */
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <main>
+
+        <!-- Main Card -->
+        <div class="card">
+          <div class="state-card">
+            <!-- Icon with warning/busy visual -->
+            <div class="state-icon-wrap state-icon-wrap--danger">
+              <span class="material-symbols-outlined">hourglass_top</span>
+            </div>
+
+            <h3 class="state-title" style="max-width: 540px; margin: 0 auto var(--spacing-lg);">
+              มีผู้เข้าใช้งาน เป็นจำนวนมาก
+            </h3>
+            
+            <p class="state-desc" style="max-width: 500px; margin: 0 auto var(--spacing-xl); color: var(--foreground-neutral-light);">
+              ขออภัยในความไม่สะดวก ขณะนี้มีผู้เข้าใช้งาน ระบบลงทะเบียนสวัสดิการแห่งรัฐ ปี 2569 เป็นจำนวนมาก ทางกระทรวงการคลัง และธนาคารกรุงไทย กำลังดำเนินการแก้ไข เพื่อนำระบบกลับมาใช้งานให้เร็วที่สุด
+            </p>
+
+            <!-- Co-branding Logos -->
+            <div class="co-branding" style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+              <img src="_media/mof.png" alt="กระทรวงการคลัง" style="height: 24px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); object-fit: contain;">
+              <img src="_media/ktb.png" alt="ธนาคารกรุงไทย" style="height: 24px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); object-fit: contain;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Source Note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">design_services</span>
+            ระบบลงทะเบียนสวัสดิการแห่งรัฐ ปี 2569<br>
+            ตรวจสอบล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Back-to-top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- Scripts -->
+  <script>
+    (function(){
+      var b=document.getElementById('back-to-top');
+      window.addEventListener('scroll',function(){
+        b.classList.toggle('visible',window.pageYOffset>240);
+      },{passive:true});
+    })();
+  </script>
+  <script>
+    (function() {
+      var m=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+             'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d=new Date();
+      var s=d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+            ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+            String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
+  </script>
+</body>
+</html>
