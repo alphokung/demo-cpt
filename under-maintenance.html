@@ -64,9 +64,18 @@
     }
 
     /* ── Keyframe animations ── */
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
     @keyframes fade-in-up {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .anim-float {
+      animation: float-slow 3s ease-in-out infinite;
     }
   </style>
 </head>
@@ -80,7 +89,7 @@
         <div class="card">
           <div class="state-card">
             <!-- Icon with warning/busy visual -->
-            <div class="state-icon-wrap state-icon-wrap--danger">
+            <div class="state-icon-wrap state-icon-wrap--danger anim-float">
               <span class="material-symbols-outlined">hourglass_top</span>
             </div>
 
