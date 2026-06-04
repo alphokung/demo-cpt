@@ -54,7 +54,7 @@
 
           <!-- Skeleton state -->
           <div class="skeleton-item" style="
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
             border-radius: var(--radius-xl, 16px);
             padding: 20px;
             pointer-events: none;
@@ -73,7 +73,7 @@
           <!-- Loaded state -->
           <div id="today-context-card" class="loaded-item" style="
             display: none;
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
             border-radius: var(--radius-xl, 16px);
             padding: 20px;
             color: #fff;
@@ -123,20 +123,20 @@
               <div id="pm25-chip" style="
                 background: rgba(255,255,255,0.15);
                 backdrop-filter: blur(8px);
-                border-radius: 12px;
-                padding: 10px 14px;
+                border-radius: 14px;
+                padding: 12px 18px;
                 text-align: center;
-                min-width: 80px;
+                min-width: 90px;
                 flex-shrink: 0;
               ">
-                <p style="font-size:10px;opacity:0.8;margin:0 0 2px;letter-spacing:0.5px;">PM 2.5</p>
-                <p id="pm25-value" style="font-size:24px;font-weight:700;margin:0;line-height:1;">—</p>
-                <p style="font-size:10px;opacity:0.7;margin:2px 0 4px;">μg/m³</p>
+                <p style="font-size:11px;opacity:0.8;margin:0 0 2px;letter-spacing:0.5px;">PM 2.5</p>
+                <p id="pm25-value" style="font-size:28px;font-weight:700;margin:0;line-height:1;">—</p>
+                <p style="font-size:11px;opacity:0.7;margin:3px 0 6px;">μg/m³</p>
                 <span id="pm25-badge" style="
-                  font-size:10px;
+                  font-size:11px;
                   background: rgba(255,255,255,0.2);
                   border-radius: 20px;
-                  padding: 2px 8px;
+                  padding: 3px 10px;
                   display:inline-block;
                 ">—</span>
               </div>
@@ -144,6 +144,12 @@
 
           <!-- Divider -->
           <div style="border-top:1px solid rgba(255,255,255,0.18);margin:14px 0;"></div>
+
+          <!-- Birthday bar -->
+          <div id="birthday-bar" style="display:none;background:linear-gradient(90deg,rgba(255,105,135,0.3),rgba(255,180,80,0.25));border:1px solid rgba(255,150,150,0.3);border-radius:10px;padding:10px 14px;align-items:center;gap:10px;margin-bottom:8px;">
+            <span style="font-size:22px;flex-shrink:0;line-height:1;">🎂</span>
+            <p id="birthday-text" style="font-size:12px;line-height:1.5;margin:0;font-weight:600;">สุขสันต์วันเกิด!</p>
+          </div>
 
           <!-- วันพระ bar -->
           <div id="wan-phra-bar" style="display:none;background:rgba(255,213,79,0.15);border-radius:10px;padding:10px 12px;display:none;align-items:center;gap:8px;margin-bottom:8px;">
@@ -165,90 +171,55 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 8px;
           ">
             <span id="focus-icon" class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;">info</span>
             <p id="focus-text" style="font-size:12px;line-height:1.5;margin:0;">กำลังโหลดคำแนะนำ…</p>
           </div>
+
+          <!-- Inline notifications -->
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" style="
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,100,100,0.4);
+            border-left: 3px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+          ">
+            <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;color:#ff9999;">warning</span>
+            <div style="flex:1;min-width:0;">
+              <p style="font-size:12px;font-weight:700;margin:0 0 1px;color:#fff;">หนังสือเดินทางใกล้หมดอายุ</p>
+              <p style="font-size:11px;margin:0;opacity:0.75;">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size:16px;opacity:0.6;flex-shrink:0;">chevron_right</span>
+          </div>
+
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" style="
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,180,50,0.4);
+            border-left: 3px solid #fbbf24;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+          ">
+            <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;color:#fcd34d;">schedule</span>
+            <div style="flex:1;min-width:0;">
+              <p style="font-size:12px;font-weight:700;margin:0 0 1px;color:#fff;">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+              <p style="font-size:11px;margin:0;opacity:0.75;">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size:16px;opacity:0.6;flex-shrink:0;">chevron_right</span>
+          </div>
+
           </div><!-- /loaded-item -->
         </div><!-- /loading-wrapper -->
 
-        <!-- ═══════════════════════════════════════════ -->
-        <!-- เรื่องสำคัญที่คุณควรรู้ (Smart Inbox) -->
-        <!-- ═══════════════════════════════════════════ -->
-        <div id="important-notices-section">
-          <div style="margin-bottom: var(--spacing-md);">
-            <p class="list-section-title" style="margin:0 0 2px;">เรื่องสำคัญที่คุณควรรู้</p>
-            <p class="list-section-note" style="margin:0;">การแจ้งเตือนที่ต้องการการดูแล</p>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap: var(--spacing-sm);">
-
-            <!-- Notice 1: Passport expiring -->
-            <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" style="
-              background: #fef2f2;
-              border: 1px solid #fca5a5;
-              border-left: 4px solid #e53935;
-              border-radius: var(--radius-lg, 12px);
-              padding: 14px 16px;
-              display: flex;
-              align-items: center;
-              gap: 12px;
-              cursor: pointer;
-            ">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(229,57,53,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span class="material-symbols-outlined" style="font-size:22px;color:#e53935;">public</span>
-              </div>
-              <div style="flex:1;min-width:0;">
-                <p style="font-size:13px;font-weight:700;margin:0 0 2px;">หนังสือเดินทางใกล้หมดอายุ</p>
-                <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
-              </div>
-              <span class="material-symbols-outlined" style="font-size:18px;color:var(--foreground-neutral-lighter);flex-shrink:0;">chevron_right</span>
-            </div>
-
-            <!-- Notice 2: Motorcycle tax due -->
-            <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" style="
-              background: #fffbeb;
-              border: 1px solid #fcd34d;
-              border-left: 4px solid #f59e0b;
-              border-radius: var(--radius-lg, 12px);
-              padding: 14px 16px;
-              display: flex;
-              align-items: center;
-              gap: 12px;
-              cursor: pointer;
-            ">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span class="material-symbols-outlined" style="font-size:22px;color:#f59e0b;">two_wheeler</span>
-              </div>
-              <div style="flex:1;min-width:0;">
-                <p style="font-size:13px;font-weight:700;margin:0 0 2px;">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
-                <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
-              </div>
-              <span class="material-symbols-outlined" style="font-size:18px;color:var(--foreground-neutral-lighter);flex-shrink:0;">chevron_right</span>
-            </div>
-
-            <!-- Notice 3: Special day -->
-            <div style="
-              background: #eff6ff;
-              border: 1px solid #93c5fd;
-              border-left: 4px solid #3b82f6;
-              border-radius: var(--radius-lg, 12px);
-              padding: 14px 16px;
-              display: flex;
-              align-items: center;
-              gap: 12px;
-            ">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <span class="material-symbols-outlined" style="font-size:22px;color:#3b82f6;">auto_awesome</span>
-              </div>
-              <div style="flex:1;min-width:0;">
-                <p id="notice-special-day-title" style="font-size:13px;font-weight:700;margin:0 0 2px;">วันสำคัญวันนี้</p>
-                <p id="notice-special-day-sub" style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">—</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
 
 
 
@@ -1041,6 +1012,105 @@
     </div>
   </div>
 
+  <!-- Modal: Demo Config -->
+  <div id="modal-demo-config" class="modal-overlay" onclick="closeModal('modal-demo-config')">
+    <div class="modal-content" onclick="event.stopPropagation()" style="padding:0;max-height:82vh;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- Header -->
+      <div style="padding:16px 20px;border-bottom:1px solid var(--stroke-neutral-lighter);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <div>
+          <p style="font-size:15px;font-weight:700;margin:0 0 2px;">ตั้งค่าการแสดงผล</p>
+          <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">จำลองสถานการณ์สำหรับ demo</p>
+        </div>
+        <button onclick="closeModal('modal-demo-config')" style="background:var(--background-neutral-subtle);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--foreground-neutral-lighter);padding:0;flex-shrink:0;">
+          <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable content -->
+      <div style="overflow-y:auto;padding:0 20px 28px;-webkit-overflow-scrolling:touch;">
+
+        <!-- อากาศ -->
+        <div class="dc-group">
+          <p class="dc-group-label">🌤️ อากาศ</p>
+          <div class="dc-chips">
+            <button class="dc-chip" id="chip-weather-hot"    onclick="demoSet('weather','hot')">☀️ ร้อน</button>
+            <button class="dc-chip" id="chip-weather-rain"   onclick="demoSet('weather','rain')">🌧️ ฝนตก</button>
+          </div>
+        </div>
+
+        <!-- วันเกิด -->
+        <div class="dc-group">
+          <p class="dc-group-label">🎂 วันเกิด</p>
+          <div class="dc-chips">
+            <button class="dc-chip" id="chip-birthday-true"  onclick="demoSet('birthday',true)">วันเกิด</button>
+            <button class="dc-chip" id="chip-birthday-false" onclick="demoSet('birthday',false)">ไม่ใช่วันเกิด</button>
+          </div>
+        </div>
+
+        <!-- PM 2.5 -->
+        <div class="dc-group">
+          <p class="dc-group-label">💨 PM 2.5</p>
+          <div class="dc-chips" style="flex-wrap:wrap;">
+            <button class="dc-chip" id="chip-pm25-low"      onclick="demoSet('pm25','low')"      style="--pm-color:#4caf50;">🟢 ต่ำ</button>
+            <button class="dc-chip" id="chip-pm25-medium"   onclick="demoSet('pm25','medium')"   style="--pm-color:#fbbf24;">🟡 กลาง</button>
+            <button class="dc-chip" id="chip-pm25-high"     onclick="demoSet('pm25','high')"     style="--pm-color:#f97316;">🟠 สูง</button>
+            <button class="dc-chip" id="chip-pm25-veryhigh" onclick="demoSet('pm25','veryhigh')" style="--pm-color:#9c27b0;">🟣 สูงมาก</button>
+          </div>
+        </div>
+
+        <!-- วันสำคัญ -->
+        <div class="dc-group" style="border:none;">
+          <p class="dc-group-label">🪷 วันสำคัญ</p>
+          <div class="dc-chips" style="flex-wrap:wrap;">
+            <button class="dc-chip" id="chip-special-none"      onclick="demoSet('special',null)">ไม่มี</button>
+            <button class="dc-chip" id="chip-special-wanphra"   onclick="demoSet('special','wanphra')">วันพระทั่วไป</button>
+            <button class="dc-chip" id="chip-special-visakha"   onclick="demoSet('special','visakha')">วันวิสาขบูชา</button>
+            <button class="dc-chip" id="chip-special-loykra"    onclick="demoSet('special','loykra')">วันลอยกระทง</button>
+            <button class="dc-chip" id="chip-special-valentine" onclick="demoSet('special','valentine')">วันวาเลนไทน์</button>
+            <button class="dc-chip" id="chip-special-chalerm"   onclick="demoSet('special','chalerm')">วันเฉลิม</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .dc-group {
+      padding: 18px 0 14px;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .dc-group-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--foreground-neutral-default);
+      margin: 0 0 10px;
+    }
+    .dc-chips {
+      display: flex;
+      gap: 8px;
+    }
+    .dc-chip {
+      border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
+      background: #fff;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--foreground-neutral-default);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .dc-chip.active {
+      background: var(--primary-40, #1a73e8);
+      border-color: var(--primary-40, #1a73e8);
+      color: #fff;
+      font-weight: 600;
+    }
+  </style>
+
   <!-- Modal: Bill Payment -->
 
 
@@ -1074,7 +1144,98 @@
 
     window.addEventListener('pageshow', initLoading);
 
+    // ─── Demo config ───────────────────────────────────────────────────
+    var DEMO = { weather: 'rain', birthday: true, special: 'wanphra', pm25: 'medium' };
+
+    var PM25_LEVELS = {
+      low:      { value: 8,   label: 'คุณภาพดีมาก', color: '#4caf50', textColor: '#fff', tip: null },
+      medium:   { value: 28,  label: 'ปานกลาง',     color: '#fbbf24', textColor: '#78350f', tip: null },
+      high:     { value: 65,  label: 'เริ่มส่งผล',  color: '#f97316', textColor: '#fff',
+                  tip: 'คุณภาพอากาศอยู่ในระดับที่เริ่มส่งผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร' },
+      veryhigh: { value: 160, label: 'อันตราย',      color: '#9c27b0', textColor: '#fff',
+                  tip: 'ฝุ่น PM 2.5 อยู่ในระดับอันตราย หลีกเลี่ยงการออกกำลังกายกลางแจ้ง และสวมหน้ากาก N95 ตลอดเวลา' },
+    };
+
+    var SPECIAL_LABELS = {
+      wanphra:   { icon: 'brightness_5', text: 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส' },
+      visakha:   { icon: 'brightness_5', text: 'วันนี้วันวิสาขบูชา วันสำคัญทางพระพุทธศาสนา ธนาคารและหน่วยงานรัฐบางแห่งปิดทำการ' },
+      loykra:    { icon: 'auto_awesome', text: 'วันนี้วันลอยกระทง เทศกาลลอยเคราะห์และขอพร' },
+      valentine: { icon: 'favorite',     text: 'วันนี้วันวาเลนไทน์ เทศกาลแห่งความรัก' },
+      chalerm:   { icon: 'auto_awesome', text: 'วันนี้วันเฉลิมพระชนมพรรษา วันหยุดราชการ หน่วยงานรัฐปิดทำการ' },
+    };
+
+    function demoSet(key, value) {
+      DEMO[key] = value;
+      syncChips();
+      renderContextBars();
+    }
+
+    function syncChips() {
+      document.getElementById('chip-weather-hot').classList.toggle('active',  DEMO.weather === 'hot');
+      document.getElementById('chip-weather-rain').classList.toggle('active', DEMO.weather === 'rain');
+      document.getElementById('chip-birthday-true').classList.toggle('active',  DEMO.birthday === true);
+      document.getElementById('chip-birthday-false').classList.toggle('active', DEMO.birthday === false);
+      ['none','wanphra','visakha','loykra','valentine','chalerm'].forEach(function(v) {
+        document.getElementById('chip-special-' + v).classList.toggle('active', DEMO.special === (v === 'none' ? null : v));
+      });
+      ['low','medium','high','veryhigh'].forEach(function(v) {
+        document.getElementById('chip-pm25-' + v).classList.toggle('active', DEMO.pm25 === v);
+      });
+    }
+
+    function renderContextBars() {
+      var bdBar     = document.getElementById('birthday-bar');
+      var wpBar     = document.getElementById('wan-phra-bar');
+      var wpText    = document.getElementById('wan-phra-text');
+      var wpIcon    = document.querySelector('#wan-phra-bar .material-symbols-outlined');
+      var focusIcon = document.getElementById('focus-icon');
+      var focusText = document.getElementById('focus-text');
+
+      // Birthday bar
+      if (bdBar) bdBar.style.display = DEMO.birthday ? 'flex' : 'none';
+
+      // Special day bar
+      if (DEMO.special && SPECIAL_LABELS[DEMO.special]) {
+        var s = SPECIAL_LABELS[DEMO.special];
+        if (wpText) wpText.textContent = s.text;
+        if (wpIcon) wpIcon.textContent = s.icon;
+        if (wpBar)  wpBar.style.display = 'flex';
+      } else {
+        if (wpBar) wpBar.style.display = 'none';
+      }
+
+      // PM2.5 chip update
+      var pmData = PM25_LEVELS[DEMO.pm25] || PM25_LEVELS.medium;
+      var pmValueEl = document.getElementById('pm25-value');
+      var pmBadgeEl = document.getElementById('pm25-badge');
+      var pmChipEl  = document.getElementById('pm25-chip');
+      if (pmValueEl) pmValueEl.textContent = pmData.value;
+      if (pmBadgeEl) {
+        pmBadgeEl.textContent = pmData.label;
+        pmBadgeEl.style.background = pmData.color;
+        pmBadgeEl.style.color = pmData.textColor;
+      }
+      if (pmChipEl) {
+        pmChipEl.style.background = 'rgba(255,255,255,0.15)';
+      }
+
+      // Weather / air quality tip (PM2.5 warning takes priority when severe)
+      if (focusIcon && focusText) {
+        if (pmData.tip) {
+          focusIcon.textContent = 'masks';
+          focusText.textContent = pmData.tip;
+        } else if (DEMO.weather === 'rain') {
+          focusIcon.textContent = 'umbrella';
+          focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง 65% อย่าลืมพกร่มออกจากบ้านด้วย';
+        } else {
+          focusIcon.textContent = 'wb_sunny';
+          focusText.textContent = 'วันนี้อากาศร้อน 34°C อย่าลืมดื่มน้ำบ่อยๆ และหลีกเลี่ยงแดดจัดช่วงบ่าย';
+        }
+      }
+    }
+
     function openModal(id) {
+      if (id === 'modal-demo-config') syncChips();
       document.getElementById(id).classList.add('active');
     }
 
@@ -1153,18 +1314,41 @@
       '12-5','12-12','12-20','12-27',
     ]);
 
-    const wanPhra = WAN_PHRA_2026.has(monthDay);
-    const wanPhraMsgEl = document.getElementById('wan-phra-text');
-    const wanPhraBar   = document.getElementById('wan-phra-bar');
-    if (wanPhra && wanPhraBar) {
-      if (wanPhraMsgEl) {
-        // Combine with special day if they overlap (e.g. วันวิสาขบูชา is also วันพระ)
-        wanPhraMsgEl.textContent = specialDay
-          ? `วันนี้วันพระ และเป็น${specialDay.name} — ${specialDay.desc}`
-          : 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส';
-      }
-      wanPhraBar.style.display = 'flex';
+    // ─── Birthday detection ─────────────────────────────────────────────
+    const USER_BIRTH_MONTH = 6;
+    const USER_BIRTH_DAY   = 4;
+    const autoBirthday = (now.getMonth() + 1 === USER_BIRTH_MONTH && now.getDate() === USER_BIRTH_DAY);
+    const autoWanPhra  = WAN_PHRA_2026.has(monthDay);
+    const autoRain     = true; // default mock: rain expected
+
+    // Stamp auto values on card element so renderContextBars() can read them
+    const cardEl = document.getElementById('today-context-card');
+    if (cardEl) {
+      cardEl.dataset.birthday = autoBirthday;
+      cardEl.dataset.wanphra  = autoWanPhra;
+      cardEl.dataset.rain     = autoRain;
     }
+
+    // Pre-fill bar text content (bars stay hidden until toggled ON)
+    const bdTextEl = document.getElementById('birthday-text');
+    if (bdTextEl) {
+      const AGE = now.getFullYear() - 1990; // mock birth year 1990
+      const wishes = [
+        `สุขสันต์วันเกิด คุณสมชาย! ครบ ${AGE} ปีแล้ว ขอให้มีสุขภาพแข็งแรง มีความสุข และโชคดีตลอดปีนี้ 🎉`,
+        `วันนี้วันเกิดของคุณ อายุครบ ${AGE} ปีแล้ว ขอให้ทุกความปรารถนาเป็นจริง มีสุขภาพดี และประสบความสำเร็จ 🎊`,
+        `Happy Birthday! ขอให้ปีที่ ${AGE} นี้เต็มไปด้วยความสุขและสิ่งดีๆ รออยู่ข้างหน้า ✨`,
+      ];
+      bdTextEl.textContent = wishes[Math.floor(Math.random() * wishes.length)];
+    }
+
+    const wanPhraMsgEl = document.getElementById('wan-phra-text');
+    if (wanPhraMsgEl) {
+      wanPhraMsgEl.textContent = specialDay
+        ? `วันนี้วันพระ และเป็น${specialDay.name} — ${specialDay.desc}`
+        : 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส';
+    }
+
+    const wanPhra = autoWanPhra; // keep for specialDay notice logic below
 
     var specialDayNoticeEl = document.getElementById('notice-special-day-title') &&
       document.getElementById('notice-special-day-title').closest('.notice-special-wrapper');
@@ -1233,36 +1417,19 @@
       badge.style.background = pmColor;
       badge.style.color = pm <= 25 ? '#064e3b' : '#fff';
 
-      // Weather focus tip
-      const focusIcon = document.getElementById('focus-icon');
-      const focusText = document.getElementById('focus-text');
-      if (d.rainChance >= 60) {
-        focusIcon.textContent = 'umbrella';
-        focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง ' + d.rainChance + '% อย่าลืมพกร่มออกจากบ้านด้วย';
-      } else if (d.temp >= 35) {
-        focusIcon.textContent = 'wb_sunny';
-        focusText.textContent = 'วันนี้อากาศร้อนมาก (' + d.temp + '°C) อย่าลืมดื่มน้ำบ่อยๆ และหลีกเลี่ยงแดดจัดช่วงบ่าย';
-      } else if (d.temp >= 32) {
-        focusIcon.textContent = 'local_drink';
-        focusText.textContent = 'อากาศร้อน ' + d.temp + '°C ควรดื่มน้ำให้เพียงพออย่างน้อยวันละ 8 แก้ว';
-      } else if (pm > 37.5) {
-        focusIcon.textContent = 'masks';
-        focusText.textContent = 'คุณภาพอากาศอยู่ในระดับที่เริ่มมีผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร';
-      } else {
-        focusIcon.textContent = 'sentiment_satisfied';
-        focusText.textContent = 'สภาพอากาศวันนี้ดี เหมาะสำหรับกิจกรรมกลางแจ้ง';
-      }
     }
 
     // Try geolocation → OpenWeatherMap, fall back to mock
-    function loadWithMock() { applyWeather(MOCK); }
+    function loadWithMock() {
+      applyWeather(MOCK);
+      renderContextBars(); // apply initial state (all bars hidden)
+    }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (pos) {
-          // In production: fetch real API here using pos.coords.latitude / longitude
-          // For now fall through to mock but show real coords in location label
           applyWeather(MOCK);
+          renderContextBars();
         },
         function () { loadWithMock(); },
         { timeout: 5000 }
@@ -1285,6 +1452,32 @@
       if (el) el.textContent = greeting;
     })();
   </script>
+
+  <!-- Floating demo config button -->
+  <button onclick="openModal('modal-demo-config')" style="
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--neutral-25, #2d2d2d);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-full, 999px);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0,0,0,0.2));
+    z-index: 100;
+    white-space: nowrap;
+    font-family: inherit;
+  ">
+    <span class="material-symbols-outlined" style="font-size:18px;">tune</span>
+    Demo การแสดงผล
+  </button>
 
   <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="material-symbols-outlined">arrow_upward</span>
