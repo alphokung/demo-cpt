@@ -28,6 +28,299 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── ctx-card: today context card ── */
+    .ctx-card {
+      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+      border-radius: var(--radius-xl, 16px);
+      padding: 20px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .ctx-card__skeleton {
+      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+      border-radius: var(--radius-xl, 16px);
+      padding: 20px;
+      pointer-events: none;
+    }
+    .ctx-card__skel-text--sm {
+      height: 13px; width: 90px; display: block;
+      background: rgba(255,255,255,0.2) !important;
+      border-radius: 4px; margin-bottom: 6px;
+    }
+    .ctx-card__skel-text--lg {
+      height: 26px; width: 180px; display: block;
+      background: rgba(255,255,255,0.3) !important;
+      border-radius: 6px; margin-bottom: 20px;
+    }
+    .ctx-card__skel-row {
+      display: flex; justify-content: space-between; gap: 12px;
+    }
+    .ctx-card__skel-temp {
+      height: 44px; width: 120px; display: block;
+      background: rgba(255,255,255,0.25) !important;
+      border-radius: 6px; margin-bottom: 10px;
+    }
+    .ctx-card__skel-desc {
+      height: 13px; width: 140px; display: block;
+      background: rgba(255,255,255,0.15) !important;
+      border-radius: 4px;
+    }
+    .ctx-card__skel-icon-box {
+      height: 90px; width: 80px; display: block;
+      background: rgba(255,255,255,0.15) !important;
+      border-radius: 12px; flex-shrink: 0;
+    }
+    .ctx-card__deco {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .ctx-card__deco--top {
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: rgba(255,255,255,0.06);
+    }
+    .ctx-card__deco--bottom {
+      bottom: -20px; left: -20px;
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.04);
+    }
+    .ctx-card__greeting { margin-bottom: 14px; }
+    .ctx-card__greeting-label { font-size: 12px; opacity: 0.8; margin: 0 0 2px; }
+    .ctx-card__greeting-name { font-size: 20px; font-weight: 700; margin: 0 0 2px; line-height: 1.2; }
+    .ctx-card__location-row { display: flex; align-items: center; gap: 6px; opacity: 0.75; }
+    .ctx-card__location-icon { font-size: 14px; }
+    .ctx-card__location-text { font-size: 12px; }
+    .ctx-card__divider { border-top: 1px solid rgba(255,255,255,0.18); margin-bottom: 14px; }
+    .ctx-card__divider--spaced { border-top: 1px solid rgba(255,255,255,0.18); margin: 14px 0; }
+    .ctx-card__weather-row {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .ctx-card__temp-row { display: flex; align-items: center; gap: 8px; }
+    .ctx-card__weather-icon { font-size: 44px; font-variation-settings: 'FILL' 1; }
+    .ctx-card__temp { font-size: 36px; font-weight: 700; line-height: 1; margin: 0; }
+    .ctx-card__desc { font-size: 12px; opacity: 0.85; margin: 4px 0 0; }
+    .ctx-card__meta-row { display: flex; gap: 16px; margin-top: 10px; }
+    .ctx-card__meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; opacity: 0.8; }
+    .ctx-card__meta-icon { font-size: 14px; }
+
+    /* ── ctx-pm25: PM2.5 chip ── */
+    .ctx-pm25 {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+    .ctx-pm25__label { font-size: 11px; opacity: 0.8; margin: 0 0 2px; letter-spacing: 0.5px; }
+    .ctx-pm25__value { font-size: 28px; font-weight: 700; margin: 0; line-height: 1; }
+    .ctx-pm25__unit  { font-size: 11px; opacity: 0.7; margin: 3px 0 6px; }
+    .ctx-pm25__badge { font-size: 11px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 10px; display: inline-block; }
+
+    /* ── ctx-bar: birthday / wan-phra / special-day / focus bars ── */
+    .ctx-bar {
+      border-radius: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .ctx-bar--birthday {
+      background: linear-gradient(90deg, rgba(255,105,135,0.3), rgba(255,180,80,0.25));
+      border: 1px solid rgba(255,150,150,0.3);
+      padding: 10px 14px;
+      gap: 10px;
+    }
+    .ctx-bar__birthday-emoji { font-size: 22px; flex-shrink: 0; line-height: 1; }
+    .ctx-bar__birthday-text  { font-size: 12px; line-height: 1.5; margin: 0; font-weight: 600; }
+    .ctx-bar--wanphra {
+      background: rgba(255,213,79,0.15);
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    .ctx-bar__wanphra-icon { font-size: 20px; flex-shrink: 0; color: #FFD54F; }
+    .ctx-bar__wanphra-text { font-size: 12px; line-height: 1.5; margin: 0; color: #FFD54F; }
+    .ctx-bar--special {
+      background: rgba(255,213,79,0.15);
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    .ctx-bar__special-icon { font-size: 20px; flex-shrink: 0; color: #FFD54F; }
+    .ctx-bar__special-text { font-size: 12px; line-height: 1.5; margin: 0; color: #FFD54F; }
+    .ctx-bar--focus {
+      background: rgba(255,255,255,0.12);
+      padding: 10px 12px;
+      gap: 8px;
+      display: flex;
+      margin-bottom: 8px;
+    }
+    .ctx-bar__focus-icon { font-size: 20px; flex-shrink: 0; }
+    .ctx-bar__focus-text { font-size: 12px; line-height: 1.5; margin: 0; }
+
+    /* ── ctx-noti: inline notification items ── */
+    .ctx-noti {
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .ctx-noti--danger  { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,100,100,0.4); border-left: 3px solid #ff6b6b; }
+    .ctx-noti--warning { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,180,50,0.4);  border-left: 3px solid #fbbf24; }
+    .ctx-noti__icon--danger  { font-size: 18px; flex-shrink: 0; color: #ff9999; }
+    .ctx-noti__icon--warning { font-size: 18px; flex-shrink: 0; color: #fcd34d; }
+    .ctx-noti__body   { flex: 1; min-width: 0; }
+    .ctx-noti__title  { font-size: 12px; font-weight: 700; margin: 0 0 1px; color: #fff; }
+    .ctx-noti__sub    { font-size: 11px; margin: 0; opacity: 0.75; }
+    .ctx-noti__chevron{ font-size: 16px; opacity: 0.6; flex-shrink: 0; }
+    .ctx-noti--last   { margin-bottom: 0; }
+
+    /* ── dyk-card: did-you-know ── */
+    .dyk-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 1px solid #86efac;
+      border-radius: var(--radius-xl, 16px);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+    }
+    .dyk-card__deco {
+      position: absolute; top: -20px; right: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(134,239,172,0.3); pointer-events: none;
+    }
+    .dyk-card__header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .dyk-card__emoji  { font-size: 20px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+    .dyk-card__text   { font-size: 13px; font-weight: 500; line-height: 1.6; margin: 0; color: #14532d; flex: 1; }
+    .dyk-card__link   { color: #16a34a; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .dyk-card__footer { display: flex; align-items: center; justify-content: space-between; }
+    .dyk-card__dots   { display: flex; gap: 5px; align-items: center; }
+    .dyk-card__next-hint { font-size: 11px; color: #16a34a; opacity: 0.7; display: flex; align-items: center; gap: 2px; }
+    .dyk-card__next-icon { font-size: 13px; }
+
+    /* ── card section helpers ── */
+    .card-section__title-container { margin-bottom: var(--spacing-md); }
+    .card-section__bar--primary { background-color: var(--primary-50); }
+    .card-section__bar--info    { background-color: var(--info-40); }
+    .card-section__bar--warning { background-color: var(--warning-40); }
+    .card-section__heading      { font-size: var(--font-size-title-m); font-weight: 700; }
+    .card-section__value--primary { color: var(--primary-40); font-weight: 700; }
+    .card-section__value--info    { color: var(--info-40); font-weight: 700; }
+    .card-section__value--warning { color: var(--foreground-warning-default); font-weight: 700; }
+    .card__inner     { margin: 0; padding: var(--spacing-xl); }
+    .card__btn-full  { width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm); }
+    .cert-list--single { grid-template-columns: 1fr; }
+
+    /* ── list-icon variant ── */
+    .list-icon--disability { background: var(--background-info-light); color: var(--info-40); }
+    .list-icon--health     { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+
+    /* ── modal shared ── */
+    .modal__content--flex-col {
+      padding: 0; max-height: 82vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .modal__header {
+      padding: var(--spacing-lg) var(--spacing-xl);
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--spacing-md); flex-shrink: 0;
+    }
+    .modal__header-title {
+      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
+      margin: 0 0 2px; color: var(--foreground-neutral-default);
+    }
+    .modal__header-sub {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0; line-height: 1.4;
+    }
+    .modal__close-btn {
+      background: var(--background-neutral-subtle); border: none;
+      border-radius: var(--radius-full); width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--foreground-neutral-lighter);
+      padding: 0; flex-shrink: 0;
+    }
+    .modal__close-icon { font-size: 18px; }
+    .modal__body {
+      overflow-y: auto;
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal__section-list        { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl); }
+    .modal__section-list--bottom{ display: flex; flex-direction: column; gap: 6px; }
+
+    /* ── perm-item helpers ── */
+    .perm-item__icon--shrink { flex-shrink: 0; }
+    .perm-item__sub--truncate {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .perm-item__unconnected {
+      width: 44px; height: 44px; min-width: 44px;
+      border-radius: var(--radius-lg);
+      background: var(--background-neutral-light);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--foreground-neutral-lighter); flex-shrink: 0;
+    }
+    .perm-item__linkoff-icon {
+      font-size: 20px; color: var(--foreground-warning-default);
+      flex-shrink: 0; font-variation-settings: 'FILL' 0;
+    }
+
+    /* ── demo-config modal ── */
+    .dc-modal__header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .dc-modal__title { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+    .dc-modal__sub   { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0; }
+    .dc-modal__close-btn {
+      background: var(--background-neutral-subtle); border: none; border-radius: 50%;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--foreground-neutral-lighter); padding: 0; flex-shrink: 0;
+    }
+    .dc-modal__close-icon { font-size: 18px; }
+    .dc-modal__body {
+      overflow-y: auto; padding: 0 20px 28px; -webkit-overflow-scrolling: touch;
+    }
+    .dc-group--last { border: none; }
+    .dc-chips--wrap { flex-wrap: wrap; }
+
+    /* ── floating demo button ── */
+    .demo-fab {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--neutral-25, #2d2d2d); color: #fff; border: none;
+      border-radius: var(--radius-full, 999px); padding: 10px 18px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0,0,0,0.2));
+      z-index: 100; white-space: nowrap; font-family: inherit;
+    }
+    .demo-fab__icon { font-size: 18px; }
+
+    /* ── card skeleton helpers ── */
+    .card__inner--no-interact { pointer-events: none; margin: 0; padding: var(--spacing-xl); }
+    .card__skel-title  { height: 20px; width: 45%; margin-bottom: var(--spacing-md); }
+    .card__skel-title--wide { height: 20px; width: 50%; margin-bottom: var(--spacing-md); }
+    .card__skel-item-gap  { gap: var(--spacing-xs); margin-bottom: var(--spacing-sm); }
+    .card__skel-item-gap--last { gap: var(--spacing-xs); }
+    .card__skel-text-sm   { height: 14px; margin: 0; }
+    .card__skel-text-md   { height: 18px; margin: 0; }
+    .card__skel-btn       { height: 40px; width: 100%; margin-top: var(--spacing-lg); }
+
+    /* ── hidden welfare wrappers ── */
+    .loading-wrapper--hidden { display: none; }
+
+    /* ── skeleton text helpers ── */
+    .skeleton-text--no-mb  { margin-bottom: 0; }
+    .skeleton-text--xs-h   { margin-bottom: 0; height: 12px; }
+  </style>
 </head>
 
 <body>
@@ -53,168 +346,112 @@
         <div class="loading-wrapper">
 
           <!-- Skeleton state -->
-          <div class="skeleton-item" style="
-            background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
-            border-radius: var(--radius-xl, 16px);
-            padding: 20px;
-            pointer-events: none;
-          ">
-            <span class="skeleton-loading" style="height:13px;width:90px;display:block;background:rgba(255,255,255,0.2)!important;border-radius:4px;margin-bottom:6px;"></span>
-            <span class="skeleton-loading" style="height:26px;width:180px;display:block;background:rgba(255,255,255,0.3)!important;border-radius:6px;margin-bottom:20px;"></span>
-            <div style="display:flex;justify-content:space-between;gap:12px;">
+          <div class="skeleton-item ctx-card__skeleton">
+            <span class="skeleton-loading ctx-card__skel-text--sm"></span>
+            <span class="skeleton-loading ctx-card__skel-text--lg"></span>
+            <div class="ctx-card__skel-row">
               <div>
-                <span class="skeleton-loading" style="height:44px;width:120px;display:block;background:rgba(255,255,255,0.25)!important;border-radius:6px;margin-bottom:10px;"></span>
-                <span class="skeleton-loading" style="height:13px;width:140px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:4px;"></span>
+                <span class="skeleton-loading ctx-card__skel-temp"></span>
+                <span class="skeleton-loading ctx-card__skel-desc"></span>
               </div>
-              <span class="skeleton-loading" style="height:90px;width:80px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:12px;flex-shrink:0;"></span>
+              <span class="skeleton-loading ctx-card__skel-icon-box"></span>
             </div>
           </div>
 
           <!-- Loaded state -->
-          <div id="today-context-card" class="loaded-item" style="
-            display: none;
-            background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
-            border-radius: var(--radius-xl, 16px);
-            padding: 20px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-          ">
+          <div id="today-context-card" class="loaded-item ctx-card" style="display: none;">
             <!-- bg decoration -->
-            <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
-            <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;"></div>
+            <div class="ctx-card__deco ctx-card__deco--top"></div>
+            <div class="ctx-card__deco ctx-card__deco--bottom"></div>
 
             <!-- Greeting + name row -->
-            <div style="margin-bottom:14px;">
-              <p id="welcome-greeting" style="font-size:12px;opacity:0.8;margin:0 0 2px;">สวัสดี</p>
-              <p style="font-size:20px;font-weight:700;margin:0 0 2px;line-height:1.2;">คุณสมชาย ใจดี</p>
-              <div style="display:flex;align-items:center;gap:6px;opacity:0.75;">
-                <span class="material-symbols-outlined" style="font-size:14px;">location_on</span>
-                <span id="weather-location" style="font-size:12px;">กำลังระบุตำแหน่ง…</span>
+            <div class="ctx-card__greeting">
+              <p id="welcome-greeting" class="ctx-card__greeting-label">สวัสดี</p>
+              <p class="ctx-card__greeting-name">คุณสมชาย ใจดี</p>
+              <div class="ctx-card__location-row">
+                <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
+                <span id="weather-location" class="ctx-card__location-text">กำลังระบุตำแหน่ง…</span>
               </div>
             </div>
 
             <!-- Divider -->
-            <div style="border-top:1px solid rgba(255,255,255,0.18);margin-bottom:14px;"></div>
+            <div class="ctx-card__divider"></div>
 
             <!-- Main weather row -->
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+            <div class="ctx-card__weather-row">
               <div>
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span id="weather-icon" class="material-symbols-outlined" style="font-size:44px;font-variation-settings:'FILL' 1;">wb_sunny</span>
+                <div class="ctx-card__temp-row">
+                  <span id="weather-icon" class="material-symbols-outlined ctx-card__weather-icon">wb_sunny</span>
                   <div>
-                    <p id="weather-temp" style="font-size:36px;font-weight:700;line-height:1;margin:0;">—°</p>
-                    <p id="weather-desc" style="font-size:12px;opacity:0.85;margin:4px 0 0;">กำลังโหลด…</p>
+                    <p id="weather-temp" class="ctx-card__temp">—°</p>
+                    <p id="weather-desc" class="ctx-card__desc">กำลังโหลด…</p>
                   </div>
                 </div>
-                <div style="display:flex;gap:16px;margin-top:10px;">
-                  <div style="display:flex;align-items:center;gap:4px;font-size:12px;opacity:0.8;">
-                    <span class="material-symbols-outlined" style="font-size:14px;">water_drop</span>
+                <div class="ctx-card__meta-row">
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">water_drop</span>
                     <span id="weather-humidity">—%</span>
                   </div>
-                  <div style="display:flex;align-items:center;gap:4px;font-size:12px;opacity:0.8;">
-                    <span class="material-symbols-outlined" style="font-size:14px;">air</span>
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">air</span>
                     <span id="weather-wind">— กม./ชม.</span>
                   </div>
                 </div>
               </div>
 
               <!-- PM2.5 chip -->
-              <div id="pm25-chip" style="
-                background: rgba(255,255,255,0.15);
-                backdrop-filter: blur(8px);
-                border-radius: 14px;
-                padding: 12px 18px;
-                text-align: center;
-                min-width: 90px;
-                flex-shrink: 0;
-              ">
-                <p style="font-size:11px;opacity:0.8;margin:0 0 2px;letter-spacing:0.5px;">PM 2.5</p>
-                <p id="pm25-value" style="font-size:28px;font-weight:700;margin:0;line-height:1;">—</p>
-                <p style="font-size:11px;opacity:0.7;margin:3px 0 6px;">μg/m³</p>
-                <span id="pm25-badge" style="
-                  font-size:11px;
-                  background: rgba(255,255,255,0.2);
-                  border-radius: 20px;
-                  padding: 3px 10px;
-                  display:inline-block;
-                ">—</span>
+              <div id="pm25-chip" class="ctx-pm25">
+                <p class="ctx-pm25__label">PM 2.5</p>
+                <p id="pm25-value" class="ctx-pm25__value">—</p>
+                <p class="ctx-pm25__unit">μg/m³</p>
+                <span id="pm25-badge" class="ctx-pm25__badge">—</span>
               </div>
             </div>
 
           <!-- Divider -->
-          <div style="border-top:1px solid rgba(255,255,255,0.18);margin:14px 0;"></div>
+          <div class="ctx-card__divider--spaced"></div>
 
           <!-- Birthday bar -->
-          <div id="birthday-bar" style="display:none;background:linear-gradient(90deg,rgba(255,105,135,0.3),rgba(255,180,80,0.25));border:1px solid rgba(255,150,150,0.3);border-radius:10px;padding:10px 14px;align-items:center;gap:10px;margin-bottom:8px;">
-            <span style="font-size:22px;flex-shrink:0;line-height:1;">🎂</span>
-            <p id="birthday-text" style="font-size:12px;line-height:1.5;margin:0;font-weight:600;">สุขสันต์วันเกิด!</p>
+          <div id="birthday-bar" class="ctx-bar ctx-bar--birthday" style="display:none;">
+            <span class="ctx-bar__birthday-emoji">🎂</span>
+            <p id="birthday-text" class="ctx-bar__birthday-text">สุขสันต์วันเกิด!</p>
           </div>
 
           <!-- วันพระ bar -->
-          <div id="wan-phra-bar" style="display:none;background:rgba(255,213,79,0.15);border-radius:10px;padding:10px 12px;display:none;align-items:center;gap:8px;margin-bottom:8px;">
-            <span class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;color:#FFD54F;">brightness_5</span>
-            <p id="wan-phra-text" style="font-size:12px;line-height:1.5;margin:0;color:#FFD54F;">วันนี้วันพระ</p>
+          <div id="wan-phra-bar" class="ctx-bar ctx-bar--wanphra" style="display:none;">
+            <span class="material-symbols-outlined ctx-bar__wanphra-icon">brightness_5</span>
+            <p id="wan-phra-text" class="ctx-bar__wanphra-text">วันนี้วันพระ</p>
           </div>
 
           <!-- วันสำคัญ bar -->
-          <div id="special-day-bar" style="display:none;background:rgba(255,213,79,0.15);border-radius:10px;padding:10px 12px;align-items:center;gap:8px;margin-bottom:8px;">
-            <span class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;color:#FFD54F;">auto_awesome</span>
-            <p id="special-day-text" style="font-size:12px;line-height:1.5;margin:0;color:#FFD54F;">—</p>
+          <div id="special-day-bar" class="ctx-bar ctx-bar--special" style="display:none;">
+            <span class="material-symbols-outlined ctx-bar__special-icon">auto_awesome</span>
+            <p id="special-day-text" class="ctx-bar__special-text">—</p>
           </div>
 
           <!-- Weather focus tip -->
-          <div id="weather-focus" style="
-            background: rgba(255,255,255,0.12);
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-          ">
-            <span id="focus-icon" class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;">info</span>
-            <p id="focus-text" style="font-size:12px;line-height:1.5;margin:0;">กำลังโหลดคำแนะนำ…</p>
+          <div id="weather-focus" class="ctx-bar ctx-bar--focus">
+            <span id="focus-icon" class="material-symbols-outlined ctx-bar__focus-icon">info</span>
+            <p id="focus-text" class="ctx-bar__focus-text">กำลังโหลดคำแนะนำ…</p>
           </div>
 
           <!-- Inline notifications -->
-          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" style="
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,100,100,0.4);
-            border-left: 3px solid #ff6b6b;
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-          ">
-            <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;color:#ff9999;">warning</span>
-            <div style="flex:1;min-width:0;">
-              <p style="font-size:12px;font-weight:700;margin:0 0 1px;color:#fff;">หนังสือเดินทางใกล้หมดอายุ</p>
-              <p style="font-size:11px;margin:0;opacity:0.75;">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" class="ctx-noti ctx-noti--danger">
+            <span class="material-symbols-outlined ctx-noti__icon--danger">warning</span>
+            <div class="ctx-noti__body">
+              <p class="ctx-noti__title">หนังสือเดินทางใกล้หมดอายุ</p>
+              <p class="ctx-noti__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size:16px;opacity:0.6;flex-shrink:0;">chevron_right</span>
+            <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
           </div>
 
-          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" style="
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,180,50,0.4);
-            border-left: 3px solid #fbbf24;
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-          ">
-            <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;color:#fcd34d;">schedule</span>
-            <div style="flex:1;min-width:0;">
-              <p style="font-size:12px;font-weight:700;margin:0 0 1px;color:#fff;">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
-              <p style="font-size:11px;margin:0;opacity:0.75;">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" class="ctx-noti ctx-noti--warning ctx-noti--last">
+            <span class="material-symbols-outlined ctx-noti__icon--warning">schedule</span>
+            <div class="ctx-noti__body">
+              <p class="ctx-noti__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+              <p class="ctx-noti__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size:16px;opacity:0.6;flex-shrink:0;">chevron_right</span>
+            <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
           </div>
 
           </div><!-- /loaded-item -->
@@ -226,51 +463,42 @@
         <!-- ═══════════════════════════════════════════ -->
         <!-- รู้หรือไม่ -->
         <!-- ═══════════════════════════════════════════ -->
-        <div id="did-you-know" onclick="dykNext()" style="
-          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-          border: 1px solid #86efac;
-          border-radius: var(--radius-xl, 16px);
-          padding: 16px 16px 14px;
-          position: relative;
-          overflow: hidden;
-          cursor: pointer;
-          user-select: none;
-        ">
+        <div id="did-you-know" onclick="dykNext()" class="dyk-card">
           <!-- bg decoration -->
-          <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(134,239,172,0.3);pointer-events:none;"></div>
+          <div class="dyk-card__deco"></div>
 
-          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
-            <span style="font-size:20px;line-height:1;flex-shrink:0;margin-top:2px;">💡</span>
-            <p id="dyk-text" style="font-size:13px;font-weight:500;line-height:1.6;margin:0;color:#14532d;flex:1;">
-              <a id="dyk-link" onclick="event.stopPropagation()" style="color:#16a34a;font-weight:700;text-decoration:none;white-space:nowrap;"></a>
+          <div class="dyk-card__header">
+            <span class="dyk-card__emoji">💡</span>
+            <p id="dyk-text" class="dyk-card__text">
+              <a id="dyk-link" onclick="event.stopPropagation()" class="dyk-card__link"></a>
             </p>
           </div>
 
           <!-- bottom row: dots + next hint -->
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;gap:5px;align-items:center;" id="dyk-dots"></div>
-            <span style="font-size:11px;color:#16a34a;opacity:0.7;display:flex;align-items:center;gap:2px;">
+          <div class="dyk-card__footer">
+            <div class="dyk-card__dots" id="dyk-dots"></div>
+            <span class="dyk-card__next-hint">
               แตะเพื่อดูถัดไป
-              <span class="material-symbols-outlined" style="font-size:13px;">chevron_right</span>
+              <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
             </span>
           </div>
         </div>
 
-        <div class="list-section" style="">
+        <div class="list-section">
           <p class="list-section-title">เอกสารราชการ</p>
           <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
 
           <div class="cert-list">
             <!-- Driving License -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -301,14 +529,14 @@
 
             <!-- Passport -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -339,21 +567,21 @@
 
             <!-- Disability Card -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
               <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                 onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
                 <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
-                <div class="list-icon" style="background: var(--background-info-light); color: var(--info-40);">
+                <div class="list-icon list-icon--disability">
                   <span class="material-symbols-outlined">accessible</span>
                 </div>
                 <div class="list-body">
@@ -379,21 +607,21 @@
         </div>
 
         <!-- 4. Assets -->
-        <div class="list-section" style="">
+        <div class="list-section">
           <p class="list-section-title">ทรัพย์สินของคุณ</p>
           <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
 
           <div class="cert-list">
             <!-- Electricity Meter 1: MEA Unpaid -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -426,14 +654,14 @@
 
             <!-- Water Meter 1: MWA Unpaid -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -467,14 +695,14 @@
 
             <!-- Electricity Meter 3: PEA Paid -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -506,14 +734,14 @@
 
             <!-- Water Meter 2: PWA Paid -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -545,14 +773,14 @@
 
             <!-- Honda Civic -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -589,14 +817,14 @@
 
             <!-- Yamaha Grand Filano -->
             <div class="loading-wrapper">
-              <div class="list-item skeleton-item" style="pointer-events: none;">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
                 <span class="list-badge skeleton-loading list-badge--corner"
                   class="skeleton-badge-sm"></span>
                 <div class="skeleton-loading"
                   class="skeleton-icon-md"></div>
                 <div class="list-body" class="skeleton-body-gap">
-                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
                 </div>
                 <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
               </div>
@@ -637,47 +865,43 @@
 
 
         <!-- 3. Rights and Welfare -->
-        <div class="list-section" style="">
+        <div class="list-section">
           <p class="list-section-title">สิทธิ และสวัสดิการ</p>
           <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
 
-          <div class="cert-list" style="grid-template-columns:1fr">
+          <div class="cert-list cert-list--single">
             <!-- Card 1: Medical Benefits -->
             <div class="loading-wrapper">
               <!-- Skeleton State -->
-              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="skeleton-loading skeleton-title"
-                  style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title"></div>
                 <div class="details-list">
-                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
-                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                  <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                  <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                  <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                  <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                 </div>
-                <div class="skeleton-loading skeleton-button"
-                  style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
               </div>
 
               <!-- Loaded State -->
-              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
-                  <div class="section-bar" style="background-color: var(--primary-50);"></div>
-                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
-                    สิทธิการรักษาพยาบาล</h3>
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">สิทธิการรักษาพยาบาล</h3>
                 </div>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
-                    <span class="details-value"
-                      style="color: var(--primary-40); font-weight: 700;">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+                    <span class="details-value card-section__value--primary">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
                   </div>
                   <div class="details-item">
                     <span class="details-label">สิทธิย่อย:</span>
@@ -696,8 +920,7 @@
                     <span class="details-value">โรงพยาบาลรามาธิบดี</span>
                   </div>
                 </div>
-                <button class="btn btn-tertiary-outline flex-center"
-                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
                   <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
                 </button>
@@ -705,38 +928,37 @@
             </div>
 
             <!-- Card 2: สิทธิประกันสังคม -->
-            <div class="loading-wrapper" style="display: none;">
+            <div class="loading-wrapper loading-wrapper--hidden">
               <!-- Skeleton State -->
-              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 50%; margin-bottom: var(--spacing-md);"></div>
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title--wide"></div>
                 <div class="details-list">
-                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
-                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
-                  <div class="details-item" style="gap: var(--spacing-xs);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
                 </div>
-                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
               </div>
 
               <!-- Loaded State -->
-              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
-                  <div class="section-bar" style="background-color: var(--info-40);"></div>
-                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
-                    สิทธิประกันสังคม</h3>
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--info"></div>
+                  <h3 class="section-title card-section__heading">สิทธิประกันสังคม</h3>
                 </div>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
-                    <span class="details-value" style="color: var(--info-40); font-weight: 700;">สิทธิประกันสังคม</span>
+                    <span class="details-value card-section__value--info">สิทธิประกันสังคม</span>
                   </div>
                   <div class="details-item">
                     <span class="details-label">สิทธิย่อย:</span>
@@ -747,8 +969,7 @@
                     <span class="details-value">โรงพยาบาลลาดพร้าว</span>
                   </div>
                 </div>
-                <button class="btn btn-tertiary-outline flex-center"
-                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="alert('เปิด miniapp ประกันสังคม')">
                   <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
                 </button>
@@ -756,46 +977,44 @@
             </div>
 
             <!-- Card 3: สิทธิข้าราชการ (กบข.) -->
-            <div class="loading-wrapper" style="display: none;">
+            <div class="loading-wrapper loading-wrapper--hidden">
               <!-- Skeleton State -->
-              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title"></div>
                 <div class="details-list">
-                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
-                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
-                  <div class="details-item" style="gap: var(--spacing-xs);">
-                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
-                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
                   </div>
                 </div>
-                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
               </div>
 
               <!-- Loaded State -->
-              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
-                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
-                  <div class="section-bar" style="background-color: var(--warning-40);"></div>
-                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
-                    สิทธิข้าราชการ (กบข.)</h3>
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--warning"></div>
+                  <h3 class="section-title card-section__heading">สิทธิข้าราชการ (กบข.)</h3>
                 </div>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
-                    <span class="details-value" style="color: var(--foreground-warning-default); font-weight: 700;">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
+                    <span class="details-value card-section__value--warning">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
                   </div>
                   <div class="details-item">
                     <span class="details-label">สิทธิย่อย:</span>
                     <span class="details-value">สิทธิเบิกกรมบัญชีกลาง (ผู้รับเบี้ยหวัดบำนาญ)</span>
                   </div>
                 </div>
-                <button class="btn btn-tertiary-outline flex-center"
-                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="alert('เปิด miniapp กบข.')">
                   <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
                 </button>
@@ -884,30 +1103,30 @@
 
   <!-- Modal: Permissions Management -->
   <div id="modal-permissions" class="modal-overlay" onclick="closeModal('modal-permissions')">
-    <div class="modal-content" onclick="event.stopPropagation()" style="padding: 0; max-height: 82vh; overflow: hidden; display: flex; flex-direction: column;">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
 
       <!-- Header -->
-      <div style="padding: var(--spacing-lg) var(--spacing-xl); border-bottom: 1px solid var(--stroke-neutral-lighter); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-shrink: 0;">
+      <div class="modal__header">
         <div>
-          <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); margin: 0 0 2px; color: var(--foreground-neutral-default);">การจัดการสิทธิ์</p>
-          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.4;">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+          <p class="modal__header-title">การจัดการสิทธิ์</p>
+          <p class="modal__header-sub">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
         </div>
-        <button onclick="closeModal('modal-permissions')" style="background: var(--background-neutral-subtle); border: none; border-radius: var(--radius-full); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--foreground-neutral-lighter); padding: 0; flex-shrink: 0;">
-          <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+        <button onclick="closeModal('modal-permissions')" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
         </button>
       </div>
 
       <!-- Scrollable Content -->
-      <div style="overflow-y: auto; padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl); -webkit-overflow-scrolling: touch;">
+      <div class="modal__body">
 
         <!-- Section: Connected -->
         <p class="section-label-xs">เชื่อมต่อแล้ว</p>
 
-        <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl);">
+        <div class="modal__section-list">
 
           <!-- ใบอนุญาตขับรถยนต์ -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">directions_car</span></div>
+            <div class="list-icon driving perm-item__icon--shrink"><span class="material-symbols-outlined" class="perm-icon">directions_car</span></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ใบอนุญาตขับรถยนต์</p>
               <p class="perm-item-sub">กรมการขนส่งทางบก</p>
@@ -917,7 +1136,7 @@
 
           <!-- หนังสือเดินทาง -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2');">
-            <div class="list-icon work" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">public</span></div>
+            <div class="list-icon work perm-item__icon--shrink"><span class="material-symbols-outlined" class="perm-icon">public</span></div>
             <div class="perm-item-body">
               <p class="perm-item-title">หนังสือเดินทาง</p>
               <p class="perm-item-sub">กรมการกงสุล</p>
@@ -927,20 +1146,20 @@
 
           <!-- บัตรประจำตัวคนพิการ -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706');">
-            <div class="list-icon" style="flex-shrink: 0; background: var(--background-info-light); color: var(--info-40);"><span class="material-symbols-outlined" class="perm-icon">accessible</span></div>
+            <div class="list-icon list-icon--disability perm-item__icon--shrink"><span class="material-symbols-outlined" class="perm-icon">accessible</span></div>
             <div class="perm-item-body">
               <p class="perm-item-title">บัตรประจำตัวคนพิการ</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</p>
+              <p class="perm-item__sub--truncate">กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</p>
             </div>
             <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
 
           <!-- สิทธิการรักษาพยาบาล -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12');">
-            <div class="list-icon" style="flex-shrink: 0; background: var(--background-positive-light); color: var(--foreground-positive-default);"><span class="material-symbols-outlined" class="perm-icon">health_and_safety</span></div>
+            <div class="list-icon list-icon--health perm-item__icon--shrink"><span class="material-symbols-outlined" class="perm-icon">health_and_safety</span></div>
             <div class="perm-item-body">
               <p class="perm-item-title">สิทธิการรักษาพยาบาล</p>
-              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)</p>
+              <p class="perm-item__sub--truncate">สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)</p>
             </div>
             <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
           </div>
@@ -948,7 +1167,7 @@
           
           <!-- ทะเบียนยานพาหนะ -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">car_tag</span></div>
+            <div class="list-icon driving perm-item__icon--shrink"><span class="material-symbols-outlined" class="perm-icon">car_tag</span></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ทะเบียนยานพาหนะ</p>
               <p class="perm-item-sub">กรมการขนส่งทางบก</p>
@@ -958,7 +1177,7 @@
 
           <!-- ค่าไฟ MEA -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e');">
-            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/mea.png" alt="MEA" class="img-helper-frame circle size-sm"></div>
+            <div class="list-icon covid perm-item__icon--shrink"><img src="_media/mea.png" alt="MEA" class="img-helper-frame circle size-sm"></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ค่าไฟฟ้า</p>
               <p class="perm-item-sub">การไฟฟ้านครหลวง (MEA)</p>
@@ -968,7 +1187,7 @@
 
           <!-- ค่าน้ำ MWA -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/mwa.svg" alt="MWA" class="img-helper-frame circle size-sm"></div>
+            <div class="list-icon driving perm-item__icon--shrink"><img src="_media/mwa.svg" alt="MWA" class="img-helper-frame circle size-sm"></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ค่าน้ำประปา</p>
               <p class="perm-item-sub">การประปานครหลวง (MWA)</p>
@@ -978,7 +1197,7 @@
 
           <!-- ค่าไฟ PEA -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a');">
-            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/pea.png" alt="PEA" class="img-helper-frame circle size-sm"></div>
+            <div class="list-icon covid perm-item__icon--shrink"><img src="_media/pea.png" alt="PEA" class="img-helper-frame circle size-sm"></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ค่าไฟฟ้า</p>
               <p class="perm-item-sub">การไฟฟ้าส่วนภูมิภาค (PEA)</p>
@@ -988,7 +1207,7 @@
 
           <!-- ค่าน้ำ PWA -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe');">
-            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/pwa.png" alt="PWA" class="img-helper-frame circle size-sm"></div>
+            <div class="list-icon driving perm-item__icon--shrink"><img src="_media/pwa.png" alt="PWA" class="img-helper-frame circle size-sm"></div>
             <div class="perm-item-body">
               <p class="perm-item-title">ค่าน้ำประปา</p>
               <p class="perm-item-sub">การประปาส่วนภูมิภาค (PWA)</p>
@@ -1001,42 +1220,42 @@
         <!-- Section: Not Connected -->
         <p class="section-label-xs">ยังไม่ได้เชื่อมต่อ</p>
 
-        <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div class="modal__section-list--bottom">
 
           <!-- บัตรสวัสดิการแห่งรัฐ -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('d4e5f6a7-b8c9-0123-defa-012345678901');">
-            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+            <div class="perm-item__unconnected">
               <span class="material-symbols-outlined" class="perm-icon">credit_card</span>
             </div>
             <div class="perm-item-body">
               <p class="perm-item-title">บัตรสวัสดิการแห่งรัฐ</p>
               <p class="perm-item-sub">กรมบัญชีกลาง กระทรวงการคลัง</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+            <span class="material-symbols-outlined perm-item__linkoff-icon">link_off</span>
           </div>
 
           <!-- ประกันสังคม -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e5f6a7b8-c9d0-1234-efab-123456789012');">
-            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+            <div class="perm-item__unconnected">
               <span class="material-symbols-outlined" class="perm-icon">shield_person</span>
             </div>
             <div class="perm-item-body">
               <p class="perm-item-title">ประกันสังคม</p>
               <p class="perm-item-sub">สำนักงานประกันสังคม</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+            <span class="material-symbols-outlined perm-item__linkoff-icon">link_off</span>
           </div>
 
           <!-- ที่ดินและสิ่งปลูกสร้าง -->
           <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f6a7b8c9-d0e1-2345-fabc-234567890123');">
-            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+            <div class="perm-item__unconnected">
               <span class="material-symbols-outlined" class="perm-icon">home_work</span>
             </div>
             <div class="perm-item-body">
               <p class="perm-item-title">ที่ดินและสิ่งปลูกสร้าง</p>
               <p class="perm-item-sub">กรมที่ดิน</p>
             </div>
-            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+            <span class="material-symbols-outlined perm-item__linkoff-icon">link_off</span>
           </div>
 
         </div>
@@ -1047,21 +1266,21 @@
 
   <!-- Modal: Demo Config -->
   <div id="modal-demo-config" class="modal-overlay" onclick="closeModal('modal-demo-config')">
-    <div class="modal-content" onclick="event.stopPropagation()" style="padding:0;max-height:82vh;overflow:hidden;display:flex;flex-direction:column;">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
 
       <!-- Header -->
-      <div style="padding:16px 20px;border-bottom:1px solid var(--stroke-neutral-lighter);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div class="dc-modal__header">
         <div>
-          <p style="font-size:15px;font-weight:700;margin:0 0 2px;">ตั้งค่าการแสดงผล</p>
-          <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">จำลองสถานการณ์สำหรับ demo</p>
+          <p class="dc-modal__title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
         </div>
-        <button onclick="closeModal('modal-demo-config')" style="background:var(--background-neutral-subtle);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--foreground-neutral-lighter);padding:0;flex-shrink:0;">
-          <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+        <button onclick="closeModal('modal-demo-config')" class="dc-modal__close-btn">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
         </button>
       </div>
 
       <!-- Scrollable content -->
-      <div style="overflow-y:auto;padding:0 20px 28px;-webkit-overflow-scrolling:touch;">
+      <div class="dc-modal__body">
 
         <!-- อากาศ -->
         <div class="dc-group">
@@ -1084,7 +1303,7 @@
         <!-- PM 2.5 -->
         <div class="dc-group">
           <p class="dc-group-label">💨 PM 2.5</p>
-          <div class="dc-chips" style="flex-wrap:wrap;">
+          <div class="dc-chips dc-chips--wrap">
             <button class="dc-chip" id="chip-pm25-low"      onclick="demoSet('pm25','low')"      style="--pm-color:#4caf50;">🟢 ต่ำ</button>
             <button class="dc-chip" id="chip-pm25-medium"   onclick="demoSet('pm25','medium')"   style="--pm-color:#fbbf24;">🟡 กลาง</button>
             <button class="dc-chip" id="chip-pm25-high"     onclick="demoSet('pm25','high')"     style="--pm-color:#f97316;">🟠 สูง</button>
@@ -1093,9 +1312,9 @@
         </div>
 
         <!-- วันสำคัญ -->
-        <div class="dc-group" style="border:none;">
+        <div class="dc-group dc-group--last">
           <p class="dc-group-label">🪷 วันสำคัญ</p>
-          <div class="dc-chips" style="flex-wrap:wrap;">
+          <div class="dc-chips dc-chips--wrap">
             <button class="dc-chip" id="chip-special-none"      onclick="demoSet('special',null)">ไม่มี</button>
             <button class="dc-chip" id="chip-special-wanphra"   onclick="demoSet('special','wanphra')">วันพระทั่วไป</button>
             <button class="dc-chip" id="chip-special-visakha"   onclick="demoSet('special','visakha')">วันวิสาขบูชา</button>
@@ -1566,28 +1785,8 @@
   </script>
 
   <!-- Floating demo config button -->
-  <button onclick="openModal('modal-demo-config')" style="
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--neutral-25, #2d2d2d);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius-full, 999px);
-    padding: 10px 18px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0,0,0,0.2));
-    z-index: 100;
-    white-space: nowrap;
-    font-family: inherit;
-  ">
-    <span class="material-symbols-outlined" style="font-size:18px;">tune</span>
+  <button onclick="openModal('modal-demo-config')" class="demo-fab">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
     Demo การแสดงผล
   </button>
 
