@@ -223,6 +223,39 @@
 
 
 
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- รู้หรือไม่ -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="did-you-know" onclick="dykNext()" style="
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+          border: 1px solid #86efac;
+          border-radius: var(--radius-xl, 16px);
+          padding: 16px 16px 14px;
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+          user-select: none;
+        ">
+          <!-- bg decoration -->
+          <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(134,239,172,0.3);pointer-events:none;"></div>
+
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-size:20px;line-height:1;flex-shrink:0;margin-top:2px;">💡</span>
+            <p id="dyk-text" style="font-size:13px;font-weight:500;line-height:1.6;margin:0;color:#14532d;flex:1;">
+              <a id="dyk-link" onclick="event.stopPropagation()" style="color:#16a34a;font-weight:700;text-decoration:none;white-space:nowrap;"></a>
+            </p>
+          </div>
+
+          <!-- bottom row: dots + next hint -->
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;gap:5px;align-items:center;" id="dyk-dots"></div>
+            <span style="font-size:11px;color:#16a34a;opacity:0.7;display:flex;align-items:center;gap:2px;">
+              แตะเพื่อดูถัดไป
+              <span class="material-symbols-outlined" style="font-size:13px;">chevron_right</span>
+            </span>
+          </div>
+        </div>
+
         <div class="list-section" style="">
           <p class="list-section-title">เอกสารราชการ</p>
           <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
@@ -1437,6 +1470,85 @@
     } else {
       loadWithMock();
     }
+  })();
+  </script>
+
+  <!-- รู้หรือไม่ rotating tips -->
+  <script>
+  (function () {
+    var TIPS = [
+      {
+        text: 'รู้หรือไม่ คุณสามารถดูข้อมูลเครดิตบูโรได้ฟรี ผ่านแอปทางรัฐ ',
+        label: 'ดูเครดิตบูโร →',
+        miniapp: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      },
+      {
+        text: 'รู้หรือไม่ ชายไทยที่มีสิทธิหลักประกันสุขภาพแห่งชาติ สามารถเบิกถุงยางอนามัยได้ฟรี ผ่านแอปทางรัฐ ',
+        label: 'ตรวจสอบสิทธิ →',
+        miniapp: '3332774b-8a0f-4907-b3aa-29dbc8779d12',
+      },
+      {
+        text: 'รู้หรือไม่ ค่าน้ำ ค่าไฟที่คุณจ่ายทุกเดือน สามารถใช้เป็นหลักฐานในการขอสินเชื่อได้ ',
+        label: 'ดูข้อมูลเพิ่มเติม →',
+        miniapp: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
+      },
+    ];
+
+    var current = 0;
+    var textEl = document.getElementById('dyk-text');
+    var linkEl = document.getElementById('dyk-link');
+    var dotsEl = document.getElementById('dyk-dots');
+    var timer;
+
+    // Build dots
+    TIPS.forEach(function (_, i) {
+      var d = document.createElement('div');
+      d.id = 'dyk-dot-' + i;
+      d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#86efac;transition:background 0.3s,width 0.3s;';
+      dotsEl.appendChild(d);
+    });
+
+    function show(idx, userTriggered) {
+      var tip = TIPS[idx];
+      var card = document.getElementById('did-you-know');
+
+      // fade
+      card.style.transition = 'opacity 0.2s';
+      card.style.opacity = '0.6';
+      setTimeout(function () {
+        // set text node before the link
+        textEl.childNodes[0] && textEl.childNodes[0].nodeType === 3
+          ? textEl.childNodes[0].textContent = tip.text
+          : textEl.insertBefore(document.createTextNode(tip.text), linkEl);
+        linkEl.textContent = tip.label;
+        linkEl.onclick = function () {
+          if (window.czpSdk) window.czpSdk.openMiniApp(tip.miniapp);
+        };
+        card.style.opacity = '1';
+      }, 180);
+
+      // dots
+      TIPS.forEach(function (_, i) {
+        var d = document.getElementById('dyk-dot-' + i);
+        d.style.background = i === idx ? '#16a34a' : '#86efac';
+        d.style.width      = i === idx ? '16px'   : '6px';
+      });
+
+      current = idx;
+
+      // reset auto-timer on manual tap
+      if (userTriggered) {
+        clearInterval(timer);
+        timer = setInterval(advance, 15000);
+      }
+    }
+
+    function advance() { show((current + 1) % TIPS.length, false); }
+
+    window.dykNext = function () { show((current + 1) % TIPS.length, true); };
+
+    show(0, false);
+    timer = setInterval(advance, 15000);
   })();
   </script>
 
