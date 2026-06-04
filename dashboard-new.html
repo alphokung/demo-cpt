@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าแรก — แผงข้อมูลพลเมืองดิจิทัล</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description"
+    content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <p class="top-nav-bar-title">ข้อมูลของคุณ</p>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- Page Header -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- MERGED: Welcome + Weather + PM2.5 + วันสำคัญ + Focus -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="loading-wrapper">
+
+          <!-- Skeleton state -->
+          <div class="skeleton-item" style="
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            border-radius: var(--radius-xl, 16px);
+            padding: 20px;
+            pointer-events: none;
+          ">
+            <span class="skeleton-loading" style="height:13px;width:90px;display:block;background:rgba(255,255,255,0.2)!important;border-radius:4px;margin-bottom:6px;"></span>
+            <span class="skeleton-loading" style="height:26px;width:180px;display:block;background:rgba(255,255,255,0.3)!important;border-radius:6px;margin-bottom:20px;"></span>
+            <div style="display:flex;justify-content:space-between;gap:12px;">
+              <div>
+                <span class="skeleton-loading" style="height:44px;width:120px;display:block;background:rgba(255,255,255,0.25)!important;border-radius:6px;margin-bottom:10px;"></span>
+                <span class="skeleton-loading" style="height:13px;width:140px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:4px;"></span>
+              </div>
+              <span class="skeleton-loading" style="height:90px;width:80px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:12px;flex-shrink:0;"></span>
+            </div>
+          </div>
+
+          <!-- Loaded state -->
+          <div id="today-context-card" class="loaded-item" style="
+            display: none;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            border-radius: var(--radius-xl, 16px);
+            padding: 20px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+          ">
+            <!-- bg decoration -->
+            <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;"></div>
+            <div style="position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;"></div>
+
+            <!-- Greeting + name row -->
+            <div style="margin-bottom:14px;">
+              <p id="welcome-greeting" style="font-size:12px;opacity:0.8;margin:0 0 2px;">สวัสดี</p>
+              <p style="font-size:20px;font-weight:700;margin:0 0 2px;line-height:1.2;">คุณสมชาย ใจดี</p>
+              <div style="display:flex;align-items:center;gap:6px;opacity:0.75;">
+                <span class="material-symbols-outlined" style="font-size:14px;">location_on</span>
+                <span id="weather-location" style="font-size:12px;">กำลังระบุตำแหน่ง…</span>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div style="border-top:1px solid rgba(255,255,255,0.18);margin-bottom:14px;"></div>
+
+            <!-- Main weather row -->
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span id="weather-icon" class="material-symbols-outlined" style="font-size:44px;font-variation-settings:'FILL' 1;">wb_sunny</span>
+                  <div>
+                    <p id="weather-temp" style="font-size:36px;font-weight:700;line-height:1;margin:0;">—°</p>
+                    <p id="weather-desc" style="font-size:12px;opacity:0.85;margin:4px 0 0;">กำลังโหลด…</p>
+                  </div>
+                </div>
+                <div style="display:flex;gap:16px;margin-top:10px;">
+                  <div style="display:flex;align-items:center;gap:4px;font-size:12px;opacity:0.8;">
+                    <span class="material-symbols-outlined" style="font-size:14px;">water_drop</span>
+                    <span id="weather-humidity">—%</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:4px;font-size:12px;opacity:0.8;">
+                    <span class="material-symbols-outlined" style="font-size:14px;">air</span>
+                    <span id="weather-wind">— กม./ชม.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PM2.5 chip -->
+              <div id="pm25-chip" style="
+                background: rgba(255,255,255,0.15);
+                backdrop-filter: blur(8px);
+                border-radius: 12px;
+                padding: 10px 14px;
+                text-align: center;
+                min-width: 80px;
+                flex-shrink: 0;
+              ">
+                <p style="font-size:10px;opacity:0.8;margin:0 0 2px;letter-spacing:0.5px;">PM 2.5</p>
+                <p id="pm25-value" style="font-size:24px;font-weight:700;margin:0;line-height:1;">—</p>
+                <p style="font-size:10px;opacity:0.7;margin:2px 0 4px;">μg/m³</p>
+                <span id="pm25-badge" style="
+                  font-size:10px;
+                  background: rgba(255,255,255,0.2);
+                  border-radius: 20px;
+                  padding: 2px 8px;
+                  display:inline-block;
+                ">—</span>
+              </div>
+            </div>
+
+          <!-- Divider -->
+          <div style="border-top:1px solid rgba(255,255,255,0.18);margin:14px 0;"></div>
+
+          <!-- วันพระ bar -->
+          <div id="wan-phra-bar" style="display:none;background:rgba(255,213,79,0.15);border-radius:10px;padding:10px 12px;display:none;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;color:#FFD54F;">brightness_5</span>
+            <p id="wan-phra-text" style="font-size:12px;line-height:1.5;margin:0;color:#FFD54F;">วันนี้วันพระ</p>
+          </div>
+
+          <!-- วันสำคัญ bar -->
+          <div id="special-day-bar" style="display:none;background:rgba(255,213,79,0.15);border-radius:10px;padding:10px 12px;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;color:#FFD54F;">auto_awesome</span>
+            <p id="special-day-text" style="font-size:12px;line-height:1.5;margin:0;color:#FFD54F;">—</p>
+          </div>
+
+          <!-- Weather focus tip -->
+          <div id="weather-focus" style="
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          ">
+            <span id="focus-icon" class="material-symbols-outlined" style="font-size:20px;flex-shrink:0;">info</span>
+            <p id="focus-text" style="font-size:12px;line-height:1.5;margin:0;">กำลังโหลดคำแนะนำ…</p>
+          </div>
+          </div><!-- /loaded-item -->
+        </div><!-- /loading-wrapper -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- เรื่องสำคัญที่คุณควรรู้ (Smart Inbox) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="important-notices-section">
+          <div style="margin-bottom: var(--spacing-md);">
+            <p class="list-section-title" style="margin:0 0 2px;">เรื่องสำคัญที่คุณควรรู้</p>
+            <p class="list-section-note" style="margin:0;">การแจ้งเตือนที่ต้องการการดูแล</p>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap: var(--spacing-sm);">
+
+            <!-- Notice 1: Passport expiring -->
+            <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" style="
+              background: #fef2f2;
+              border: 1px solid #fca5a5;
+              border-left: 4px solid #e53935;
+              border-radius: var(--radius-lg, 12px);
+              padding: 14px 16px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              cursor: pointer;
+            ">
+              <div style="width:40px;height:40px;border-radius:10px;background:rgba(229,57,53,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:22px;color:#e53935;">public</span>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:13px;font-weight:700;margin:0 0 2px;">หนังสือเดินทางใกล้หมดอายุ</p>
+                <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+              </div>
+              <span class="material-symbols-outlined" style="font-size:18px;color:var(--foreground-neutral-lighter);flex-shrink:0;">chevron_right</span>
+            </div>
+
+            <!-- Notice 2: Motorcycle tax due -->
+            <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" style="
+              background: #fffbeb;
+              border: 1px solid #fcd34d;
+              border-left: 4px solid #f59e0b;
+              border-radius: var(--radius-lg, 12px);
+              padding: 14px 16px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              cursor: pointer;
+            ">
+              <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:22px;color:#f59e0b;">two_wheeler</span>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:13px;font-weight:700;margin:0 0 2px;">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+                <p style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+              </div>
+              <span class="material-symbols-outlined" style="font-size:18px;color:var(--foreground-neutral-lighter);flex-shrink:0;">chevron_right</span>
+            </div>
+
+            <!-- Notice 3: Special day -->
+            <div style="
+              background: #eff6ff;
+              border: 1px solid #93c5fd;
+              border-left: 4px solid #3b82f6;
+              border-radius: var(--radius-lg, 12px);
+              padding: 14px 16px;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            ">
+              <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:22px;color:#3b82f6;">auto_awesome</span>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p id="notice-special-day-title" style="font-size:13px;font-weight:700;margin:0 0 2px;">วันสำคัญวันนี้</p>
+                <p id="notice-special-day-sub" style="font-size:12px;color:var(--foreground-neutral-lighter);margin:0;">—</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="list-section" style="">
+          <p class="list-section-title">เอกสารราชการ</p>
+          <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+
+          <div class="cert-list">
+            <!-- Driving License -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                  <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 5 พ.ค. 2572</span>
+                    </div>
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Passport -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                <div class="list-icon work">
+                  <span class="material-symbols-outlined">public</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                  <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                    </div>
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Disability Card -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon" style="background: var(--background-info-light); color: var(--info-40);">
+                  <span class="material-symbols-outlined">accessible</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                  <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 14 ก.พ. 2571</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                  
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 4. Assets -->
+        <div class="list-section" style="">
+          <p class="list-section-title">ทรัพย์สินของคุณ</p>
+          <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+          <div class="cert-list">
+            <!-- Electricity Meter 1: MEA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
+                  <p class="list-item-hero">มิเตอร์ไฟ: 020012345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+
+                  <div class="list-meta">
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 1: MWA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
+                  <p class="list-item-hero">มิเตอร์น้ำ: 102548976</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+       
+
+
+            <!-- Electricity Meter 3: PEA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
+                <div class="list-icon covid">
+                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
+                  <p class="list-item-hero">มิเตอร์ไฟ: 020087654321</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      มิเตอร์ร้านค้า
+                    </div>
+                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 2: PWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
+                <div class="list-icon driving">
+                  <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
+                  <p class="list-item-hero">มิเตอร์น้ำ: 552109876</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+
+            <!-- Honda Civic -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถยนต์</p>
+                  <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                      <span>รุ่นรถ: Honda Civic</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Yamaha Grand Filano -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events: none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium" style="margin-bottom: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="margin-bottom: 0; height: 12px;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">two_wheeler</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถจักรยานยนต์</p>
+                  <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                      <span>รุ่นรถ: Yamaha Grand Filano</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+          
+          </div>
+        </div>
+
+
+
+        <!-- 3. Rights and Welfare -->
+        <div class="list-section" style="">
+          <p class="list-section-title">สิทธิ และสวัสดิการ</p>
+          <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
+
+          <div class="cert-list" style="grid-template-columns:1fr">
+            <!-- Card 1: Medical Benefits -->
+            <div class="loading-wrapper">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title"
+                  style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                  <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                </div>
+                <div class="skeleton-loading skeleton-button"
+                  style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--primary-50);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิการรักษาพยาบาล</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value"
+                      style="color: var(--primary-40); font-weight: 700;">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิหลักประกันสุขภาพ (บัตรทอง 30 บาท)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่เข้ารับการรักษาเบื้องต้น:</span>
+                    <span class="details-value">คลินิกชุมชนอบอุ่นลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประจำ:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่รับการส่งต่อ:</span>
+                    <span class="details-value">โรงพยาบาลรามาธิบดี</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
+                  <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: สิทธิประกันสังคม -->
+            <div class="loading-wrapper" style="display: none;">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 50%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--info-40);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิประกันสังคม</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value" style="color: var(--info-40); font-weight: 700;">สิทธิประกันสังคม</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกองทุนประกันสังคม (ผู้ประกันตน)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประกันสังคม:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="alert('เปิด miniapp ประกันสังคม')">
+                  <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: สิทธิข้าราชการ (กบข.) -->
+            <div class="loading-wrapper" style="display: none;">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title" style="height: 20px; width: 45%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button" style="height: 40px; width: 100%; margin-top: var(--spacing-lg);"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--warning-40);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สิทธิข้าราชการ (กบข.)</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value" style="color: var(--foreground-warning-default); font-weight: 700;">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกรมบัญชีกลาง (ผู้รับเบี้ยหวัดบำนาญ)</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center"
+                  style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                  onclick="alert('เปิด miniapp กบข.')">
+                  <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Welfare Benefits (commented out) -->
+             <!-- <div class="loading-wrapper">
+              
+              <div class="card skeleton-item" style="pointer-events: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="skeleton-loading skeleton-title"
+                  style="height: 20px; width: 55%; margin-bottom: var(--spacing-md);"></div>
+                <div class="details-list">
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs); margin-bottom: var(--spacing-sm);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                  <div class="details-item" style="gap: var(--spacing-xs);">
+                    <div class="skeleton-loading skeleton-text short" style="height: 14px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text medium" style="height: 18px; margin: 0;"></div>
+                    <div class="skeleton-loading skeleton-text short" style="height: 12px; margin: 0;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card loaded-item" style="display: none; margin: 0; padding: var(--spacing-xl);">
+                <div class="section-title-container" style="margin-bottom: var(--spacing-md);">
+                  <div class="section-bar" style="background-color: var(--secondary-50);"></div>
+                  <h3 class="section-title" style="font-size: var(--font-size-title-m); font-weight: 700;">
+                    สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (สถานะใช้งาน)</span>
+                    <span class="details-subvalue">วงเงินส่วนลดซื้อสินค้าอุปโภคบริโภคคงเหลือเดือนนี้: 300.00 บาท</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (โอนเงินสำเร็จ)</span>
+                    <span class="details-subvalue">โอนเงินช่วยเหลือประจำเดือน พ.ค. 2569 จำนวน 600.00 บาทสำเร็จ</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เบี้ยยังชีพผู้สูงอายุ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-neutral-lighter); font-weight: 500;">ยังไม่มีสิทธิ์</span>
+                    <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60
+                      ปีบริบูรณ์)</span>
+                  </div>
+
+                  <button class="btn btn-tertiary-outline flex-center"
+                    style="width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm);"
+                    onclick="alert('เปิด miniapp ที่เกี่ยวข้อง')">
+                    <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสวัสดิการของคุณ
+                  </button>
+                </div>
+              </div>
+            </div> -->
+            
+          </div>
+        </div>
+
+        
+
+
+
+        <div class="footer-timestamp" >
+          ศูนย์รวมข้อมูลพลเมืองบูรณาการระบบรัฐบาลดิจิทัล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Permissions Management -->
+  <div id="modal-permissions" class="modal-overlay" onclick="closeModal('modal-permissions')">
+    <div class="modal-content" onclick="event.stopPropagation()" style="padding: 0; max-height: 82vh; overflow: hidden; display: flex; flex-direction: column;">
+
+      <!-- Header -->
+      <div style="padding: var(--spacing-lg) var(--spacing-xl); border-bottom: 1px solid var(--stroke-neutral-lighter); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-shrink: 0;">
+        <div>
+          <p style="font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); margin: 0 0 2px; color: var(--foreground-neutral-default);">การจัดการสิทธิ์</p>
+          <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.4;">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+        </div>
+        <button onclick="closeModal('modal-permissions')" style="background: var(--background-neutral-subtle); border: none; border-radius: var(--radius-full); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--foreground-neutral-lighter); padding: 0; flex-shrink: 0;">
+          <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div style="overflow-y: auto; padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl); -webkit-overflow-scrolling: touch;">
+
+        <!-- Section: Connected -->
+        <p class="section-label-xs">เชื่อมต่อแล้ว</p>
+
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl);">
+
+          <!-- ใบอนุญาตขับรถยนต์ -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">directions_car</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ใบอนุญาตขับรถยนต์</p>
+              <p class="perm-item-sub">กรมการขนส่งทางบก</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- หนังสือเดินทาง -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2');">
+            <div class="list-icon work" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">public</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">หนังสือเดินทาง</p>
+              <p class="perm-item-sub">กรมการกงสุล</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- บัตรประจำตัวคนพิการ -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-info-light); color: var(--info-40);"><span class="material-symbols-outlined" class="perm-icon">accessible</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">บัตรประจำตัวคนพิการ</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- สิทธิการรักษาพยาบาล -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12');">
+            <div class="list-icon" style="flex-shrink: 0; background: var(--background-positive-light); color: var(--foreground-positive-default);"><span class="material-symbols-outlined" class="perm-icon">health_and_safety</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">สิทธิการรักษาพยาบาล</p>
+              <p style="font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          
+          <!-- ทะเบียนยานพาหนะ -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><span class="material-symbols-outlined" class="perm-icon">car_tag</span></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ทะเบียนยานพาหนะ</p>
+              <p class="perm-item-sub">กรมการขนส่งทางบก</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- ค่าไฟ MEA -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e');">
+            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/mea.png" alt="MEA" class="img-helper-frame circle size-sm"></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าไฟฟ้า</p>
+              <p class="perm-item-sub">การไฟฟ้านครหลวง (MEA)</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- ค่าน้ำ MWA -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/mwa.svg" alt="MWA" class="img-helper-frame circle size-sm"></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าน้ำประปา</p>
+              <p class="perm-item-sub">การประปานครหลวง (MWA)</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- ค่าไฟ PEA -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a');">
+            <div class="list-icon covid" style="flex-shrink: 0;"><img src="_media/pea.png" alt="PEA" class="img-helper-frame circle size-sm"></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าไฟฟ้า</p>
+              <p class="perm-item-sub">การไฟฟ้าส่วนภูมิภาค (PEA)</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+          <!-- ค่าน้ำ PWA -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe');">
+            <div class="list-icon driving" style="flex-shrink: 0;"><img src="_media/pwa.png" alt="PWA" class="img-helper-frame circle size-sm"></div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ค่าน้ำประปา</p>
+              <p class="perm-item-sub">การประปาส่วนภูมิภาค (PWA)</p>
+            </div>
+            <span class="material-symbols-outlined" class="perm-icon-check">check_circle</span>
+          </div>
+
+        </div>
+
+        <!-- Section: Not Connected -->
+        <p class="section-label-xs">ยังไม่ได้เชื่อมต่อ</p>
+
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+
+          <!-- บัตรสวัสดิการแห่งรัฐ -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('d4e5f6a7-b8c9-0123-defa-012345678901');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" class="perm-icon">credit_card</span>
+            </div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">บัตรสวัสดิการแห่งรัฐ</p>
+              <p class="perm-item-sub">กรมบัญชีกลาง กระทรวงการคลัง</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+          <!-- ประกันสังคม -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('e5f6a7b8-c9d0-1234-efab-123456789012');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" class="perm-icon">shield_person</span>
+            </div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ประกันสังคม</p>
+              <p class="perm-item-sub">สำนักงานประกันสังคม</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+          <!-- ที่ดินและสิ่งปลูกสร้าง -->
+          <div class="perm-item" onclick="closeModal('modal-permissions'); window.czpSdk.openMiniApp('f6a7b8c9-d0e1-2345-fabc-234567890123');">
+            <div style="width: 44px; height: 44px; min-width: 44px; border-radius: var(--radius-lg); background: var(--background-neutral-light); display: flex; align-items: center; justify-content: center; color: var(--foreground-neutral-lighter); flex-shrink: 0;">
+              <span class="material-symbols-outlined" class="perm-icon">home_work</span>
+            </div>
+            <div class="perm-item-body">
+              <p class="perm-item-title">ที่ดินและสิ่งปลูกสร้าง</p>
+              <p class="perm-item-sub">กรมที่ดิน</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 20px; color: var(--foreground-warning-default); flex-shrink: 0; font-variation-settings: 'FILL' 0;">link_off</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Bill Payment -->
+
+
+
+  <script>
+    function initLoading() {
+      const wrappers = document.querySelectorAll('.loading-wrapper');
+      let remaining = wrappers.length;
+
+      function onWrapperDone() {
+        remaining--;
+      }
+
+      wrappers.forEach(wrapper => {
+        const skeleton = wrapper.querySelector('.skeleton-item');
+        const loaded = wrapper.querySelector('.loaded-item');
+
+        if (skeleton) skeleton.style.display = '';
+        if (loaded) loaded.style.display = 'none';
+
+        // Random duration up to 2 seconds (between 400ms and 2000ms)
+        const randomDelay = 400 + Math.random() * 1600;
+
+        setTimeout(() => {
+          if (skeleton) skeleton.style.display = 'none';
+          if (loaded) loaded.style.display = '';
+          onWrapperDone();
+        }, randomDelay);
+      });
+    }
+
+    window.addEventListener('pageshow', initLoading);
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+
+
+
+    function simulateTaxPayment() {
+      const btn = document.getElementById('btn-pay-tax');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="payment-modal-loader"></span> <span>กำลังส่งรายการต่อภาษี...</span>';
+      btn.style.backgroundColor = '#4a5568';
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> <span>ดำเนินการสำเร็จ</span>';
+        btn.style.backgroundColor = '#059669';
+        setTimeout(() => {
+          alert('ชำระค่าต่อภาษีและต่อ พ.ร.บ. ออนไลน์สำเร็จแล้ว! ข้อมูลจะอัปเดตเข้าระบบกรมการขนส่งทางบกทันที');
+          closeModal('modal-tax-renewal');
+          // reset button
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.backgroundColor = '';
+            btn.innerHTML = '<span class="material-symbols-outlined">credit_card</span> <span>ชำระเงินชำระภาษีสะดวกรวดเร็ว</span>';
+          }, 300);
+        }, 300);
+      }, 1500);
+    }
+  </script>
+
+  <script src="https://cpt.superapps-th.cloud/cportal/sdk/iu/v5/sdk.js"></script>
+
+  <script>
+  // ─── Weather + PM2.5 + วันสำคัญ ───────────────────────────────────────
+  (function () {
+    // Thai public holidays & important days (Buddhist Era dates mapped to Gregorian month/day)
+    const SPECIAL_DAYS = {
+      '1-1':   { name: 'วันขึ้นปีใหม่', desc: 'หน่วยงานรัฐและธนาคารปิดทำการ' },
+      '2-14':  { name: 'วันวาเลนไทน์', desc: 'เทศกาลแห่งความรัก' },
+      '4-6':   { name: 'วันจักรี', desc: 'วันระลึกพระบาทสมเด็จพระพุทธยอดฟ้าจุฬาโลก หน่วยงานรัฐปิดทำการ' },
+      '4-13':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย หน่วยงานรัฐปิดทำการ 3 วัน' },
+      '4-14':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย (วันครอบครัว)' },
+      '4-15':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย (วันผู้สูงอายุ)' },
+      '5-1':   { name: 'วันแรงงาน', desc: 'วันแรงงานแห่งชาติ' },
+      '5-4':   { name: 'วันฉัตรมงคล', desc: 'วันระลึกพระราชพิธีบรมราชาภิเษก' },
+      '6-3':   { name: 'วันวิสาขบูชา', desc: 'วันสำคัญทางพระพุทธศาสนา ธนาคารและหน่วยงานรัฐบางแห่งปิดทำการ' },
+      '7-28':  { name: 'วันเฉลิมพระชนมพรรษา ร.10', desc: 'วันหยุดราชการ หน่วยงานรัฐปิดทำการ' },
+      '8-12':  { name: 'วันแม่แห่งชาติ', desc: 'วันเฉลิมพระชนมพรรษาสมเด็จพระบรมราชชนนี' },
+      '10-13': { name: 'วันนวมินทรมหาราช', desc: 'วันคล้ายวันสวรรคต ร.9 หน่วยงานรัฐปิดทำการ' },
+      '10-23': { name: 'วันปิยมหาราช', desc: 'วันคล้ายวันสวรรคต ร.5 หน่วยงานรัฐปิดทำการ' },
+      '12-5':  { name: 'วันพ่อแห่งชาติ', desc: 'วันเฉลิมพระชนมพรรษา ร.9 หน่วยงานรัฐปิดทำการ' },
+      '12-10': { name: 'วันรัฐธรรมนูญ', desc: 'วันระลึกพระราชทานรัฐธรรมนูญฉบับแรก' },
+      '12-31': { name: 'วันสิ้นปี', desc: 'วันส่งท้ายปีเก่า' },
+    };
+
+    const now = new Date();
+    const monthDay = `${now.getMonth() + 1}-${now.getDate()}`;
+    const specialDay = SPECIAL_DAYS[monthDay];
+
+    // ─── วันพระ detection ───────────────────────────────────────────────
+    const WAN_PHRA_2026 = new Set([
+      '1-3','1-10','1-18','1-25',
+      '2-2','2-9','2-17','2-24',
+      '3-3','3-11','3-19','3-25',
+      '4-2','4-9','4-17','4-24',
+      '5-1','5-9','5-17','5-24','5-31',
+      '6-4','6-11','6-19','6-26',
+      '7-3','7-11','7-18','7-25',
+      '8-2','8-9','8-17','8-24','8-31',
+      '9-7','9-15','9-22','9-30',
+      '10-7','10-14','10-22','10-29',
+      '11-5','11-12','11-20','11-27',
+      '12-5','12-12','12-20','12-27',
+    ]);
+
+    const wanPhra = WAN_PHRA_2026.has(monthDay);
+    const wanPhraMsgEl = document.getElementById('wan-phra-text');
+    const wanPhraBar   = document.getElementById('wan-phra-bar');
+    if (wanPhra && wanPhraBar) {
+      if (wanPhraMsgEl) {
+        // Combine with special day if they overlap (e.g. วันวิสาขบูชา is also วันพระ)
+        wanPhraMsgEl.textContent = specialDay
+          ? `วันนี้วันพระ และเป็น${specialDay.name} — ${specialDay.desc}`
+          : 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส';
+      }
+      wanPhraBar.style.display = 'flex';
+    }
+
+    var specialDayNoticeEl = document.getElementById('notice-special-day-title') &&
+      document.getElementById('notice-special-day-title').closest('.notice-special-wrapper');
+    var noticeCount = 2; // passport + motorcycle always shown
+
+    if (specialDay) {
+      // Show special-day bar only if it's NOT already merged into วันพระ bar
+      if (!wanPhra) {
+        var sdBar  = document.getElementById('special-day-bar');
+        var sdText = document.getElementById('special-day-text');
+        if (sdBar && sdText) {
+          sdText.textContent = `วันนี้${specialDay.name} — ${specialDay.desc}`;
+          sdBar.style.display = 'flex';
+        }
+      }
+      const noticeTitle = document.getElementById('notice-special-day-title');
+      const noticeSub   = document.getElementById('notice-special-day-sub');
+      if (noticeTitle) noticeTitle.textContent = specialDay.name + ' — วันนี้';
+      if (noticeSub)   noticeSub.textContent   = specialDay.desc;
+      noticeCount++;
+    } else {
+      // hide special-day notice card
+      var sdNotice = document.getElementById('notice-special-day-title');
+      if (sdNotice) {
+        var card = sdNotice.closest('div[style*="border-left: 4px solid #3b82f6"]');
+        if (card) card.style.display = 'none';
+      }
+    }
+
+    // Update badge
+    var badge = document.querySelector('#important-notices-section span[style*="background: #e53935"]');
+    if (badge) badge.textContent = noticeCount;
+
+    // ─── Mock weather data (replace with real API call if key available) ───
+    // Simulates Bangkok afternoon conditions
+    const MOCK = {
+      location: 'เขตลาดพร้าว, กรุงเทพมหานคร',
+      temp: 34,
+      desc: 'มีเมฆบางส่วน ร้อน',
+      humidity: 72,
+      wind: 14,
+      icon: 'partly_cloudy_day',
+      pm25: 28.4,
+      rainChance: 65,
+    };
+
+    function applyWeather(d) {
+      document.getElementById('weather-location').textContent = d.location;
+      document.getElementById('weather-temp').textContent = d.temp + '°C';
+      document.getElementById('weather-desc').textContent = d.desc;
+      document.getElementById('weather-humidity').textContent = d.humidity + '%';
+      document.getElementById('weather-wind').textContent = d.wind + ' กม./ชม.';
+      document.getElementById('weather-icon').textContent = d.icon;
+
+      // PM2.5
+      const pm = d.pm25;
+      document.getElementById('pm25-value').textContent = pm.toFixed(0);
+      let pmLabel, pmColor;
+      if      (pm <= 12)  { pmLabel = 'ดีมาก';     pmColor = '#22c55e'; }
+      else if (pm <= 25)  { pmLabel = 'ดี';         pmColor = '#86efac'; }
+      else if (pm <= 37.5){ pmLabel = 'ปานกลาง';   pmColor = '#fbbf24'; }
+      else if (pm <= 50)  { pmLabel = 'เริ่มมีผล'; pmColor = '#f97316'; }
+      else                 { pmLabel = 'มีผลต่อสุขภาพ'; pmColor = '#ef4444'; }
+      const badge = document.getElementById('pm25-badge');
+      badge.textContent = pmLabel;
+      badge.style.background = pmColor;
+      badge.style.color = pm <= 25 ? '#064e3b' : '#fff';
+
+      // Weather focus tip
+      const focusIcon = document.getElementById('focus-icon');
+      const focusText = document.getElementById('focus-text');
+      if (d.rainChance >= 60) {
+        focusIcon.textContent = 'umbrella';
+        focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง ' + d.rainChance + '% อย่าลืมพกร่มออกจากบ้านด้วย';
+      } else if (d.temp >= 35) {
+        focusIcon.textContent = 'wb_sunny';
+        focusText.textContent = 'วันนี้อากาศร้อนมาก (' + d.temp + '°C) อย่าลืมดื่มน้ำบ่อยๆ และหลีกเลี่ยงแดดจัดช่วงบ่าย';
+      } else if (d.temp >= 32) {
+        focusIcon.textContent = 'local_drink';
+        focusText.textContent = 'อากาศร้อน ' + d.temp + '°C ควรดื่มน้ำให้เพียงพออย่างน้อยวันละ 8 แก้ว';
+      } else if (pm > 37.5) {
+        focusIcon.textContent = 'masks';
+        focusText.textContent = 'คุณภาพอากาศอยู่ในระดับที่เริ่มมีผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร';
+      } else {
+        focusIcon.textContent = 'sentiment_satisfied';
+        focusText.textContent = 'สภาพอากาศวันนี้ดี เหมาะสำหรับกิจกรรมกลางแจ้ง';
+      }
+    }
+
+    // Try geolocation → OpenWeatherMap, fall back to mock
+    function loadWithMock() { applyWeather(MOCK); }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          // In production: fetch real API here using pos.coords.latitude / longitude
+          // For now fall through to mock but show real coords in location label
+          applyWeather(MOCK);
+        },
+        function () { loadWithMock(); },
+        { timeout: 5000 }
+      );
+    } else {
+      loadWithMock();
+    }
+  })();
+  </script>
+
+  <!-- Back to top -->
+  <script>
+    (function() {
+      var h = new Date().getHours();
+      var greeting = h >= 5 && h < 12  ? 'สวัสดีตอนเช้า'
+                   : h >= 12 && h < 17 ? 'สวัสดีตอนกลางวัน'
+                   : h >= 17 && h < 21 ? 'สวัสดีตอนเย็น'
+                   :                     'สวัสดีตอนกลางคืน';
+      var el = document.getElementById('welcome-greeting');
+      if (el) el.textContent = greeting;
+    })();
+  </script>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
+</body>
+
+</html>
