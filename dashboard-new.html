@@ -108,15 +108,16 @@
     .ctx-pm25 {
       background: rgba(255,255,255,0.15);
       backdrop-filter: blur(8px);
-      border-radius: 14px;
-      padding: 12px 18px;
+      border-radius: 16px;
+      padding: 14px 20px;
       text-align: center;
-      min-width: 90px;
+      min-width: 100px;
       flex-shrink: 0;
     }
-    .ctx-pm25__label { font-size: 11px; opacity: 0.8; margin: 0 0 2px; letter-spacing: 0.5px; }
-    .ctx-pm25__value { font-size: 28px; font-weight: 700; margin: 0; line-height: 1; }
-    .ctx-pm25__unit  { font-size: 11px; opacity: 0.7; margin: 3px 0 6px; }
+    .ctx-pm25__label { font-size: 11px; opacity: 0.8; margin: 0 0 4px; letter-spacing: 0.5px; }
+    .ctx-pm25__value-row { display: flex; align-items: baseline; justify-content: center; gap: 3px; margin-bottom: 6px; }
+    .ctx-pm25__value { font-size: 30px; font-weight: 700; line-height: 1; }
+    .ctx-pm25__unit  { font-size: 11px; opacity: 0.7; }
     .ctx-pm25__badge { font-size: 11px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 10px; display: inline-block; }
 
     /* ── ctx-bar: birthday / wan-phra / special-day / focus bars ── */
@@ -201,6 +202,14 @@
     .dyk-card__dots   { display: flex; gap: 5px; align-items: center; }
     .dyk-card__next-hint { font-size: 11px; color: #16a34a; opacity: 0.7; display: flex; align-items: center; gap: 2px; }
     .dyk-card__next-icon { font-size: 13px; }
+    /* skeleton inside dyk-card uses green-tinted shimmer */
+    .dyk-card.skeleton-item { cursor: default; }
+    .dyk-card .skeleton-loading {
+      background: rgba(22,163,74,0.12) !important;
+    }
+    .dyk-card .skeleton-loading::after {
+      background: linear-gradient(90deg, transparent, rgba(22,163,74,0.15), transparent) !important;
+    }
 
     /* ── card section helpers ── */
     .card-section__title-container { margin-bottom: var(--spacing-md); }
@@ -402,8 +411,10 @@
               <!-- PM2.5 chip -->
               <div id="pm25-chip" class="ctx-pm25">
                 <p class="ctx-pm25__label">PM 2.5</p>
-                <p id="pm25-value" class="ctx-pm25__value">—</p>
-                <p class="ctx-pm25__unit">μg/m³</p>
+                <div class="ctx-pm25__value-row">
+                  <span id="pm25-value" class="ctx-pm25__value">—</span>
+                  <span class="ctx-pm25__unit">μg/m³</span>
+                </div>
                 <span id="pm25-badge" class="ctx-pm25__badge">—</span>
               </div>
             </div>
@@ -463,25 +474,44 @@
         <!-- ═══════════════════════════════════════════ -->
         <!-- รู้หรือไม่ -->
         <!-- ═══════════════════════════════════════════ -->
-        <div id="did-you-know" onclick="dykNext()" class="dyk-card">
-          <!-- bg decoration -->
-          <div class="dyk-card__deco"></div>
+        <div class="loading-wrapper">
 
-          <div class="dyk-card__header">
-            <span class="dyk-card__emoji">💡</span>
-            <p id="dyk-text" class="dyk-card__text">
-              <a id="dyk-link" onclick="event.stopPropagation()" class="dyk-card__link"></a>
-            </p>
+          <!-- Skeleton state -->
+          <div class="skeleton-item dyk-card" style="pointer-events:none;">
+            <div class="dyk-card__header">
+              <span class="skeleton-loading" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;display:block;"></span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                <span class="skeleton-loading" style="height:13px;width:90%;display:block;border-radius:4px;"></span>
+                <span class="skeleton-loading" style="height:13px;width:70%;display:block;border-radius:4px;"></span>
+                <span class="skeleton-loading" style="height:13px;width:40%;display:block;border-radius:4px;"></span>
+              </div>
+            </div>
+            <div class="dyk-card__footer">
+              <span class="skeleton-loading" style="height:8px;width:48px;display:block;border-radius:4px;"></span>
+              <span class="skeleton-loading" style="height:10px;width:80px;display:block;border-radius:4px;"></span>
+            </div>
           </div>
 
-          <!-- bottom row: dots + next hint -->
-          <div class="dyk-card__footer">
-            <div class="dyk-card__dots" id="dyk-dots"></div>
-            <span class="dyk-card__next-hint">
-              แตะเพื่อดูถัดไป
-              <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
-            </span>
+          <!-- Loaded state -->
+          <div id="did-you-know" onclick="dykNext()" class="loaded-item dyk-card" style="display:none;">
+            <div class="dyk-card__deco"></div>
+
+            <div class="dyk-card__header">
+              <span class="dyk-card__emoji">💡</span>
+              <p id="dyk-text" class="dyk-card__text">
+                <a id="dyk-link" onclick="event.stopPropagation()" class="dyk-card__link"></a>
+              </p>
+            </div>
+
+            <div class="dyk-card__footer">
+              <div class="dyk-card__dots" id="dyk-dots"></div>
+              <span class="dyk-card__next-hint">
+                แตะเพื่อดูถัดไป
+                <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
+              </span>
+            </div>
           </div>
+
         </div>
 
         <div class="list-section">
@@ -1671,22 +1701,13 @@
 
     }
 
-    // Try geolocation → OpenWeatherMap, fall back to mock
+    // Geolocation disabled — use mock data directly
     function loadWithMock() {
       applyWeather(MOCK);
-      renderContextBars(); // apply initial state (all bars hidden)
+      renderContextBars();
     }
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (pos) {
-          applyWeather(MOCK);
-          renderContextBars();
-        },
-        function () { loadWithMock(); },
-        { timeout: 5000 }
-      );
-    } else {
+    {
       loadWithMock();
     }
   })();
