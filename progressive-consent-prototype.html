@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บริการของคุณ - Progressive Consent Prototype</title>
+<style>
+  :root {
+    --primary-0:#00291b;
+    --primary-20:#006643;
+    --primary:#008858;
+    --primary-40:#00b274;
+    --primary-90:#adebd2;
+    --primary-95:#ebfaf4;
+    --secondary:#325fb4;
+    --secondary-95:#eff3fa;
+    --neutral-10:#151618;
+    --neutral-20:#25272a;
+    --neutral-40:#373c41;
+    --neutral-60:#62676c;
+    --neutral-80:#b4b8bb;
+    --neutral-90:#dde0e2;
+    --neutral-94:#ebecee;
+    --neutral-96:#f1f3f3;
+    --neutral-98:#f8f9f9;
+    --white:#ffffff;
+    --positive:#079455;
+    --positive-95:#ecfdf3;
+    --warning:#dc6803;
+    --warning-95:#fffaeb;
+    --danger:#d92d20;
+    --danger-95:#fef3f2;
+    --info:#0ba5ec;
+    --info-95:#f0f9ff;
+    --shadow:0 22px 48px -24px rgba(21, 22, 24, .28);
+  }
+
+  * { box-sizing:border-box; }
+  html { background:#dfe6e3; }
+  body {
+    margin:0;
+    min-height:100dvh;
+    display:grid;
+    place-items:start center;
+    padding:18px;
+    color:var(--neutral-20);
+    font-family:"Anuphan","Sarabun","Noto Sans Thai",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0,136,88,.12), transparent 30%),
+      linear-gradient(145deg, #eef4f1 0%, #dfe6e3 100%);
+    line-height:1.5;
+  }
+
+  button, input { font:inherit; }
+  button { cursor:pointer; }
+
+  .device {
+    width:min(100%, 395px);
+    min-height:812px;
+    background:var(--neutral-98);
+    border:1px solid rgba(21,22,24,.08);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+
+  .topbar {
+    min-height:64px;
+    padding:14px 16px;
+    display:grid;
+    grid-template-columns:42px 1fr 42px;
+    align-items:center;
+    background:rgba(255,255,255,.86);
+    border-bottom:1px solid var(--neutral-94);
+    position:sticky;
+    top:0;
+    z-index:4;
+    backdrop-filter:blur(14px);
+  }
+
+  .topbar-title { text-align:center; font-weight:700; letter-spacing:-.01em; }
+  .icon-btn {
+    width:38px;
+    height:38px;
+    border-radius:999px;
+    border:1px solid var(--neutral-90);
+    background:var(--white);
+    color:var(--neutral-40);
+    display:grid;
+    place-items:center;
+    transition:transform .22s cubic-bezier(.16,1,.3,1), border-color .22s;
+  }
+  .icon-btn:active, .btn:active, .persona:active, .toggle:active { transform:scale(.98); }
+  .back-btn { visibility:hidden; }
+  .back-btn.is-visible { visibility:visible; }
+
+  .screen {
+    display:none;
+    padding:18px;
+    animation:enter .28s cubic-bezier(.16,1,.3,1);
+  }
+  .screen.active { display:block; }
+  .screen.flush { padding:0; }
+  @keyframes enter {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes newItem {
+    0% { box-shadow:0 0 0 0 rgba(0,136,88,.34); border-color:var(--primary-40); }
+    100% { box-shadow:0 0 0 12px rgba(0,136,88,0); }
+  }
+  .just-unlocked { animation:newItem 1.4s ease-out; }
+
+  .hero {
+    color:white;
+    padding:22px;
+    border-radius:24px;
+    background:
+      linear-gradient(135deg, rgba(0,41,27,.28), transparent 44%),
+      linear-gradient(135deg, var(--primary), var(--primary-20));
+    box-shadow:0 18px 38px -28px rgba(0,102,67,.8);
+  }
+  .hero.light {
+    color:var(--neutral-20);
+    background:linear-gradient(135deg, var(--primary-95), #fff);
+    border:1px solid rgba(0,136,88,.14);
+    box-shadow:none;
+  }
+  .eyebrow {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 9px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+    background:rgba(255,255,255,.18);
+    margin-bottom:12px;
+  }
+  .hero.light .eyebrow { background:var(--primary-95); color:var(--primary-20); }
+  h1, h2, h3, p { margin:0; }
+  h1 { font-size:24px; line-height:1.18; letter-spacing:-.025em; }
+  h2 { font-size:18px; line-height:1.28; letter-spacing:-.018em; }
+  h3 { font-size:15px; line-height:1.35; letter-spacing:-.01em; }
+  .muted { color:var(--neutral-60); }
+  .small { font-size:12px; }
+  .hero p { margin-top:8px; opacity:.9; font-size:13px; }
+
+  .section { margin-top:22px; }
+  .section-head {
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .section-kicker { font-size:12px; color:var(--neutral-60); }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .stack { display:grid; gap:10px; }
+  .card {
+    background:var(--white);
+    border:1px solid var(--neutral-94);
+    border-radius:18px;
+    padding:14px;
+    box-shadow:0 14px 28px -24px rgba(21,22,24,.22);
+  }
+  .card.soft { background:linear-gradient(180deg,#fff,var(--neutral-98)); }
+  .card.warn { border-color:#fedf89; background:var(--warning-95); }
+  .card.danger { border-color:#fecdca; background:var(--danger-95); }
+  .card.info { border-color:#b9e6fe; background:var(--info-95); }
+  .card.success { border-color:#a9efc5; background:var(--positive-95); }
+  .card.locked {
+    position:relative;
+    overflow:hidden;
+    border-color:rgba(0,136,88,.28);
+    background:linear-gradient(135deg, #fff 0%, var(--primary-95) 100%);
+  }
+  .card.locked:before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(135deg, rgba(255,255,255,.5) 0 8px, rgba(0,136,88,.035) 8px 16px);
+    pointer-events:none;
+  }
+  .card > * { position:relative; }
+
+  .metric { display:flex; align-items:center; gap:10px; }
+  .mark {
+    width:38px;
+    height:38px;
+    flex:0 0 auto;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    color:var(--primary-20);
+    background:var(--primary-95);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+  .mark.warn { color:var(--warning); background:var(--warning-95); }
+  .mark.danger { color:var(--danger); background:var(--danger-95); }
+  .mark.info { color:#026aa2; background:var(--info-95); }
+  .mark.secondary { color:var(--secondary); background:var(--secondary-95); }
+
+  .service {
+    width:100%;
+    border:0;
+    text-align:left;
+    background:var(--white);
+    border-radius:16px;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    border:1px solid var(--neutral-94);
+    transition:transform .22s cubic-bezier(.16,1,.3,1), border-color .22s;
+  }
+  .service:hover { border-color:var(--primary-90); }
+  .service strong { display:block; font-size:13px; color:var(--neutral-20); }
+  .service span { display:block; font-size:11px; color:var(--neutral-60); margin-top:1px; }
+
+  .btn {
+    border:0;
+    min-height:46px;
+    border-radius:999px;
+    padding:0 18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-weight:700;
+    color:white;
+    background:var(--primary);
+    width:100%;
+    transition:transform .22s cubic-bezier(.16,1,.3,1), background .22s, border-color .22s;
+  }
+  .btn:hover { background:var(--primary-20); }
+  .btn.ghost {
+    color:var(--primary-20);
+    background:transparent;
+    border:1px solid rgba(0,136,88,.34);
+  }
+  .btn.neutral {
+    color:var(--neutral-40);
+    background:var(--white);
+    border:1px solid var(--neutral-90);
+  }
+  .btn.inline { width:auto; min-height:38px; padding:0 14px; font-size:12px; }
+  .cta-row { display:grid; gap:10px; margin-top:16px; }
+
+  .persona {
+    width:100%;
+    text-align:left;
+    border:1px solid var(--neutral-94);
+    background:var(--white);
+    padding:15px;
+    border-radius:20px;
+    display:grid;
+    grid-template-columns:42px 1fr;
+    gap:12px;
+    align-items:center;
+    transition:transform .22s cubic-bezier(.16,1,.3,1), border-color .22s;
+  }
+  .persona:hover { border-color:var(--primary-90); }
+  .avatar {
+    width:42px;
+    height:42px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    background:var(--primary-95);
+    color:var(--primary-20);
+    font-weight:800;
+  }
+
+  .consent-page {
+    min-height:748px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+  }
+  .consent-panel {
+    margin-top:auto;
+    background:var(--white);
+    border-radius:28px 28px 0 0;
+    border:1px solid var(--neutral-94);
+    padding:22px 18px 18px;
+    box-shadow:0 -20px 44px -34px rgba(21,22,24,.42);
+  }
+  .check-row {
+    display:grid;
+    grid-template-columns:28px 1fr;
+    gap:10px;
+    padding:13px 0;
+    border-top:1px solid var(--neutral-94);
+  }
+  .fake-check {
+    width:22px;
+    height:22px;
+    border-radius:8px;
+    background:var(--primary);
+    color:white;
+    display:grid;
+    place-items:center;
+    font-size:12px;
+    margin-top:2px;
+  }
+  .checkbox-row {
+    display:grid;
+    grid-template-columns:30px 1fr;
+    gap:10px;
+    padding:13px;
+    border:1px solid var(--neutral-94);
+    border-radius:16px;
+    background:var(--white);
+  }
+  .checkbox-row input { width:21px; height:21px; accent-color:var(--primary); margin-top:2px; }
+
+  .badge {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    padding:3px 9px;
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
+  }
+  .badge.ok { background:var(--positive-95); color:var(--positive); }
+  .badge.warn { background:var(--warning-95); color:var(--warning); }
+  .badge.danger { background:var(--danger-95); color:var(--danger); }
+  .badge.off { background:var(--neutral-94); color:var(--neutral-60); }
+  .badge.info { background:var(--info-95); color:#026aa2; }
+
+  .doc-row, .rights-row, .consent-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 0;
+    border-top:1px solid var(--neutral-94);
+  }
+  .doc-row:first-child, .rights-row:first-child, .consent-row:first-child { border-top:0; padding-top:0; }
+  .doc-row:last-child, .rights-row:last-child, .consent-row:last-child { padding-bottom:0; }
+  .split-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+
+  .hero-badge {
+    background:var(--white);
+    border:1px solid rgba(0,136,88,.2);
+    border-radius:24px;
+    padding:16px;
+    box-shadow:0 16px 32px -26px rgba(21,22,24,.28);
+  }
+  .amount-grid { display:grid; gap:8px; }
+  .amount {
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    align-items:center;
+    background:var(--white);
+    border:1px solid var(--neutral-94);
+    border-radius:16px;
+    padding:12px;
+  }
+  .progress {
+    height:7px;
+    border-radius:999px;
+    background:var(--neutral-94);
+    overflow:hidden;
+    margin-top:7px;
+  }
+  .progress span { display:block; height:100%; background:var(--primary); border-radius:999px; }
+
+  .toggle {
+    width:48px;
+    height:28px;
+    border:0;
+    border-radius:999px;
+    background:var(--primary);
+    padding:3px;
+    flex:0 0 auto;
+    transition:background .2s, transform .2s;
+  }
+  .toggle:after {
+    content:"";
+    display:block;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:white;
+    margin-left:20px;
+    transition:margin .2s cubic-bezier(.16,1,.3,1);
+  }
+  .toggle.off { background:var(--neutral-80); }
+  .toggle.off:after { margin-left:0; }
+
+  .mini-nav {
+    position:sticky;
+    bottom:0;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:1px;
+    background:var(--neutral-94);
+    border-top:1px solid var(--neutral-94);
+  }
+  .mini-nav button {
+    min-height:54px;
+    border:0;
+    background:rgba(255,255,255,.92);
+    color:var(--neutral-60);
+    font-size:11px;
+    font-weight:700;
+  }
+  .mini-nav button.active { color:var(--primary-20); background:white; }
+
+  .apply-field {
+    padding:11px 0;
+    border-top:1px solid var(--neutral-94);
+  }
+  .apply-field:first-child { border-top:0; }
+  .label { color:var(--neutral-60); font-size:12px; }
+  .value { font-weight:700; margin-top:2px; }
+  .disclaimer {
+    margin-top:18px;
+    padding:12px;
+    border-radius:16px;
+    background:var(--neutral-96);
+    color:var(--neutral-60);
+    font-size:11px;
+  }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<main class="device" aria-label="Clickable prototype">
+  <header class="topbar">
+    <button class="icon-btn back-btn" id="backBtn" type="button" onclick="goBack()" aria-label="ย้อนกลับ">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="topbar-title" id="screenTitle">บริการของคุณ</div>
+    <button class="icon-btn" type="button" onclick="go('consent')" aria-label="ความเป็นส่วนตัว">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.08a1.7 1.7 0 0 0-1.04-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 8.92a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.08a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.04a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.08A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </header>
+
+  <section class="screen active" id="s1">
+    <div class="hero">
+      <span class="eyebrow">Tier 1 · ข้อมูลสาธารณะ</span>
+      <h1>บริการรัฐสำหรับคุณ</h1>
+      <p>เริ่มต้นได้ทันที แม้ยังไม่เข้าสู่ระบบ และยังไม่มีการใช้ข้อมูลส่วนบุคคล</p>
+      <div class="cta-row">
+        <button class="btn" type="button" onclick="go('login')">เข้าสู่ระบบ เพื่อดูบริการเฉพาะของคุณ</button>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-head"><h2>อัปเดตวันนี้</h2><span class="section-kicker">กรุงเทพมหานคร</span></div>
+      <div class="grid2">
+        <article class="card"><div class="metric"><div class="mark">32C</div><div><h3>อากาศร้อนชื้น</h3><p class="small muted">มีฝนบางพื้นที่ช่วงเย็น</p></div></div></article>
+        <article class="card warn"><div class="metric"><div class="mark warn">PM</div><div><h3>PM2.5 ปานกลาง</h3><p class="small muted">38 มคก./ลบ.ม.</p></div></div></article>
+      </div>
+      <article class="card info" style="margin-top:10px">
+        <div class="metric"><div class="mark info">Gov</div><div><h3>เปิดรับลงทะเบียนสวัสดิการแห่งรัฐ 2569</h3><p class="small muted">ข้อมูลประกาศสาธารณะจากหน่วยงานรัฐ</p></div></div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>บริการแนะนำ</h2><span class="section-kicker">7 รายการ</span></div>
+      <div class="stack" id="publicServices"></div>
+    </section>
+
+    <p class="disclaimer">ข้อมูลข้างต้นเป็นข้อมูลสาธารณะ ไม่มีการเก็บข้อมูลส่วนบุคคลของคุณ</p>
+    <div class="cta-row"><button class="btn" type="button" onclick="go('login')">เข้าสู่ระบบเพื่อดูบริการเฉพาะของคุณ</button></div>
+  </section>
+
+  <section class="screen" id="login">
+    <div class="hero light">
+      <span class="eyebrow">Mock Digital ID</span>
+      <h1>เลือก persona สำหรับสาธิต</h1>
+      <p class="muted">การเลือกนี้จะกำหนดผลลัพธ์ Tier 4 ในหน้า สิทธิและสวัสดิการเชิงลึก</p>
+    </div>
+    <div class="section stack">
+      <button class="persona" type="button" onclick="selectPersona('general')"><span class="avatar">สช</span><span><strong>เข้าสู่ระบบเป็น คุณสมชาย</strong><br><span class="small muted">ประชาชนทั่วไป · เขตลาดพร้าว</span></span></button>
+      <button class="persona" type="button" onclick="selectPersona('disabled')"><span class="avatar">ศร</span><span><strong>เข้าสู่ระบบเป็น คุณสมศรี</strong><br><span class="small muted">ผู้ถือบัตรคนพิการ · เขตลาดพร้าว</span></span></button>
+      <button class="persona" type="button" onclick="selectPersona('welfare')"><span class="avatar">ญร</span><span><strong>เข้าสู่ระบบเป็น คุณสมหญิง</strong><br><span class="small muted">ผู้ถือบัตรสวัสดิการแห่งรัฐ · เขตมีนบุรี</span></span></button>
+    </div>
+  </section>
+
+  <section class="screen flush" id="consentBasic">
+    <div class="consent-page">
+      <div class="hero light">
+        <span class="eyebrow">Tier 2 + 3</span>
+        <h1>เพื่อให้บริการเฉพาะสำหรับคุณ</h1>
+        <p class="muted">ระบบขอดำเนินการดังนี้ ก่อนพาคุณไปยัง Dashboard</p>
+      </div>
+      <div class="consent-panel">
+        <div class="check-row"><span class="fake-check">✓</span><div><h3>ใช้พิกัดของคุณ</h3><p class="small muted">เพื่อแสดงบริการและสภาพอากาศใกล้บ้าน</p></div></div>
+        <div class="check-row"><span class="fake-check">✓</span><div><h3>ส่งการแจ้งเตือนที่สำคัญ</h3><p class="small muted">เช่น เอกสารราชการใกล้หมดอายุ สิทธิที่คุณอาจพลาด จากข้อมูลทะเบียนพื้นฐาน ไม่ใช่ข้อมูลสุขภาพหรือการเงิน</p></div></div>
+        <p class="disclaimer">คุณยกเลิกได้ทุกเมื่อใน ตั้งค่าความเป็นส่วนตัว</p>
+        <div class="cta-row">
+          <button class="btn" type="button" onclick="grantBasicConsent()">อนุญาต</button>
+          <button class="btn ghost" type="button" onclick="skipBasicConsent()">ยังไม่ต้องการตอนนี้</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="dashboard">
+    <div class="hero" id="dashboardHero"></div>
+    <section class="section">
+      <div class="section-head"><h2>วันนี้</h2><span class="badge" id="tierBadge">Tier 1</span></div>
+      <div class="grid2" id="todayCards"></div>
+      <div id="alerts" style="margin-top:10px"></div>
+    </section>
+    <section class="section" id="docsSection"></section>
+    <section class="section">
+      <div class="section-head"><h2 id="serviceTitle">บริการแนะนำ</h2><span class="section-kicker">7 รายการ</span></div>
+      <div class="stack" id="profileServices"></div>
+    </section>
+    <section class="section">
+      <div class="card locked" id="deepTeaser">
+        <div class="metric"><div class="mark">T4</div><div><h3>ระบบอาจพบสิทธิที่คุณยังไม่ได้ใช้</h3><p class="small muted">อนุญาตให้ระบบตรวจสอบข้อมูลสวัสดิการของคุณ</p></div></div>
+        <div class="cta-row"><button class="btn" type="button" onclick="go('consentDeep')">ตรวจสอบสิทธิของฉัน</button></div>
+      </div>
+    </section>
+    <p class="disclaimer">ข้อมูลเพื่อการออกแบบเท่านั้น ไม่ใช่คำแนะนำทางกฎหมาย ตัวเลขสิทธิทั้งหมดเป็น mock อิงจาก research ณ มิ.ย. 2569</p>
+  </section>
+
+  <section class="screen" id="consentDeep">
+    <div class="hero light">
+      <span class="eyebrow">Tier 4 · Explicit consent</span>
+      <h1>ตรวจสอบสิทธิเฉพาะของคุณ</h1>
+      <p class="muted">เพื่อแสดงสิทธิและสวัสดิการที่คุณมีสิทธิโดยตรง ระบบต้องขออนุญาตเชื่อมต่อข้อมูลจากหน่วยงานต่อไปนี้</p>
+    </div>
+    <div class="section stack">
+      <label class="checkbox-row"><input type="checkbox" data-consent="disability" checked><span><strong>ข้อมูลสถานะบัตรคนพิการ</strong><br><span class="small muted">กรมส่งเสริมฯ / พม. เพื่อตรวจสอบสิทธิตามกฎหมายคนพิการ พ.ศ. 2550</span></span></label>
+      <label class="checkbox-row"><input type="checkbox" data-consent="welfare" checked><span><strong>ข้อมูลสิทธิสวัสดิการแห่งรัฐ</strong><br><span class="small muted">กรมบัญชีกลาง เพื่อตรวจสอบวงเงินและสิทธิที่คุณได้รับ</span></span></label>
+      <label class="checkbox-row"><input type="checkbox" data-consent="health" checked><span><strong>ข้อมูลสิทธิสุขภาพ</strong><br><span class="small muted">สปสช. เพื่อแสดงสิทธิบัตรทองและการฟื้นฟูที่เกี่ยวข้อง</span></span></label>
+    </div>
+    <p class="disclaimer">ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น ข้อมูลจัดเก็บชั่วคราว 24 ชั่วโมง และลบอัตโนมัติ</p>
+    <div class="cta-row">
+      <button class="btn" type="button" onclick="grantDeepConsent()">ยืนยันและตรวจสอบสิทธิ</button>
+      <button class="btn ghost" type="button" onclick="go('dashboard')">ไม่อนุญาต</button>
+    </div>
+  </section>
+
+  <section class="screen" id="tier4"></section>
+
+  <section class="screen" id="apply">
+    <div class="hero light">
+      <span class="eyebrow">Mock Apply Form</span>
+      <h1 id="applyTitle">ยื่นคำขอ</h1>
+      <p class="muted">ระบบกรอกข้อมูลเบื้องต้นให้จากข้อมูลที่ได้รับอนุญาตแล้ว คุณตรวจสอบก่อนส่งได้ทุกครั้ง</p>
+    </div>
+    <section class="section">
+      <div class="card">
+        <div class="apply-field"><div class="label">ชื่อ-สกุล</div><div class="value" id="applyName">-</div></div>
+        <div class="apply-field"><div class="label">เลขประจำตัวประชาชน</div><div class="value">1 2345 67890 12 3</div></div>
+        <div class="apply-field"><div class="label">พื้นที่รับบริการ</div><div class="value" id="applyArea">-</div></div>
+        <div class="apply-field"><div class="label">ช่องทางรับแจ้งผล</div><div class="value">แจ้งเตือนในแอป และ SMS</div></div>
+      </div>
+      <label class="checkbox-row" style="margin-top:12px"><input id="submitCheck" type="checkbox" onchange="renderApplyButton()"><span><strong>ยืนยันการส่งคำขอ</strong><br><span class="small muted">ยินยอมให้ส่งข้อมูลนี้ไปยังหน่วยงานเจ้าของสิทธิ เพื่อพิจารณาคำขอ</span></span></label>
+      <div class="cta-row">
+        <button class="btn" id="submitApply" type="button" onclick="submitApplication()" disabled style="opacity:.45">ยืนยันและส่งคำขอ</button>
+        <button class="btn ghost" type="button" onclick="go('tier4')">ยกเลิก</button>
+      </div>
+    </section>
+  </section>
+
+  <section class="screen" id="done">
+    <div class="hero">
+      <span class="eyebrow">ส่งคำขอแล้ว</span>
+      <h1>ระบบรับคำขอเรียบร้อย</h1>
+      <p id="doneText">หน่วยงานกำลังตรวจสอบข้อมูลของคุณ</p>
+    </div>
+    <section class="section">
+      <div class="card">
+        <div class="doc-row"><div><h3>เลขที่คำขอ</h3><p class="small muted">REF-2569-08417</p></div><span class="badge warn">กำลังตรวจสอบ</span></div>
+        <div class="doc-row"><div><h3>ส่งคำขอ</h3><p class="small muted">วันนี้ 11:42 น.</p></div><span class="badge ok">สำเร็จ</span></div>
+        <div class="doc-row"><div><h3>ระยะเวลาคาดการณ์</h3><p class="small muted">5-7 วันทำการ</p></div><span class="badge off">รอผล</span></div>
+      </div>
+      <div class="cta-row"><button class="btn" type="button" onclick="go('tier4')">กลับไปดูสิทธิของฉัน</button></div>
+    </section>
+  </section>
+
+  <section class="screen" id="consent">
+    <div class="hero light">
+      <span class="eyebrow">Privacy Center</span>
+      <h1>จัดการความยินยอม</h1>
+      <p class="muted">ปิด toggle = หยุดใช้ข้อมูลนั้นทันที และลบ cache ที่เกี่ยวข้อง</p>
+    </div>
+    <section class="section">
+      <div class="card" id="consentRows"></div>
+      <p class="disclaimer">ข้อมูล Tier 4 ของคุณจัดเก็บชั่วคราวและจะลบอัตโนมัติหลังจาก 25 มิ.ย. 2569 11:42 น.</p>
+    </section>
+  </section>
+
+  <nav class="mini-nav" aria-label="Prototype navigation">
+    <button id="navHome" class="active" type="button" onclick="go(state.persona ? 'dashboard' : 's1')">หน้าหลัก</button>
+    <button id="navRights" type="button" onclick="state.deepConsent ? go('tier4') : go('consentDeep')">สิทธิของฉัน</button>
+    <button id="navPrivacy" type="button" onclick="go('consent')">ความเป็นส่วนตัว</button>
+  </nav>
+</main>
+
+<script>
+  const personas = {
+    general: { name:"คุณสมชาย จันทร์ดี", short:"คุณสมชาย", age:35, area:"เขตลาดพร้าว กทม.", initials:"สช", type:"ประชาชนทั่วไป" },
+    disabled: { name:"คุณสมศรี มีสุข", short:"คุณสมศรี", age:52, area:"เขตลาดพร้าว กทม.", initials:"ศร", type:"ผู้ถือบัตรคนพิการ" },
+    welfare: { name:"คุณสมหญิง ร่มเย็น", short:"คุณสมหญิง", age:44, area:"เขตมีนบุรี กทม.", initials:"ญร", type:"ผู้ถือบัตรสวัสดิการแห่งรัฐ" }
+  };
+
+  const publicServices = [
+    ["DL","ต่อใบขับขี่","กรมการขนส่งทางบก"],
+    ["Tax","ยื่นภาษีออนไลน์","กรมสรรพากร"],
+    ["Old","ลงทะเบียนผู้สูงอายุ","องค์กรปกครองส่วนท้องถิ่น"],
+    ["Biz","จดทะเบียนธุรกิจ","กรมพัฒนาธุรกิจการค้า"],
+    ["SW","บัตรสวัสดิการแห่งรัฐ","กรมบัญชีกลาง"],
+    ["DEP","บัตรคนพิการ","กรมส่งเสริมฯ / พม."],
+    ["Home","ที่อยู่อาศัยผู้มีรายได้น้อย","การเคหะแห่งชาติ"]
+  ];
+
+  const state = {
+    screen:"s1",
+    history:[],
+    persona:null,
+    basicConsent:false,
+    deepConsent:false,
+    consents: { location:false, notification:false, disability:false, welfare:false, health:false },
+    applyFor:""
+  };
+
+  function serviceButton(item) {
+    return `<button class="service" type="button" onclick="mockToast('${item[1]}')"><span class="mark secondary">${item[0]}</span><span><strong>${item[1]}</strong><span>${item[2]}</span></span></button>`;
+  }
+
+  function go(screen, skipHistory) {
+    if (!skipHistory && state.screen !== screen) state.history.push(state.screen);
+    document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+    document.getElementById(screen).classList.add("active");
+    state.screen = screen;
+    window.scrollTo({ top:0, behavior:"smooth" });
+    render();
+  }
+
+  function goBack() {
+    const previous = state.history.pop();
+    if (previous) go(previous, true);
+  }
+
+  function selectPersona(key) {
+    state.persona = key;
+    go("consentBasic");
+  }
+
+  function grantBasicConsent() {
+    state.basicConsent = true;
+    state.consents.location = true;
+    state.consents.notification = true;
+    go("dashboard");
+  }
+
+  function skipBasicConsent() {
+    state.basicConsent = false;
+    state.consents.location = false;
+    state.consents.notification = false;
+    go("dashboard");
+  }
+
+  function grantDeepConsent() {
+    document.querySelectorAll("[data-consent]").forEach(input => {
+      state.consents[input.dataset.consent] = input.checked;
+    });
+    state.deepConsent = true;
+    go("tier4");
+  }
+
+  function setApply(title) {
+    state.applyFor = title;
+    go("apply");
+  }
+
+  function submitApplication() {
+    document.getElementById("doneText").textContent = `คำขอ${state.applyFor}ถูกส่งให้หน่วยงานเจ้าของสิทธิแล้ว`;
+    go("done");
+  }
+
+  function renderApplyButton() {
+    const ok = document.getElementById("submitCheck").checked;
+    const btn = document.getElementById("submitApply");
+    btn.disabled = !ok;
+    btn.style.opacity = ok ? "1" : ".45";
+  }
+
+  function toggleConsent(key) {
+    state.consents[key] = !state.consents[key];
+    if (["disability","welfare","health"].includes(key)) {
+      state.deepConsent = state.consents.disability || state.consents.welfare || state.consents.health;
+    }
+    renderConsent();
+  }
+
+  function mockToast(label) {
+    state.applyFor = label;
+    go("apply");
+  }
+
+  function renderDashboard() {
+    if (!state.persona) return;
+    const p = personas[state.persona];
+    document.getElementById("dashboardHero").innerHTML = `
+      <span class="eyebrow">${state.basicConsent ? "Tier 1 + 2 + 3" : "Login only"}</span>
+      <h1>สวัสดี ${p.short}</h1>
+      <p>${state.basicConsent ? `${p.area} · อัปเดต 11:42 น.` : "ยังไม่ได้อนุญาตใช้พิกัดและแจ้งเตือนเฉพาะบุคคล"}</p>
+    `;
+    document.getElementById("tierBadge").className = "badge " + (state.basicConsent ? "ok" : "off");
+    document.getElementById("tierBadge").textContent = state.basicConsent ? "Tier 1+2+3" : "Tier 1 only";
+
+    const place = state.basicConsent ? p.area : "กรุงเทพมหานคร";
+    document.getElementById("todayCards").innerHTML = `
+      <article class="card ${state.basicConsent ? "just-unlocked" : ""}"><div class="metric"><div class="mark">31C</div><div><h3>อากาศใกล้บ้าน</h3><p class="small muted">${place}</p></div></div></article>
+      <article class="card warn ${state.basicConsent ? "just-unlocked" : ""}"><div class="metric"><div class="mark warn">PM</div><div><h3>PM2.5 ใกล้บ้าน</h3><p class="small muted">${state.basicConsent ? "42 มคก./ลบ.ม." : "ข้อมูลสาธารณะ"}</p></div></div></article>
+    `;
+
+    document.getElementById("docsSection").innerHTML = state.basicConsent ? `
+      <div class="section-head"><h2>เอกสารของคุณ</h2><span class="section-kicker">Tier 2</span></div>
+      <div class="card just-unlocked">
+        <div class="doc-row"><div><h3>บัตรประชาชน</h3><p class="small muted">หมดอายุ 15 ม.ค. 2575</p></div><span class="badge ok">ปกติ</span></div>
+        <div class="doc-row"><div><h3>ใบขับขี่</h3><p class="small muted">หมดอายุ 3 ส.ค. 2569</p></div><span class="badge warn">ใกล้หมด</span></div>
+        <div class="doc-row"><div><h3>Passport</h3><p class="small muted">ไม่พบข้อมูลใน mock</p></div><span class="badge off">ไม่มีข้อมูล</span></div>
+      </div>
+    ` : "";
+
+    const alertsByPersona = {
+      general: `
+        <article class="card warn just-unlocked">
+          <div class="metric"><div class="mark warn">45</div><div>
+            <h3>ใบขับขี่ของคุณหมดอายุใน 45 วัน</h3>
+            <p class="small muted">หมดอายุ 3 ส.ค. 2569</p>
+          </div></div>
+          <div class="cta-row"><button class="btn inline" onclick="setApply('ต่ออายุใบขับขี่')">ต่ออายุออนไลน์</button></div>
+        </article>
+        <article class="card info just-unlocked">
+          <div class="metric"><div class="mark info">ID</div><div>
+            <h3>บัตรประชาชนหมดอายุ 15 ม.ค. 2575</h3>
+            <p class="small muted">ยังไม่ต้องดำเนินการในช่วงนี้</p>
+          </div></div>
+        </article>
+        <article class="card info just-unlocked">
+          <div class="metric"><div class="mark info">🗳</div><div>
+            <h3>คุณมีสิทธิเลือกตั้งผู้ว่าราชการกรุงเทพมหานคร</h3>
+            <p class="small muted">วันอาทิตย์ที่ 29 มิ.ย. 2569 · หน่วยเลือกตั้งใกล้บ้าน: โรงเรียนลาดพร้าว 41</p>
+          </div></div>
+        </article>`,
+      disabled: `
+        <article class="card warn just-unlocked">
+          <div class="metric"><div class="mark warn">♿</div><div>
+            <h3>บัตรประจำตัวคนพิการครบรอบต่ออายุ ธ.ค. 2572</h3>
+            <p class="small muted">เริ่มยื่นต่อได้ล่วงหน้า 90 วัน — ยังมีเวลา 3 ปี</p>
+          </div></div>
+        </article>
+        <article class="card info just-unlocked">
+          <div class="metric"><div class="mark info">💰</div><div>
+            <h3>เบี้ยความพิการเดือนนี้โอนแล้ว</h3>
+            <p class="small muted">800 บาท · โอนเข้าบัญชี 24 มิ.ย. 2569</p>
+          </div></div>
+        </article>
+        <article class="card info just-unlocked">
+          <div class="metric"><div class="mark info">🗳</div><div>
+            <h3>คุณมีสิทธิเลือกตั้งผู้ว่าราชการกรุงเทพมหานคร</h3>
+            <p class="small muted">วันอาทิตย์ที่ 29 มิ.ย. 2569 · มีบริการรับ-ส่งสำหรับผู้พิการ</p>
+          </div></div>
+        </article>`,
+      welfare: `
+        <article class="card warn just-unlocked">
+          <div class="metric"><div class="mark warn">฿</div><div>
+            <h3>วงเงินซื้อสินค้าพิเศษ 700 บาท/เดือน ได้รับแล้ว</h3>
+            <p class="small muted">มติ ครม. พ.ค. 2569 · ใช้ได้ถึง ก.ย. 2569</p>
+          </div></div>
+        </article>
+        <article class="card danger just-unlocked">
+          <div class="metric"><div class="mark danger">⚠</div><div>
+            <h3>คุณยังไม่ได้ผูกมิเตอร์ไฟฟ้า</h3>
+            <p class="small muted">ผูกมิเตอร์เพื่อรับสิทธิค่าไฟ 315 บาท/เดือน</p>
+          </div></div>
+          <div class="cta-row"><button class="btn inline" onclick="setApply('ผูกมิเตอร์ไฟฟ้า')">ผูกมิเตอร์</button></div>
+        </article>
+        <article class="card info just-unlocked">
+          <div class="metric"><div class="mark info">🗳</div><div>
+            <h3>คุณมีสิทธิเลือกตั้งผู้ว่าราชการกรุงเทพมหานคร</h3>
+            <p class="small muted">วันอาทิตย์ที่ 29 มิ.ย. 2569 · หน่วยเลือกตั้ง: โรงเรียนมีนบุรี</p>
+          </div></div>
+        </article>`
+    };
+
+    document.getElementById("alerts").innerHTML = state.basicConsent
+      ? `<div class="section-head" style="margin-top:0;margin-bottom:10px">
+          <h2>แจ้งเตือนเชิงรุก</h2>
+          <span class="badge info">Tier 3</span>
+        </div>
+        <div class="stack">${alertsByPersona[state.persona] || alertsByPersona.general}</div>`
+      : `<article class="card"><h3>อนุญาตข้อมูลพื้นฐานเพื่อดูแจ้งเตือนเฉพาะคุณ</h3><p class="small muted">เช่น เอกสารใกล้หมดอายุ หรือบริการใกล้บ้าน</p><div class="cta-row"><button class="btn ghost" onclick="go('consentBasic')">เปิด personalization</button></div></article>`;
+
+    const services = state.basicConsent ? [
+      ["DL","ต่อใบขับขี่","ใกล้หมดอายุตามข้อมูลของคุณ"],
+      ["Near","บริการใกล้บ้าน","ศูนย์บริการรัฐในพื้นที่"],
+      ["Tax","ยื่นภาษีออนไลน์","เหมาะกับช่วงอายุและอาชีพ"],
+      ["NHSO","ตรวจสอบสิทธิบัตรทอง","สปสช."],
+      ["Biz","จดทะเบียนธุรกิจ","บริการออนไลน์"],
+      ["Home","ที่อยู่อาศัยผู้มีรายได้น้อย","ตรวจสอบคุณสมบัติ"],
+      ["SW","สวัสดิการแห่งรัฐ","ดูหลักเกณฑ์ล่าสุด"]
+    ] : publicServices;
+    document.getElementById("serviceTitle").textContent = state.basicConsent ? "บริการแนะนำตามโปรไฟล์" : "บริการแนะนำ";
+    document.getElementById("profileServices").innerHTML = services.map(serviceButton).join("");
+  }
+
+  function renderTier4() {
+    if (!state.persona) return;
+    const p = personas[state.persona];
+    let html = "";
+    if (state.persona === "general") {
+      html = `
+        <div class="hero-badge just-unlocked"><span class="badge ok">ตรวจสอบแล้ว</span><h1 style="margin-top:8px">สิทธิสุขภาพของคุณ</h1><p class="muted">สิทธิ: บัตรทองถ้วนหน้า · โรงพยาบาลประจำ: รพ.ลาดพร้าว</p><div class="split-actions"><button class="btn inline" onclick="setApply('เปลี่ยนโรงพยาบาล')">เปลี่ยนโรงพยาบาล</button><button class="btn inline ghost" onclick="setApply('นัดหมายออนไลน์')">นัดหมายออนไลน์</button></div></div>
+        <section class="section"><div class="section-head"><h2>สิทธิอื่นๆ ที่คุณมี</h2></div><div class="card"><div class="rights-row"><div><h3>ลดหย่อนภาษีส่วนตัว</h3><p class="small muted">60,000 บาท · กรมสรรพากร</p></div><span class="badge ok">ใช้ได้</span></div><div class="rights-row"><div><h3>กองทุนสำรองเลี้ยงชีพ</h3><p class="small muted">mock: ไม่พบข้อมูล employer</p></div><span class="badge off">ไม่มีข้อมูล</span></div></div></section>
+        <section class="section"><div class="card info"><h3>คุณอาจมีสิทธิบัตรสวัสดิการแห่งรัฐ</h3><p class="small muted">ตรวจสอบคุณสมบัติเบื้องต้นได้ โดยไม่ส่งคำขอจริง</p><div class="cta-row"><button class="btn inline" onclick="setApply('ตรวจสอบคุณสมบัติบัตรสวัสดิการแห่งรัฐ')">ตรวจสอบ</button></div></div></section>
+        <p class="disclaimer">ไม่พบสิทธิพิเศษเพิ่มเติมจากข้อมูลที่มี ข้อมูลของคุณถูกลบแล้ว ณ 25 มิ.ย. 2569 11:42 น.</p>`;
+    }
+    if (state.persona === "disabled") {
+      html = `
+        <div class="hero-badge just-unlocked"><span class="badge ok">บัตรใช้งานได้</span><h1 style="margin-top:8px">บัตรประจำตัวคนพิการ</h1><p class="muted">เลขบัตร 1234xxxx · ประเภทความพิการ: การเคลื่อนไหว · หมดอายุ 31 ธ.ค. 2572</p></div>
+        <section class="section"><div class="section-head"><h2>สิทธิที่ใช้งานแล้ว</h2></div><div class="card"><div class="rights-row"><div><h3>เบี้ยความพิการ</h3><p class="small muted">800 บาท/เดือน · รับทุกวันที่ 10</p></div><span class="badge ok">รับอยู่</span></div><div class="rights-row"><div><h3>บัตรทอง</h3><p class="small muted">รพ.ลาดพร้าว</p></div><span class="badge ok">ใช้งาน</span></div></div></section>
+        <section class="section"><div class="section-head"><h2>สิทธิที่ยังไม่ได้ใช้</h2><span class="badge danger">5 รายการ</span></div><div class="stack">
+          ${rightCard("กองทุนกู้ยืมประกอบอาชีพ","วงเงินไม่เกิน 60,000 บาท พิจารณาได้ถึง 120,000 บาท · ไม่มีดอกเบี้ย","ยื่นคำขอ - กรอกฟอร์ม prefilled")}
+          ${rightCard("บริการผู้ช่วยคนพิการ","ผู้ช่วยดูแลประจำวัน ขึ้นกับความจำเป็น","ยื่นขอบริการ")}
+          ${rightCard("ปรับสภาพแวดล้อมที่อยู่อาศัย","วงเงินไม่เกิน 40,000 บาท/ราย","ตรวจสอบคุณสมบัติ")}
+          ${rightCard("ลดหย่อนภาษีผู้พิการ","ยกเว้นเงินได้พึงประเมินไม่เกิน 190,000 บาท/ปี","ดูวิธีใช้สิทธิ")}
+          ${rightCard("บัตรสวัสดิการแห่งรัฐ","ถ้ามีบัตรสวัสดิการแห่งรัฐด้วย จะได้รับเงินเพิ่มเบี้ยความพิการอีก 200 บาท/เดือน","ตรวจสอบว่าคุณมีสิทธิไหม")}
+        </div></section>
+        <section class="section"><div class="card"><h3>การเดินทาง</h3><p class="small muted">รถไฟ รฟท. ส่วนลด 50% · รถโดยสาร บขส. ส่วนลด 50% · MRT/BTS ตรวจสอบเงื่อนไขกับผู้ให้บริการโดยตรง</p></div></section>
+        <section class="section">
+          <div class="section-head"><h2>สิทธิอื่นๆ ที่มี</h2></div>
+          <div class="stack">
+            <article class="card">
+              <div class="rights-row">
+                <div><h3>การศึกษาตลอดชีวิต</h3><p class="small muted">โดยไม่เสียค่าใช้จ่าย ตั้งแต่แรกเกิดหรือพบความพิการ · กระทรวงศึกษาธิการ</p></div>
+                <span class="badge ok">มีสิทธิ</span>
+              </div>
+            </article>
+            <article class="card">
+              <div class="rights-row">
+                <div><h3>ความช่วยเหลือทางกฎหมาย</h3><p class="small muted">DEP จัดหาทนายความ · วงเงิน 5,000 บาท/คดี</p></div>
+                <span class="badge ok">มีสิทธิ</span>
+              </div>
+              <button class="btn inline" type="button" onclick="setApply('ขอความช่วยเหลือทางกฎหมาย')">ยื่นขอ</button>
+            </article>
+          </div>
+          <div class="cta-row"><button class="btn ghost" type="button" onclick="mockToast('ดูสิทธิทั้งหมด')">ดูสิทธิทั้งหมด</button></div>
+        </section>`;
+    }
+    if (state.persona === "welfare") {
+      html = `
+        <div class="hero-badge just-unlocked"><span class="badge ok">ยืนยันสิทธิปี 2569 แล้ว</span><h1 style="margin-top:8px">บัตรสวัสดิการแห่งรัฐ</h1><p class="muted">สถานะล่าสุดจาก mock data · มิถุนายน 2569</p></div>
+        <section class="section"><div class="section-head"><h2>วงเงินเดือนนี้</h2><span class="section-kicker">มิ.ย. 2569</span></div><div class="amount-grid">
+          ${amountRow("ซื้อสินค้าอุปโภคบริโภค","1,000 บาท","เหลือ 650 บาท",65)}
+          ${amountRow("ค่าเดินทาง","750 บาท","เหลือ 750 บาท",100)}
+          ${amountRow("ก๊าซหุงต้ม","80 บาท/ไตรมาส","ใช้แล้ว",0)}
+        </div><p class="disclaimer">พิเศษ มิ.ย.-ก.ย. 2569: เพิ่มอีก 700 บาท/เดือน ตามมติ ครม. พ.ค. 2569</p></section>
+        <section class="section"><div class="section-head"><h2>สิทธิสาธารณูปโภค</h2></div><div class="stack">
+          ${rightCard("ค่าน้ำ","อุดหนุนสูงสุด 100 บาท/เดือน · ยังไม่ได้ผูกมิเตอร์","ตรวจสอบสถานะการผูกมิเตอร์")}
+          ${rightCard("ค่าไฟ","อุดหนุนสูงสุด 315 บาท/เดือน · ยังไม่ได้ผูกมิเตอร์","ตรวจสอบสถานะการผูกมิเตอร์")}
+        </div></section>
+        <section class="section"><div class="card danger"><h3>แจ้งเตือนสำคัญ</h3><p class="small muted">บัตรสวัสดิการแห่งรัฐของคุณต้องยืนยันสิทธิอีกครั้งในรอบถัดไป</p><div class="cta-row"><button class="btn inline" onclick="setApply('ดูวิธียืนยันสิทธิรอบถัดไป')">ดูวิธี</button></div></div></section>
+        <section class="section"><div class="card info"><h3>คุณมีบัตรคนพิการ?</h3><p class="small muted">อาจได้รับสิทธิเพิ่ม 200 บาท/เดือน และสิทธิอื่นๆ เพิ่มเติม</p><div class="cta-row"><button class="btn inline" onclick="state.persona='disabled'; go('tier4');">ดูสิทธิคนพิการ</button></div></div></section>
+        <section class="section">
+          <div class="section-head"><h2>การเดินทาง</h2></div>
+          <div class="card">
+            <div class="rights-row">
+              <div><h3>ขนส่งสาธารณะที่ใช้สิทธิได้</h3><p class="small muted">ขสมก. · บขส. · รถไฟฟ้า · รถไฟ ตามระบบที่เข้าร่วมโครงการ</p></div>
+            </div>
+            <button class="btn inline" type="button" onclick="mockToast('ดูรายชื่อขนส่งที่ใช้สิทธิได้')">ดูรายชื่อขนส่ง</button>
+          </div>
+        </section>`;
+    }
+    document.getElementById("tier4").innerHTML = html + `<p class="disclaimer">ข้อมูลเพื่อการออกแบบเท่านั้น ต้องให้หน่วยเจ้าของสิทธิยืนยันก่อนใช้จริง เงื่อนไขอาจเปลี่ยนตามนโยบาย ครม.</p>`;
+  }
+
+  function rightCard(title, detail, action) {
+    return `<article class="card"><div class="rights-row"><div><h3>${title}</h3><p class="small muted">${detail}</p></div><span class="badge danger">ยังไม่ได้รับ</span></div><button class="btn inline" type="button" onclick="setApply('${title}')">${action}</button></article>`;
+  }
+
+  function amountRow(title, limit, left, pct) {
+    return `<div class="amount"><div><h3>${title}</h3><p class="small muted">${limit}</p><div class="progress"><span style="width:${100 - pct}%"></span></div></div><span class="badge ${pct ? "ok" : "off"}">${left}</span></div>`;
+  }
+
+  function renderConsent() {
+    const rows = [
+      ["location","พิกัดของคุณ","ใช้แสดงอากาศ บริการใกล้บ้าน และข้อมูลพื้นที่"],
+      ["notification","การแจ้งเตือนเอกสาร","ใช้แจ้งเอกสารใกล้หมดอายุและสิทธิที่อาจพลาด"],
+      ["disability","ข้อมูลบัตรคนพิการ","ตรวจสอบสิทธิตามกฎหมายคนพิการ"],
+      ["welfare","ข้อมูลสวัสดิการแห่งรัฐ","ตรวจสอบวงเงินและสิทธิที่ได้รับ"],
+      ["health","ข้อมูลสิทธิสุขภาพ","แสดงสิทธิบัตรทองและบริการสุขภาพที่เกี่ยวข้อง"]
+    ];
+    document.getElementById("consentRows").innerHTML = rows.map(([key,title,desc]) => `
+      <div class="consent-row">
+        <div><h3>${title}</h3><p class="small muted">${desc}</p><p class="small muted">${state.consents[key] ? "ให้เมื่อ 24 มิ.ย. 2569" : "-"}</p></div>
+        <button class="toggle ${state.consents[key] ? "" : "off"}" type="button" onclick="toggleConsent('${key}')" aria-label="${title}"></button>
+      </div>`).join("");
+  }
+
+  function renderApply() {
+    if (!state.persona) return;
+    const p = personas[state.persona];
+    document.getElementById("applyTitle").textContent = state.applyFor || "ยื่นคำขอ";
+    document.getElementById("applyName").textContent = p.name;
+    document.getElementById("applyArea").textContent = p.area;
+    const check = document.getElementById("submitCheck");
+    if (check) check.checked = false;
+    renderApplyButton();
+  }
+
+  function render() {
+    const titleMap = {
+      s1:"บริการของคุณ",
+      login:"เข้าสู่ระบบ",
+      consentBasic:"ขอความยินยอม",
+      dashboard:"บริการของคุณ",
+      consentDeep:"ตรวจสอบสิทธิ",
+      tier4:"สิทธิของฉัน",
+      apply:"ยื่นคำขอ",
+      done:"สถานะคำขอ",
+      consent:"ความเป็นส่วนตัว"
+    };
+    document.getElementById("screenTitle").textContent = titleMap[state.screen] || "บริการของคุณ";
+    document.getElementById("backBtn").classList.toggle("is-visible", state.history.length > 0);
+    document.getElementById("publicServices").innerHTML = publicServices.map(serviceButton).join("");
+    renderDashboard();
+    renderTier4();
+    renderConsent();
+    if (state.screen === "apply") renderApply();
+    document.getElementById("navHome").classList.toggle("active", ["s1","dashboard"].includes(state.screen));
+    document.getElementById("navRights").classList.toggle("active", ["consentDeep","tier4","apply","done"].includes(state.screen));
+    document.getElementById("navPrivacy").classList.toggle("active", state.screen === "consent");
+  }
+
+  render();
+</script>
+</body>
+</html>

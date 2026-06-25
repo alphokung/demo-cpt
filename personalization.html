@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>การตั้งค่าส่วนตัว — ทางรัฐ</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <!-- Step 2: Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">manage_accounts</span>
+          </div>
+          <p class="top-nav-bar-title">การตั้งค่าส่วนตัว</p>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- Step 3: Welcome Card -->
+        <div class="loading-wrapper">
+          <div class="card welcome-card welcome-card--green mb-xl skeleton-item" style="pointer-events:none; opacity:0.85;">
+            <span class="skeleton-loading" style="height:22px;width:160px;display:block;background:rgba(255,255,255,0.25)!important;border-radius:var(--radius-sm);margin-bottom:8px;"></span>
+            <span class="skeleton-loading" style="height:14px;width:220px;display:block;background:rgba(255,255,255,0.15)!important;border-radius:var(--radius-sm);margin-bottom:6px;"></span>
+            <span class="skeleton-loading" style="height:14px;width:180px;display:block;background:rgba(255,255,255,0.12)!important;border-radius:var(--radius-sm);"></span>
+          </div>
+          <div class="card welcome-card welcome-card--green mb-xl loaded-item" style="display:none;">
+            <h2 id="profile-greeting">สวัสดีคุณสมชาย</h2>
+            <p id="profile-id">เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
+            <p id="profile-source">ข้อมูลจากระบบ Thangrat API</p>
+          </div>
+        </div>
+
+        <!-- ── Step 4a: ข้อมูลพื้นฐาน ── -->
+        <div class="loading-wrapper">
+          <div class="card mb-xl skeleton-item" style="pointer-events:none;">
+            <div class="skeleton-loading skeleton-title" style="height:18px;width:40%;margin-bottom:var(--spacing-xl);"></div>
+            <div class="details-list">
+              <div class="details-item" style="gap:var(--spacing-xs);">
+                <div class="skeleton-loading skeleton-text short" style="height:13px;margin:0;"></div>
+                <div class="skeleton-loading skeleton-text medium" style="height:17px;margin:0;"></div>
+              </div>
+              <div class="details-item" style="gap:var(--spacing-xs);">
+                <div class="skeleton-loading skeleton-text short" style="height:13px;margin:0;"></div>
+                <div class="skeleton-loading skeleton-text medium" style="height:17px;margin:0;"></div>
+              </div>
+              <div class="details-item" style="gap:var(--spacing-xs);">
+                <div class="skeleton-loading skeleton-text short" style="height:13px;margin:0;"></div>
+                <div class="skeleton-loading skeleton-text" style="height:17px;margin:0;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-xl loaded-item" style="display:none;">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--primary-40);"></div>
+              <h3 class="section-title">ข้อมูลพื้นฐาน</h3>
+            </div>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">ชื่อ-นามสกุล</span>
+                <span class="details-value">นายสมชาย ใจดี</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">เลขประจำตัวประชาชน</span>
+                <span class="details-value" style="font-family:monospace;letter-spacing:0.04em;">1-1002-00345-67-8</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">วันเกิด</span>
+                <span class="details-value">12 มกราคม 2513</span>
+                <span class="details-subvalue">อายุ 56 ปี</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">ที่อยู่ตามทะเบียนบ้าน</span>
+                <span class="details-value" style="line-height:1.55;">999 ถนนแจ้งวัฒนะ แขวงหลักสี่ เขตหลักสี่ กรุงเทพมหานคร 10210</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สัญชาติ / ศาสนา</span>
+                <span class="details-value">ไทย / พุทธ</span>
+              </div>
+            </div>
+            <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);margin:var(--spacing-lg) 0 0;display:flex;align-items:center;gap:var(--spacing-xs);">
+              <span class="material-symbols-outlined" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+              ข้อมูลนี้มาจาก Thangrat API · กรมการปกครอง
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Step 4b: บริการที่เชื่อมต่อ (Thangrat API) ── -->
+        <div class="loading-wrapper">
+          <div class="card mb-xl skeleton-item" style="pointer-events:none;">
+            <div class="skeleton-loading skeleton-title" style="height:18px;width:50%;margin-bottom:var(--spacing-xl);"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+            </div>
+          </div>
+
+          <div class="card mb-xl loaded-item" style="display:none;">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--secondary-40-main);"></div>
+              <h3 class="section-title">บริการที่เชื่อมต่อกับ Thangrat API</h3>
+            </div>
+
+            <p class="section-label-xs" style="margin-bottom:var(--spacing-md);">เชื่อมต่อแล้ว</p>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);margin-bottom:var(--spacing-xl);">
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">badge</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ทะเบียนราษฎร</p>
+                  <p class="perm-item-sub">กรมการปกครอง · อัปเดตล่าสุด 29 พ.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">directions_car</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ใบอนุญาตขับรถ & ทะเบียนรถ</p>
+                  <p class="perm-item-sub">กรมการขนส่งทางบก · อัปเดตล่าสุด 29 พ.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon work" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">public</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">หนังสือเดินทาง</p>
+                  <p class="perm-item-sub">กรมการกงสุล · อัปเดตล่าสุด 29 พ.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon health" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">medical_information</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ข้อมูลสุขภาพ & ใบรับรองแพทย์</p>
+                  <p class="perm-item-sub">กระทรวงสาธารณสุข (หมอพร้อม) · อัปเดตล่าสุด 29 พ.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">account_balance</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">กองทุนบำเหน็จบำนาญ (กบข.)</p>
+                  <p class="perm-item-sub">กบข. · อัปเดตล่าสุด 29 พ.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+            </div>
+
+            <p class="section-label-xs" style="margin-bottom:var(--spacing-md);">ยังไม่ได้เชื่อมต่อ</p>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+
+              <div class="perm-item">
+                <div class="list-icon" style="flex-shrink:0;width:36px;height:36px;background:var(--background-neutral-dark);color:var(--foreground-neutral-lighter);">
+                  <span class="material-symbols-outlined" style="font-size:18px;">receipt_long</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ข้อมูลภาษี</p>
+                  <p class="perm-item-sub">กรมสรรพากร</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-pending">add_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon" style="flex-shrink:0;width:36px;height:36px;background:var(--background-neutral-dark);color:var(--foreground-neutral-lighter);">
+                  <span class="material-symbols-outlined" style="font-size:18px;">domain</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ทะเบียนพาณิชย์</p>
+                  <p class="perm-item-sub">กรมพัฒนาธุรกิจการค้า</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-pending">add_circle</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Step 4c: ความยินยอมข้อมูล ── -->
+        <div class="loading-wrapper">
+          <div class="card mb-xl skeleton-item" style="pointer-events:none;">
+            <div class="skeleton-loading skeleton-title" style="height:18px;width:45%;margin-bottom:var(--spacing-xl);"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+            </div>
+          </div>
+
+          <div class="card mb-xl loaded-item" style="display:none;">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--warning-40);"></div>
+              <h3 class="section-title">ความยินยอมการใช้ข้อมูล</h3>
+            </div>
+            <p style="font-size:var(--font-size-body-s);color:var(--foreground-neutral-lighter);margin:0 0 var(--spacing-lg);line-height:1.6;">
+              แอปพลิเคชันด้านล่างได้รับความยินยอมให้เข้าถึงข้อมูลของคุณจาก Thangrat API
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">local_police</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ระบบใบสั่งจราจร</p>
+                  <p class="perm-item-sub">เข้าถึง: ใบอนุญาตขับรถ, คะแนน · ยินยอมเมื่อ 1 ม.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon covid" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">bolt</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ระบบค่าน้ำ ค่าไฟ</p>
+                  <p class="perm-item-sub">เข้าถึง: ที่อยู่, เลขผู้ใช้ · ยินยอมเมื่อ 5 ม.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">directions_car</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ระบบทะเบียนรถ</p>
+                  <p class="perm-item-sub">เข้าถึง: ทะเบียนรถ, ภาษี · ยินยอมเมื่อ 5 ม.ค. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon health" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">medical_information</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ระบบใบรับรองแพทย์</p>
+                  <p class="perm-item-sub">เข้าถึง: ข้อมูลสุขภาพ · ยินยอมเมื่อ 10 ก.พ. 2569</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">check_circle</span>
+              </div>
+
+            </div>
+
+            <button class="btn btn-tertiary-outline flex-center mt-xl" style="gap:var(--spacing-sm);" onclick="alert('เปิดหน้าจัดการความยินยอม')">
+              <span class="material-symbols-outlined" style="font-size:20px;">settings</span>
+              จัดการความยินยอม
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Step 4d: การแจ้งเตือน ── -->
+        <div class="loading-wrapper">
+          <div class="card mb-xl skeleton-item" style="pointer-events:none;">
+            <div class="skeleton-loading skeleton-title" style="height:18px;width:40%;margin-bottom:var(--spacing-xl);"></div>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+              <div class="skeleton-loading" style="height:52px;border-radius:var(--radius-lg);"></div>
+            </div>
+          </div>
+
+          <div class="card mb-xl loaded-item" style="display:none;">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--info-40);"></div>
+              <h3 class="section-title">การแจ้งเตือน</h3>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--spacing-sm);">
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">local_police</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ใบสั่งจราจร</p>
+                  <p class="perm-item-sub">แจ้งเตือนเมื่อมีใบสั่งใหม่และวันครบกำหนดชำระ</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">notifications_active</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon driving" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">directions_car</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ภาษีรถยนต์</p>
+                  <p class="perm-item-sub">แจ้งเตือน 30 วัน ก่อนภาษีหมดอายุ</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">notifications_active</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon work" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">public</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">หนังสือเดินทาง</p>
+                  <p class="perm-item-sub">แจ้งเตือน 90 วัน ก่อนหมดอายุ</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-check">notifications_active</span>
+              </div>
+
+              <div class="perm-item">
+                <div class="list-icon health" style="flex-shrink:0;width:36px;height:36px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">medical_information</span>
+                </div>
+                <div class="perm-item-body">
+                  <p class="perm-item-title">ใบรับรองแพทย์</p>
+                  <p class="perm-item-sub">ปิดใช้งาน</p>
+                </div>
+                <span class="material-symbols-outlined perm-icon-pending" style="font-variation-settings:'FILL' 0;">notifications_off</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Step 4e: ความปลอดภัย ── -->
+        <div class="loading-wrapper">
+          <div class="card mb-xl skeleton-item" style="pointer-events:none;">
+            <div class="skeleton-loading skeleton-title" style="height:18px;width:35%;margin-bottom:var(--spacing-xl);"></div>
+            <div class="details-list">
+              <div class="details-item" style="gap:var(--spacing-xs);">
+                <div class="skeleton-loading skeleton-text short" style="height:13px;margin:0;"></div>
+                <div class="skeleton-loading skeleton-text medium" style="height:17px;margin:0;"></div>
+              </div>
+              <div class="details-item" style="gap:var(--spacing-xs);">
+                <div class="skeleton-loading skeleton-text short" style="height:13px;margin:0;"></div>
+                <div class="skeleton-loading skeleton-text" style="height:17px;margin:0;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-xl loaded-item" style="display:none;">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color:var(--neutral-70);"></div>
+              <h3 class="section-title">ความปลอดภัย</h3>
+            </div>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">เข้าสู่ระบบล่าสุด</span>
+                <span class="details-value">29 พ.ค. 2569 เวลา 09:15 น.</span>
+                <span class="details-subvalue">iPhone · Bangkok, Thailand</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">วิธียืนยันตัวตน</span>
+                <span class="details-value">Digital ID · National eID</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">เซสชันที่ใช้งานอยู่</span>
+                <span class="details-value details-value-paid">1 เซสชัน</span>
+              </div>
+            </div>
+            <button class="btn btn-destructive flex-center mt-xl" style="gap:var(--spacing-sm);" onclick="alert('ออกจากระบบทุกอุปกรณ์')">
+              <span class="material-symbols-outlined" style="font-size:20px;">logout</span>
+              ออกจากระบบทุกอุปกรณ์
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 5: Source note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก Thangrat API · สำนักงานพัฒนารัฐบาลดิจิทัล (DGA)<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Step 6: Back-to-top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- Step 7: Scripts -->
+  <script>
+    // Loading wrapper — auto skeleton → loaded
+    function initLoading() {
+      const wrappers = document.querySelectorAll('.loading-wrapper');
+      wrappers.forEach(wrapper => {
+        const skeleton = wrapper.querySelector('.skeleton-item');
+        const loaded   = wrapper.querySelector('.loaded-item');
+        if (skeleton) skeleton.style.display = '';
+        if (loaded)   loaded.style.display = 'none';
+        setTimeout(() => {
+          if (skeleton) skeleton.style.display = 'none';
+          if (loaded)   loaded.style.display = '';
+        }, 400 + Math.random() * 1200);
+      });
+    }
+    window.addEventListener('pageshow', initLoading);
+  </script>
+  <script>
+    (function(){
+      var b = document.getElementById('back-to-top');
+      window.addEventListener('scroll', function(){
+        b.classList.toggle('visible', window.pageYOffset > 240);
+      }, { passive: true });
+    })();
+  </script>
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+               'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+              ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+              String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+    })();
+  </script>
+</body>
+</html>
