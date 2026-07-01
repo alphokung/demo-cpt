@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าแรก — แผงข้อมูลพลเมืองดิจิทัล</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description"
+    content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── ctx-card: today context card ── */
+    .ctx-card {
+      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+      border-radius: var(--radius-xl, 16px);
+      padding: 20px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .ctx-card__skeleton {
+      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+      border-radius: var(--radius-xl, 16px);
+      padding: 20px;
+      pointer-events: none;
+    }
+    .ctx-card__skel-text--sm {
+      height: 13px; width: 90px; display: block;
+      background: rgba(255,255,255,0.2) !important;
+      border-radius: 4px; margin-bottom: 6px;
+    }
+    .ctx-card__skel-text--lg {
+      height: 26px; width: 180px; display: block;
+      background: rgba(255,255,255,0.3) !important;
+      border-radius: 6px; margin-bottom: 20px;
+    }
+    .ctx-card__skel-row {
+      display: flex; justify-content: space-between; gap: 12px;
+    }
+    .ctx-card__skel-temp {
+      height: 44px; width: 120px; display: block;
+      background: rgba(255,255,255,0.25) !important;
+      border-radius: 6px; margin-bottom: 10px;
+    }
+    .ctx-card__skel-desc {
+      height: 13px; width: 140px; display: block;
+      background: rgba(255,255,255,0.15) !important;
+      border-radius: 4px;
+    }
+    .ctx-card__skel-icon-box {
+      height: 90px; width: 80px; display: block;
+      background: rgba(255,255,255,0.15) !important;
+      border-radius: 12px; flex-shrink: 0;
+    }
+    .ctx-card__deco {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .ctx-card__deco--top {
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: rgba(255,255,255,0.06);
+    }
+    .ctx-card__deco--bottom {
+      bottom: -20px; left: -20px;
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.04);
+    }
+    .ctx-card__greeting { margin-bottom: 14px; }
+    .ctx-card__greeting-label { font-size: 12px; opacity: 0.8; margin: 0 0 2px; }
+    .ctx-card__greeting-name { font-size: 20px; font-weight: 700; margin: 0 0 2px; line-height: 1.2; }
+    .ctx-card__location-row { display: flex; align-items: center; gap: 6px; opacity: 0.75; }
+    .ctx-card__location-icon { font-size: 14px; }
+    .ctx-card__location-text { font-size: 12px; }
+    .ctx-card__divider { border-top: 1px solid rgba(255,255,255,0.18); margin-bottom: 14px; }
+    .ctx-card__divider--spaced { border-top: 1px solid rgba(255,255,255,0.18); margin: 14px 0; }
+    .ctx-card__weather-row {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .ctx-card__temp-row { display: flex; align-items: center; gap: 8px; }
+    .ctx-card__weather-icon { font-size: 44px; font-variation-settings: 'FILL' 1; }
+    .ctx-card__temp { font-size: 36px; font-weight: 700; line-height: 1; margin: 0; }
+    .ctx-card__desc { font-size: 12px; opacity: 0.85; margin: 4px 0 0; }
+    .ctx-card__meta-row { display: flex; gap: 16px; margin-top: 10px; }
+    .ctx-card__meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; opacity: 0.8; }
+    .ctx-card__meta-icon { font-size: 14px; }
+
+    /* ── ctx-pm25: PM2.5 chip ── */
+    .ctx-pm25 {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 100px;
+      flex-shrink: 0;
+    }
+    .ctx-pm25__label { font-size: 11px; opacity: 0.8; margin: 0 0 4px; letter-spacing: 0.5px; }
+    .ctx-pm25__value-row { display: flex; align-items: baseline; justify-content: center; gap: 3px; margin-bottom: 6px; }
+    .ctx-pm25__value { font-size: 30px; font-weight: 700; line-height: 1; }
+    .ctx-pm25__unit  { font-size: 11px; opacity: 0.7; }
+    .ctx-pm25__badge { font-size: 11px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 10px; display: inline-block; }
+
+    /* ── ctx-bar: birthday / wan-phra / special-day / focus bars ── */
+    .ctx-bar {
+      border-radius: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .ctx-bar--birthday {
+      background: linear-gradient(90deg, rgba(255,105,135,0.3), rgba(255,180,80,0.25));
+      border: 1px solid rgba(255,150,150,0.3);
+      padding: 10px 14px;
+      gap: 10px;
+    }
+    .ctx-bar__birthday-emoji { font-size: 22px; flex-shrink: 0; line-height: 1; }
+    .ctx-bar__birthday-text  { font-size: 12px; line-height: 1.5; margin: 0; font-weight: 600; }
+    .ctx-bar--wanphra {
+      background: rgba(255,213,79,0.15);
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    .ctx-bar__wanphra-icon { font-size: 20px; flex-shrink: 0; color: #FFD54F; }
+    .ctx-bar__wanphra-text { font-size: 12px; line-height: 1.5; margin: 0; color: #FFD54F; }
+    .ctx-bar--special {
+      background: rgba(255,213,79,0.15);
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    .ctx-bar__special-icon { font-size: 20px; flex-shrink: 0; color: #FFD54F; }
+    .ctx-bar__special-text { font-size: 12px; line-height: 1.5; margin: 0; color: #FFD54F; }
+    .ctx-bar--focus {
+      background: rgba(255,255,255,0.12);
+      padding: 10px 12px;
+      gap: 8px;
+      display: flex;
+      margin-bottom: 8px;
+    }
+    .ctx-bar__focus-icon { font-size: 20px; flex-shrink: 0; }
+    .ctx-bar__focus-text { font-size: 12px; line-height: 1.5; margin: 0; }
+
+    /* ── ctx-noti: inline notification items ── */
+    .ctx-noti {
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .ctx-noti--danger  { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,100,100,0.4); border-left: 3px solid #ff6b6b; }
+    .ctx-noti--warning { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,180,50,0.4);  border-left: 3px solid #fbbf24; }
+    .ctx-noti__icon--danger  { font-size: 18px; flex-shrink: 0; color: #ff9999; }
+    .ctx-noti__icon--warning { font-size: 18px; flex-shrink: 0; color: #fcd34d; }
+    .ctx-noti__body   { flex: 1; min-width: 0; }
+    .ctx-noti__title  { font-size: 12px; font-weight: 700; margin: 0 0 1px; color: #fff; }
+    .ctx-noti__sub    { font-size: 11px; margin: 0; opacity: 0.75; }
+    .ctx-noti__chevron{ font-size: 16px; opacity: 0.6; flex-shrink: 0; }
+    .ctx-noti--last   { margin-bottom: 0; }
+
+    /* ── dyk-card: did-you-know ── */
+    .dyk-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 1px solid #86efac;
+      border-radius: var(--radius-xl, 16px);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+    }
+    .dyk-card__deco {
+      position: absolute; top: -20px; right: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(134,239,172,0.3); pointer-events: none;
+    }
+    .dyk-card__header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .dyk-card__emoji  { font-size: 20px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+    .dyk-card__text   { font-size: 13px; font-weight: 500; line-height: 1.6; margin: 0; color: #14532d; flex: 1; }
+    .dyk-card__link   { color: #16a34a; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .dyk-card__footer { display: flex; align-items: center; justify-content: space-between; }
+    .dyk-card__dots   { display: flex; gap: 5px; align-items: center; }
+    .dyk-card__next-hint { font-size: 11px; color: #16a34a; opacity: 0.7; display: flex; align-items: center; gap: 2px; }
+    .dyk-card__next-icon { font-size: 13px; }
+    /* skeleton inside dyk-card uses green-tinted shimmer */
+    .dyk-card.skeleton-item { cursor: default; }
+    .dyk-card .skeleton-loading {
+      background: rgba(22,163,74,0.12) !important;
+    }
+    .dyk-card .skeleton-loading::after {
+      background: linear-gradient(90deg, transparent, rgba(22,163,74,0.15), transparent) !important;
+    }
+
+    /* ── card section helpers ── */
+    .card-section__title-container { margin-bottom: var(--spacing-md); }
+    .card-section__bar--primary { background-color: var(--primary-50); }
+    .card-section__bar--info    { background-color: var(--info-40); }
+    .card-section__bar--warning { background-color: var(--warning-40); }
+    .card-section__heading      { font-size: var(--font-size-title-m); font-weight: 700; }
+    .card-section__value--primary { color: var(--primary-40); font-weight: 700; }
+    .card-section__value--info    { color: var(--info-40); font-weight: 700; }
+    .card-section__value--warning { color: var(--foreground-warning-default); font-weight: 700; }
+    .card-section__bar--secondary { background-color: var(--secondary-50); }
+    .card__inner     { margin: 0; padding: var(--spacing-xl); }
+    .card__btn-full  { width: 100%; margin-top: var(--spacing-lg); gap: var(--spacing-sm); }
+    .cert-list--single { grid-template-columns: 1fr; }
+
+    /* ── list-icon variant ── */
+    .list-icon--disability { background: var(--background-info-light); color: var(--info-40); }
+    .list-icon--health     { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+
+    /* ── modal shared ── */
+    .modal__content--flex-col {
+      padding: 0; max-height: 82vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .modal__header {
+      padding: var(--spacing-lg) var(--spacing-xl);
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--spacing-md); flex-shrink: 0;
+    }
+    .modal__header-title {
+      font-size: var(--font-size-title-m); font-weight: var(--font-weight-700);
+      margin: 0 0 2px; color: var(--foreground-neutral-default);
+    }
+    .modal__header-sub {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0; line-height: 1.4;
+    }
+    .modal__close-btn {
+      background: var(--background-neutral-subtle); border: none;
+      border-radius: var(--radius-full); width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--foreground-neutral-lighter);
+      padding: 0; flex-shrink: 0;
+    }
+    .modal__close-icon { font-size: 18px; }
+    .modal__body {
+      overflow-y: auto;
+      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal__section-list        { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--spacing-xl); }
+    .modal__section-list--bottom{ display: flex; flex-direction: column; gap: 6px; }
+
+    /* ── perm-item helpers ── */
+    .perm-item__icon--shrink { flex-shrink: 0; }
+    .perm-item__sub--truncate {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .perm-item__unconnected {
+      width: 44px; height: 44px; min-width: 44px;
+      border-radius: var(--radius-lg);
+      background: var(--background-neutral-light);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--foreground-neutral-lighter); flex-shrink: 0;
+    }
+    .perm-item__linkoff-icon {
+      font-size: 20px; color: var(--foreground-warning-default);
+      flex-shrink: 0; font-variation-settings: 'FILL' 0;
+    }
+
+    /* ── demo-config modal ── */
+    .dc-modal__header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .dc-modal__title { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+    .dc-modal__sub   { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0; }
+    .dc-modal__close-btn {
+      background: var(--background-neutral-subtle); border: none; border-radius: 50%;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--foreground-neutral-lighter); padding: 0; flex-shrink: 0;
+    }
+    .dc-modal__close-icon { font-size: 18px; }
+    .dc-modal__body {
+      overflow-y: auto; padding: 0 20px 28px; -webkit-overflow-scrolling: touch;
+    }
+    .dc-group--last { border: none; }
+    .dc-chips--wrap { flex-wrap: wrap; }
+
+    /* ── floating demo button ── */
+    .demo-fab {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--neutral-25, #2d2d2d); color: #fff; border: none;
+      border-radius: var(--radius-full, 999px); padding: 10px 18px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0,0,0,0.2));
+      z-index: 100; white-space: nowrap; font-family: inherit;
+    }
+    .demo-fab__icon { font-size: 18px; }
+
+    /* ── card skeleton helpers ── */
+    .card__inner--no-interact { pointer-events: none; margin: 0; padding: var(--spacing-xl); }
+    .card__skel-title  { height: 20px; width: 45%; margin-bottom: var(--spacing-md); }
+    .card__skel-title--wide { height: 20px; width: 50%; margin-bottom: var(--spacing-md); }
+    .card__skel-item-gap  { gap: var(--spacing-xs); margin-bottom: var(--spacing-sm); }
+    .card__skel-item-gap--last { gap: var(--spacing-xs); }
+    .card__skel-text-sm   { height: 14px; margin: 0; }
+    .card__skel-text-md   { height: 18px; margin: 0; }
+    .card__skel-btn       { height: 40px; width: 100%; margin-top: var(--spacing-lg); }
+
+    /* ── hidden welfare wrappers ── */
+    .loading-wrapper--hidden { display: none; }
+
+    /* ── skeleton text helpers ── */
+    .skeleton-text--no-mb  { margin-bottom: 0; }
+    .skeleton-text--xs-h   { margin-bottom: 0; height: 12px; }
+
+    /* ═══════════════════════════════════════════ */
+    /* Consent (Tier 1 / Tier 2)                    */
+    /* ═══════════════════════════════════════════ */
+
+    /* ── tier1 locked panel ── */
+    .tier1-locked-panel {
+      background: var(--background-neutral-subtle, #f4f4f5);
+      border: 1px dashed var(--stroke-neutral-default, #d1d5db);
+      border-radius: var(--radius-xl, 16px);
+      padding: 28px 20px;
+      text-align: center;
+      margin-bottom: var(--spacing-lg, 16px);
+    }
+    .tier1-locked-panel__icon {
+      font-size: 30px; color: var(--foreground-neutral-lighter);
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--background-neutral-light, #e5e7eb);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .tier1-locked-panel__title { font-size: 15px; font-weight: 700; margin: 0 0 6px; }
+    .tier1-locked-panel__desc  { font-size: 13px; color: var(--foreground-neutral-lighter); margin: 0 0 16px; line-height: 1.5; }
+
+    /* ── tier2 gate states ── */
+    .tier2-locked {
+      background: var(--background-neutral-subtle, #f9fafb);
+      border: 1px dashed var(--stroke-neutral-default, #d1d5db);
+      border-radius: var(--radius-lg, 12px);
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .tier2-locked__icon {
+      font-size: 20px; color: var(--foreground-neutral-lighter);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--background-neutral-light, #e5e7eb);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .tier2-locked__title { font-size: 13px; font-weight: 700; margin: 0 0 4px; }
+    .tier2-locked__hint  { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0 0 12px; line-height: 1.5; }
+    .tier2-loading {
+      display: flex; align-items: center; gap: 10px;
+      padding: 18px 16px;
+      background: var(--background-neutral-subtle, #f9fafb);
+      border-radius: var(--radius-lg, 12px);
+    }
+    .tier2-loading__spinner {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      border: 2.5px solid var(--stroke-neutral-lighter, #e5e7eb);
+      border-top-color: var(--primary-40, #1a73e8);
+      animation: tier2-spin 0.8s linear infinite;
+    }
+    @keyframes tier2-spin { to { transform: rotate(360deg); } }
+    .tier2-loading__text { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0; }
+    .tier2-empty {
+      background: var(--background-info-light);
+      border: 1px dashed var(--info-40);
+      border-radius: var(--radius-lg, 12px);
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .tier2-empty__icon {
+      font-size: 20px; color: var(--info-40);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .tier2-empty__title { font-size: 13px; font-weight: 700; margin: 0 0 4px; color: var(--info-40); }
+    .tier2-empty__hint  { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.5; }
+
+    /* ── section consent notes ── */
+    .consent-note {
+      display: flex; align-items: flex-start; gap: 6px;
+      font-size: 11px; color: var(--foreground-neutral-lighter);
+      margin: 2px 0 12px; line-height: 1.5;
+    }
+    .consent-note__icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .consent-note--realtime { color: var(--foreground-warning-default); }
+
+    /* ── consent modal ── */
+    .consent-modal__badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .consent-modal__badge--tier1 { background: var(--background-info-light); color: var(--info-40); }
+    .consent-modal__badge--tier2 { background: var(--background-warning-light); color: var(--foreground-warning-default); }
+    .consent-modal__perm-list { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+    .consent-modal__perm-item { display: flex; align-items: flex-start; gap: 10px; }
+    .consent-modal__perm-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: var(--background-info-light); color: var(--info-40);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .consent-modal__perm-title { font-size: 13px; font-weight: 600; margin: 0 0 2px; }
+    .consent-modal__perm-sub   { font-size: 12px; color: var(--foreground-neutral-lighter); margin: 0; line-height: 1.4; }
+    .consent-modal__disclaimer {
+      background: var(--background-neutral-subtle, #f4f4f5);
+      border-radius: var(--radius-md);
+      padding: 12px 14px; font-size: 11.5px; line-height: 1.6;
+      color: var(--foreground-neutral-lighter); margin: 4px 0 18px;
+    }
+    .consent-modal__actions { display: flex; flex-direction: column; gap: 8px; }
+
+    /* ── top-nav consent management button ── */
+    .top-nav-consent-btn {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 5px;
+      background: var(--background-neutral-subtle, #f4f4f5);
+      border: 1px solid var(--stroke-neutral-lighter, #e5e7eb);
+      border-radius: var(--radius-full, 999px);
+      padding: 6px 12px;
+      font-size: 12px; font-weight: 600;
+      color: var(--foreground-neutral-default);
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      font-family: inherit;
+    }
+    .top-nav-consent-btn .material-symbols-outlined { font-size: 16px; }
+
+    /* ── footer consent link ── */
+    .footer-consent-link {
+      display: block; text-align: center;
+      font-size: 12px; font-weight: 600;
+      color: var(--primary-40, #1a73e8);
+      background: none; border: none; cursor: pointer;
+      margin: 4px auto 0; padding: 8px; font-family: inherit;
+    }
+
+    /* ── tier2 consent modal: selectable checklist ── */
+    .consent-modal__perm-item--checkable {
+      cursor: pointer;
+      border: 1px solid var(--stroke-neutral-lighter);
+      border-radius: var(--radius-md);
+      padding: 10px;
+    }
+    .consent-modal__checkbox {
+      width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
+      accent-color: var(--primary-40, #1a73e8);
+    }
+    .consent-modal__granted {
+      font-size: 11px; font-weight: 600; color: var(--foreground-positive-default);
+    }
+
+    /* ── tier status banner (inside permissions modal) ── */
+    .perm-tier-banner {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 12px; border-radius: var(--radius-md);
+      font-size: 12.5px; font-weight: 600; margin-bottom: 14px;
+    }
+    .perm-tier-banner .material-symbols-outlined { font-size: 18px; flex-shrink: 0; }
+    .perm-tier-banner__label { flex: 1; }
+    .perm-tier-banner--granted { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .perm-tier-banner--locked  { background: var(--background-warning-light); color: var(--foreground-warning-default); }
+
+    /* ── revoke-all section (inside permissions modal) ── */
+    .consent-revoke-section {
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--stroke-neutral-lighter);
+    }
+    .consent-revoke-note {
+      font-size: 12px; color: var(--foreground-neutral-lighter);
+      margin: 0 0 12px; line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <p class="top-nav-bar-title">ข้อมูลของคุณ</p>
+          <button class="top-nav-consent-btn" onclick="openPermissionsModal()" title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)">
+            <span class="material-symbols-outlined">shield_person</span>
+            <span class="top-nav-consent-btn__label">ความยินยอม</span>
+          </button>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- Page Header -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Tier 1 consent gate -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="tier1-locked-panel" class="tier1-locked-panel" style="display:none;">
+          <div class="tier1-locked-panel__icon">
+            <span class="material-symbols-outlined">lock</span>
+          </div>
+          <p class="tier1-locked-panel__title">เปิดใช้งานเพื่อดูข้อมูลของคุณ</p>
+          <p class="tier1-locked-panel__desc">
+            อนุญาตให้เข้าถึงตำแหน่ง, ข้อมูลส่วนบุคคลพื้นฐาน (ชื่อ‑นามสกุล, เลขบัตรประชาชน, วันเกิด)
+            และการแจ้งเตือน เพื่อแสดงสภาพอากาศ วันสำคัญ เอกสารราชการ และแจ้งเตือนวันหมดอายุของคุณ
+          </p>
+          <button class="btn btn-primary" onclick="openTier1ConsentModal()">
+            <span class="material-symbols-outlined">verified_user</span> ตั้งค่าเปิดใช้งาน
+          </button>
+        </div>
+
+        <div id="tier1-content">
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- MERGED: Welcome + Weather + PM2.5 + วันสำคัญ + Focus -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="loading-wrapper">
+
+          <!-- Skeleton state -->
+          <div class="skeleton-item ctx-card__skeleton">
+            <span class="skeleton-loading ctx-card__skel-text--sm"></span>
+            <span class="skeleton-loading ctx-card__skel-text--lg"></span>
+            <div class="ctx-card__skel-row">
+              <div>
+                <span class="skeleton-loading ctx-card__skel-temp"></span>
+                <span class="skeleton-loading ctx-card__skel-desc"></span>
+              </div>
+              <span class="skeleton-loading ctx-card__skel-icon-box"></span>
+            </div>
+          </div>
+
+          <!-- Loaded state -->
+          <div id="today-context-card" class="loaded-item ctx-card" style="display: none;">
+            <!-- bg decoration -->
+            <div class="ctx-card__deco ctx-card__deco--top"></div>
+            <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+
+            <!-- Greeting + name row -->
+            <div class="ctx-card__greeting">
+              <p id="welcome-greeting" class="ctx-card__greeting-label">สวัสดี</p>
+              <p id="greeting-name" class="ctx-card__greeting-name">คุณสมชาย ใจดี</p>
+              <p id="greeting-tagline" class="ctx-card__location-text" style="margin-top:-2px;opacity:0.75;">ประชาชนทั่วไป</p>
+              <div class="ctx-card__location-row">
+                <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
+                <span id="weather-location" class="ctx-card__location-text">กำลังระบุตำแหน่ง…</span>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="ctx-card__divider"></div>
+
+            <!-- Main weather row -->
+            <div class="ctx-card__weather-row">
+              <div>
+                <div class="ctx-card__temp-row">
+                  <span id="weather-icon" class="material-symbols-outlined ctx-card__weather-icon">wb_sunny</span>
+                  <div>
+                    <p id="weather-temp" class="ctx-card__temp">—°</p>
+                    <p id="weather-desc" class="ctx-card__desc">กำลังโหลด…</p>
+                  </div>
+                </div>
+                <div class="ctx-card__meta-row">
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">water_drop</span>
+                    <span id="weather-humidity">—%</span>
+                  </div>
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">air</span>
+                    <span id="weather-wind">— กม./ชม.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PM2.5 chip -->
+              <div id="pm25-chip" class="ctx-pm25">
+                <p class="ctx-pm25__label">PM 2.5</p>
+                <div class="ctx-pm25__value-row">
+                  <span id="pm25-value" class="ctx-pm25__value">—</span>
+                  <span class="ctx-pm25__unit">μg/m³</span>
+                </div>
+                <span id="pm25-badge" class="ctx-pm25__badge">—</span>
+              </div>
+            </div>
+
+          <!-- Divider -->
+          <div class="ctx-card__divider--spaced"></div>
+
+          <!-- Birthday bar -->
+          <div id="birthday-bar" class="ctx-bar ctx-bar--birthday" style="display:none;">
+            <span class="ctx-bar__birthday-emoji">🎂</span>
+            <p id="birthday-text" class="ctx-bar__birthday-text">สุขสันต์วันเกิด!</p>
+          </div>
+
+          <!-- วันพระ bar -->
+          <div id="wan-phra-bar" class="ctx-bar ctx-bar--wanphra" style="display:none;">
+            <span class="material-symbols-outlined ctx-bar__wanphra-icon">brightness_5</span>
+            <p id="wan-phra-text" class="ctx-bar__wanphra-text">วันนี้วันพระ</p>
+          </div>
+
+          <!-- วันสำคัญ bar -->
+          <div id="special-day-bar" class="ctx-bar ctx-bar--special" style="display:none;">
+            <span class="material-symbols-outlined ctx-bar__special-icon">auto_awesome</span>
+            <p id="special-day-text" class="ctx-bar__special-text">—</p>
+          </div>
+
+          <!-- Weather focus tip -->
+          <div id="weather-focus" class="ctx-bar ctx-bar--focus">
+            <span id="focus-icon" class="material-symbols-outlined ctx-bar__focus-icon">info</span>
+            <p id="focus-text" class="ctx-bar__focus-text">กำลังโหลดคำแนะนำ…</p>
+          </div>
+
+          <!-- Inline notifications -->
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')" class="ctx-noti ctx-noti--danger">
+            <span class="material-symbols-outlined ctx-noti__icon--danger">warning</span>
+            <div class="ctx-noti__body">
+              <p class="ctx-noti__title">หนังสือเดินทางใกล้หมดอายุ</p>
+              <p class="ctx-noti__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+            </div>
+            <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
+          </div>
+
+          <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')" class="ctx-noti ctx-noti--warning ctx-noti--last">
+            <span class="material-symbols-outlined ctx-noti__icon--warning">schedule</span>
+            <div class="ctx-noti__body">
+              <p class="ctx-noti__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+              <p class="ctx-noti__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+            </div>
+            <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
+          </div>
+
+          </div><!-- /loaded-item -->
+        </div><!-- /loading-wrapper -->
+
+
+
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- รู้หรือไม่ -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="loading-wrapper">
+
+          <!-- Skeleton state -->
+          <div class="skeleton-item dyk-card" style="pointer-events:none;">
+            <div class="dyk-card__header">
+              <span class="skeleton-loading" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;display:block;"></span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                <span class="skeleton-loading" style="height:13px;width:90%;display:block;border-radius:4px;"></span>
+                <span class="skeleton-loading" style="height:13px;width:70%;display:block;border-radius:4px;"></span>
+                <span class="skeleton-loading" style="height:13px;width:40%;display:block;border-radius:4px;"></span>
+              </div>
+            </div>
+            <div class="dyk-card__footer">
+              <span class="skeleton-loading" style="height:8px;width:48px;display:block;border-radius:4px;"></span>
+              <span class="skeleton-loading" style="height:10px;width:80px;display:block;border-radius:4px;"></span>
+            </div>
+          </div>
+
+          <!-- Loaded state -->
+          <div id="did-you-know" onclick="dykNext()" class="loaded-item dyk-card" style="display:none;">
+            <div class="dyk-card__deco"></div>
+
+            <div class="dyk-card__header">
+              <span class="dyk-card__emoji">💡</span>
+              <p id="dyk-text" class="dyk-card__text">
+                <a id="dyk-link" onclick="event.stopPropagation()" class="dyk-card__link"></a>
+              </p>
+            </div>
+
+            <div class="dyk-card__footer">
+              <div class="dyk-card__dots" id="dyk-dots"></div>
+              <span class="dyk-card__next-hint">
+                แตะเพื่อดูถัดไป
+                <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="list-section">
+          <p class="list-section-title">เอกสารราชการ</p>
+          <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+          <p class="consent-note">
+            <span class="material-symbols-outlined consent-note__icon">cached</span>
+            ข้อมูลทั่วไปนี้ถูกแคชไว้ในเครื่องเพื่อความรวดเร็ว และอัปเดตเป็นระยะ
+          </p>
+
+          <div class="cert-list">
+            <!-- Driving License -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                  <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 5 พ.ค. 2572</span>
+                    </div>
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Passport -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                <div class="list-icon work">
+                  <span class="material-symbols-outlined">public</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                  <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                    </div>
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 4. Assets -->
+        <div class="list-section">
+          <p class="list-section-title">ทรัพย์สินของคุณ</p>
+          <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+          <div class="cert-list">
+            <!-- Electricity Meter 1: MEA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
+                  <p class="list-item-hero">มิเตอร์ไฟ: 020012345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>
+                  </div>
+
+                  <div class="list-meta">
+
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 1: MWA Unpaid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
+                  <p class="list-item-hero">มิเตอร์น้ำ: 102548976</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+       
+
+
+            <!-- Electricity Meter 3: PEA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
+                <div class="list-icon covid">
+                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
+                  <p class="list-item-hero">มิเตอร์ไฟ: 020087654321</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                      มิเตอร์ร้านค้า
+                    </div>
+                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Water Meter 2: PWA Paid -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
+                <div class="list-icon driving">
+                  <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
+                  <p class="list-item-hero">มิเตอร์น้ำ: 552109876</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">home</span>
+                      มิเตอร์บ้านพักอาศัย
+                    </div>                    
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      ข้อมูล ณ 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+
+            <!-- Honda Civic -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถยนต์</p>
+                  <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                      <span>รุ่นรถ: Honda Civic</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Yamaha Grand Filano -->
+            <div class="loading-wrapper">
+              <div class="list-item skeleton-item" style="pointer-events:none;">
+                <span class="list-badge skeleton-loading list-badge--corner"
+                  class="skeleton-badge-sm"></span>
+                <div class="skeleton-loading"
+                  class="skeleton-icon-md"></div>
+                <div class="list-body" class="skeleton-body-gap">
+                  <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                  <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                </div>
+                <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+              </div>
+              <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">two_wheeler</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถจักรยานยนต์</p>
+                  <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                      <span>รุ่นรถ: Yamaha Grand Filano</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+          
+          </div>
+        </div>
+
+        </div><!-- /tier1-content -->
+
+        <!-- 3. Rights and Welfare (Tier 2 — explicit per-dataset consent, realtime) -->
+        <div class="list-section">
+          <p class="list-section-title">สิทธิ และสวัสดิการ</p>
+          <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
+          <p class="consent-note consent-note--realtime">
+            <span class="material-symbols-outlined consent-note__icon">bolt</span>
+            ข้อมูลชุดนี้ต้องยินยอมแยกทีละรายการ และเชื่อมต่อหน่วยงานแบบเรียลไทม์ทุกครั้ง (ไม่แคชในเครื่อง)
+          </p>
+
+          <div class="cert-list cert-list--single">
+            <!-- Card 1: Medical Benefits (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="health">
+
+              <!-- Locked state (no consent yet) -->
+              <div class="tier2-locked" data-state="locked">
+                <div class="tier2-locked__icon">
+                  <span class="material-symbols-outlined">health_and_safety</span>
+                </div>
+                <p class="tier2-locked__title">สิทธิการรักษาพยาบาล</p>
+                <p id="tier2-hint-health" class="tier2-locked__hint">ให้ความยินยอมเพื่อตรวจสอบสิทธิการรักษาพยาบาลของคุณแบบเรียลไทม์จาก สปสช.</p>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full" onclick="requestTier2Consent('health')">
+                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+                </button>
+              </div>
+
+              <!-- Loading state (fetching realtime) -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อ สปสช. เพื่อตรวจสอบสิทธิการรักษาพยาบาลแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">สิทธิการรักษาพยาบาล</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--primary">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิหลักประกันสุขภาพ (บัตรทอง 30 บาท)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่เข้ารับการรักษาเบื้องต้น:</span>
+                    <span class="details-value">คลินิกชุมชนอบอุ่นลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประจำ:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่รับการส่งต่อ:</span>
+                    <span class="details-value">โรงพยาบาลรามาธิบดี</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
+                  <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
+                </button>
+              </div>
+            </div>
+
+            <!-- Card: บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="disability">
+
+              <!-- Locked state -->
+              <div class="tier2-locked" data-state="locked">
+                <div class="tier2-locked__icon">
+                  <span class="material-symbols-outlined">accessible</span>
+                </div>
+                <p class="tier2-locked__title">บัตรประจำตัวคนพิการ</p>
+                <p id="tier2-hint-disability" class="tier2-locked__hint">ให้ความยินยอมเพื่อตรวจสอบข้อมูลบัตรประจำตัวคนพิการแบบเรียลไทม์จาก พก.</p>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full" onclick="requestTier2Consent('disability')">
+                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+                </button>
+              </div>
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Empty state (consented, but no record found for this citizen) -->
+              <div class="tier2-empty" data-state="empty" style="display:none;">
+                <div class="tier2-empty__icon"><span class="material-symbols-outlined">info</span></div>
+                <p class="tier2-empty__title">ไม่พบข้อมูลบัตรประจำตัวคนพิการ</p>
+                <p class="tier2-empty__hint">ไม่พบข้อมูลที่ผูกกับเลขบัตรประชาชนของคุณในระบบ พก. หากคุณคิดว่าควรมีสิทธิ์นี้ กรุณาติดต่อสำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์จังหวัด</p>
+              </div>
+
+              <!-- Loaded state -->
+              <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
+                onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon list-icon--disability">
+                  <span class="material-symbols-outlined">accessible</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                  <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 14 ก.พ. 2571</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+
+            <!-- Card 2: สิทธิประกันสังคม -->
+            <div class="loading-wrapper loading-wrapper--hidden">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title--wide"></div>
+                <div class="details-list">
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--info"></div>
+                  <h3 class="section-title card-section__heading">สิทธิประกันสังคม</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--info">สิทธิประกันสังคม</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกองทุนประกันสังคม (ผู้ประกันตน)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประกันสังคม:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="alert('เปิด miniapp ประกันสังคม')">
+                  <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: สิทธิข้าราชการ (กบข.) -->
+            <div class="loading-wrapper loading-wrapper--hidden">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title"></div>
+                <div class="details-list">
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--warning"></div>
+                  <h3 class="section-title card-section__heading">สิทธิข้าราชการ (กบข.)</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--warning">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกรมบัญชีกลาง (ผู้รับเบี้ยหวัดบำนาญ)</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="alert('เปิด miniapp กบข.')">
+                  <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
+                </button>
+              </div>
+            </div>
+
+            <!-- Card: สิทธิสวัสดิการแห่งรัฐ (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="welfare">
+
+              <!-- Locked state -->
+              <div class="tier2-locked" data-state="locked">
+                <div class="tier2-locked__icon">
+                  <span class="material-symbols-outlined">volunteer_activism</span>
+                </div>
+                <p class="tier2-locked__title">สิทธิสวัสดิการแห่งรัฐ</p>
+                <p id="tier2-hint-welfare" class="tier2-locked__hint">ให้ความยินยอมเพื่อตรวจสอบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร และเบี้ยยังชีพ แบบเรียลไทม์จากกรมบัญชีกลาง</p>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full" onclick="requestTier2Consent('welfare')">
+                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+                </button>
+              </div>
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อกรมบัญชีกลางเพื่อตรวจสอบสิทธิสวัสดิการแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Empty state (consented, but no record found for this citizen) -->
+              <div class="tier2-empty" data-state="empty" style="display:none;">
+                <div class="tier2-empty__icon"><span class="material-symbols-outlined">info</span></div>
+                <p class="tier2-empty__title">ไม่พบข้อมูลสวัสดิการแห่งรัฐ</p>
+                <p class="tier2-empty__hint">ไม่พบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร หรือเบี้ยยังชีพที่ผูกกับคุณในระบบกรมบัญชีกลาง หากคุณคิดว่าควรมีสิทธิ์นี้ สามารถลงทะเบียนได้ที่เว็บไซต์บัตรสวัสดิการแห่งรัฐ</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--secondary"></div>
+                  <h3 class="section-title card-section__heading">สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
+                </div>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (สถานะใช้งาน)</span>
+                    <span class="details-subvalue">วงเงินส่วนลดซื้อสินค้าอุปโภคบริโภคคงเหลือเดือนนี้: 300.00 บาท</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์
+                      (โอนเงินสำเร็จ)</span>
+                    <span class="details-subvalue">โอนเงินช่วยเหลือประจำเดือน พ.ค. 2569 จำนวน 600.00 บาทสำเร็จ</span>
+                  </div>
+                  <div class="details-item"
+                    style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                    <span class="details-label">เบี้ยยังชีพผู้สูงอายุ:</span>
+                    <span class="details-value"
+                      style="color: var(--foreground-neutral-lighter); font-weight: 500;">ยังไม่มีสิทธิ์</span>
+                    <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60
+                      ปีบริบูรณ์)</span>
+                  </div>
+
+                  <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                    onclick="alert('เปิด miniapp ที่เกี่ยวข้อง')">
+                    <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสวัสดิการของคุณ
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        
+
+
+
+        <div class="footer-timestamp" >
+          ศูนย์รวมข้อมูลพลเมืองบูรณาการระบบรัฐบาลดิจิทัล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+        </div>
+        <button class="footer-consent-link" onclick="openPermissionsModal()">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-2px;">shield_person</span>
+          จัดการ / ยกเลิกความยินยอมข้อมูลทั้งหมด
+        </button>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Permissions Management -->
+  <div id="modal-permissions" class="modal-overlay" onclick="closeModal('modal-permissions')">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">การจัดการสิทธิ์</p>
+          <p class="modal__header-sub">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+        </div>
+        <button onclick="closeModal('modal-permissions')" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="modal__body">
+
+        <!-- Tier 1 status banner (dynamic) -->
+        <div id="perm-tier1-status"></div>
+
+        <p class="section-label-xs">Tier 1 · ข้อมูลทั่วไป (แคชในเครื่อง)</p>
+        <div class="modal__section-list" id="perm-tier1-list"></div>
+
+        <!-- Tier 2 status (dynamic, per dataset) -->
+        <p class="section-label-xs" style="margin-top:18px;">Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)</p>
+        <div class="modal__section-list--bottom" id="perm-tier2-list"></div>
+
+        <!-- Revoke all consent (Tier 1 + Tier 2) -->
+        <div class="consent-revoke-section">
+          <p class="section-label-xs">การจัดการความยินยอม</p>
+          <p class="consent-revoke-note">
+            คุณให้ความยินยอมเพียงครั้งเดียว ระบบจะจดจำไว้จนกว่าคุณจะยกเลิก
+            การยกเลิกจะลบความยินยอมทั้ง Tier 1 (ข้อมูลทั่วไป) และ Tier 2 (ข้อมูลสิทธิ/สุขภาพ) พร้อมกันทั้งหมด
+            และหน้านี้จะหยุดแสดงข้อมูลที่เกี่ยวข้องทันที
+          </p>
+          <button class="btn btn-destructive flex-center" style="width:100%;gap:var(--spacing-sm);" onclick="revokeAllConsent()">
+            <span class="material-symbols-outlined">block</span> ยกเลิกความยินยอมทั้งหมด
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tier 1 Consent -->
+  <div id="modal-consent-tier1" class="modal-overlay">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">ขอสิทธิ์เข้าถึงข้อมูลพื้นฐาน</p>
+          <p class="modal__header-sub">ใช้เพื่อแสดงเอกสารราชการและข้อมูลทั่วไปของคุณ</p>
+        </div>
+        <button onclick="closeModal('modal-consent-tier1')" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="modal__body">
+        <span class="consent-modal__badge consent-modal__badge--tier1">
+          <span class="material-symbols-outlined" style="font-size:14px;">layers</span> Tier 1 · ข้อมูลทั่วไป
+        </span>
+
+        <div class="consent-modal__perm-list">
+          <div class="consent-modal__perm-item">
+            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">location_on</span></div>
+            <div>
+              <p class="consent-modal__perm-title">ตำแหน่งที่ตั้ง (Lat/Lng)</p>
+              <p class="consent-modal__perm-sub">แสดงสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ</p>
+            </div>
+          </div>
+          <div class="consent-modal__perm-item">
+            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">badge</span></div>
+            <div>
+              <p class="consent-modal__perm-title">ข้อมูลส่วนบุคคลพื้นฐาน</p>
+              <p class="consent-modal__perm-sub">เลขบัตรประชาชน, ชื่อ‑นามสกุล, วันเกิด — เพื่อยืนยันตัวตนและแสดงเอกสารราชการของคุณ</p>
+            </div>
+          </div>
+          <div class="consent-modal__perm-item">
+            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">notifications_active</span></div>
+            <div>
+              <p class="consent-modal__perm-title">การแจ้งเตือน (Push Notification)</p>
+              <p class="consent-modal__perm-sub">แจ้งเตือนวันหมดอายุของเอกสารและรายการที่ใกล้ถึงกำหนด</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="consent-modal__disclaimer">
+          ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น<br>
+          ข้อมูลระดับนี้จะถูก<strong>แคชไว้ในเครื่องเพื่อความรวดเร็ว</strong> และคุณให้ความยินยอมเพียงครั้งเดียว
+          สามารถยกเลิกได้ทุกเมื่อจากเมนู “การจัดการสิทธิ์”
+        </div>
+
+        <div class="consent-modal__actions">
+          <button class="btn btn-primary" style="width:100%;" onclick="confirmTier1Consent()">ยินยอมและเข้าใช้งาน</button>
+          <button class="btn btn-outline" style="width:100%;" onclick="closeModal('modal-consent-tier1')">ภายหลัง</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tier 2 Consent (multi-select — grant one or more datasets at once) -->
+  <div id="modal-consent-tier2" class="modal-overlay">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">ให้ความยินยอมเข้าถึงข้อมูลสิทธิ/สุขภาพ</p>
+          <p class="modal__header-sub">เลือกรายการที่ต้องการให้ความยินยอม (เลือกได้มากกว่า 1 รายการ)</p>
+        </div>
+        <button onclick="cancelTier2Consent()" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="modal__body">
+        <span class="consent-modal__badge consent-modal__badge--tier2">
+          <span class="material-symbols-outlined" style="font-size:14px;">bolt</span> Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)
+        </span>
+
+        <div id="tier2-modal-list" class="consent-modal__perm-list"></div>
+
+        <div class="consent-modal__disclaimer">
+          เมื่อคุณกดยินยอม ระบบจะเรียกข้อมูลจากหน่วยงานที่เกี่ยวข้อง<strong>แบบเรียลไทม์ทุกครั้ง</strong>ที่เปิดหน้านี้ (ไม่แคช)<br><br>
+          ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น
+          ข้อมูลจัดเก็บชั่วคราว 24 ชั่วโมง และลบอัตโนมัติ
+        </div>
+
+        <div class="consent-modal__actions">
+          <button class="btn btn-primary" style="width:100%;" onclick="confirmTier2Consent()">ยินยอมรายการที่เลือก</button>
+          <button class="btn btn-outline" style="width:100%;" onclick="cancelTier2Consent()">ไม่ยินยอม</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Demo Config -->
+  <div id="modal-demo-config" class="modal-overlay" onclick="closeModal('modal-demo-config')">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
+        </div>
+        <button onclick="closeModal('modal-demo-config')" class="dc-modal__close-btn">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="dc-modal__body">
+
+        <!-- ตัวตนผู้ใช้ (persona) -->
+        <div class="dc-group">
+          <p class="dc-group-label">👤 ตัวตนผู้ใช้ (เปลี่ยนแล้วรีเซ็ตความยินยอมทั้งหมด)</p>
+          <div class="dc-chips dc-chips--wrap">
+            <button class="dc-chip" id="chip-persona-somchai" onclick="setPersona('somchai')">คุณสมชาย · ทั่วไป (วันเกิด)</button>
+            <button class="dc-chip" id="chip-persona-somsri"  onclick="setPersona('somsri')">คุณสมศรี · บัตรคนพิการ</button>
+            <button class="dc-chip" id="chip-persona-somying" onclick="setPersona('somying')">คุณสมหญิง · บัตรสวัสดิการฯ</button>
+          </div>
+        </div>
+
+        <!-- อากาศ -->
+        <div class="dc-group">
+          <p class="dc-group-label">🌤️ อากาศ</p>
+          <div class="dc-chips">
+            <button class="dc-chip" id="chip-weather-hot"    onclick="demoSet('weather','hot')">☀️ ร้อน</button>
+            <button class="dc-chip" id="chip-weather-rain"   onclick="demoSet('weather','rain')">🌧️ ฝนตก</button>
+          </div>
+        </div>
+
+        <!-- PM 2.5 -->
+        <div class="dc-group">
+          <p class="dc-group-label">💨 PM 2.5</p>
+          <div class="dc-chips dc-chips--wrap">
+            <button class="dc-chip" id="chip-pm25-low"      onclick="demoSet('pm25','low')"      style="--pm-color:#4caf50;">🟢 ต่ำ</button>
+            <button class="dc-chip" id="chip-pm25-medium"   onclick="demoSet('pm25','medium')"   style="--pm-color:#fbbf24;">🟡 กลาง</button>
+            <button class="dc-chip" id="chip-pm25-high"     onclick="demoSet('pm25','high')"     style="--pm-color:#f97316;">🟠 สูง</button>
+            <button class="dc-chip" id="chip-pm25-veryhigh" onclick="demoSet('pm25','veryhigh')" style="--pm-color:#9c27b0;">🟣 สูงมาก</button>
+          </div>
+        </div>
+
+        <!-- วันสำคัญ -->
+        <div class="dc-group">
+          <p class="dc-group-label">🪷 วันสำคัญ</p>
+          <div class="dc-chips dc-chips--wrap">
+            <button class="dc-chip" id="chip-special-none"      onclick="demoSet('special',null)">ไม่มี</button>
+            <button class="dc-chip" id="chip-special-wanphra"   onclick="demoSet('special','wanphra')">วันพระทั่วไป</button>
+            <button class="dc-chip" id="chip-special-visakha"   onclick="demoSet('special','visakha')">วันวิสาขบูชา</button>
+            <button class="dc-chip" id="chip-special-loykra"    onclick="demoSet('special','loykra')">วันลอยกระทง</button>
+            <button class="dc-chip" id="chip-special-valentine" onclick="demoSet('special','valentine')">วันวาเลนไทน์</button>
+            <button class="dc-chip" id="chip-special-chalerm"   onclick="demoSet('special','chalerm')">วันเฉลิม</button>
+          </div>
+        </div>
+
+        <!-- ความยินยอม (consent) -->
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">🔐 ความยินยอม (Consent)</p>
+          <div class="dc-chips">
+            <button class="dc-chip" onclick="clearAllConsentDemo()">ล้างสถานะความยินยอมทั้งหมด</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .dc-group {
+      padding: 18px 0 14px;
+      border-bottom: 1px solid var(--stroke-neutral-lighter);
+    }
+    .dc-group-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--foreground-neutral-default);
+      margin: 0 0 10px;
+    }
+    .dc-chips {
+      display: flex;
+      gap: 8px;
+    }
+    .dc-chip {
+      border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
+      background: #fff;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--foreground-neutral-default);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .dc-chip.active {
+      background: var(--primary-40, #1a73e8);
+      border-color: var(--primary-40, #1a73e8);
+      color: #fff;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- Modal: Bill Payment -->
+
+
+
+  <script>
+    function initLoading() {
+      const wrappers = document.querySelectorAll('.loading-wrapper');
+      let remaining = wrappers.length;
+
+      function onWrapperDone() {
+        remaining--;
+      }
+
+      wrappers.forEach(wrapper => {
+        const skeleton = wrapper.querySelector('.skeleton-item');
+        const loaded = wrapper.querySelector('.loaded-item');
+
+        if (skeleton) skeleton.style.display = '';
+        if (loaded) loaded.style.display = 'none';
+
+        // Random duration up to 2 seconds (between 400ms and 2000ms)
+        const randomDelay = 400 + Math.random() * 1600;
+
+        setTimeout(() => {
+          if (skeleton) skeleton.style.display = 'none';
+          if (loaded) loaded.style.display = '';
+          onWrapperDone();
+        }, randomDelay);
+      });
+    }
+
+    // ─── Consent (Tier 1 / Tier 2) ──────────────────────────────────────
+    var CONSENT_STORAGE_KEY = 'czp_consent_v1';
+
+    function defaultConsent() {
+      return { tier1: false, tier2: { health: false, disability: false, welfare: false } };
+    }
+
+    function loadConsent() {
+      try {
+        var raw = localStorage.getItem(CONSENT_STORAGE_KEY);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          return {
+            tier1: !!parsed.tier1,
+            tier2: {
+              health: !!(parsed.tier2 && parsed.tier2.health),
+              disability: !!(parsed.tier2 && parsed.tier2.disability),
+              welfare: !!(parsed.tier2 && parsed.tier2.welfare),
+            }
+          };
+        }
+      } catch (e) {}
+      return defaultConsent();
+    }
+
+    function saveConsent() {
+      try { localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(consent)); } catch (e) {}
+    }
+
+    var consent = loadConsent();
+
+    // ─── Persona (demo user switcher) ───────────────────────────────────
+    var PERSONA_STORAGE_KEY = 'czp_persona_v1';
+
+    var PERSONAS = {
+      somchai: {
+        fullName: 'คุณสมชาย ใจดี',
+        tagline: 'ประชาชนทั่วไป',
+        forceBirthday: true,
+        entitlements: { disability: false, welfare: false },
+      },
+      somsri: {
+        fullName: 'คุณสมศรี มีสุข',
+        tagline: 'ผู้ถือบัตรประจำตัวคนพิการ',
+        forceBirthday: false,
+        entitlements: { disability: true, welfare: false },
+      },
+      somying: {
+        fullName: 'คุณสมหญิง รุ่งเรือง',
+        tagline: 'ผู้ถือบัตรสวัสดิการแห่งรัฐ',
+        forceBirthday: false,
+        entitlements: { disability: false, welfare: true },
+      },
+    };
+
+    function loadPersonaKey() {
+      try { return PERSONAS[localStorage.getItem(PERSONA_STORAGE_KEY)] ? localStorage.getItem(PERSONA_STORAGE_KEY) : 'somchai'; }
+      catch (e) { return 'somchai'; }
+    }
+    function savePersonaKey(k) {
+      try { localStorage.setItem(PERSONA_STORAGE_KEY, k); } catch (e) {}
+    }
+
+    var currentPersonaKey = loadPersonaKey();
+
+    function applyPersonaUI() {
+      var persona = PERSONAS[currentPersonaKey];
+      var nameEl = document.getElementById('greeting-name');
+      var tagEl  = document.getElementById('greeting-tagline');
+      if (nameEl) nameEl.textContent = persona.fullName;
+      if (tagEl)  tagEl.textContent  = persona.tagline;
+      DEMO.birthday = persona.forceBirthday;
+    }
+
+    // Switching persona changes who the dashboard belongs to, so any previously
+    // granted consent (Tier 1 + Tier 2) no longer applies and must be re-given.
+    function setPersona(key) {
+      if (!PERSONAS[key] || key === currentPersonaKey) { closeModal('modal-demo-config'); return; }
+      savePersonaKey(key);
+      consent = defaultConsent();
+      saveConsent();
+      location.reload();
+    }
+
+    var TIER2_INFO = {
+      health: {
+        title: 'สิทธิการรักษาพยาบาล',
+        sub: 'สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)',
+        desc: 'ระบบจะเรียกดูสิทธิการรักษาพยาบาลของคุณ (สิทธิที่ใช้เบิก, สถานพยาบาลประจำ/รับส่งต่อ) จาก สปสช. แบบเรียลไทม์',
+        icon: 'health_and_safety',
+      },
+      disability: {
+        title: 'ข้อมูลบัตรคนพิการ',
+        sub: 'กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ (พก.)',
+        desc: 'ระบบจะเรียกดูสถานะและวันหมดอายุของบัตรประจำตัวคนพิการจาก พก. แบบเรียลไทม์',
+        icon: 'accessible',
+      },
+      welfare: {
+        title: 'สิทธิสวัสดิการแห่งรัฐ',
+        sub: 'กรมบัญชีกลาง กระทรวงการคลัง',
+        desc: 'ระบบจะเรียกดูบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด และเบี้ยยังชีพผู้สูงอายุ จากกรมบัญชีกลาง แบบเรียลไทม์',
+        icon: 'volunteer_activism',
+      },
+    };
+
+    var TIER2_LOCKED_HINT_DEFAULT = {
+      health: 'ให้ความยินยอมเพื่อตรวจสอบสิทธิการรักษาพยาบาลของคุณแบบเรียลไทม์จาก สปสช.',
+      disability: 'ให้ความยินยอมเพื่อตรวจสอบข้อมูลบัตรประจำตัวคนพิการแบบเรียลไทม์จาก พก.',
+      welfare: 'ให้ความยินยอมเพื่อตรวจสอบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร และเบี้ยยังชีพ แบบเรียลไทม์จากกรมบัญชีกลาง',
+    };
+    var TIER2_LOCKED_HINT_NEEDS_TIER1 = 'ต้องให้ความยินยอม Tier 1 (ข้อมูลทั่วไป) ก่อน จึงจะขอสิทธิ์นี้ได้';
+
+    // Tier 2 datasets belong to the same person as Tier 1, so they're only
+    // requestable once Tier 1 is granted — the locked hint explains why when it isn't.
+    function updateTier2LockedHints() {
+      Object.keys(TIER2_LOCKED_HINT_DEFAULT).forEach(function (k) {
+        var hintEl = document.getElementById('tier2-hint-' + k);
+        if (!hintEl) return;
+        hintEl.textContent = consent.tier1 ? TIER2_LOCKED_HINT_DEFAULT[k] : TIER2_LOCKED_HINT_NEEDS_TIER1;
+      });
+    }
+
+    function tier2Gate(key) {
+      return document.querySelector('.tier2-gate[data-tier2-key="' + key + '"]');
+    }
+
+    function setTier2State(gate, state) {
+      if (!gate) return;
+      ['locked', 'loading', 'loaded', 'empty'].forEach(function (s) {
+        var el = gate.querySelector('[data-state="' + s + '"]');
+        if (el) el.style.display = (s === state) ? '' : 'none';
+      });
+    }
+
+    // Renders a tier2 dataset. If the user already consented (persisted),
+    // simulate a fresh realtime fetch every time the page loads (tier2 is never cached).
+    // After the "fetch" resolves, the current persona may simply have no record for
+    // this dataset (e.g. สมชาย has no disability card) — that's the 'empty' state.
+    function renderTier2(key, justConsented) {
+      var gate = tier2Gate(key);
+      if (!gate) return;
+      if (!consent.tier2[key]) {
+        setTier2State(gate, 'locked');
+        return;
+      }
+      setTier2State(gate, 'loading');
+      var delay = justConsented ? 900 : (500 + Math.random() * 700);
+      setTimeout(function () {
+        var entitlements = PERSONAS[currentPersonaKey].entitlements;
+        var hasData = (key in entitlements) ? entitlements[key] : true;
+        setTier2State(gate, hasData ? 'loaded' : 'empty');
+      }, delay);
+    }
+
+    // Opens the tier2 consent modal pre-populated with EVERY dataset the user
+    // can grant right now, so one confirmation can cover several datasets at once.
+    // `key` is just the one that was clicked — it's pre-checked, others are optional.
+    // Tier 2 data belongs to the same citizen record as Tier 1, so it can only be
+    // requested once Tier 1 (basic identity + location) has been consented to.
+    function requestTier2Consent(key) {
+      if (!consent.tier1) {
+        closeModal('modal-permissions');
+        openTier1ConsentModal();
+        return;
+      }
+      var list = document.getElementById('tier2-modal-list');
+      list.innerHTML = '';
+      Object.keys(TIER2_INFO).forEach(function (k) {
+        var info = TIER2_INFO[k];
+        var already = !!consent.tier2[k];
+        var row = document.createElement('label');
+        row.className = 'consent-modal__perm-item consent-modal__perm-item--checkable';
+        row.innerHTML =
+          '<input type="checkbox" class="consent-modal__checkbox" id="tier2-check-' + k + '"' +
+            (already ? ' checked disabled' : (k === key ? ' checked' : '')) + '>' +
+          '<div class="consent-modal__perm-icon"><span class="material-symbols-outlined">' + info.icon + '</span></div>' +
+          '<div>' +
+            '<p class="consent-modal__perm-title">' + info.title +
+              (already ? ' <span class="consent-modal__granted">(ยินยอมแล้ว)</span>' : '') + '</p>' +
+            '<p class="consent-modal__perm-sub">' + info.desc + '</p>' +
+          '</div>';
+        list.appendChild(row);
+      });
+      openModal('modal-consent-tier2');
+    }
+
+    function confirmTier2Consent() {
+      var newlyGranted = [];
+      Object.keys(TIER2_INFO).forEach(function (k) {
+        var cb = document.getElementById('tier2-check-' + k);
+        if (cb && cb.checked && !cb.disabled) {
+          consent.tier2[k] = true;
+          newlyGranted.push(k);
+        }
+      });
+      closeModal('modal-consent-tier2');
+      if (!newlyGranted.length) return;
+      saveConsent();
+      newlyGranted.forEach(function (k) { renderTier2(k, true); });
+    }
+
+    function cancelTier2Consent() {
+      closeModal('modal-consent-tier2');
+    }
+
+    // Demo-only shortcut: wipes consent state instantly (no confirm dialog) for quick re-testing.
+    function clearAllConsentDemo() {
+      consent = defaultConsent();
+      saveConsent();
+      location.reload();
+    }
+
+    function applyTier1UI() {
+      var content = document.getElementById('tier1-content');
+      var locked  = document.getElementById('tier1-locked-panel');
+      if (consent.tier1) {
+        if (content) content.style.display = '';
+        if (locked)  locked.style.display = 'none';
+        initLoading();
+      } else {
+        if (content) content.style.display = 'none';
+        if (locked)  locked.style.display = '';
+      }
+      updateTier2LockedHints();
+    }
+
+    function openTier1ConsentModal() {
+      openModal('modal-consent-tier1');
+    }
+
+    function confirmTier1Consent() {
+      consent.tier1 = true;
+      saveConsent();
+      closeModal('modal-consent-tier1');
+      applyTier1UI();
+    }
+
+    function revokeAllConsent() {
+      var ok = confirm('ยกเลิกความยินยอมทั้งหมด (Tier 1 และ Tier 2)? ระบบจะหยุดแสดงข้อมูลที่เกี่ยวข้องทันที และคุณจะต้องให้ความยินยอมใหม่อีกครั้งเพื่อใช้งาน');
+      if (!ok) return;
+      consent = defaultConsent();
+      saveConsent();
+      closeModal('modal-permissions');
+      location.reload();
+    }
+
+    // ─── Permissions modal: rendered from actual consent state, not hardcoded ──
+    var TIER1_ITEMS = [
+      { title: 'ใบอนุญาตขับรถยนต์', sub: 'กรมการขนส่งทางบก', icon: 'directions_car', iconClass: 'driving', miniapp: 'e82f601e-ce10-4d45-a297-51d59722d86a' },
+      { title: 'หนังสือเดินทาง', sub: 'กรมการกงสุล', icon: 'public', iconClass: 'work', miniapp: '7a1965f1-27e3-43c5-9b14-4627039a28d2' },
+      { title: 'ทะเบียนยานพาหนะ', sub: 'กรมการขนส่งทางบก', icon: 'car_tag', iconClass: 'driving', miniapp: 'fbc474d8-fde8-4f48-8063-f04d83fabf13' },
+      { title: 'ค่าไฟฟ้า', sub: 'การไฟฟ้านครหลวง (MEA)', img: '_media/mea.png', miniapp: '2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e' },
+      { title: 'ค่าน้ำประปา', sub: 'การประปานครหลวง (MWA)', img: '_media/mwa.svg', miniapp: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f' },
+      { title: 'ค่าไฟฟ้า', sub: 'การไฟฟ้าส่วนภูมิภาค (PEA)', img: '_media/pea.png', miniapp: '4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a' },
+      { title: 'ค่าน้ำประปา', sub: 'การประปาส่วนภูมิภาค (PWA)', img: '_media/pwa.png', miniapp: '7a267a33-1657-477a-8710-d49bef97dabe' },
+    ];
+
+    function buildPermItem(opts) {
+      var iconInner = opts.img
+        ? '<img src="' + opts.img + '" alt="" class="img-helper-frame circle size-sm">'
+        : '<span class="material-symbols-outlined perm-icon">' + opts.icon + '</span>';
+      var iconWrap = opts.granted
+        ? '<div class="list-icon ' + (opts.iconClass || 'driving') + ' perm-item__icon--shrink">' + iconInner + '</div>'
+        : '<div class="perm-item__unconnected">' + iconInner + '</div>';
+      var trailing = opts.granted
+        ? '<span class="material-symbols-outlined perm-icon-check">check_circle</span>'
+        : '<span class="material-symbols-outlined perm-item__linkoff-icon">link_off</span>';
+      var el = document.createElement('div');
+      el.className = 'perm-item';
+      el.innerHTML = iconWrap +
+        '<div class="perm-item-body"><p class="perm-item-title">' + opts.title + '</p>' +
+        '<p class="perm-item-sub">' + opts.sub + '</p></div>' + trailing;
+      el.addEventListener('click', opts.onClick);
+      return el;
+    }
+
+    function renderPermissionsModal() {
+      var statusEl = document.getElementById('perm-tier1-status');
+      if (statusEl) {
+        statusEl.innerHTML = consent.tier1
+          ? '<div class="perm-tier-banner perm-tier-banner--granted"><span class="material-symbols-outlined">check_circle</span><span class="perm-tier-banner__label">Tier 1: ให้ความยินยอมแล้ว</span></div>'
+          : '<div class="perm-tier-banner perm-tier-banner--locked"><span class="material-symbols-outlined">lock</span><span class="perm-tier-banner__label">Tier 1: ยังไม่ได้ให้ความยินยอม</span>' +
+            '<button class="btn btn-small btn-primary" onclick="closeModal(\'modal-permissions\'); openTier1ConsentModal();">ให้ความยินยอม</button></div>';
+      }
+
+      var list1 = document.getElementById('perm-tier1-list');
+      if (list1) {
+        list1.innerHTML = '';
+        TIER1_ITEMS.forEach(function (item) {
+          list1.appendChild(buildPermItem({
+            title: item.title, sub: item.sub, icon: item.icon, iconClass: item.iconClass, img: item.img,
+            granted: consent.tier1,
+            onClick: function () {
+              closeModal('modal-permissions');
+              if (consent.tier1) { if (window.czpSdk) window.czpSdk.openMiniApp(item.miniapp); }
+              else { openTier1ConsentModal(); }
+            },
+          }));
+        });
+      }
+
+      var list2 = document.getElementById('perm-tier2-list');
+      if (list2) {
+        list2.innerHTML = '';
+        Object.keys(TIER2_INFO).forEach(function (k) {
+          var info = TIER2_INFO[k];
+          list2.appendChild(buildPermItem({
+            title: info.title, sub: info.sub, icon: info.icon,
+            granted: consent.tier2[k],
+            onClick: function () {
+              closeModal('modal-permissions');
+              requestTier2Consent(k); // guards on Tier 1 internally
+            },
+          }));
+        });
+      }
+    }
+
+    function openPermissionsModal() {
+      renderPermissionsModal();
+      openModal('modal-permissions');
+    }
+
+    function bootConsent() {
+      applyPersonaUI();
+      renderContextBars();
+      applyTier1UI();
+      ['health', 'disability', 'welfare'].forEach(function (key) {
+        renderTier2(key, false);
+      });
+      if (!consent.tier1) {
+        setTimeout(function () { openModal('modal-consent-tier1'); }, 400);
+      }
+    }
+
+    window.addEventListener('pageshow', bootConsent);
+
+    // ─── Demo config ───────────────────────────────────────────────────
+    var DEMO = { weather: 'rain', birthday: true, special: 'wanphra', pm25: 'medium' };
+
+    var PM25_LEVELS = {
+      low:      { value: 8,   label: 'คุณภาพดีมาก', color: '#4caf50', textColor: '#fff', tip: null },
+      medium:   { value: 28,  label: 'ปานกลาง',     color: '#fbbf24', textColor: '#78350f', tip: null },
+      high:     { value: 65,  label: 'เริ่มส่งผล',  color: '#f97316', textColor: '#fff',
+                  tip: 'คุณภาพอากาศอยู่ในระดับที่เริ่มส่งผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร' },
+      veryhigh: { value: 160, label: 'อันตราย',      color: '#9c27b0', textColor: '#fff',
+                  tip: 'ฝุ่น PM 2.5 อยู่ในระดับอันตราย หลีกเลี่ยงการออกกำลังกายกลางแจ้ง และสวมหน้ากาก N95 ตลอดเวลา' },
+    };
+
+    var SPECIAL_LABELS = {
+      wanphra:   { icon: 'brightness_5', text: 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส' },
+      visakha:   { icon: 'brightness_5', text: 'วันนี้วันวิสาขบูชา วันสำคัญทางพระพุทธศาสนา ธนาคารและหน่วยงานรัฐบางแห่งปิดทำการ' },
+      loykra:    { icon: 'auto_awesome', text: 'วันนี้วันลอยกระทง เทศกาลลอยเคราะห์และขอพร' },
+      valentine: { icon: 'favorite',     text: 'วันนี้วันวาเลนไทน์ เทศกาลแห่งความรัก' },
+      chalerm:   { icon: 'auto_awesome', text: 'วันนี้วันเฉลิมพระชนมพรรษา วันหยุดราชการ หน่วยงานรัฐปิดทำการ' },
+    };
+
+    function demoSet(key, value) {
+      DEMO[key] = value;
+      syncChips();
+      renderContextBars();
+    }
+
+    function syncChips() {
+      document.getElementById('chip-weather-hot').classList.toggle('active',  DEMO.weather === 'hot');
+      document.getElementById('chip-weather-rain').classList.toggle('active', DEMO.weather === 'rain');
+      Object.keys(PERSONAS).forEach(function(p) {
+        document.getElementById('chip-persona-' + p).classList.toggle('active', currentPersonaKey === p);
+      });
+      ['none','wanphra','visakha','loykra','valentine','chalerm'].forEach(function(v) {
+        document.getElementById('chip-special-' + v).classList.toggle('active', DEMO.special === (v === 'none' ? null : v));
+      });
+      ['low','medium','high','veryhigh'].forEach(function(v) {
+        document.getElementById('chip-pm25-' + v).classList.toggle('active', DEMO.pm25 === v);
+      });
+    }
+
+    function renderContextBars() {
+      var bdBar     = document.getElementById('birthday-bar');
+      var wpBar     = document.getElementById('wan-phra-bar');
+      var wpText    = document.getElementById('wan-phra-text');
+      var wpIcon    = document.querySelector('#wan-phra-bar .material-symbols-outlined');
+      var focusIcon = document.getElementById('focus-icon');
+      var focusText = document.getElementById('focus-text');
+
+      // Birthday bar
+      if (bdBar) bdBar.style.display = DEMO.birthday ? 'flex' : 'none';
+
+      // Special day bar
+      if (DEMO.special && SPECIAL_LABELS[DEMO.special]) {
+        var s = SPECIAL_LABELS[DEMO.special];
+        if (wpText) wpText.textContent = s.text;
+        if (wpIcon) wpIcon.textContent = s.icon;
+        if (wpBar)  wpBar.style.display = 'flex';
+      } else {
+        if (wpBar) wpBar.style.display = 'none';
+      }
+
+      // PM2.5 chip update
+      var pmData = PM25_LEVELS[DEMO.pm25] || PM25_LEVELS.medium;
+      var pmValueEl = document.getElementById('pm25-value');
+      var pmBadgeEl = document.getElementById('pm25-badge');
+      var pmChipEl  = document.getElementById('pm25-chip');
+      if (pmValueEl) pmValueEl.textContent = pmData.value;
+      if (pmBadgeEl) {
+        pmBadgeEl.textContent = pmData.label;
+        pmBadgeEl.style.background = pmData.color;
+        pmBadgeEl.style.color = pmData.textColor;
+      }
+      if (pmChipEl) {
+        pmChipEl.style.background = 'rgba(255,255,255,0.15)';
+      }
+
+      // Weather / air quality tip (PM2.5 warning takes priority when severe)
+      if (focusIcon && focusText) {
+        if (pmData.tip) {
+          focusIcon.textContent = 'masks';
+          focusText.textContent = pmData.tip;
+        } else if (DEMO.weather === 'rain') {
+          focusIcon.textContent = 'umbrella';
+          focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง 65% อย่าลืมพกร่มออกจากบ้านด้วย';
+        } else {
+          focusIcon.textContent = 'wb_sunny';
+          focusText.textContent = 'วันนี้อากาศร้อน 34°C อย่าลืมดื่มน้ำบ่อยๆ และหลีกเลี่ยงแดดจัดช่วงบ่าย';
+        }
+      }
+    }
+
+    function openModal(id) {
+      if (id === 'modal-demo-config') syncChips();
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+
+
+
+    function simulateTaxPayment() {
+      const btn = document.getElementById('btn-pay-tax');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="payment-modal-loader"></span> <span>กำลังส่งรายการต่อภาษี...</span>';
+      btn.style.backgroundColor = '#4a5568';
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> <span>ดำเนินการสำเร็จ</span>';
+        btn.style.backgroundColor = '#059669';
+        setTimeout(() => {
+          alert('ชำระค่าต่อภาษีและต่อ พ.ร.บ. ออนไลน์สำเร็จแล้ว! ข้อมูลจะอัปเดตเข้าระบบกรมการขนส่งทางบกทันที');
+          closeModal('modal-tax-renewal');
+          // reset button
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.backgroundColor = '';
+            btn.innerHTML = '<span class="material-symbols-outlined">credit_card</span> <span>ชำระเงินชำระภาษีสะดวกรวดเร็ว</span>';
+          }, 300);
+        }, 300);
+      }, 1500);
+    }
+  </script>
+
+  <script src="https://cpt.superapps-th.cloud/cportal/sdk/iu/v5/sdk.js"></script>
+
+  <script>
+  // ─── Weather + PM2.5 + วันสำคัญ ───────────────────────────────────────
+  (function () {
+    // Thai public holidays & important days (Buddhist Era dates mapped to Gregorian month/day)
+    const SPECIAL_DAYS = {
+      '1-1':   { name: 'วันขึ้นปีใหม่', desc: 'หน่วยงานรัฐและธนาคารปิดทำการ' },
+      '2-14':  { name: 'วันวาเลนไทน์', desc: 'เทศกาลแห่งความรัก' },
+      '4-6':   { name: 'วันจักรี', desc: 'วันระลึกพระบาทสมเด็จพระพุทธยอดฟ้าจุฬาโลก หน่วยงานรัฐปิดทำการ' },
+      '4-13':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย หน่วยงานรัฐปิดทำการ 3 วัน' },
+      '4-14':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย (วันครอบครัว)' },
+      '4-15':  { name: 'วันสงกรานต์', desc: 'เทศกาลปีใหม่ไทย (วันผู้สูงอายุ)' },
+      '5-1':   { name: 'วันแรงงาน', desc: 'วันแรงงานแห่งชาติ' },
+      '5-4':   { name: 'วันฉัตรมงคล', desc: 'วันระลึกพระราชพิธีบรมราชาภิเษก' },
+      '6-3':   { name: 'วันวิสาขบูชา', desc: 'วันสำคัญทางพระพุทธศาสนา ธนาคารและหน่วยงานรัฐบางแห่งปิดทำการ' },
+      '7-28':  { name: 'วันเฉลิมพระชนมพรรษา ร.10', desc: 'วันหยุดราชการ หน่วยงานรัฐปิดทำการ' },
+      '8-12':  { name: 'วันแม่แห่งชาติ', desc: 'วันเฉลิมพระชนมพรรษาสมเด็จพระบรมราชชนนี' },
+      '10-13': { name: 'วันนวมินทรมหาราช', desc: 'วันคล้ายวันสวรรคต ร.9 หน่วยงานรัฐปิดทำการ' },
+      '10-23': { name: 'วันปิยมหาราช', desc: 'วันคล้ายวันสวรรคต ร.5 หน่วยงานรัฐปิดทำการ' },
+      '12-5':  { name: 'วันพ่อแห่งชาติ', desc: 'วันเฉลิมพระชนมพรรษา ร.9 หน่วยงานรัฐปิดทำการ' },
+      '12-10': { name: 'วันรัฐธรรมนูญ', desc: 'วันระลึกพระราชทานรัฐธรรมนูญฉบับแรก' },
+      '12-31': { name: 'วันสิ้นปี', desc: 'วันส่งท้ายปีเก่า' },
+    };
+
+    const now = new Date();
+    const monthDay = `${now.getMonth() + 1}-${now.getDate()}`;
+    const specialDay = SPECIAL_DAYS[monthDay];
+
+    // ─── วันพระ detection ───────────────────────────────────────────────
+    const WAN_PHRA_2026 = new Set([
+      '1-3','1-10','1-18','1-25',
+      '2-2','2-9','2-17','2-24',
+      '3-3','3-11','3-19','3-25',
+      '4-2','4-9','4-17','4-24',
+      '5-1','5-9','5-17','5-24','5-31',
+      '6-4','6-11','6-19','6-26',
+      '7-3','7-11','7-18','7-25',
+      '8-2','8-9','8-17','8-24','8-31',
+      '9-7','9-15','9-22','9-30',
+      '10-7','10-14','10-22','10-29',
+      '11-5','11-12','11-20','11-27',
+      '12-5','12-12','12-20','12-27',
+    ]);
+
+    // ─── Birthday detection ─────────────────────────────────────────────
+    const USER_BIRTH_MONTH = 6;
+    const USER_BIRTH_DAY   = 4;
+    const autoBirthday = (now.getMonth() + 1 === USER_BIRTH_MONTH && now.getDate() === USER_BIRTH_DAY);
+    const autoWanPhra  = WAN_PHRA_2026.has(monthDay);
+    const autoRain     = true; // default mock: rain expected
+
+    // Stamp auto values on card element so renderContextBars() can read them
+    const cardEl = document.getElementById('today-context-card');
+    if (cardEl) {
+      cardEl.dataset.birthday = autoBirthday;
+      cardEl.dataset.wanphra  = autoWanPhra;
+      cardEl.dataset.rain     = autoRain;
+    }
+
+    // Pre-fill bar text content (bars stay hidden until toggled ON)
+    const bdTextEl = document.getElementById('birthday-text');
+    if (bdTextEl) {
+      const AGE = now.getFullYear() - 1990; // mock birth year 1990
+      const wishes = [
+        `สุขสันต์วันเกิด คุณสมชาย! ครบ ${AGE} ปีแล้ว ขอให้มีสุขภาพแข็งแรง มีความสุข และโชคดีตลอดปีนี้ 🎉`,
+        `วันนี้วันเกิดของคุณ อายุครบ ${AGE} ปีแล้ว ขอให้ทุกความปรารถนาเป็นจริง มีสุขภาพดี และประสบความสำเร็จ 🎊`,
+        `Happy Birthday! ขอให้ปีที่ ${AGE} นี้เต็มไปด้วยความสุขและสิ่งดีๆ รออยู่ข้างหน้า ✨`,
+      ];
+      bdTextEl.textContent = wishes[Math.floor(Math.random() * wishes.length)];
+    }
+
+    const wanPhraMsgEl = document.getElementById('wan-phra-text');
+    if (wanPhraMsgEl) {
+      wanPhraMsgEl.textContent = specialDay
+        ? `วันนี้วันพระ และเป็น${specialDay.name} — ${specialDay.desc}`
+        : 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส';
+    }
+
+    const wanPhra = autoWanPhra; // keep for specialDay notice logic below
+
+    var specialDayNoticeEl = document.getElementById('notice-special-day-title') &&
+      document.getElementById('notice-special-day-title').closest('.notice-special-wrapper');
+    var noticeCount = 2; // passport + motorcycle always shown
+
+    if (specialDay) {
+      // Show special-day bar only if it's NOT already merged into วันพระ bar
+      if (!wanPhra) {
+        var sdBar  = document.getElementById('special-day-bar');
+        var sdText = document.getElementById('special-day-text');
+        if (sdBar && sdText) {
+          sdText.textContent = `วันนี้${specialDay.name} — ${specialDay.desc}`;
+          sdBar.style.display = 'flex';
+        }
+      }
+      const noticeTitle = document.getElementById('notice-special-day-title');
+      const noticeSub   = document.getElementById('notice-special-day-sub');
+      if (noticeTitle) noticeTitle.textContent = specialDay.name + ' — วันนี้';
+      if (noticeSub)   noticeSub.textContent   = specialDay.desc;
+      noticeCount++;
+    } else {
+      // hide special-day notice card
+      var sdNotice = document.getElementById('notice-special-day-title');
+      if (sdNotice) {
+        var card = sdNotice.closest('div[style*="border-left: 4px solid #3b82f6"]');
+        if (card) card.style.display = 'none';
+      }
+    }
+
+    // Update badge
+    var badge = document.querySelector('#important-notices-section span[style*="background: #e53935"]');
+    if (badge) badge.textContent = noticeCount;
+
+    // ─── Mock weather data (replace with real API call if key available) ───
+    // Simulates Bangkok afternoon conditions
+    const MOCK = {
+      location: 'เขตลาดพร้าว, กรุงเทพมหานคร',
+      temp: 34,
+      desc: 'มีเมฆบางส่วน ร้อน',
+      humidity: 72,
+      wind: 14,
+      icon: 'partly_cloudy_day',
+      pm25: 28.4,
+      rainChance: 65,
+    };
+
+    function applyWeather(d) {
+      document.getElementById('weather-location').textContent = d.location;
+      document.getElementById('weather-temp').textContent = d.temp + '°C';
+      document.getElementById('weather-desc').textContent = d.desc;
+      document.getElementById('weather-humidity').textContent = d.humidity + '%';
+      document.getElementById('weather-wind').textContent = d.wind + ' กม./ชม.';
+      document.getElementById('weather-icon').textContent = d.icon;
+
+      // PM2.5
+      const pm = d.pm25;
+      document.getElementById('pm25-value').textContent = pm.toFixed(0);
+      let pmLabel, pmColor;
+      if      (pm <= 12)  { pmLabel = 'ดีมาก';     pmColor = '#22c55e'; }
+      else if (pm <= 25)  { pmLabel = 'ดี';         pmColor = '#86efac'; }
+      else if (pm <= 37.5){ pmLabel = 'ปานกลาง';   pmColor = '#fbbf24'; }
+      else if (pm <= 50)  { pmLabel = 'เริ่มมีผล'; pmColor = '#f97316'; }
+      else                 { pmLabel = 'มีผลต่อสุขภาพ'; pmColor = '#ef4444'; }
+      const badge = document.getElementById('pm25-badge');
+      badge.textContent = pmLabel;
+      badge.style.background = pmColor;
+      badge.style.color = pm <= 25 ? '#064e3b' : '#fff';
+
+    }
+
+    // Geolocation disabled — use mock data directly
+    function loadWithMock() {
+      applyWeather(MOCK);
+      renderContextBars();
+    }
+
+    {
+      loadWithMock();
+    }
+  })();
+  </script>
+
+  <!-- รู้หรือไม่ rotating tips -->
+  <script>
+  (function () {
+    var TIPS = [
+      {
+        text: 'รู้หรือไม่ คุณสามารถดูข้อมูลเครดิตบูโรได้ฟรี ผ่านแอปทางรัฐ ',
+        label: 'ดูเครดิตบูโร →',
+        miniapp: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      },
+      {
+        text: 'รู้หรือไม่ ชายไทยที่มีสิทธิหลักประกันสุขภาพแห่งชาติ สามารถเบิกถุงยางอนามัยได้ฟรี ผ่านแอปทางรัฐ ',
+        label: 'ตรวจสอบสิทธิ →',
+        miniapp: '3332774b-8a0f-4907-b3aa-29dbc8779d12',
+      },
+      {
+        text: 'รู้หรือไม่ ค่าน้ำ ค่าไฟที่คุณจ่ายทุกเดือน สามารถใช้เป็นหลักฐานในการขอสินเชื่อได้ ',
+        label: 'ดูข้อมูลเพิ่มเติม →',
+        miniapp: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
+      },
+    ];
+
+    var current = 0;
+    var textEl = document.getElementById('dyk-text');
+    var linkEl = document.getElementById('dyk-link');
+    var dotsEl = document.getElementById('dyk-dots');
+    var timer;
+
+    // Build dots
+    TIPS.forEach(function (_, i) {
+      var d = document.createElement('div');
+      d.id = 'dyk-dot-' + i;
+      d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#86efac;transition:background 0.3s,width 0.3s;';
+      dotsEl.appendChild(d);
+    });
+
+    function show(idx, userTriggered) {
+      var tip = TIPS[idx];
+      var card = document.getElementById('did-you-know');
+
+      // fade
+      card.style.transition = 'opacity 0.2s';
+      card.style.opacity = '0.6';
+      setTimeout(function () {
+        // set text node before the link
+        textEl.childNodes[0] && textEl.childNodes[0].nodeType === 3
+          ? textEl.childNodes[0].textContent = tip.text
+          : textEl.insertBefore(document.createTextNode(tip.text), linkEl);
+        linkEl.textContent = tip.label;
+        linkEl.onclick = function () {
+          if (window.czpSdk) window.czpSdk.openMiniApp(tip.miniapp);
+        };
+        card.style.opacity = '1';
+      }, 180);
+
+      // dots
+      TIPS.forEach(function (_, i) {
+        var d = document.getElementById('dyk-dot-' + i);
+        d.style.background = i === idx ? '#16a34a' : '#86efac';
+        d.style.width      = i === idx ? '16px'   : '6px';
+      });
+
+      current = idx;
+
+      // reset auto-timer on manual tap
+      if (userTriggered) {
+        clearInterval(timer);
+        timer = setInterval(advance, 15000);
+      }
+    }
+
+    function advance() { show((current + 1) % TIPS.length, false); }
+
+    window.dykNext = function () { show((current + 1) % TIPS.length, true); };
+
+    show(0, false);
+    timer = setInterval(advance, 15000);
+  })();
+  </script>
+
+  <!-- Back to top -->
+  <script>
+    (function() {
+      var h = new Date().getHours();
+      var greeting = h >= 5 && h < 12  ? 'สวัสดีตอนเช้า'
+                   : h >= 12 && h < 17 ? 'สวัสดีตอนกลางวัน'
+                   : h >= 17 && h < 21 ? 'สวัสดีตอนเย็น'
+                   :                     'สวัสดีตอนกลางคืน';
+      var el = document.getElementById('welcome-greeting');
+      if (el) el.textContent = greeting;
+    })();
+  </script>
+
+  <!-- Floating demo config button -->
+  <button onclick="openModal('modal-demo-config')" class="demo-fab">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
+    Demo การแสดงผล
+  </button>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
+</body>
+
+</html>
