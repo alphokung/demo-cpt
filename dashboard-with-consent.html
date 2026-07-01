@@ -407,6 +407,7 @@
       border: 1px solid #86efac;
       border-radius: var(--radius-xl, 16px);
       padding: 16px 16px 14px;
+      margin: 16px 0;
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -1694,7 +1695,9 @@
         </div><!-- /tier1-content -->
 
         <!-- 3. Rights and Welfare (Tier 2 — explicit per-dataset consent, realtime) -->
-        <div class="list-section">
+        <!-- Hidden entirely until Tier 1 is granted: Tier 2 data belongs to the -->
+        <!-- same citizen record as Tier 1, so it has no meaning before that. -->
+        <div id="tier2-section" class="list-section" style="display:none;">
           <p class="list-section-title">สิทธิ และสวัสดิการ</p>
           <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
           <p class="consent-note consent-note--realtime">
@@ -2510,13 +2513,16 @@
     function applyTier1UI() {
       var content = document.getElementById('tier1-content');
       var locked = document.getElementById('tier1-locked-panel');
+      var tier2Section = document.getElementById('tier2-section');
       if (consent.tier1) {
         if (content) content.style.display = '';
         if (locked) locked.style.display = 'none';
+        if (tier2Section) tier2Section.style.display = '';
         initLoading();
       } else {
         if (content) content.style.display = 'none';
         if (locked) locked.style.display = '';
+        if (tier2Section) tier2Section.style.display = 'none';
       }
       updateTier2LockedHints();
     }
