@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>หน้าแรก — แผงข้อมูลพลเมืองดิจิทัล</title>
+  <title>Personalize Dashboard</title>
   <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
 
@@ -400,6 +400,63 @@
     .ctx-noti--last {
       margin-bottom: 0;
     }
+
+    /* ── notice-item: สิ่งที่คุณควรรู้ proactive notices (light card) ── */
+    .notice-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-lg, 12px);
+      background: #fff;
+      border: 1px solid var(--stroke-neutral-lighter);
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .notice-item:last-child { margin-bottom: 0; }
+    .notice-item__icon-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+    .notice-item--birthday .notice-item__icon-wrap { font-size: 22px; }
+    .notice-item__body { flex: 1; min-width: 0; }
+    .notice-item__text {
+      font-size: 12.5px;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.5;
+      color: var(--foreground-neutral-default);
+    }
+    .notice-item__title {
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 0 2px;
+      color: var(--foreground-neutral-default);
+    }
+    .notice-item__sub {
+      font-size: 12px;
+      color: var(--foreground-neutral-lighter);
+      margin: 0;
+    }
+    .notice-item__chevron {
+      font-size: 18px;
+      color: var(--foreground-neutral-lighter);
+      flex-shrink: 0;
+    }
+    .notice-item--danger  { border-left: 3px solid var(--foreground-negative-default); }
+    .notice-item--danger .notice-item__icon-wrap  { background: var(--background-negative-light); color: var(--foreground-negative-default); }
+    .notice-item--warning { border-left: 3px solid var(--foreground-warning-default); }
+    .notice-item--warning .notice-item__icon-wrap { background: var(--background-warning-light); color: var(--foreground-warning-default); }
+    .notice-item--positive { border-left: 3px solid var(--foreground-positive-default); }
+    .notice-item--positive .notice-item__icon-wrap { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .notice-item--info { border-left: 3px solid var(--info-40); }
+    .notice-item--info .notice-item__icon-wrap { background: var(--background-info-light); color: var(--info-40); }
 
     /* ── dyk-card: did-you-know ── */
     .dyk-card {
@@ -881,6 +938,29 @@
       line-height: 1.5;
     }
 
+    /* ── "give additional consent" card: same layout as tier2-locked, but styled to */
+    /* stand out and invite the tap, rather than blend in as a passive locked state ── */
+    #tier2-consent-more {
+      background: var(--background-positive-light);
+      border: 1.5px solid var(--foreground-positive-default);
+      box-shadow: 0 2px 10px rgba(7, 148, 85, 0.15);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    #tier2-consent-more:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(7, 148, 85, 0.22);
+    }
+    #tier2-consent-more .tier2-locked__icon {
+      background: var(--foreground-positive-default);
+      color: #fff;
+      font-size: 22px;
+    }
+    #tier2-consent-more .tier2-locked__title {
+      color: var(--foreground-positive-default);
+      font-size: 14px;
+    }
+
     .tier2-loading {
       display: flex;
       align-items: center;
@@ -1172,7 +1252,7 @@
           <div class="top-nav-bar-icon">
             <span class="material-symbols-outlined">person</span>
           </div>
-          <p class="top-nav-bar-title">ข้อมูลของคุณ</p>
+          <p class="top-nav-bar-title">Personalize Dashboard</p>
           <button id="top-nav-consent-btn" class="top-nav-consent-btn" onclick="openPermissionsModal()"
             title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)" style="display:none;">
             <span class="material-symbols-outlined">shield_person</span>
@@ -1277,49 +1357,10 @@
               <!-- Divider -->
               <div class="ctx-card__divider--spaced"></div>
 
-              <!-- Birthday bar -->
-              <div id="birthday-bar" class="ctx-bar ctx-bar--birthday" style="display:none;">
-                <span class="ctx-bar__birthday-emoji">🎂</span>
-                <p id="birthday-text" class="ctx-bar__birthday-text">สุขสันต์วันเกิด!</p>
-              </div>
-
-              <!-- วันพระ bar -->
-              <div id="wan-phra-bar" class="ctx-bar ctx-bar--wanphra" style="display:none;">
-                <span class="material-symbols-outlined ctx-bar__wanphra-icon">brightness_5</span>
-                <p id="wan-phra-text" class="ctx-bar__wanphra-text">วันนี้วันพระ</p>
-              </div>
-
-              <!-- วันสำคัญ bar -->
-              <div id="special-day-bar" class="ctx-bar ctx-bar--special" style="display:none;">
-                <span class="material-symbols-outlined ctx-bar__special-icon">auto_awesome</span>
-                <p id="special-day-text" class="ctx-bar__special-text">—</p>
-              </div>
-
               <!-- Weather focus tip -->
               <div id="weather-focus" class="ctx-bar ctx-bar--focus">
                 <span id="focus-icon" class="material-symbols-outlined ctx-bar__focus-icon">info</span>
                 <p id="focus-text" class="ctx-bar__focus-text">กำลังโหลดคำแนะนำ…</p>
-              </div>
-
-              <!-- Inline notifications -->
-              <div onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')"
-                class="ctx-noti ctx-noti--danger">
-                <span class="material-symbols-outlined ctx-noti__icon--danger">warning</span>
-                <div class="ctx-noti__body">
-                  <p class="ctx-noti__title">หนังสือเดินทางใกล้หมดอายุ</p>
-                  <p class="ctx-noti__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
-                </div>
-                <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
-              </div>
-
-              <div onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')"
-                class="ctx-noti ctx-noti--warning ctx-noti--last">
-                <span class="material-symbols-outlined ctx-noti__icon--warning">schedule</span>
-                <div class="ctx-noti__body">
-                  <p class="ctx-noti__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
-                  <p class="ctx-noti__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
-                </div>
-                <span class="material-symbols-outlined ctx-noti__chevron">chevron_right</span>
               </div>
 
             </div><!-- /loaded-item -->
@@ -1370,6 +1411,82 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- ═══════════════════════════════════════════ -->
+          <!-- สิ่งที่คุณควรรู้ — proactive notices -->
+          <!-- ═══════════════════════════════════════════ -->
+          <div class="list-section">
+            <p class="list-section-title">สิ่งที่คุณควรรู้</p>
+            <p class="list-section-note">การแจ้งเตือนและข้อมูลสำคัญประจำวันของคุณ</p>
+
+            <div class="notice-list">
+              <!-- วันสำคัญประจำวัน: วันพระ -->
+              <div id="wan-phra-bar" class="notice-item notice-item--info" style="display:none;">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">brightness_5</span></div>
+                <div class="notice-item__body">
+                  <p id="wan-phra-text" class="notice-item__text">วันนี้วันพระ</p>
+                </div>
+              </div>
+
+              <!-- วันสำคัญประจำวัน: วันสำคัญอื่นๆ -->
+              <div id="special-day-bar" class="notice-item notice-item--info" style="display:none;">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">auto_awesome</span></div>
+                <div class="notice-item__body">
+                  <p id="special-day-text" class="notice-item__text">—</p>
+                </div>
+              </div>
+
+              <!-- วันเกิด -->
+              <div id="birthday-bar" class="notice-item notice-item--positive notice-item--birthday" style="display:none;">
+                <div class="notice-item__icon-wrap">🎂</div>
+                <div class="notice-item__body">
+                  <p id="birthday-text" class="notice-item__text">สุขสันต์วันเกิด!</p>
+                </div>
+              </div>
+
+              <!-- หนังสือเดินทางใกล้หมดอายุ -->
+              <div class="notice-item notice-item--danger"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">warning</span></div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">หนังสือเดินทางใกล้หมดอายุ</p>
+                  <p class="notice-item__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+                </div>
+                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+              </div>
+
+              <!-- ภาษีรถใกล้ถึงกำหนด -->
+              <div class="notice-item notice-item--warning"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">schedule</span></div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+                  <p class="notice-item__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+                </div>
+                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+              </div>
+
+              <!-- เบี้ยความพิการ: เฉพาะบุคคลที่มีบัตรคนพิการ และเปิดสิทธิ Tier 2 (disability) แล้ว -->
+              <div id="notice-disability-allowance" class="notice-item notice-item--positive" style="display:none;">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">payments</span></div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">เบี้ยความพิการเดือนนี้โอนแล้ว</p>
+                  <p class="notice-item__sub">โอนเงินเบี้ยความพิการประจำเดือน มิ.ย. 2569 จำนวน 800.00 บาท เข้าบัญชีสำเร็จ</p>
+                </div>
+              </div>
+
+              <!-- ใบสั่ง -->
+              <div class="notice-item notice-item--danger"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">receipt_long</span></div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">แจ้งเตือนใบสั่ง</p>
+                  <p class="notice-item__sub">รถทะเบียน กข 1234 กทม. กรุณาชำระภายในอีก 15 วัน</p>
+                </div>
+                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+              </div>
+            </div>
           </div>
 
           <div class="list-section">
@@ -1958,13 +2075,13 @@
 
           <!-- Single tap to grant everything not yet consented in this section — -->
           <!-- placed last, after whatever has already been granted above. -->
-          <div id="tier2-consent-more" class="tier2-locked" style="display:none; margin-top:12px;">
+          <div id="tier2-consent-more" class="tier2-locked" style="display:none; margin-top:12px;" onclick="requestTier2ConsentRemaining()">
             <div class="tier2-locked__icon">
               <span class="material-symbols-outlined">verified_user</span>
             </div>
             <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
             <p id="tier2-consent-more-hint" class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
-            <button class="btn btn-tertiary-outline flex-center card__btn-full" onclick="requestTier2ConsentRemaining()">
+            <button class="btn btn-primary flex-center card__btn-full" onclick="event.stopPropagation(); requestTier2ConsentRemaining();">
               <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
             </button>
           </div>
@@ -2006,8 +2123,11 @@
         <p class="section-label-xs">Tier 1 · ข้อมูลทั่วไป (แคชในเครื่อง)</p>
         <div class="modal__section-list" id="perm-tier1-list"></div>
 
+        <!-- Tier 2 status banner (dynamic) — shown once at least 1 dataset is granted -->
+        <div id="perm-tier2-status" style="margin-top:18px;"></div>
+
         <!-- Tier 2 status (dynamic, per dataset) -->
-        <p class="section-label-xs" style="margin-top:18px;">Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)</p>
+        <p class="section-label-xs">Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)</p>
         <div class="modal__section-list--bottom" id="perm-tier2-list"></div>
 
         <!-- Revoke all consent (Tier 1 + Tier 2) -->
@@ -2346,6 +2466,17 @@
       var nameEl = document.getElementById('greeting-name');
       if (nameEl) nameEl.textContent = persona.fullName;
       DEMO.birthday = persona.forceBirthday;
+      updateProactiveNotices();
+    }
+
+    // "เบี้ยความพิการเดือนนี้โอนแล้ว" only makes sense for a persona who actually
+    // holds a disability card, and only once they've consented to view that Tier 2 data.
+    function updateProactiveNotices() {
+      var el = document.getElementById('notice-disability-allowance');
+      if (!el) return;
+      var persona = PERSONAS[currentPersonaKey];
+      var isDisabled = !!(persona && persona.entitlements.disability);
+      el.style.display = (isDisabled && consent.tier2.disability) ? '' : 'none';
     }
 
     // Switching persona changes who the dashboard belongs to, so any previously
@@ -2480,6 +2611,7 @@
       updateConsentButtonVisibility();
       updateTier2ConsentBanner();
       updateTier2GateListVisibility();
+      updateProactiveNotices();
     }
 
     function cancelTier2Consent() {
@@ -2623,6 +2755,14 @@
             },
           }));
         });
+      }
+
+      var status2El = document.getElementById('perm-tier2-status');
+      if (status2El) {
+        var anyTier2Granted = Object.keys(TIER2_INFO).some(function (k) { return consent.tier2[k]; });
+        status2El.innerHTML = anyTier2Granted
+          ? '<div class="perm-tier-banner perm-tier-banner--granted"><span class="material-symbols-outlined">check_circle</span><span class="perm-tier-banner__label">Tier 2: ให้ความยินยอมแล้ว</span></div>'
+          : '';
       }
 
       var list2 = document.getElementById('perm-tier2-list');
