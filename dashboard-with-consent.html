@@ -1068,21 +1068,6 @@
       font-size: 16px;
     }
 
-    /* ── footer consent link ── */
-    .footer-consent-link {
-      display: block;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--primary-40, #1a73e8);
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin: 4px auto 0;
-      padding: 8px;
-      font-family: inherit;
-    }
-
     /* ── tier2 consent modal: selectable checklist ── */
     .consent-modal__perm-item--checkable {
       cursor: pointer;
@@ -1092,11 +1077,37 @@
     }
 
     .consent-modal__checkbox {
-      width: 18px;
-      height: 18px;
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
       margin-top: 2px;
-      accent-color: var(--primary-40, #1a73e8);
+      border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
+      border-radius: 5px;
+      background: #fff;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .consent-modal__checkbox:checked {
+      background: var(--primary-40);
+      border-color: var(--primary-40);
+    }
+    .consent-modal__checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 9px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .consent-modal__checkbox:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .consent-modal__granted {
@@ -1162,10 +1173,10 @@
             <span class="material-symbols-outlined">person</span>
           </div>
           <p class="top-nav-bar-title">ข้อมูลของคุณ</p>
-          <button class="top-nav-consent-btn" onclick="openPermissionsModal()"
-            title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)">
+          <button id="top-nav-consent-btn" class="top-nav-consent-btn" onclick="openPermissionsModal()"
+            title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)" style="display:none;">
             <span class="material-symbols-outlined">shield_person</span>
-            <span class="top-nav-consent-btn__label">ความยินยอม</span>
+            <span class="top-nav-consent-btn__label">จัดการความยินยอม</span>
           </button>
         </div>
       </div>
@@ -1221,8 +1232,6 @@
               <div class="ctx-card__greeting">
                 <p id="welcome-greeting" class="ctx-card__greeting-label">สวัสดี</p>
                 <p id="greeting-name" class="ctx-card__greeting-name">คุณสมชาย ใจดี</p>
-                <p id="greeting-tagline" class="ctx-card__location-text" style="margin-top:-2px;opacity:0.75;">
-                  ประชาชนทั่วไป</p>
                 <div class="ctx-card__location-row">
                   <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
                   <span id="weather-location" class="ctx-card__location-text">กำลังระบุตำแหน่ง…</span>
@@ -1702,26 +1711,14 @@
           <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
           <p class="consent-note consent-note--realtime">
             <span class="material-symbols-outlined consent-note__icon">bolt</span>
-            ข้อมูลชุดนี้ต้องยินยอมแยกทีละรายการ และเชื่อมต่อหน่วยงานแบบเรียลไทม์ทุกครั้ง (ไม่แคชในเครื่อง)
+            ข้อมูลชุดนี้ต้องยินยอมแยกทีละรายการ และเชื่อมต่อหน่วยงานแบบเรียลไทม์ทุกครั้ง (ไม่แคชไว้)
           </p>
 
-          <div class="cert-list cert-list--single">
+          <!-- Hidden until at least one Tier 2 dataset has been granted — before that, -->
+          <!-- the "give additional consent" card further below is the only entry point. -->
+          <div id="tier2-gate-list" class="cert-list cert-list--single" style="display:none;">
             <!-- Card 1: Medical Benefits (Tier 2 — explicit consent, realtime) -->
             <div class="tier2-gate" data-tier2-key="health">
-
-              <!-- Locked state (no consent yet) -->
-              <div class="tier2-locked" data-state="locked">
-                <div class="tier2-locked__icon">
-                  <span class="material-symbols-outlined">health_and_safety</span>
-                </div>
-                <p class="tier2-locked__title">สิทธิการรักษาพยาบาล</p>
-                <p id="tier2-hint-health" class="tier2-locked__hint">
-                  ให้ความยินยอมเพื่อตรวจสอบสิทธิการรักษาพยาบาลของคุณแบบเรียลไทม์จาก สปสช.</p>
-                <button class="btn btn-tertiary-outline flex-center card__btn-full"
-                  onclick="requestTier2Consent('health')">
-                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
-                </button>
-              </div>
 
               <!-- Loading state (fetching realtime) -->
               <div class="tier2-loading" data-state="loading" style="display:none;">
@@ -1766,20 +1763,6 @@
 
             <!-- Card: บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime) -->
             <div class="tier2-gate" data-tier2-key="disability">
-
-              <!-- Locked state -->
-              <div class="tier2-locked" data-state="locked">
-                <div class="tier2-locked__icon">
-                  <span class="material-symbols-outlined">accessible</span>
-                </div>
-                <p class="tier2-locked__title">บัตรประจำตัวคนพิการ</p>
-                <p id="tier2-hint-disability" class="tier2-locked__hint">
-                  ให้ความยินยอมเพื่อตรวจสอบข้อมูลบัตรประจำตัวคนพิการแบบเรียลไทม์จาก พก.</p>
-                <button class="btn btn-tertiary-outline flex-center card__btn-full"
-                  onclick="requestTier2Consent('disability')">
-                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
-                </button>
-              </div>
 
               <!-- Loading state -->
               <div class="tier2-loading" data-state="loading" style="display:none;">
@@ -1917,20 +1900,6 @@
             <!-- Card: สิทธิสวัสดิการแห่งรัฐ (Tier 2 — explicit consent, realtime) -->
             <div class="tier2-gate" data-tier2-key="welfare">
 
-              <!-- Locked state -->
-              <div class="tier2-locked" data-state="locked">
-                <div class="tier2-locked__icon">
-                  <span class="material-symbols-outlined">volunteer_activism</span>
-                </div>
-                <p class="tier2-locked__title">สิทธิสวัสดิการแห่งรัฐ</p>
-                <p id="tier2-hint-welfare" class="tier2-locked__hint">ให้ความยินยอมเพื่อตรวจสอบบัตรสวัสดิการแห่งรัฐ
-                  เงินอุดหนุนบุตร และเบี้ยยังชีพ แบบเรียลไทม์จากกรมบัญชีกลาง</p>
-                <button class="btn btn-tertiary-outline flex-center card__btn-full"
-                  onclick="requestTier2Consent('welfare')">
-                  <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
-                </button>
-              </div>
-
               <!-- Loading state -->
               <div class="tier2-loading" data-state="loading" style="display:none;">
                 <span class="tier2-loading__spinner"></span>
@@ -1986,6 +1955,19 @@
             </div>
 
           </div>
+
+          <!-- Single tap to grant everything not yet consented in this section — -->
+          <!-- placed last, after whatever has already been granted above. -->
+          <div id="tier2-consent-more" class="tier2-locked" style="display:none; margin-top:12px;">
+            <div class="tier2-locked__icon">
+              <span class="material-symbols-outlined">verified_user</span>
+            </div>
+            <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
+            <p id="tier2-consent-more-hint" class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
+            <button class="btn btn-tertiary-outline flex-center card__btn-full" onclick="requestTier2ConsentRemaining()">
+              <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+            </button>
+          </div>
         </div>
 
 
@@ -1993,12 +1975,8 @@
 
 
         <div class="footer-timestamp">
-          ศูนย์รวมข้อมูลพลเมืองบูรณาการระบบรัฐบาลดิจิทัล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+          ข้อมูล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
         </div>
-        <button class="footer-consent-link" onclick="openPermissionsModal()">
-          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-2px;">shield_person</span>
-          จัดการ / ยกเลิกความยินยอมข้อมูลทั้งหมด
-        </button>
 
       </main>
     </div>
@@ -2366,9 +2344,7 @@
     function applyPersonaUI() {
       var persona = PERSONAS[currentPersonaKey];
       var nameEl = document.getElementById('greeting-name');
-      var tagEl = document.getElementById('greeting-tagline');
       if (nameEl) nameEl.textContent = persona.fullName;
-      if (tagEl) tagEl.textContent = persona.tagline;
       DEMO.birthday = persona.forceBirthday;
     }
 
@@ -2403,46 +2379,33 @@
       },
     };
 
-    var TIER2_LOCKED_HINT_DEFAULT = {
-      health: 'ให้ความยินยอมเพื่อตรวจสอบสิทธิการรักษาพยาบาลของคุณแบบเรียลไทม์จาก สปสช.',
-      disability: 'ให้ความยินยอมเพื่อตรวจสอบข้อมูลบัตรประจำตัวคนพิการแบบเรียลไทม์จาก พก.',
-      welfare: 'ให้ความยินยอมเพื่อตรวจสอบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร และเบี้ยยังชีพ แบบเรียลไทม์จากกรมบัญชีกลาง',
-    };
-    var TIER2_LOCKED_HINT_NEEDS_TIER1 = 'ต้องให้ความยินยอม Tier 1 (ข้อมูลทั่วไป) ก่อน จึงจะขอสิทธิ์นี้ได้';
-
-    // Tier 2 datasets belong to the same person as Tier 1, so they're only
-    // requestable once Tier 1 is granted — the locked hint explains why when it isn't.
-    function updateTier2LockedHints() {
-      Object.keys(TIER2_LOCKED_HINT_DEFAULT).forEach(function (k) {
-        var hintEl = document.getElementById('tier2-hint-' + k);
-        if (!hintEl) return;
-        hintEl.textContent = consent.tier1 ? TIER2_LOCKED_HINT_DEFAULT[k] : TIER2_LOCKED_HINT_NEEDS_TIER1;
-      });
-    }
-
     function tier2Gate(key) {
       return document.querySelector('.tier2-gate[data-tier2-key="' + key + '"]');
     }
 
     function setTier2State(gate, state) {
       if (!gate) return;
-      ['locked', 'loading', 'loaded', 'empty'].forEach(function (s) {
+      ['loading', 'loaded', 'empty'].forEach(function (s) {
         var el = gate.querySelector('[data-state="' + s + '"]');
         if (el) el.style.display = (s === state) ? '' : 'none';
       });
     }
 
-    // Renders a tier2 dataset. If the user already consented (persisted),
-    // simulate a fresh realtime fetch every time the page loads (tier2 is never cached).
-    // After the "fetch" resolves, the current persona may simply have no record for
-    // this dataset (e.g. สมชาย has no disability card) — that's the 'empty' state.
+    // Renders a tier2 dataset. Ungranted datasets are hidden entirely — the
+    // "ให้ความยินยอมเพิ่มเติม" card is the only entry point for those, so there's
+    // no separate per-dataset locked card to show. If the user already consented
+    // (persisted), simulate a fresh realtime fetch every time the page loads
+    // (tier2 is never cached). After the "fetch" resolves, the current persona may
+    // simply have no record for this dataset (e.g. สมชาย has no disability card) —
+    // that's the 'empty' state.
     function renderTier2(key, justConsented) {
       var gate = tier2Gate(key);
       if (!gate) return;
       if (!consent.tier2[key]) {
-        setTier2State(gate, 'locked');
+        gate.style.display = 'none';
         return;
       }
+      gate.style.display = '';
       setTier2State(gate, 'loading');
       var delay = justConsented ? 900 : (500 + Math.random() * 700);
       setTimeout(function () {
@@ -2452,17 +2415,12 @@
       }, delay);
     }
 
-    // Opens the tier2 consent modal pre-populated with EVERY dataset the user
-    // can grant right now, so one confirmation can cover several datasets at once.
-    // `key` is just the one that was clicked — it's pre-checked, others are optional.
-    // Tier 2 data belongs to the same citizen record as Tier 1, so it can only be
-    // requested once Tier 1 (basic identity + location) has been consented to.
-    function requestTier2Consent(key) {
-      if (!consent.tier1) {
-        closeModal('modal-permissions');
-        openTier1ConsentModal();
-        return;
-      }
+    // Opens the tier2 consent modal listing EVERY dataset, so one confirmation can
+    // cover several datasets at once — but nothing is pre-checked, the user must
+    // explicitly tick what they want to grant. Tier 2 data belongs to the same
+    // citizen record as Tier 1, so it can only be requested once Tier 1 (basic
+    // identity + location) has been consented to.
+    function buildTier2ModalList() {
       var list = document.getElementById('tier2-modal-list');
       list.innerHTML = '';
       Object.keys(TIER2_INFO).forEach(function (k) {
@@ -2472,7 +2430,7 @@
         row.className = 'consent-modal__perm-item consent-modal__perm-item--checkable';
         row.innerHTML =
           '<input type="checkbox" class="consent-modal__checkbox" id="tier2-check-' + k + '"' +
-          (already ? ' checked disabled' : (k === key ? ' checked' : '')) + '>' +
+          (already ? ' checked disabled' : '') + '>' +
           '<div class="consent-modal__perm-icon"><span class="material-symbols-outlined">' + info.icon + '</span></div>' +
           '<div>' +
           '<p class="consent-modal__perm-title">' + info.title +
@@ -2481,6 +2439,28 @@
           '</div>';
         list.appendChild(row);
       });
+    }
+
+    // Entry point from an individual dataset card.
+    function requestTier2Consent(key) {
+      if (!consent.tier1) {
+        closeModal('modal-permissions');
+        openTier1ConsentModal();
+        return;
+      }
+      buildTier2ModalList();
+      openModal('modal-consent-tier2');
+    }
+
+    // Entry point from the "ให้ความยินยอมเพิ่มเติม" card — lists everything not yet
+    // granted so the user can tick and grant several datasets in one confirmation.
+    function requestTier2ConsentRemaining() {
+      if (!consent.tier1) {
+        closeModal('modal-permissions');
+        openTier1ConsentModal();
+        return;
+      }
+      buildTier2ModalList();
       openModal('modal-consent-tier2');
     }
 
@@ -2497,10 +2477,42 @@
       if (!newlyGranted.length) return;
       saveConsent();
       newlyGranted.forEach(function (k) { renderTier2(k, true); });
+      updateConsentButtonVisibility();
+      updateTier2ConsentBanner();
+      updateTier2GateListVisibility();
     }
 
     function cancelTier2Consent() {
       closeModal('modal-consent-tier2');
+    }
+
+    // Hides the "give additional consent" banner once every Tier 2 dataset is granted.
+    function updateTier2ConsentBanner() {
+      var banner = document.getElementById('tier2-consent-more');
+      if (!banner) return;
+      var hintEl = document.getElementById('tier2-consent-more-hint');
+      var grantedCount = Object.keys(TIER2_INFO).filter(function (k) { return consent.tier2[k]; }).length;
+      var totalCount = Object.keys(TIER2_INFO).length;
+
+      if (grantedCount === totalCount) {
+        banner.style.display = 'none';
+        return;
+      }
+      banner.style.display = '';
+      if (hintEl) {
+        hintEl.textContent = grantedCount === 0
+          ? 'เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว'
+          : 'เพื่อดูข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เหลือของคุณในครั้งเดียว';
+      }
+    }
+
+    // The individual Tier 2 dataset cards stay hidden until at least one has been
+    // granted — before that, the banner above is the only, uncluttered entry point.
+    function updateTier2GateListVisibility() {
+      var list = document.getElementById('tier2-gate-list');
+      if (!list) return;
+      var anyGranted = Object.keys(TIER2_INFO).some(function (k) { return consent.tier2[k]; });
+      list.style.display = anyGranted ? '' : 'none';
     }
 
     // Demo-only shortcut: wipes consent state instantly (no confirm dialog) for quick re-testing.
@@ -2508,6 +2520,15 @@
       consent = defaultConsent();
       saveConsent();
       location.reload();
+    }
+
+    // The "จัดการความยินยอม" button has nothing to manage until the user has
+    // granted at least one tier, so it stays hidden before that.
+    function updateConsentButtonVisibility() {
+      var btn = document.getElementById('top-nav-consent-btn');
+      if (!btn) return;
+      var hasAnyConsent = consent.tier1 || consent.tier2.health || consent.tier2.disability || consent.tier2.welfare;
+      btn.style.display = hasAnyConsent ? '' : 'none';
     }
 
     function applyTier1UI() {
@@ -2524,7 +2545,9 @@
         if (locked) locked.style.display = '';
         if (tier2Section) tier2Section.style.display = 'none';
       }
-      updateTier2LockedHints();
+      updateConsentButtonVisibility();
+      updateTier2ConsentBanner();
+      updateTier2GateListVisibility();
     }
 
     function openTier1ConsentModal() {
