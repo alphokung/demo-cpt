@@ -1,0 +1,684 @@
+/*
+ * dashboard-components.css
+ * Reusable presentational components for the citizen dashboard prototypes
+ * (weather/context card, proactive notice list, "did you know" tip card,
+ * card-section headings, list-icon variants, shared modal chrome, permission
+ * list items, and generic skeleton/loading helpers).
+ *
+ * Depends on design tokens (CSS custom properties) defined in styles.css —
+ * load this file after styles.css. Any page that needs these components can
+ * include this file rather than duplicating the CSS inline.
+ */
+
+/* ── ctx-card: today context card (greeting + weather + PM2.5) ── */
+.ctx-card {
+  background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+  border-radius: var(--radius-xl, 16px);
+  padding: 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctx-card__skeleton {
+  background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
+  border-radius: var(--radius-xl, 16px);
+  padding: 20px;
+  pointer-events: none;
+}
+
+.ctx-card__skel-text--sm {
+  height: 13px;
+  width: 90px;
+  display: block;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.ctx-card__skel-text--lg {
+  height: 26px;
+  width: 180px;
+  display: block;
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.ctx-card__skel-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ctx-card__skel-temp {
+  height: 44px;
+  width: 120px;
+  display: block;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.ctx-card__skel-desc {
+  height: 13px;
+  width: 140px;
+  display: block;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 4px;
+}
+
+.ctx-card__skel-icon-box {
+  height: 90px;
+  width: 80px;
+  display: block;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.ctx-card__deco {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ctx-card__deco--top {
+  top: -30px;
+  right: -30px;
+  width: 140px;
+  height: 140px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ctx-card__deco--bottom {
+  bottom: -20px;
+  left: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ctx-card__greeting {
+  margin-bottom: 14px;
+}
+
+.ctx-card__greeting-label {
+  font-size: 12px;
+  opacity: 0.8;
+  margin: 0 0 2px;
+}
+
+.ctx-card__greeting-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  line-height: 1.2;
+}
+
+.ctx-card__location-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.75;
+}
+
+.ctx-card__location-icon {
+  font-size: 14px;
+}
+
+.ctx-card__location-text {
+  font-size: 12px;
+}
+
+.ctx-card__divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  margin-bottom: 14px;
+}
+
+.ctx-card__divider--spaced {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  margin: 14px 0;
+}
+
+.ctx-card__weather-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ctx-card__temp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctx-card__weather-icon {
+  font-size: 44px;
+  font-variation-settings: 'FILL' 1;
+}
+
+.ctx-card__temp {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+
+.ctx-card__desc {
+  font-size: 12px;
+  opacity: 0.85;
+  margin: 4px 0 0;
+}
+
+.ctx-card__meta-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.ctx-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.ctx-card__meta-icon {
+  font-size: 14px;
+}
+
+/* ── ctx-pm25: PM2.5 chip (sits inside ctx-card) ── */
+.ctx-pm25 {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 14px 20px;
+  text-align: center;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.ctx-pm25__label {
+  font-size: 11px;
+  opacity: 0.8;
+  margin: 0 0 4px;
+  letter-spacing: 0.5px;
+}
+
+.ctx-pm25__value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.ctx-pm25__value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ctx-pm25__unit {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.ctx-pm25__badge {
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  display: inline-block;
+}
+
+/* ── ctx-bar: inline banner row inside ctx-card (e.g. weather focus tip) ── */
+.ctx-bar {
+  border-radius: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ctx-bar--focus {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px 12px;
+  gap: 8px;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.ctx-bar__focus-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.ctx-bar__focus-text {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── notice-item: proactive notice list (light card, color-coded left border) ── */
+.notice-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg, 12px);
+  background: #fff;
+  border: 1px solid var(--stroke-neutral-lighter);
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.notice-item:last-child {
+  margin-bottom: 0;
+}
+
+.notice-item__icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.notice-item--birthday .notice-item__icon-wrap {
+  font-size: 22px;
+}
+
+.notice-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notice-item__text {
+  font-size: 12.5px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.5;
+  color: var(--foreground-neutral-default);
+}
+
+.notice-item__title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: var(--foreground-neutral-default);
+}
+
+.notice-item__sub {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+}
+
+.notice-item__chevron {
+  font-size: 18px;
+  color: var(--foreground-neutral-lighter);
+  flex-shrink: 0;
+}
+
+.notice-item--danger {
+  border-left: 3px solid var(--foreground-negative-default);
+}
+
+.notice-item--danger .notice-item__icon-wrap {
+  background: var(--background-negative-light);
+  color: var(--foreground-negative-default);
+}
+
+.notice-item--warning {
+  border-left: 3px solid var(--foreground-warning-default);
+}
+
+.notice-item--warning .notice-item__icon-wrap {
+  background: var(--background-warning-light);
+  color: var(--foreground-warning-default);
+}
+
+.notice-item--positive {
+  border-left: 3px solid var(--foreground-positive-default);
+}
+
+.notice-item--positive .notice-item__icon-wrap {
+  background: var(--background-positive-light);
+  color: var(--foreground-positive-default);
+}
+
+.notice-item--info {
+  border-left: 3px solid var(--info-40);
+}
+
+.notice-item--info .notice-item__icon-wrap {
+  background: var(--background-info-light);
+  color: var(--info-40);
+}
+
+/* ── dyk-card: "did you know" rotating tip card ── */
+.dyk-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #86efac;
+  border-radius: var(--radius-xl, 16px);
+  padding: 16px 16px 14px;
+  margin: 16px 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dyk-card__deco {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(134, 239, 172, 0.3);
+  pointer-events: none;
+}
+
+.dyk-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dyk-card__emoji {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dyk-card__text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+  color: #14532d;
+  flex: 1;
+}
+
+.dyk-card__link {
+  color: #16a34a;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dyk-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dyk-card__dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dyk-card__next-hint {
+  font-size: 11px;
+  color: #16a34a;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.dyk-card__next-icon {
+  font-size: 13px;
+}
+
+/* skeleton inside dyk-card uses a green-tinted shimmer instead of the default gray */
+.dyk-card.skeleton-item {
+  cursor: default;
+}
+
+.dyk-card .skeleton-loading {
+  background: rgba(22, 163, 74, 0.12) !important;
+}
+
+.dyk-card .skeleton-loading::after {
+  background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.15), transparent) !important;
+}
+
+/* ── card-section helpers: colored-bar heading used inside .card blocks ── */
+.card-section__title-container {
+  margin-bottom: var(--spacing-md);
+}
+
+.card-section__bar--primary {
+  background-color: var(--primary-50);
+}
+
+.card-section__bar--info {
+  background-color: var(--info-40);
+}
+
+.card-section__bar--warning {
+  background-color: var(--warning-40);
+}
+
+.card-section__bar--secondary {
+  background-color: var(--secondary-50);
+}
+
+.card-section__heading {
+  font-size: var(--font-size-title-m);
+  font-weight: 700;
+}
+
+.card-section__value--primary {
+  color: var(--primary-40);
+  font-weight: 700;
+}
+
+.card-section__value--info {
+  color: var(--info-40);
+  font-weight: 700;
+}
+
+.card-section__value--warning {
+  color: var(--foreground-warning-default);
+  font-weight: 700;
+}
+
+.card__inner {
+  margin: 0;
+  padding: var(--spacing-xl);
+}
+
+.card__btn-full {
+  width: 100%;
+  margin-top: var(--spacing-lg);
+  gap: var(--spacing-sm);
+}
+
+.cert-list--single {
+  grid-template-columns: 1fr;
+}
+
+/* ── list-icon variants (extends the .list-icon base defined in styles.css) ── */
+.list-icon--disability {
+  background: var(--background-info-light);
+  color: var(--info-40);
+}
+
+.list-icon--health {
+  background: var(--background-positive-light);
+  color: var(--foreground-positive-default);
+}
+
+/* ── modal shared chrome: header/body layout for any full-screen modal ── */
+.modal__content--flex-col {
+  padding: 0;
+  max-height: 82vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__header {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--stroke-neutral-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.modal__header-title {
+  font-size: var(--font-size-title-m);
+  font-weight: var(--font-weight-700);
+  margin: 0 0 2px;
+  color: var(--foreground-neutral-default);
+}
+
+.modal__header-sub {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modal__close-btn {
+  background: var(--background-neutral-subtle);
+  border: none;
+  border-radius: var(--radius-full);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--foreground-neutral-lighter);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.modal__close-icon {
+  font-size: 18px;
+}
+
+.modal__body {
+  overflow-y: auto;
+  padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal__section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.modal__section-list--bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── perm-item helpers: rows inside a permissions/connections list ── */
+.perm-item__icon--shrink {
+  flex-shrink: 0;
+}
+
+.perm-item__sub--truncate {
+  font-size: var(--font-size-body-s);
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.perm-item__unconnected {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--background-neutral-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground-neutral-lighter);
+  flex-shrink: 0;
+}
+
+.perm-item__linkoff-icon {
+  font-size: 20px;
+  color: var(--foreground-warning-default);
+  flex-shrink: 0;
+  font-variation-settings: 'FILL' 0;
+}
+
+/* ── generic card skeleton helpers ── */
+.card__inner--no-interact {
+  pointer-events: none;
+  margin: 0;
+  padding: var(--spacing-xl);
+}
+
+.card__skel-title {
+  height: 20px;
+  width: 45%;
+  margin-bottom: var(--spacing-md);
+}
+
+.card__skel-title--wide {
+  height: 20px;
+  width: 50%;
+  margin-bottom: var(--spacing-md);
+}
+
+.card__skel-item-gap {
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.card__skel-item-gap--last {
+  gap: var(--spacing-xs);
+}
+
+.card__skel-text-sm {
+  height: 14px;
+  margin: 0;
+}
+
+.card__skel-text-md {
+  height: 18px;
+  margin: 0;
+}
+
+.card__skel-btn {
+  height: 40px;
+  width: 100%;
+  margin-top: var(--spacing-lg);
+}
+
+/* ── misc layout/visibility helpers ── */
+.loading-wrapper--hidden {
+  display: none;
+}
+
+.skeleton-text--no-mb {
+  margin-bottom: 0;
+}
+
+.skeleton-text--xs-h {
+  margin-bottom: 0;
+  height: 12px;
+}

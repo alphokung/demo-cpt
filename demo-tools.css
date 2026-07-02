@@ -1,0 +1,129 @@
+/*
+ * demo-tools.css
+ * Developer-facing demo/testing controls: the floating "Demo config" button
+ * and its chip-based settings modal. Not part of the product UI — any
+ * prototype page that wants the same demo control panel can include this
+ * file on its own, independent of the dashboard/consent components.
+ *
+ * Depends on design tokens (CSS custom properties) defined in styles.css —
+ * load this file after styles.css.
+ */
+
+/* ── demo-config modal ── */
+.dc-modal__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--stroke-neutral-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.dc-modal__title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.dc-modal__sub {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+}
+
+.dc-modal__close-btn {
+  background: var(--background-neutral-subtle);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--foreground-neutral-lighter);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.dc-modal__close-icon {
+  font-size: 18px;
+}
+
+.dc-modal__body {
+  overflow-y: auto;
+  padding: 0 20px 28px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dc-group {
+  padding: 18px 0 14px;
+  border-bottom: 1px solid var(--stroke-neutral-lighter);
+}
+
+.dc-group--last {
+  border: none;
+}
+
+.dc-group-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--foreground-neutral-default);
+  margin: 0 0 10px;
+}
+
+.dc-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.dc-chips--wrap {
+  flex-wrap: wrap;
+}
+
+.dc-chip {
+  border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
+  background: #fff;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground-neutral-default);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.dc-chip.active {
+  background: var(--primary-40, #1a73e8);
+  border-color: var(--primary-40, #1a73e8);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── floating demo button ── */
+.demo-fab {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--neutral-25, #2d2d2d);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-full, 999px);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0, 0, 0, 0.2));
+  z-index: 100;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.demo-fab__icon {
+  font-size: 18px;
+}

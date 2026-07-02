@@ -1,0 +1,390 @@
+/*
+ * consent.css
+ * Reusable UI for a tiered consent flow: a Tier 1 (cached, one-time) locked
+ * panel, Tier 2 (per-dataset, realtime) gate states (locked/loading/empty),
+ * the consent request modal, the permissions/manage-consent list, and the
+ * top-nav entry point button.
+ *
+ * Any page implementing the same Tier 1 / Tier 2 consent pattern can include
+ * this file instead of duplicating the CSS. Depends on design tokens (CSS
+ * custom properties) defined in styles.css — load this file after styles.css.
+ */
+
+/* ── section consent notes (small inline hints under a section title) ── */
+.consent-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--foreground-neutral-lighter);
+  margin: 2px 0 12px;
+  line-height: 1.5;
+}
+
+.consent-note__icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.consent-note--realtime {
+  color: var(--foreground-warning-default);
+}
+
+/* ── tier1 locked panel: shown in place of any Tier 1-gated content ── */
+.tier1-locked-panel {
+  background: var(--background-neutral-subtle, #f4f4f5);
+  border: 1px dashed var(--stroke-neutral-default, #d1d5db);
+  border-radius: var(--radius-xl, 16px);
+  padding: 28px 20px;
+  text-align: center;
+  margin-bottom: var(--spacing-lg, 16px);
+}
+
+.tier1-locked-panel__icon {
+  font-size: 30px;
+  color: var(--foreground-neutral-lighter);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--background-neutral-light, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.tier1-locked-panel__title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.tier1-locked-panel__desc {
+  font-size: 13px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+/* ── tier2 gate states: locked / loading / empty (per-dataset card) ── */
+.tier2-locked {
+  background: var(--background-neutral-subtle, #f9fafb);
+  border: 1px dashed var(--stroke-neutral-default, #d1d5db);
+  border-radius: var(--radius-lg, 12px);
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.tier2-locked__icon {
+  font-size: 20px;
+  color: var(--foreground-neutral-lighter);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--background-neutral-light, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+}
+
+.tier2-locked__title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.tier2-locked__hint {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+/* "give additional consent" card: same layout as tier2-locked, but styled to
+   stand out and invite the tap, rather than blend in as a passive locked state. */
+#tier2-consent-more {
+  background: var(--background-positive-light);
+  border: 1.5px solid var(--foreground-positive-default);
+  box-shadow: 0 2px 10px rgba(7, 148, 85, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#tier2-consent-more:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(7, 148, 85, 0.22);
+}
+
+#tier2-consent-more .tier2-locked__icon {
+  background: var(--foreground-positive-default);
+  color: #fff;
+  font-size: 22px;
+}
+
+#tier2-consent-more .tier2-locked__title {
+  color: var(--foreground-positive-default);
+  font-size: 14px;
+}
+
+.tier2-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  background: var(--background-neutral-subtle, #f9fafb);
+  border-radius: var(--radius-lg, 12px);
+}
+
+.tier2-loading__spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2.5px solid var(--stroke-neutral-lighter, #e5e7eb);
+  border-top-color: var(--primary-40, #1a73e8);
+  animation: tier2-spin 0.8s linear infinite;
+}
+
+@keyframes tier2-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tier2-loading__text {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+}
+
+.tier2-empty {
+  background: var(--background-info-light);
+  border: 1px dashed var(--info-40);
+  border-radius: var(--radius-lg, 12px);
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.tier2-empty__icon {
+  font-size: 20px;
+  color: var(--info-40);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+}
+
+.tier2-empty__title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--info-40);
+}
+
+.tier2-empty__hint {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── consent request modal (tier1 + tier2) ── */
+.consent-modal__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.consent-modal__badge--tier1 {
+  background: var(--background-info-light);
+  color: var(--info-40);
+}
+
+.consent-modal__badge--tier2 {
+  background: var(--background-warning-light);
+  color: var(--foreground-warning-default);
+}
+
+.consent-modal__perm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.consent-modal__perm-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.consent-modal__perm-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: var(--background-info-light);
+  color: var(--info-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.consent-modal__perm-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.consent-modal__perm-sub {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.consent-modal__disclaimer {
+  background: var(--background-neutral-subtle, #f4f4f5);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--foreground-neutral-lighter);
+  margin: 4px 0 18px;
+}
+
+.consent-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* tier2 consent modal: selectable checklist with a custom green/white checkbox */
+.consent-modal__perm-item--checkable {
+  cursor: pointer;
+  border: 1px solid var(--stroke-neutral-lighter);
+  border-radius: var(--radius-md);
+  padding: 10px;
+}
+
+.consent-modal__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.consent-modal__checkbox:checked {
+  background: var(--primary-40);
+  border-color: var(--primary-40);
+}
+
+.consent-modal__checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.consent-modal__checkbox:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.consent-modal__granted {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--foreground-positive-default);
+}
+
+/* ── top-nav "manage consent" entry point button ── */
+.top-nav-consent-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--background-neutral-subtle, #f4f4f5);
+  border: 1px solid var(--stroke-neutral-lighter, #e5e7eb);
+  border-radius: var(--radius-full, 999px);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground-neutral-default);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.top-nav-consent-btn .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* ── permissions modal: per-tier status banner + revoke-all section ── */
+.perm-tier-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.perm-tier-banner .material-symbols-outlined {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.perm-tier-banner__label {
+  flex: 1;
+}
+
+.perm-tier-banner--granted {
+  background: var(--background-positive-light);
+  color: var(--foreground-positive-default);
+}
+
+.perm-tier-banner--locked {
+  background: var(--background-warning-light);
+  color: var(--foreground-warning-default);
+}
+
+.consent-revoke-section {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--stroke-neutral-lighter);
+}
+
+.consent-revoke-note {
+  font-size: 12px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}

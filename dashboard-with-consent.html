@@ -28,1268 +28,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* ── ctx-card: today context card ── */
-    .ctx-card {
-      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
-      border-radius: var(--radius-xl, 16px);
-      padding: 20px;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ctx-card__skeleton {
-      background: linear-gradient(135deg, #1e9e6b 0%, #0d5c3a 100%);
-      border-radius: var(--radius-xl, 16px);
-      padding: 20px;
-      pointer-events: none;
-    }
-
-    .ctx-card__skel-text--sm {
-      height: 13px;
-      width: 90px;
-      display: block;
-      background: rgba(255, 255, 255, 0.2) !important;
-      border-radius: 4px;
-      margin-bottom: 6px;
-    }
-
-    .ctx-card__skel-text--lg {
-      height: 26px;
-      width: 180px;
-      display: block;
-      background: rgba(255, 255, 255, 0.3) !important;
-      border-radius: 6px;
-      margin-bottom: 20px;
-    }
-
-    .ctx-card__skel-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .ctx-card__skel-temp {
-      height: 44px;
-      width: 120px;
-      display: block;
-      background: rgba(255, 255, 255, 0.25) !important;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    .ctx-card__skel-desc {
-      height: 13px;
-      width: 140px;
-      display: block;
-      background: rgba(255, 255, 255, 0.15) !important;
-      border-radius: 4px;
-    }
-
-    .ctx-card__skel-icon-box {
-      height: 90px;
-      width: 80px;
-      display: block;
-      background: rgba(255, 255, 255, 0.15) !important;
-      border-radius: 12px;
-      flex-shrink: 0;
-    }
-
-    .ctx-card__deco {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .ctx-card__deco--top {
-      top: -30px;
-      right: -30px;
-      width: 140px;
-      height: 140px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .ctx-card__deco--bottom {
-      bottom: -20px;
-      left: -20px;
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .ctx-card__greeting {
-      margin-bottom: 14px;
-    }
-
-    .ctx-card__greeting-label {
-      font-size: 12px;
-      opacity: 0.8;
-      margin: 0 0 2px;
-    }
-
-    .ctx-card__greeting-name {
-      font-size: 20px;
-      font-weight: 700;
-      margin: 0 0 2px;
-      line-height: 1.2;
-    }
-
-    .ctx-card__location-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      opacity: 0.75;
-    }
-
-    .ctx-card__location-icon {
-      font-size: 14px;
-    }
-
-    .ctx-card__location-text {
-      font-size: 12px;
-    }
-
-    .ctx-card__divider {
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      margin-bottom: 14px;
-    }
-
-    .ctx-card__divider--spaced {
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      margin: 14px 0;
-    }
-
-    .ctx-card__weather-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .ctx-card__temp-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ctx-card__weather-icon {
-      font-size: 44px;
-      font-variation-settings: 'FILL' 1;
-    }
-
-    .ctx-card__temp {
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 1;
-      margin: 0;
-    }
-
-    .ctx-card__desc {
-      font-size: 12px;
-      opacity: 0.85;
-      margin: 4px 0 0;
-    }
-
-    .ctx-card__meta-row {
-      display: flex;
-      gap: 16px;
-      margin-top: 10px;
-    }
-
-    .ctx-card__meta-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      opacity: 0.8;
-    }
-
-    .ctx-card__meta-icon {
-      font-size: 14px;
-    }
-
-    /* ── ctx-pm25: PM2.5 chip ── */
-    .ctx-pm25 {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 14px 20px;
-      text-align: center;
-      min-width: 100px;
-      flex-shrink: 0;
-    }
-
-    .ctx-pm25__label {
-      font-size: 11px;
-      opacity: 0.8;
-      margin: 0 0 4px;
-      letter-spacing: 0.5px;
-    }
-
-    .ctx-pm25__value-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3px;
-      margin-bottom: 6px;
-    }
-
-    .ctx-pm25__value {
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .ctx-pm25__unit {
-      font-size: 11px;
-      opacity: 0.7;
-    }
-
-    .ctx-pm25__badge {
-      font-size: 11px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 3px 10px;
-      display: inline-block;
-    }
-
-    /* ── ctx-bar: birthday / wan-phra / special-day / focus bars ── */
-    .ctx-bar {
-      border-radius: 10px;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .ctx-bar--birthday {
-      background: linear-gradient(90deg, rgba(255, 105, 135, 0.3), rgba(255, 180, 80, 0.25));
-      border: 1px solid rgba(255, 150, 150, 0.3);
-      padding: 10px 14px;
-      gap: 10px;
-    }
-
-    .ctx-bar__birthday-emoji {
-      font-size: 22px;
-      flex-shrink: 0;
-      line-height: 1;
-    }
-
-    .ctx-bar__birthday-text {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0;
-      font-weight: 600;
-    }
-
-    .ctx-bar--wanphra {
-      background: rgba(255, 213, 79, 0.15);
-      padding: 10px 12px;
-      gap: 8px;
-    }
-
-    .ctx-bar__wanphra-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-      color: #FFD54F;
-    }
-
-    .ctx-bar__wanphra-text {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0;
-      color: #FFD54F;
-    }
-
-    .ctx-bar--special {
-      background: rgba(255, 213, 79, 0.15);
-      padding: 10px 12px;
-      gap: 8px;
-    }
-
-    .ctx-bar__special-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-      color: #FFD54F;
-    }
-
-    .ctx-bar__special-text {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0;
-      color: #FFD54F;
-    }
-
-    .ctx-bar--focus {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 10px 12px;
-      gap: 8px;
-      display: flex;
-      margin-bottom: 8px;
-    }
-
-    .ctx-bar__focus-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .ctx-bar__focus-text {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0;
-    }
-
-    /* ── ctx-noti: inline notification items ── */
-    .ctx-noti {
-      border-radius: 10px;
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-
-    .ctx-noti--danger {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 100, 100, 0.4);
-      border-left: 3px solid #ff6b6b;
-    }
-
-    .ctx-noti--warning {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 180, 50, 0.4);
-      border-left: 3px solid #fbbf24;
-    }
-
-    .ctx-noti__icon--danger {
-      font-size: 18px;
-      flex-shrink: 0;
-      color: #ff9999;
-    }
-
-    .ctx-noti__icon--warning {
-      font-size: 18px;
-      flex-shrink: 0;
-      color: #fcd34d;
-    }
-
-    .ctx-noti__body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .ctx-noti__title {
-      font-size: 12px;
-      font-weight: 700;
-      margin: 0 0 1px;
-      color: #fff;
-    }
-
-    .ctx-noti__sub {
-      font-size: 11px;
-      margin: 0;
-      opacity: 0.75;
-    }
-
-    .ctx-noti__chevron {
-      font-size: 16px;
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
-
-    .ctx-noti--last {
-      margin-bottom: 0;
-    }
-
-    /* ── notice-item: สิ่งที่คุณควรรู้ proactive notices (light card) ── */
-    .notice-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-lg, 12px);
-      background: #fff;
-      border: 1px solid var(--stroke-neutral-lighter);
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-
-    .notice-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .notice-item__icon-wrap {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 20px;
-    }
-
-    .notice-item--birthday .notice-item__icon-wrap {
-      font-size: 22px;
-    }
-
-    .notice-item__body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .notice-item__text {
-      font-size: 12.5px;
-      font-weight: 600;
-      margin: 0;
-      line-height: 1.5;
-      color: var(--foreground-neutral-default);
-    }
-
-    .notice-item__title {
-      font-size: 13px;
-      font-weight: 700;
-      margin: 0 0 2px;
-      color: var(--foreground-neutral-default);
-    }
-
-    .notice-item__sub {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-    }
-
-    .notice-item__chevron {
-      font-size: 18px;
-      color: var(--foreground-neutral-lighter);
-      flex-shrink: 0;
-    }
-
-    .notice-item--danger {
-      border-left: 3px solid var(--foreground-negative-default);
-    }
-
-    .notice-item--danger .notice-item__icon-wrap {
-      background: var(--background-negative-light);
-      color: var(--foreground-negative-default);
-    }
-
-    .notice-item--warning {
-      border-left: 3px solid var(--foreground-warning-default);
-    }
-
-    .notice-item--warning .notice-item__icon-wrap {
-      background: var(--background-warning-light);
-      color: var(--foreground-warning-default);
-    }
-
-    .notice-item--positive {
-      border-left: 3px solid var(--foreground-positive-default);
-    }
-
-    .notice-item--positive .notice-item__icon-wrap {
-      background: var(--background-positive-light);
-      color: var(--foreground-positive-default);
-    }
-
-    .notice-item--info {
-      border-left: 3px solid var(--info-40);
-    }
-
-    .notice-item--info .notice-item__icon-wrap {
-      background: var(--background-info-light);
-      color: var(--info-40);
-    }
-
-    /* ── dyk-card: did-you-know ── */
-    .dyk-card {
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      border: 1px solid #86efac;
-      border-radius: var(--radius-xl, 16px);
-      padding: 16px 16px 14px;
-      margin: 16px 0;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .dyk-card__deco {
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: rgba(134, 239, 172, 0.3);
-      pointer-events: none;
-    }
-
-    .dyk-card__header {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .dyk-card__emoji {
-      font-size: 20px;
-      line-height: 1;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .dyk-card__text {
-      font-size: 13px;
-      font-weight: 500;
-      line-height: 1.6;
-      margin: 0;
-      color: #14532d;
-      flex: 1;
-    }
-
-    .dyk-card__link {
-      color: #16a34a;
-      font-weight: 700;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .dyk-card__footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .dyk-card__dots {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .dyk-card__next-hint {
-      font-size: 11px;
-      color: #16a34a;
-      opacity: 0.7;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .dyk-card__next-icon {
-      font-size: 13px;
-    }
-
-    /* skeleton inside dyk-card uses green-tinted shimmer */
-    .dyk-card.skeleton-item {
-      cursor: default;
-    }
-
-    .dyk-card .skeleton-loading {
-      background: rgba(22, 163, 74, 0.12) !important;
-    }
-
-    .dyk-card .skeleton-loading::after {
-      background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.15), transparent) !important;
-    }
-
-    /* ── card section helpers ── */
-    .card-section__title-container {
-      margin-bottom: var(--spacing-md);
-    }
-
-    .card-section__bar--primary {
-      background-color: var(--primary-50);
-    }
-
-    .card-section__bar--info {
-      background-color: var(--info-40);
-    }
-
-    .card-section__bar--warning {
-      background-color: var(--warning-40);
-    }
-
-    .card-section__heading {
-      font-size: var(--font-size-title-m);
-      font-weight: 700;
-    }
-
-    .card-section__value--primary {
-      color: var(--primary-40);
-      font-weight: 700;
-    }
-
-    .card-section__value--info {
-      color: var(--info-40);
-      font-weight: 700;
-    }
-
-    .card-section__value--warning {
-      color: var(--foreground-warning-default);
-      font-weight: 700;
-    }
-
-    .card-section__bar--secondary {
-      background-color: var(--secondary-50);
-    }
-
-    .card__inner {
-      margin: 0;
-      padding: var(--spacing-xl);
-    }
-
-    .card__btn-full {
-      width: 100%;
-      margin-top: var(--spacing-lg);
-      gap: var(--spacing-sm);
-    }
-
-    .cert-list--single {
-      grid-template-columns: 1fr;
-    }
-
-    /* ── list-icon variant ── */
-    .list-icon--disability {
-      background: var(--background-info-light);
-      color: var(--info-40);
-    }
-
-    .list-icon--health {
-      background: var(--background-positive-light);
-      color: var(--foreground-positive-default);
-    }
-
-    /* ── modal shared ── */
-    .modal__content--flex-col {
-      padding: 0;
-      max-height: 82vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .modal__header {
-      padding: var(--spacing-lg) var(--spacing-xl);
-      border-bottom: 1px solid var(--stroke-neutral-lighter);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--spacing-md);
-      flex-shrink: 0;
-    }
-
-    .modal__header-title {
-      font-size: var(--font-size-title-m);
-      font-weight: var(--font-weight-700);
-      margin: 0 0 2px;
-      color: var(--foreground-neutral-default);
-    }
-
-    .modal__header-sub {
-      font-size: var(--font-size-body-s);
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .modal__close-btn {
-      background: var(--background-neutral-subtle);
-      border: none;
-      border-radius: var(--radius-full);
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--foreground-neutral-lighter);
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .modal__close-icon {
-      font-size: 18px;
-    }
-
-    .modal__body {
-      overflow-y: auto;
-      padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-xl);
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .modal__section-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: var(--spacing-xl);
-    }
-
-    .modal__section-list--bottom {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    /* ── perm-item helpers ── */
-    .perm-item__icon--shrink {
-      flex-shrink: 0;
-    }
-
-    .perm-item__sub--truncate {
-      font-size: var(--font-size-body-s);
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .perm-item__unconnected {
-      width: 44px;
-      height: 44px;
-      min-width: 44px;
-      border-radius: var(--radius-lg);
-      background: var(--background-neutral-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--foreground-neutral-lighter);
-      flex-shrink: 0;
-    }
-
-    .perm-item__linkoff-icon {
-      font-size: 20px;
-      color: var(--foreground-warning-default);
-      flex-shrink: 0;
-      font-variation-settings: 'FILL' 0;
-    }
-
-    /* ── demo-config modal ── */
-    .dc-modal__header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--stroke-neutral-lighter);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .dc-modal__title {
-      font-size: 15px;
-      font-weight: 700;
-      margin: 0 0 2px;
-    }
-
-    .dc-modal__sub {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-    }
-
-    .dc-modal__close-btn {
-      background: var(--background-neutral-subtle);
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--foreground-neutral-lighter);
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .dc-modal__close-icon {
-      font-size: 18px;
-    }
-
-    .dc-modal__body {
-      overflow-y: auto;
-      padding: 0 20px 28px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .dc-group--last {
-      border: none;
-    }
-
-    .dc-chips--wrap {
-      flex-wrap: wrap;
-    }
-
-    /* ── floating demo button ── */
-    .demo-fab {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--neutral-25, #2d2d2d);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-full, 999px);
-      padding: 10px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--shadow-custom-lg, 0 4px 16px rgba(0, 0, 0, 0.2));
-      z-index: 100;
-      white-space: nowrap;
-      font-family: inherit;
-    }
-
-    .demo-fab__icon {
-      font-size: 18px;
-    }
-
-    /* ── card skeleton helpers ── */
-    .card__inner--no-interact {
-      pointer-events: none;
-      margin: 0;
-      padding: var(--spacing-xl);
-    }
-
-    .card__skel-title {
-      height: 20px;
-      width: 45%;
-      margin-bottom: var(--spacing-md);
-    }
-
-    .card__skel-title--wide {
-      height: 20px;
-      width: 50%;
-      margin-bottom: var(--spacing-md);
-    }
-
-    .card__skel-item-gap {
-      gap: var(--spacing-xs);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .card__skel-item-gap--last {
-      gap: var(--spacing-xs);
-    }
-
-    .card__skel-text-sm {
-      height: 14px;
-      margin: 0;
-    }
-
-    .card__skel-text-md {
-      height: 18px;
-      margin: 0;
-    }
-
-    .card__skel-btn {
-      height: 40px;
-      width: 100%;
-      margin-top: var(--spacing-lg);
-    }
-
-    /* ── hidden welfare wrappers ── */
-    .loading-wrapper--hidden {
-      display: none;
-    }
-
-    /* ── skeleton text helpers ── */
-    .skeleton-text--no-mb {
-      margin-bottom: 0;
-    }
-
-    .skeleton-text--xs-h {
-      margin-bottom: 0;
-      height: 12px;
-    }
-
-    /* ═══════════════════════════════════════════ */
-    /* Consent (Tier 1 / Tier 2)                    */
-    /* ═══════════════════════════════════════════ */
-
-    /* ── tier1 locked panel ── */
-    .tier1-locked-panel {
-      background: var(--background-neutral-subtle, #f4f4f5);
-      border: 1px dashed var(--stroke-neutral-default, #d1d5db);
-      border-radius: var(--radius-xl, 16px);
-      padding: 28px 20px;
-      text-align: center;
-      margin-bottom: var(--spacing-lg, 16px);
-    }
-
-    .tier1-locked-panel__icon {
-      font-size: 30px;
-      color: var(--foreground-neutral-lighter);
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--background-neutral-light, #e5e7eb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 12px;
-    }
-
-    .tier1-locked-panel__title {
-      font-size: 15px;
-      font-weight: 700;
-      margin: 0 0 6px;
-    }
-
-    .tier1-locked-panel__desc {
-      font-size: 13px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0 0 16px;
-      line-height: 1.5;
-    }
-
-    /* ── tier2 gate states ── */
-    .tier2-locked {
-      background: var(--background-neutral-subtle, #f9fafb);
-      border: 1px dashed var(--stroke-neutral-default, #d1d5db);
-      border-radius: var(--radius-lg, 12px);
-      padding: 18px 16px;
-      text-align: center;
-    }
-
-    .tier2-locked__icon {
-      font-size: 20px;
-      color: var(--foreground-neutral-lighter);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--background-neutral-light, #e5e7eb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 8px;
-    }
-
-    .tier2-locked__title {
-      font-size: 13px;
-      font-weight: 700;
-      margin: 0 0 4px;
-    }
-
-    .tier2-locked__hint {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0 0 12px;
-      line-height: 1.5;
-    }
-
-    /* ── "give additional consent" card: same layout as tier2-locked, but styled to */
-    /* stand out and invite the tap, rather than blend in as a passive locked state ── */
-    #tier2-consent-more {
-      background: var(--background-positive-light);
-      border: 1.5px solid var(--foreground-positive-default);
-      box-shadow: 0 2px 10px rgba(7, 148, 85, 0.15);
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    #tier2-consent-more:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(7, 148, 85, 0.22);
-    }
-
-    #tier2-consent-more .tier2-locked__icon {
-      background: var(--foreground-positive-default);
-      color: #fff;
-      font-size: 22px;
-    }
-
-    #tier2-consent-more .tier2-locked__title {
-      color: var(--foreground-positive-default);
-      font-size: 14px;
-    }
-
-    .tier2-loading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 18px 16px;
-      background: var(--background-neutral-subtle, #f9fafb);
-      border-radius: var(--radius-lg, 12px);
-    }
-
-    .tier2-loading__spinner {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      border: 2.5px solid var(--stroke-neutral-lighter, #e5e7eb);
-      border-top-color: var(--primary-40, #1a73e8);
-      animation: tier2-spin 0.8s linear infinite;
-    }
-
-    @keyframes tier2-spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .tier2-loading__text {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-    }
-
-    .tier2-empty {
-      background: var(--background-info-light);
-      border: 1px dashed var(--info-40);
-      border-radius: var(--radius-lg, 12px);
-      padding: 18px 16px;
-      text-align: center;
-    }
-
-    .tier2-empty__icon {
-      font-size: 20px;
-      color: var(--info-40);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 8px;
-    }
-
-    .tier2-empty__title {
-      font-size: 13px;
-      font-weight: 700;
-      margin: 0 0 4px;
-      color: var(--info-40);
-    }
-
-    .tier2-empty__hint {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* ── section consent notes ── */
-    .consent-note {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--foreground-neutral-lighter);
-      margin: 2px 0 12px;
-      line-height: 1.5;
-    }
-
-    .consent-note__icon {
-      font-size: 14px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .consent-note--realtime {
-      color: var(--foreground-warning-default);
-    }
-
-    /* ── consent modal ── */
-    .consent-modal__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-
-    .consent-modal__badge--tier1 {
-      background: var(--background-info-light);
-      color: var(--info-40);
-    }
-
-    .consent-modal__badge--tier2 {
-      background: var(--background-warning-light);
-      color: var(--foreground-warning-default);
-    }
-
-    .consent-modal__perm-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 14px 0;
-    }
-
-    .consent-modal__perm-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .consent-modal__perm-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      flex-shrink: 0;
-      background: var(--background-info-light);
-      color: var(--info-40);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    .consent-modal__perm-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin: 0 0 2px;
-    }
-
-    .consent-modal__perm-sub {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .consent-modal__disclaimer {
-      background: var(--background-neutral-subtle, #f4f4f5);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      font-size: 11.5px;
-      line-height: 1.6;
-      color: var(--foreground-neutral-lighter);
-      margin: 4px 0 18px;
-    }
-
-    .consent-modal__actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    /* ── top-nav consent management button ── */
-    .top-nav-consent-btn {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--background-neutral-subtle, #f4f4f5);
-      border: 1px solid var(--stroke-neutral-lighter, #e5e7eb);
-      border-radius: var(--radius-full, 999px);
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--foreground-neutral-default);
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      font-family: inherit;
-    }
-
-    .top-nav-consent-btn .material-symbols-outlined {
-      font-size: 16px;
-    }
-
-    /* ── tier2 consent modal: selectable checklist ── */
-    .consent-modal__perm-item--checkable {
-      cursor: pointer;
-      border: 1px solid var(--stroke-neutral-lighter);
-      border-radius: var(--radius-md);
-      padding: 10px;
-    }
-
-    .consent-modal__checkbox {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      margin-top: 2px;
-      border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
-      border-radius: 5px;
-      background: #fff;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .consent-modal__checkbox:checked {
-      background: var(--primary-40);
-      border-color: var(--primary-40);
-    }
-
-    .consent-modal__checkbox:checked::after {
-      content: '';
-      position: absolute;
-      left: 6px;
-      top: 2px;
-      width: 5px;
-      height: 9px;
-      border: solid #fff;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-    }
-
-    .consent-modal__checkbox:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .consent-modal__granted {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--foreground-positive-default);
-    }
-
-    /* ── tier status banner (inside permissions modal) ── */
-    .perm-tier-banner {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      font-size: 12.5px;
-      font-weight: 600;
-      margin-bottom: 14px;
-    }
-
-    .perm-tier-banner .material-symbols-outlined {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .perm-tier-banner__label {
-      flex: 1;
-    }
-
-    .perm-tier-banner--granted {
-      background: var(--background-positive-light);
-      color: var(--foreground-positive-default);
-    }
-
-    .perm-tier-banner--locked {
-      background: var(--background-warning-light);
-      color: var(--foreground-warning-default);
-    }
-
-    /* ── revoke-all section (inside permissions modal) ── */
-    .consent-revoke-section {
-      margin-top: var(--spacing-xl);
-      padding-top: var(--spacing-lg);
-      border-top: 1px solid var(--stroke-neutral-lighter);
-    }
-
-    .consent-revoke-note {
-      font-size: 12px;
-      color: var(--foreground-neutral-lighter);
-      margin: 0 0 12px;
-      line-height: 1.5;
-    }
-  </style>
+  <link rel="stylesheet" href="dashboard-components.css">
+  <link rel="stylesheet" href="consent.css">
+  <link rel="stylesheet" href="demo-tools.css">
 </head>
 
 <body>
@@ -1537,11 +278,27 @@
                 </div>
                 <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
               </div>
+
+              <!-- กรมธรรม์ใกล้หมดอายุ: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (insurance) แล้ว -->
+              <div id="notice-insurance-expiring" class="notice-item notice-item--warning" style="display:none;"
+                onclick="alert('เปิด miniapp คปภ.')">
+                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">policy</span></div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">กรมธรรม์ประกันภัยใกล้ถึงกำหนดต่ออายุ</p>
+                  <p class="notice-item__sub">ประกันยานพาหนะภาคบังคับและภาคสมัครใจ รถ Honda Civic กข 1234 กทม. ·
+                    ครบกำหนด 20 เม.ย. 2570</p>
+                </div>
+                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+              </div>
             </div>
           </div>
 
           <div class="list-section">
-            <p class="list-section-title">เอกสารราชการ</p>
+           <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">เอกสารราชการ</h3>
+            </div>
             <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
             <p class="consent-note">
               <span class="material-symbols-outlined consent-note__icon">cached</span>
@@ -1622,12 +379,17 @@
               </div>
 
             </div>
+           </div>
 
           </div>
 
           <!-- 4. Assets -->
           <div class="list-section">
-            <p class="list-section-title">ทรัพย์สินของคุณ</p>
+           <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ทรัพย์สินของคุณ</h3>
+            </div>
             <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
 
             <div class="cert-list">
@@ -1867,6 +629,7 @@
 
 
             </div>
+           </div>
           </div>
 
         </div><!-- /tier1-content -->
@@ -2118,6 +881,145 @@
                     onclick="alert('เปิด miniapp ที่เกี่ยวข้อง')">
                     <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสวัสดิการของคุณ
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: ข้อมูลกรมธรรม์ประกันภัย (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="insurance">
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อ คปภ. เพื่อตรวจสอบข้อมูลกรมธรรม์แบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--warning"></div>
+                  <h3 class="section-title card-section__heading">ข้อมูลกรมธรรม์ประกันภัย</h3>
+                </div>
+                <div class="cert-list">
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันชีวิต แบบคุ้มครองชีวิตตลอดชีพ</p>
+                      <p class="list-item-hero">เอไอเอ ตลอดชีพ พลัส ชำระเบี้ยประกันภัย 20 ปี (ไม่มีเงินปันผล)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: T23XXXX300
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 14 ธ.ค. 2629
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันอุบัติเหตุ</p>
+                      <p class="list-item-hero">PA PACKAGE - WSMMLB3</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: P25XXXX058
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 11 ก.พ. 2602
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันชีวิต แบบสะสมทรัพย์</p>
+                      <p class="list-item-hero">เอไอเอ สะสมทรัพย์ 25 ปี ชำระเบี้ยประกันภัย 15 ปี พิเศษ (มีเงินปันผล)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: T16XXXX223
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 26 ก.ค. 2579
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/2010.png" alt="วิริยะประกันภัย"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันยานพาหนะภาคบังคับ</p>
+                      <p class="list-item-hero">ประกันภัยยานยนต์ภาคบังคับ (พ.ร.บ.)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: 126XXXXXXX423
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 20 เม.ย. 2570
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/2010.png" alt="วิริยะประกันภัย"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันยานพาหนะภาคสมัครใจ</p>
+                      <p class="list-item-hero">ประกันภัยยานยนต์ภาคสมัครใจ PHYD</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: 126XXXXXX637
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 20 เม.ย. 2570
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -2380,44 +1282,6 @@
     </div>
   </div>
 
-  <style>
-    .dc-group {
-      padding: 18px 0 14px;
-      border-bottom: 1px solid var(--stroke-neutral-lighter);
-    }
-
-    .dc-group-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--foreground-neutral-default);
-      margin: 0 0 10px;
-    }
-
-    .dc-chips {
-      display: flex;
-      gap: 8px;
-    }
-
-    .dc-chip {
-      border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
-      background: #fff;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--foreground-neutral-default);
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
-
-    .dc-chip.active {
-      background: var(--primary-40, #1a73e8);
-      border-color: var(--primary-40, #1a73e8);
-      color: #fff;
-      font-weight: 600;
-    }
-  </style>
 
   <!-- Modal: Bill Payment -->
 
@@ -2454,7 +1318,7 @@
     var CONSENT_STORAGE_KEY = 'czp_consent_v1';
 
     function defaultConsent() {
-      return { tier1: false, tier2: { health: false, disability: false, welfare: false } };
+      return { tier1: false, tier2: { health: false, disability: false, welfare: false, insurance: false } };
     }
 
     function loadConsent() {
@@ -2468,6 +1332,7 @@
               health: !!(parsed.tier2 && parsed.tier2.health),
               disability: !!(parsed.tier2 && parsed.tier2.disability),
               welfare: !!(parsed.tier2 && parsed.tier2.welfare),
+              insurance: !!(parsed.tier2 && parsed.tier2.insurance),
             }
           };
         }
@@ -2526,11 +1391,19 @@
     // "เบี้ยความพิการเดือนนี้โอนแล้ว" only makes sense for a persona who actually
     // holds a disability card, and only once they've consented to view that Tier 2 data.
     function updateProactiveNotices() {
-      var el = document.getElementById('notice-disability-allowance');
-      if (!el) return;
-      var persona = PERSONAS[currentPersonaKey];
-      var isDisabled = !!(persona && persona.entitlements.disability);
-      el.style.display = (isDisabled && consent.tier2.disability) ? '' : 'none';
+      var disabilityEl = document.getElementById('notice-disability-allowance');
+      if (disabilityEl) {
+        var persona = PERSONAS[currentPersonaKey];
+        var isDisabled = !!(persona && persona.entitlements.disability);
+        disabilityEl.style.display = (isDisabled && consent.tier2.disability) ? '' : 'none';
+      }
+
+      // Policy expiry notice only makes sense once the user has consented to view
+      // their insurance data — same logic as any other Tier 2-derived notice.
+      var insuranceEl = document.getElementById('notice-insurance-expiring');
+      if (insuranceEl) {
+        insuranceEl.style.display = consent.tier2.insurance ? '' : 'none';
+      }
     }
 
     // Switching persona changes who the dashboard belongs to, so any previously
@@ -2561,6 +1434,12 @@
         sub: 'กรมบัญชีกลาง กระทรวงการคลัง',
         desc: 'ระบบจะเรียกดูบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด และเบี้ยยังชีพผู้สูงอายุ จากกรมบัญชีกลาง แบบเรียลไทม์',
         icon: 'volunteer_activism',
+      },
+      insurance: {
+        title: 'ข้อมูลกรมธรรม์ประกันภัย',
+        sub: 'สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย (คปภ.)',
+        desc: 'ระบบจะเรียกดูกรมธรรม์ประกันภัยที่คุณถืออยู่ (ประเภทกรมธรรม์, ผู้รับประกัน, ระยะเวลาคุ้มครอง) จาก คปภ. แบบเรียลไทม์',
+        icon: 'policy',
       },
     };
 
@@ -2845,7 +1724,7 @@
       applyPersonaUI();
       renderContextBars();
       applyTier1UI();
-      ['health', 'disability', 'welfare'].forEach(function (key) {
+      Object.keys(TIER2_INFO).forEach(function (key) {
         renderTier2(key, false);
       });
       if (!consent.tier1) {
