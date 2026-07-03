@@ -378,6 +378,41 @@
                 </a>
               </div>
 
+              <!-- บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime; shown only if the -->
+              <!-- current citizen actually holds one and has consented to view it) -->
+              <div class="tier2-gate" data-tier2-key="disability">
+
+                <!-- Loading state -->
+                <div class="tier2-loading" data-state="loading" style="display:none;">
+                  <span class="tier2-loading__spinner"></span>
+                  <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
+                </div>
+
+                <!-- Loaded state -->
+                <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
+                  onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                  <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                  <div class="list-icon list-icon--disability">
+                    <span class="material-symbols-outlined">accessible</span>
+                  </div>
+                  <div class="list-body">
+                    <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                    <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                    <div class="list-meta">
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                        <span>หมดอายุ: 14 ก.พ. 2571</span>
+                      </div>
+                      <div class="list-meta-item">
+                        <span class="material-symbols-outlined list-meta-icon">update</span>
+                        <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined chevron">chevron_right</span>
+                </a>
+              </div>
+
             </div>
            </div>
 
@@ -692,48 +727,6 @@
               </div>
             </div>
 
-            <!-- Card: บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime) -->
-            <div class="tier2-gate" data-tier2-key="disability">
-
-              <!-- Loading state -->
-              <div class="tier2-loading" data-state="loading" style="display:none;">
-                <span class="tier2-loading__spinner"></span>
-                <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
-              </div>
-
-              <!-- Empty state (consented, but no record found for this citizen) -->
-              <div class="tier2-empty" data-state="empty" style="display:none;">
-                <div class="tier2-empty__icon"><span class="material-symbols-outlined">info</span></div>
-                <p class="tier2-empty__title">ไม่พบข้อมูลบัตรประจำตัวคนพิการ</p>
-                <p class="tier2-empty__hint">ไม่พบข้อมูลที่ผูกกับเลขบัตรประชาชนของคุณในระบบ พก.
-                  หากคุณคิดว่าควรมีสิทธิ์นี้ กรุณาติดต่อสำนักงานพัฒนาสังคมและความมั่นคงของมนุษย์จังหวัด</p>
-              </div>
-
-              <!-- Loaded state -->
-              <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
-                onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
-                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
-                <div class="list-icon list-icon--disability">
-                  <span class="material-symbols-outlined">accessible</span>
-                </div>
-                <div class="list-body">
-                  <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
-                  <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
-                  <div class="list-meta">
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                      <span>หมดอายุ: 14 ก.พ. 2571</span>
-                    </div>
-                    <div class="list-meta-item">
-                      <span class="material-symbols-outlined list-meta-icon">update</span>
-                      <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined chevron">chevron_right</span>
-              </a>
-            </div>
-
             <!-- Card 2: สิทธิประกันสังคม -->
             <div class="loading-wrapper loading-wrapper--hidden">
               <!-- Skeleton State -->
@@ -852,6 +845,7 @@
                   <div class="section-bar card-section__bar--secondary"></div>
                   <h3 class="section-title card-section__heading">สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
                 </div>
+                <p class="list-section-note">บัตรสวัสดิการแห่งรัฐและเงินอุดหนุนที่คุณได้รับสิทธิ์ในระบบ</p>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
@@ -900,6 +894,7 @@
                   <div class="section-bar card-section__bar--warning"></div>
                   <h3 class="section-title card-section__heading">ข้อมูลกรมธรรม์ประกันภัย</h3>
                 </div>
+                <p class="list-section-note">กรมธรรม์ประกันภัยที่คุณถือครองในระบบ</p>
                 <div class="cert-list">
                   <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
                     <div class="list-icon work">
@@ -1226,7 +1221,7 @@
             <button class="dc-chip" id="chip-persona-somsri" onclick="setPersona('somsri')">คุณสมศรี ·
               บัตรคนพิการ</button>
             <button class="dc-chip" id="chip-persona-somying" onclick="setPersona('somying')">คุณสมหญิง ·
-              บัตรสวัสดิการฯ</button>
+              บัตรสวัสดิการฯ + บัตรคนพิการ</button>
           </div>
         </div>
 
@@ -1364,9 +1359,9 @@
       },
       somying: {
         fullName: 'คุณสมหญิง รุ่งเรือง',
-        tagline: 'ผู้ถือบัตรสวัสดิการแห่งรัฐ',
+        tagline: 'ผู้ถือบัตรสวัสดิการแห่งรัฐและบัตรประจำตัวคนพิการ',
         forceBirthday: false,
-        entitlements: { disability: false, welfare: true },
+        entitlements: { disability: true, welfare: true },
       },
     };
 
@@ -1475,7 +1470,16 @@
       setTimeout(function () {
         var entitlements = PERSONAS[currentPersonaKey].entitlements;
         var hasData = (key in entitlements) ? entitlements[key] : true;
-        setTier2State(gate, hasData ? 'loaded' : 'empty');
+        if (hasData) {
+          setTier2State(gate, 'loaded');
+        } else if (gate.querySelector('[data-state="empty"]')) {
+          setTier2State(gate, 'empty');
+        } else {
+          // No "not found" state defined for this gate (e.g. บัตรประจำตัวคนพิการ,
+          // which now lives among เอกสารราชการ) — just hide it instead of showing
+          // an out-of-place "no record found" message next to real documents.
+          gate.style.display = 'none';
+        }
       }, delay);
     }
 
@@ -1573,10 +1577,14 @@
 
     // The individual Tier 2 dataset cards stay hidden until at least one has been
     // granted — before that, the banner above is the only, uncluttered entry point.
+    // บัตรประจำตัวคนพิการ now lives inside เอกสารราชการ, not this list, so it
+    // shouldn't count toward whether this list has anything to show.
     function updateTier2GateListVisibility() {
       var list = document.getElementById('tier2-gate-list');
       if (!list) return;
-      var anyGranted = Object.keys(TIER2_INFO).some(function (k) { return consent.tier2[k]; });
+      var anyGranted = Object.keys(TIER2_INFO).some(function (k) {
+        return k !== 'disability' && consent.tier2[k];
+      });
       list.style.display = anyGranted ? '' : 'none';
     }
 
