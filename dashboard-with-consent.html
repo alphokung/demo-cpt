@@ -56,7 +56,30 @@
         <!-- Page Header -->
 
         <!-- ═══════════════════════════════════════════ -->
-        <!-- Tier 1 consent gate -->
+        <!-- วันสำคัญ — public, always visible (guest included) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="loading-wrapper">
+          <div id="daily-notice-list" class="notice-list" style="display:none;">
+            <!-- วันพระ -->
+            <div id="wan-phra-bar" class="notice-item notice-item--info mb-0" style="display:none;">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">brightness_5</span></div>
+              <div class="notice-item__body">
+                <p id="wan-phra-text" class="notice-item__text">วันนี้วันพระ</p>
+              </div>
+            </div>
+
+            <!-- วันสำคัญอื่นๆ -->
+            <div id="special-day-bar" class="notice-item notice-item--info" style="display:none;">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">auto_awesome</span></div>
+              <div class="notice-item__body">
+                <p id="special-day-text" class="notice-item__text">—</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Tier 1 consent gate — hidden entirely for the guest/not-logged-in persona -->
         <!-- ═══════════════════════════════════════════ -->
         <div id="tier1-locked-panel" class="tier1-locked-panel" style="display:none;">
           <div class="tier1-locked-panel__icon">
@@ -75,7 +98,7 @@
         <div id="tier1-content">
 
           <!-- ═══════════════════════════════════════════ -->
-          <!-- MERGED: Welcome + Weather + PM2.5 + วันสำคัญ + Focus -->
+          <!-- MERGED: Welcome + Weather + PM2.5 + Focus -->
           <!-- ═══════════════════════════════════════════ -->
           <div class="loading-wrapper">
 
@@ -156,9 +179,6 @@
             </div><!-- /loaded-item -->
           </div><!-- /loading-wrapper -->
 
-
-
-
           <!-- ═══════════════════════════════════════════ -->
           <!-- รู้หรือไม่ -->
           <!-- ═══════════════════════════════════════════ -->
@@ -211,22 +231,6 @@
             <p class="list-section-note">การแจ้งเตือนและข้อมูลสำคัญประจำวันของคุณ</p>
 
             <div class="notice-list">
-              <!-- วันสำคัญประจำวัน: วันพระ -->
-              <div id="wan-phra-bar" class="notice-item notice-item--info" style="display:none;">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">brightness_5</span></div>
-                <div class="notice-item__body">
-                  <p id="wan-phra-text" class="notice-item__text">วันนี้วันพระ</p>
-                </div>
-              </div>
-
-              <!-- วันสำคัญประจำวัน: วันสำคัญอื่นๆ -->
-              <div id="special-day-bar" class="notice-item notice-item--info" style="display:none;">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">auto_awesome</span></div>
-                <div class="notice-item__body">
-                  <p id="special-day-text" class="notice-item__text">—</p>
-                </div>
-              </div>
-
               <!-- วันเกิด -->
               <div id="birthday-bar" class="notice-item notice-item--positive notice-item--birthday"
                 style="display:none;">
@@ -293,378 +297,373 @@
             </div>
           </div>
 
-          <div class="list-section">
-           <div class="card card__inner">
-            <div class="section-title-container card-section__title-container">
-              <div class="section-bar card-section__bar--primary"></div>
-              <h3 class="section-title card-section__heading">เอกสารราชการ</h3>
+          <div class="list-section mb-0">
+            <p class="list-section-title">เอกสารราชการ และทรัพย์สินของคุณ</p>
+            <p class="list-section-note">รวมเอกสารเอกสารราชการ และทรัพย์สินของคุณ </p>
+            <div class="card card__inner">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">เอกสารราชการ</h3>
+              </div>
+              <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+
+              <div class="cert-list">
+                <!-- Driving License -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon driving">
+                      <span class="material-symbols-outlined">directions_car</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                      <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 5 พ.ค. 2572</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Passport -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                    <div class="list-icon work">
+                      <span class="material-symbols-outlined">public</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                      <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime; shown only if the -->
+                <!-- current citizen actually holds one and has consented to view it) -->
+                <div class="tier2-gate" data-tier2-key="disability">
+
+                  <!-- Loading state -->
+                  <div class="tier2-loading" data-state="loading" style="display:none;">
+                    <span class="tier2-loading__spinner"></span>
+                    <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
+                  </div>
+
+                  <!-- Loaded state -->
+                  <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon list-icon--disability">
+                      <span class="material-symbols-outlined">accessible</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                      <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 14 ก.พ. 2571</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+              </div>
             </div>
-            <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
-            <p class="consent-note">
-              <span class="material-symbols-outlined consent-note__icon">cached</span>
-              ข้อมูลทั่วไปนี้ถูกแคชไว้ในเครื่องเพื่อความรวดเร็ว และอัปเดตเป็นระยะ
-            </p>
 
-            <div class="cert-list">
-              <!-- Driving License -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+            <div class="card card__inner mt-xl">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ทรัพย์สินของคุณ</h3>
+              </div>
+              <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+              <div class="cert-list">
+                <!-- Electricity Meter 1: MEA Unpaid -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
                   </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
-                  <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
-                  <div class="list-icon driving">
-                    <span class="material-symbols-outlined">directions_car</span>
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
-                    <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                        <span>หมดอายุ: 5 พ.ค. 2572</span>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
+                    <div class="list-icon covid">
+                      <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
+                      <p class="list-item-hero">มิเตอร์ไฟ: 020012345678</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">home</span>
+                          มิเตอร์บ้านพักอาศัย
+                        </div>
                       </div>
 
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                      <div class="list-meta">
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-              <!-- Passport -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
-                  <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
-                  <div class="list-icon work">
-                    <span class="material-symbols-outlined">public</span>
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
-                    <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                        <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
-                      </div>
-
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        <span>ข้อมูล ณ 29 พ.ค. 2569</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-              <!-- บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime; shown only if the -->
-              <!-- current citizen actually holds one and has consented to view it) -->
-              <div class="tier2-gate" data-tier2-key="disability">
-
-                <!-- Loading state -->
-                <div class="tier2-loading" data-state="loading" style="display:none;">
-                  <span class="tier2-loading__spinner"></span>
-                  <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
                 </div>
 
-                <!-- Loaded state -->
-                <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
-                  <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
-                  <div class="list-icon list-icon--disability">
-                    <span class="material-symbols-outlined">accessible</span>
+                <!-- Water Meter 1: MWA Unpaid -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
                   </div>
-                  <div class="list-body">
-                    <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
-                    <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                        <span>หมดอายุ: 14 ก.พ. 2571</span>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                    <div class="list-icon driving">
+                      <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
+                      <p class="list-item-hero">มิเตอร์น้ำ: 102548976</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">home</span>
+                          มิเตอร์บ้านพักอาศัย
+                        </div>
                       </div>
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
 
+
+
+
+                <!-- Electricity Meter 3: PEA Paid -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
+                    <div class="list-icon covid">
+                      <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
+                      <p class="list-item-hero">มิเตอร์ไฟ: 020087654321</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">storefront</span>
+                          มิเตอร์ร้านค้า
+                        </div>
+
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Water Meter 2: PWA Paid -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
+                    <div class="list-icon driving">
+                      <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
+                      <p class="list-item-hero">มิเตอร์น้ำ: 552109876</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">home</span>
+                          มิเตอร์บ้านพักอาศัย
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+
+                <!-- Honda Civic -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                    <div class="list-icon driving">
+                      <span class="material-symbols-outlined">directions_car</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">รถยนต์</p>
+                      <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          <span>รุ่นรถ: Honda Civic</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Yamaha Grand Filano -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
+                    <div class="list-icon driving">
+                      <span class="material-symbols-outlined">two_wheeler</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">รถจักรยานยนต์</p>
+                      <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                          <span>รุ่นรถ: Yamaha Grand Filano</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+
+              </div>
             </div>
-           </div>
 
-          </div>
-
-          <!-- 4. Assets -->
-          <div class="list-section">
-           <div class="card card__inner">
-            <div class="section-title-container card-section__title-container">
-              <div class="section-bar card-section__bar--primary"></div>
-              <h3 class="section-title card-section__heading">ทรัพย์สินของคุณ</h3>
-            </div>
-            <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
-
-            <div class="cert-list">
-              <!-- Electricity Meter 1: MEA Unpaid -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
-                  <div class="list-icon covid">
-                    <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้านครหลวง</p>
-                    <p class="list-item-hero">มิเตอร์ไฟ: 020012345678</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">home</span>
-                        มิเตอร์บ้านพักอาศัย
-                      </div>
-                    </div>
-
-                    <div class="list-meta">
-
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        ข้อมูล ณ 29 พ.ค. 2569
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-              <!-- Water Meter 1: MWA Unpaid -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
-                  <div class="list-icon driving">
-                    <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">มิเตอร์น้ำ การประปานครหลวง</p>
-                    <p class="list-item-hero">มิเตอร์น้ำ: 102548976</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">home</span>
-                        มิเตอร์บ้านพักอาศัย
-                      </div>
-                    </div>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        ข้อมูล ณ 29 พ.ค. 2569
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-
-
-
-              <!-- Electricity Meter 3: PEA Paid -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
-                  <div class="list-icon covid">
-                    <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">มิเตอร์ไฟ การไฟฟ้าส่วนภูมิภาค</p>
-                    <p class="list-item-hero">มิเตอร์ไฟ: 020087654321</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">storefront</span>
-                        มิเตอร์ร้านค้า
-                      </div>
-
-                    </div>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        ข้อมูล ณ 29 พ.ค. 2569
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-              <!-- Water Meter 2: PWA Paid -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
-                  <div class="list-icon driving">
-                    <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">มิเตอร์น้ำ การประปาส่วนภูมิภาค</p>
-                    <p class="list-item-hero">มิเตอร์น้ำ: 552109876</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">home</span>
-                        มิเตอร์บ้านพักอาศัย
-                      </div>
-                    </div>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        ข้อมูล ณ 29 พ.ค. 2569
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-
-              <!-- Honda Civic -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                  <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
-                  <div class="list-icon driving">
-                    <span class="material-symbols-outlined">directions_car</span>
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">รถยนต์</p>
-                    <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">directions_car</span>
-                        <span>รุ่นรถ: Honda Civic</span>
-                      </div>
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                        <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
-                      </div>
-                    </div>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        <span>ข้อมูล ณ 29 พ.ค. 2569</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-              <!-- Yamaha Grand Filano -->
-              <div class="loading-wrapper">
-                <div class="list-item skeleton-item" style="pointer-events:none;">
-                  <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
-                  <div class="skeleton-loading" class="skeleton-icon-md"></div>
-                  <div class="list-body" class="skeleton-body-gap">
-                    <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
-                    <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
-                  </div>
-                  <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
-                </div>
-                <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
-                  onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                  <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
-                  <div class="list-icon driving">
-                    <span class="material-symbols-outlined">two_wheeler</span>
-                  </div>
-                  <div class="list-body">
-                    <p class="list-item-label">รถจักรยานยนต์</p>
-                    <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
-                        <span>รุ่นรถ: Yamaha Grand Filano</span>
-                      </div>
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                        <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
-                      </div>
-                    </div>
-                    <div class="list-meta">
-                      <div class="list-meta-item">
-                        <span class="material-symbols-outlined list-meta-icon">update</span>
-                        <span>ข้อมูล ณ 29 พ.ค. 2569</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span class="material-symbols-outlined chevron">chevron_right</span>
-                </a>
-              </div>
-
-
-            </div>
-           </div>
           </div>
 
         </div><!-- /tier1-content -->
@@ -1222,6 +1221,8 @@
               บัตรคนพิการ</button>
             <button class="dc-chip" id="chip-persona-somying" onclick="setPersona('somying')">คุณสมหญิง ·
               บัตรสวัสดิการฯ + บัตรคนพิการ</button>
+            <button class="dc-chip" id="chip-persona-guest" onclick="setPersona('guest')">ผู้เยี่ยมชม ·
+              ไม่เข้าสู่ระบบ</button>
           </div>
         </div>
 
@@ -1294,9 +1295,13 @@
       wrappers.forEach(wrapper => {
         const skeleton = wrapper.querySelector('.skeleton-item');
         const loaded = wrapper.querySelector('.loaded-item');
+        // วันสำคัญ shares this wrapper's skeleton with รู้หรือไม่ — reveal both
+        // together instead of popping in before รู้หรือไม่ has finished loading.
+        const dailyNotices = wrapper.querySelector('#daily-notice-list');
 
         if (skeleton) skeleton.style.display = '';
         if (loaded) loaded.style.display = 'none';
+        if (dailyNotices) dailyNotices.style.display = 'none';
 
         // Random duration up to 2 seconds (between 400ms and 2000ms)
         const randomDelay = 400 + Math.random() * 1600;
@@ -1304,6 +1309,7 @@
         setTimeout(() => {
           if (skeleton) skeleton.style.display = 'none';
           if (loaded) loaded.style.display = '';
+          if (dailyNotices) dailyNotices.style.display = '';
           onWrapperDone();
         }, randomDelay);
       });
@@ -1363,6 +1369,13 @@
         tagline: 'ผู้ถือบัตรสวัสดิการแห่งรัฐและบัตรประจำตัวคนพิการ',
         forceBirthday: false,
         entitlements: { disability: true, welfare: true },
+      },
+      guest: {
+        fullName: 'ผู้เยี่ยมชม',
+        tagline: 'ยังไม่ได้เข้าสู่ระบบ',
+        forceBirthday: false,
+        isGuest: true,
+        entitlements: {},
       },
     };
 
@@ -1624,16 +1637,22 @@
       var content = document.getElementById('tier1-content');
       var locked = document.getElementById('tier1-locked-panel');
       var tier2Section = document.getElementById('tier2-section');
+      var isGuest = !!(PERSONAS[currentPersonaKey] && PERSONAS[currentPersonaKey].isGuest);
       if (consent.tier1) {
         if (content) content.style.display = '';
         if (locked) locked.style.display = 'none';
         if (tier2Section) tier2Section.style.display = '';
-        initLoading();
       } else {
         if (content) content.style.display = 'none';
-        if (locked) locked.style.display = '';
+        // A guest hasn't logged in at all, so prompting them to consent to
+        // Tier 1 (which implies they already have an identity) doesn't apply —
+        // they only get the public วันสำคัญ / รู้หรือไม่ content above.
+        if (locked) locked.style.display = isGuest ? 'none' : '';
         if (tier2Section) tier2Section.style.display = 'none';
       }
+      // Runs regardless of Tier 1 status — วันสำคัญ and รู้หรือไม่ are public
+      // .loading-wrapper cards that live outside #tier1-content.
+      initLoading();
       updateConsentButtonVisibility();
       updateTier2ConsentBanner();
       updateTier2GateListVisibility();
@@ -1751,7 +1770,8 @@
       Object.keys(TIER2_INFO).forEach(function (key) {
         renderTier2(key, false);
       });
-      if (!consent.tier1) {
+      var isGuest = !!(PERSONAS[currentPersonaKey] && PERSONAS[currentPersonaKey].isGuest);
+      if (!consent.tier1 && !isGuest) {
         setTimeout(function () { openModal('modal-consent-tier1'); }, 400);
       }
     }
