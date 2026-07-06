@@ -268,8 +268,8 @@
                 </div>
               </div>
 
-              <!-- ใบสั่ง -->
-              <div class="notice-item notice-item--danger"
+              <!-- ใบสั่ง: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (ticket) แล้ว -->
+              <div id="notice-ticket-reminder" class="notice-item notice-item--danger" style="display:none;"
                 onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
                 <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">receipt_long</span></div>
                 <div class="notice-item__body">
@@ -1313,7 +1313,7 @@
     var CONSENT_STORAGE_KEY = 'czp_consent_v1';
 
     function defaultConsent() {
-      return { tier1: false, tier2: { health: false, disability: false, welfare: false, insurance: false } };
+      return { tier1: false, tier2: { health: false, disability: false, welfare: false, insurance: false, ticket: false } };
     }
 
     function loadConsent() {
@@ -1328,6 +1328,7 @@
               disability: !!(parsed.tier2 && parsed.tier2.disability),
               welfare: !!(parsed.tier2 && parsed.tier2.welfare),
               insurance: !!(parsed.tier2 && parsed.tier2.insurance),
+              ticket: !!(parsed.tier2 && parsed.tier2.ticket),
             }
           };
         }
@@ -1399,6 +1400,13 @@
       if (insuranceEl) {
         insuranceEl.style.display = consent.tier2.insurance ? '' : 'none';
       }
+
+      // Traffic ticket reminder is Tier 2 (realtime, from the police) — hidden
+      // until the user explicitly consents to view their ticket data.
+      var ticketEl = document.getElementById('notice-ticket-reminder');
+      if (ticketEl) {
+        ticketEl.style.display = consent.tier2.ticket ? '' : 'none';
+      }
     }
 
     // Switching persona changes who the dashboard belongs to, so any previously
@@ -1435,6 +1443,12 @@
         sub: 'สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย (คปภ.)',
         desc: 'ระบบจะเรียกดูกรมธรรม์ประกันภัยที่คุณถืออยู่ (ประเภทกรมธรรม์, ผู้รับประกัน, ระยะเวลาคุ้มครอง) จาก คปภ. แบบเรียลไทม์',
         icon: 'policy',
+      },
+      ticket: {
+        title: 'ข้อมูลใบสั่งจราจร',
+        sub: 'สำนักงานตำรวจแห่งชาติ',
+        desc: 'ระบบจะเรียกดูใบสั่งจราจรค้างชำระที่ผูกกับทะเบียนรถของคุณจากสำนักงานตำรวจแห่งชาติ แบบเรียลไทม์',
+        icon: 'receipt_long',
       },
     };
 
@@ -1582,8 +1596,10 @@
     function updateTier2GateListVisibility() {
       var list = document.getElementById('tier2-gate-list');
       if (!list) return;
+      // Only count datasets that actually have a gate card inside this list —
+      // some (บัตรประจำตัวคนพิการ, ใบสั่งจราจร) live elsewhere or are notice-only.
       var anyGranted = Object.keys(TIER2_INFO).some(function (k) {
-        return k !== 'disability' && consent.tier2[k];
+        return consent.tier2[k] && list.querySelector('.tier2-gate[data-tier2-key="' + k + '"]');
       });
       list.style.display = anyGranted ? '' : 'none';
     }
@@ -1600,7 +1616,7 @@
     function updateConsentButtonVisibility() {
       var btn = document.getElementById('top-nav-consent-btn');
       if (!btn) return;
-      var hasAnyConsent = consent.tier1 || consent.tier2.health || consent.tier2.disability || consent.tier2.welfare;
+      var hasAnyConsent = consent.tier1 || Object.keys(TIER2_INFO).some(function (k) { return consent.tier2[k]; });
       btn.style.display = hasAnyConsent ? '' : 'none';
     }
 
