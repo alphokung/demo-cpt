@@ -1174,6 +1174,26 @@
 
 
 
+        
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- บริการที่คุณน่าจะสนใจ (public — ไม่ต้อง consent) -->
+        <!-- อ้างอิงบริการยอดนิยมจาก thangrath.go.th (ยกเว้น เตือนD และ ดีเด่น Ask AI) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Rendered from SERVICE_CATALOG + PERSONA_SERVICES by renderServices() -->
+        <div id="services-section" class="list-section" style="display:none;">
+          <p class="list-section-title">บริการที่คุณน่าจะสนใจ</p>
+          <p class="list-section-note">บริการภาครัฐยอดนิยมที่คุณอาจใช้บ่อย</p>
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการแนะนำสำหรับคุณ</h3>
+            </div>
+            <p class="list-section-note">คัดสรรตามข้อมูลและสิทธิ์ของคุณ</p>
+            <div id="services-list" class="cert-list"></div>
+          </div>
+        </div>
+
         <div class="footer-timestamp">
           ข้อมูล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
         </div>
@@ -1513,6 +1533,57 @@
       },
     };
 
+    // ─── บริการที่คุณน่าจะสนใจ ──────────────────────────────────────────────
+    // Catalog of recommendable services (public, no consent needed). `icon` is an
+    // image path under _media/ — swap these for the real service icons.
+    var SERVICE_CATALOG = {
+      vehicle_reg: {
+        title: 'ตรวจสอบทะเบียนรถ',
+        category: 'ยานพาหนะ',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2023/03/IC_%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%97%E0%B8%B0%E0%B9%80%E0%B8%9A%E0%B8%B5%E0%B8%A2%E0%B8%99%E0%B8%A3%E0%B8%96.jpg',
+        url: 'https://www.thangrath.go.th/feature/vehicle-registration-information/',
+      },
+      traffic_ticket: {
+        title: 'ตรวจสอบใบสั่งจราจร',
+        category: 'ยานพาหนะ',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2023/03/%E0%B9%83%E0%B8%9A%E0%B8%AA%E0%B8%B1%E0%B9%88%E0%B8%87768.jpg',
+        url: 'https://www.thangrath.go.th/feature/%e0%b9%83%e0%b8%9a%e0%b8%aa%e0%b8%b1%e0%b9%88%e0%b8%87%e0%b8%88%e0%b8%a3%e0%b8%b2%e0%b8%88%e0%b8%a3/',
+      },
+      newborn_subsidy: {
+        title: 'เงินอุดหนุนเด็กแรกเกิด',
+        category: 'สวัสดิการ',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B9%80%E0%B8%87%E0%B8%B4%E0%B8%99%E0%B8%AD%E0%B8%B8%E0%B8%94%E0%B8%AB%E0%B8%99%E0%B8%B8%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B9%81%E0%B8%A3%E0%B8%81%E0%B9%80%E0%B8%81%E0%B8%B4%E0%B8%94.png',
+        url: 'https://www.thangrath.go.th/feature/%e0%b9%80%e0%b8%87%e0%b8%b4%e0%b8%99%e0%b8%ad%e0%b8%b8%e0%b8%94%e0%b8%ab%e0%b8%99%e0%b8%b8%e0%b8%99%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%81%e0%b9%81%e0%b8%a3%e0%b8%81%e0%b9%80%e0%b8%81%e0%b8%b4%e0%b8%94-3/',
+      },
+      credit_bureau: {
+        title: 'ตรวจสอบเครดิตบูโร',
+        category: 'การเงิน · ประกัน',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%94%E0%B8%B4%E0%B8%95%E0%B8%9A%E0%B8%B9%E0%B9%82%E0%B8%A3.png',
+        url: 'https://www.thangrath.go.th/feature/%e0%b8%95%e0%b8%a3%e0%b8%a7%e0%b8%88%e0%b8%aa%e0%b8%ad%e0%b8%9a%e0%b9%80%e0%b8%84%e0%b8%a3%e0%b8%94%e0%b8%b4%e0%b8%95%e0%b8%9a%e0%b8%b9%e0%b9%82%e0%b8%a3-%e0%b8%87%e0%b9%88%e0%b8%b2%e0%b8%a2%e0%b9%81/',
+      },
+      medical_rights: {
+        title: 'ตรวจสอบสิทธิการรักษาพยาบาล',
+        category: 'สุขภาพ',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B8%A3%E0%B8%B1%E0%B8%81%E0%B8%A9%E0%B8%B2%E0%B8%9E%E0%B8%A2%E0%B8%B2%E0%B8%9A%E0%B8%B2%E0%B8%A5.png',
+        url: 'https://www.thangrath.go.th/feature/%e0%b8%95%e0%b8%a3%e0%b8%a7%e0%b8%88%e0%b8%aa%e0%b8%ad%e0%b8%9a%e0%b8%aa%e0%b8%b4%e0%b8%97%e0%b8%98%e0%b8%b4%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%a3%e0%b8%b1%e0%b8%81%e0%b8%a9%e0%b8%b2%e0%b8%9e%e0%b8%a2/',
+      },
+      social_insurance: {
+        title: 'เช็กสิทธิประกันสังคม',
+        category: 'สวัสดิการ',
+        icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%AA%E0%B8%B1%E0%B8%87%E0%B8%84%E0%B8%A1.png',
+        url: 'https://www.thangrath.go.th/feature/%e0%b9%80%e0%b8%8a%e0%b9%87%e0%b8%81%e0%b8%aa%e0%b8%b4%e0%b8%97%e0%b8%98%e0%b8%b4%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%81%e0%b8%b1%e0%b8%99%e0%b8%aa%e0%b8%b1%e0%b8%87%e0%b8%84%e0%b8%a1-%e0%b9%82%e0%b8%84/',
+      },
+    };
+
+    // Which services to surface per persona, in display order. Keys reference
+    // SERVICE_CATALOG above.
+    var PERSONA_SERVICES = {
+      somchai: ['vehicle_reg', 'traffic_ticket', 'credit_bureau', 'medical_rights'],
+      somsri: ['medical_rights', 'social_insurance', 'traffic_ticket', 'credit_bureau'],
+      somying: ['social_insurance', 'newborn_subsidy', 'medical_rights', 'credit_bureau'],
+      guest: ['vehicle_reg', 'traffic_ticket', 'credit_bureau', 'medical_rights'],
+    };
+
     function loadPersonaKey() {
       try { return PERSONAS[localStorage.getItem(PERSONA_STORAGE_KEY)] ? localStorage.getItem(PERSONA_STORAGE_KEY) : 'somchai'; }
       catch (e) { return 'somchai'; }
@@ -1528,7 +1599,55 @@
       var nameEl = document.getElementById('greeting-name');
       if (nameEl) nameEl.textContent = persona.fullName;
       DEMO.birthday = persona.forceBirthday;
+      renderServices();
       updateProactiveNotices();
+    }
+
+    // Renders บริการที่คุณน่าจะสนใจ from the current persona's service list.
+    // For a signed-in persona the section stays hidden until Tier 1 consent is
+    // given; the guest persona never consents to Tier 1, so it shows immediately.
+    function renderServices() {
+      var section = document.getElementById('services-section');
+      var list = document.getElementById('services-list');
+      if (!section || !list) return;
+      var isGuest = !!(PERSONAS[currentPersonaKey] && PERSONAS[currentPersonaKey].isGuest);
+      if (!isGuest && !consent.tier1) {
+        section.style.display = 'none';
+        return;
+      }
+      var keys = PERSONA_SERVICES[currentPersonaKey] || [];
+      // Same skeleton → loaded-item pattern as เอกสารราชการ; initLoading() reveals
+      // the loaded items after a short delay (so renderServices must run first).
+      list.innerHTML = keys.map(function (key) {
+        var svc = SERVICE_CATALOG[key];
+        if (!svc) return '';
+        return '' +
+          '<div class="loading-wrapper">' +
+            '<div class="list-item skeleton-item" style="pointer-events:none;">' +
+              '<span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>' +
+              '<div class="skeleton-loading" class="skeleton-icon-md"></div>' +
+              '<div class="list-body" class="skeleton-body-gap">' +
+                '<div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>' +
+                '<div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>' +
+              '</div>' +
+              '<div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>' +
+            '</div>' +
+            '<a href="' + svc.url + '" target="_blank" rel="noopener" class="list-item loaded-item" style="display:none;">' +
+              '<div class="list-icon">' +
+                '<img src="' + svc.icon + '" alt="" class="img-helper-frame circle size-sm">' +
+              '</div>' +
+              '<div class="list-body">' +
+                '<p class="list-item-label">' + svc.title + '</p>' +
+                '<div class="list-meta"><div class="list-meta-item">' +
+                  '<span class="material-symbols-outlined list-meta-icon">category</span>' +
+                  '<span>' + svc.category + '</span>' +
+                '</div></div>' +
+              '</div>' +
+              '<span class="material-symbols-outlined chevron">chevron_right</span>' +
+            '</a>' +
+          '</div>';
+      }).join('');
+      section.style.display = keys.length ? '' : 'none';
     }
 
     // "เบี้ยความพิการเดือนนี้โอนแล้ว" only makes sense for a persona who actually
@@ -1816,6 +1935,10 @@
         if (tier2Section) tier2Section.style.display = 'none';
         if (moneySection) moneySection.style.display = 'none';
       }
+      // Recommended services depend on Tier 1 consent for signed-in personas —
+      // render before initLoading() so its freshly-built skeleton wrappers are
+      // picked up and revealed along with the rest of the page.
+      renderServices();
       // Runs regardless of Tier 1 status — วันสำคัญ and รู้หรือไม่ are public
       // .loading-wrapper cards that live outside #tier1-content.
       initLoading();
