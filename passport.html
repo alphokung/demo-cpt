@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หนังสือเดินทาง — ทางรัฐ</title>
+  <meta name="description" content="ข้อมูลหนังสือเดินทาง (Passport) ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .color-dot {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.15);
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* ── Passport Picker (reuses vehicle-row pattern) ── */
+    .passport-row {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      padding: var(--spacing-md) var(--spacing-sm);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+      margin: 0 calc(-1 * var(--spacing-sm));
+    }
+    .passport-row:hover { background: var(--background-neutral-subtle); }
+    .passport-row--active {
+      background: var(--primary-99);
+      border-color: var(--primary-40);
+    }
+    /* small passport-book icon that carries the cover colour */
+    .passport-row-book {
+      width: 44px; height: 56px; flex-shrink: 0;
+      border-radius: 4px 7px 7px 4px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset -6px 0 8px -6px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    .passport-row-book img { width: 24px; height: 24px; opacity: 0.92; }
+    .passport-row-type {
+      font-size: var(--font-size-body-l);
+      font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default);
+      margin: 0;
+    }
+    .passport-row-no {
+      font-size: var(--font-size-body-s);
+      color: var(--foreground-neutral-lighter);
+      margin: 2px 0 0;
+      font-family: monospace; letter-spacing: 0.5px;
+    }
+    .passport-row-divider {
+      height: 1px;
+      background: var(--stroke-neutral-lighter);
+      margin: var(--spacing-xs) 0;
+    }
+
+    /* ── Collapsible picker ── */
+    .pp-collapse-header {
+      cursor: pointer;
+      user-select: none;
+      align-items: center;
+    }
+    .pp-collapse-header .section-title { flex: 1; }
+    .pp-collapse-chevron {
+      color: var(--foreground-neutral-lighter);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+    .pp-collapse-body {
+      overflow: hidden;
+      transition: max-height 0.28s ease, opacity 0.2s ease, margin-top 0.28s ease;
+      max-height: 1200px;
+      opacity: 1;
+      /* pad + negative margin so the active row's bleeding border isn't clipped */
+      padding: 2px var(--spacing-sm);
+      margin: 0 calc(-1 * var(--spacing-sm));
+    }
+    #passport-picker.is-collapsed .pp-collapse-body {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+    }
+    #passport-picker.is-collapsed .pp-collapse-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* ── Status tag ── */
+    .pp-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px var(--spacing-sm); border-radius: var(--radius-full);
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-500);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .pp-tag .material-symbols-outlined { font-size: 14px; font-variation-settings: 'FILL' 1; }
+    .pp-tag--ok   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
+    .pp-tag--warn { background: var(--background-warning-lighter); color: var(--foreground-warning-default); }
+    .pp-tag--exp  { background: var(--background-negative-light);  color: var(--foreground-negative-default); }
+
+    /* ── Passport Cover Hero ── */
+    .pp-cover {
+      border-radius: 8px 16px 16px 8px;
+      padding: 22px 20px 20px;
+      color: #e9d9a8;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset -14px 0 22px -14px rgba(0,0,0,0.55), 0 6px 18px rgba(0,0,0,0.28);
+      transition: background 0.3s;
+    }
+    /* faint spine line on the left */
+    .pp-cover::before {
+      content: "";
+      position: absolute; top: 0; bottom: 0; left: 10px;
+      width: 1px; background: rgba(255,255,255,0.12);
+    }
+    .pp-cover-garuda {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .pp-cover-garuda img {
+      width: 78px; height: 78px;
+      filter: brightness(0) saturate(100%) invert(83%) sepia(28%) saturate(560%) hue-rotate(3deg) brightness(94%) contrast(88%);
+    }
+    .pp-cover-title-th {
+      text-align: center; font-family: "Anuphan", sans-serif;
+      font-size: 17px; font-weight: 600; letter-spacing: 1px;
+      margin: 0;
+    }
+    .pp-cover-title-en {
+      text-align: center;
+      font-size: 12px; font-weight: 500; letter-spacing: 3px;
+      opacity: 0.85; margin: 2px 0 16px;
+      text-transform: uppercase;
+    }
+    .pp-cover-foot {
+      display: flex; justify-content: center; align-items: flex-end;
+      border-top: 1px solid rgba(233,217,168,0.28);
+      padding-top: 12px;
+    }
+    .pp-cover-no-block { text-align: center; }
+    .pp-cover-no-block .pp-cover-foot-value { letter-spacing: 3px; }
+    .pp-cover-foot-label {
+      font-size: 10px; letter-spacing: 1px; opacity: 0.75;
+      text-transform: uppercase; margin: 0 0 2px;
+    }
+    .pp-cover-foot-value {
+      font-family: monospace; font-size: 18px; font-weight: 700;
+      letter-spacing: 1.5px; margin: 0; color: #f4e8c4;
+    }
+
+    /* ── Sync / cache bar ── */
+    .cache-bar {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--background-neutral-subtle);
+      border-radius: var(--radius-lg);
+      margin-top: var(--spacing-lg);
+    }
+    .cache-bar-icon {
+      width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%;
+      background: var(--primary-95); color: var(--primary-20);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cache-bar-icon .material-symbols-outlined { font-size: 20px; }
+    .cache-bar-text { flex: 1; min-width: 0; }
+    .cache-bar-title {
+      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default); margin: 0;
+    }
+    .cache-bar-sub {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 2px 0 0;
+    }
+    .btn-sync {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--primary-40); background: transparent;
+      color: var(--primary-40); font-family: "Anuphan", sans-serif;
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-600);
+      cursor: pointer; transition: background 0.15s, opacity 0.15s;
+    }
+    .btn-sync:hover { background: var(--primary-99); }
+    .btn-sync:disabled { opacity: 0.6; cursor: default; }
+    .btn-sync .material-symbols-outlined { font-size: 18px; }
+    .btn-sync.is-syncing .material-symbols-outlined {
+      animation: pp-spin 0.8s linear infinite;
+    }
+    @keyframes pp-spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">book_2</span>
+          </div>
+          <p class="top-nav-bar-title">หนังสือเดินทาง</p>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- ── Welcome Card ── -->
+        <div class="card welcome-card welcome-card--green mb-xl">
+          <h2>สวัสดีคุณสมชาย</h2>
+          <p>เลขประจำตัวประชาชน 1-1002-00345-67-8</p>
+          <p>หนังสือเดินทางในครอบครอง 4 เล่ม</p>
+        </div>
+
+        <!-- ── Passport Picker ── -->
+        <div class="card mb-xl fade-in-1" id="passport-picker">
+          <div class="section-title-container pp-collapse-header" id="picker-header" onclick="togglePicker()" role="button" tabindex="0" aria-expanded="true" aria-controls="picker-body">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">หนังสือเดินทางในครอบครอง</h3>
+            <span class="material-symbols-outlined pp-collapse-chevron" id="picker-chevron">expand_less</span>
+          </div>
+
+          <div class="pp-collapse-body" id="picker-body">
+          <div class="passport-row passport-row--active" id="pick-ordinary" onclick="switchPassport('ordinary')">
+            <div class="passport-row-book" style="background:#7c1c2e;">
+              <img src="https://miniapps2-th.superapps-th.cloud/cp/consular/passport/assets/img/logo.png" alt="ครุฑ">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="passport-row-type">หนังสือเดินทางธรรมดา</p>
+              <p class="passport-row-no">AC7999999</p>
+            </div>
+            <span class="pp-tag pp-tag--ok">
+              <span class="material-symbols-outlined">verified</span>
+              ปกติ
+            </span>
+          </div>
+
+          <div class="passport-row-divider"></div>
+
+          <div class="passport-row" id="pick-official" onclick="switchPassport('official')">
+            <div class="passport-row-book" style="background:#1a3a7a;">
+              <img src="https://miniapps2-th.superapps-th.cloud/cp/consular/passport/assets/img/logo.png" alt="ครุฑ">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="passport-row-type">หนังสือเดินทางราชการ</p>
+              <p class="passport-row-no">OC1234567</p>
+            </div>
+            <span class="pp-tag pp-tag--ok">
+              <span class="material-symbols-outlined">verified</span>
+              ปกติ
+            </span>
+          </div>
+
+          <div class="passport-row-divider"></div>
+
+          <div class="passport-row" id="pick-diplomatic" onclick="switchPassport('diplomatic')">
+            <div class="passport-row-book" style="background:#d3202a;">
+              <img src="https://miniapps2-th.superapps-th.cloud/cp/consular/passport/assets/img/logo.png" alt="ครุฑ">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="passport-row-type">หนังสือเดินทางทูต</p>
+              <p class="passport-row-no">DC7654321</p>
+            </div>
+            <span class="pp-tag pp-tag--ok">
+              <span class="material-symbols-outlined">verified</span>
+              ปกติ
+            </span>
+          </div>
+
+          <div class="passport-row-divider"></div>
+
+          <div class="passport-row" id="pick-temporary" onclick="switchPassport('temporary')">
+            <div class="passport-row-book" style="background:#1a7a3a;">
+              <img src="https://miniapps2-th.superapps-th.cloud/cp/consular/passport/assets/img/logo.png" alt="ครุฑ">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <p class="passport-row-type">หนังสือเดินทางชั่วคราว</p>
+              <p class="passport-row-no">TC0009988</p>
+            </div>
+            <span class="pp-tag pp-tag--warn">
+              <span class="material-symbols-outlined">schedule</span>
+              ใกล้หมดอายุ
+            </span>
+          </div>
+          </div><!-- /picker-body -->
+        </div>
+
+        <!-- ── Passport Cover Hero ── -->
+        <div class="card mb-xl fade-in-2" style="padding:0;overflow:hidden;background:transparent;box-shadow:none;">
+          <div class="pp-cover" id="pp-cover" style="background:#7c1c2e;">
+            <div class="pp-cover-garuda">
+              <img src="https://miniapps2-th.superapps-th.cloud/cp/consular/passport/assets/img/logo.png" alt="ตราครุฑ">
+            </div>
+            <p class="pp-cover-title-th">หนังสือเดินทาง</p>
+            <p class="pp-cover-title-en">Passport · Thailand</p>
+            <div class="pp-cover-foot">
+              <div class="pp-cover-no-block">
+                <p class="pp-cover-foot-label">Passport No.</p>
+                <p class="pp-cover-foot-value" id="pp-cover-no">AC7999999</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Passport Info Card ── -->
+        <div class="card mb-xl fade-in-2" id="info-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--secondary-40-main);"></div>
+            <h3 class="section-title">ข้อมูลหนังสือเดินทาง</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">เลขหนังสือเดินทาง</span>
+              <span class="details-value" id="info-no" style="font-family:monospace;letter-spacing:0.5px;">AC7999999</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ชื่อสกุล / Full name</span>
+              <span class="details-value" id="info-name-en">Somchai Jaidee</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ชื่อสกุล (ไทย)</span>
+              <span class="details-value" id="info-name-th">สมชาย ใจดี</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">วันเกิด / Date of Birth</span>
+              <span class="details-value" id="info-dob">5 JAN 1995</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เพศ / Sex</span>
+              <span class="details-value" id="info-sex">M (ชาย)</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">สถานที่เกิด / Place of Birth</span>
+              <span class="details-value" id="info-pob">BANGKOK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Issuance Card ── -->
+        <div class="card mb-xl fade-in-3" id="issue-card">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color:var(--warning-40);"></div>
+            <h3 class="section-title">การออกหนังสือเดินทาง</h3>
+          </div>
+
+          <!-- expiry notice (warning / expired) -->
+          <div id="pp-warning-notice" style="display:none; align-items:center; gap:var(--spacing-sm); padding:var(--spacing-sm) var(--spacing-md); border-radius:var(--radius-lg); margin-bottom:var(--spacing-md);">
+            <span class="material-symbols-outlined" id="pp-notice-icon" style="font-size:20px;flex-shrink:0;font-variation-settings:'FILL' 1;">warning</span>
+            <p style="font-size:var(--font-size-body-s);margin:0;" id="pp-warning-text"></p>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">ประเภทหนังสือเดินทาง / Type</span>
+              <span class="details-value" id="info-type">หนังสือเดินทางทั่วไป</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">วันที่ออก / Date of Issue</span>
+              <span class="details-value" id="info-issue">01 FEB 2025</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">วันที่หมดอายุ / Date of Expiry</span>
+              <span class="details-value" id="info-expiry" style="color:var(--foreground-positive-default);font-weight:var(--font-weight-700);">31 JAN 2035</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">สถานะ / Status</span>
+              <span class="details-value" id="info-status">ปกติ</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ออกให้โดย / Issuing Authority</span>
+              <span class="details-value" id="info-authority">MINISTRY OF FOREIGN AFFAIRS</span>
+            </div>
+          </div>
+
+          <!-- ── Sync / cache bar ── -->
+          <div class="cache-bar">
+            <div class="cache-bar-icon">
+              <span class="material-symbols-outlined">cached</span>
+            </div>
+            <div class="cache-bar-text">
+              <p class="cache-bar-title">ข้อมูลจากแคช</p>
+              <p class="cache-bar-sub" id="cache-sub">ซิงค์ล่าสุด: <span id="cache-time">—</span></p>
+            </div>
+            <button class="btn-sync" id="sync-btn" onclick="syncCache()">
+              <span class="material-symbols-outlined">sync</span>
+              <span id="sync-btn-text">ซิงค์ข้อมูล</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Source note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจากกรมการกงสุล กระทรวงการต่างประเทศ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Back to top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับไปที่รายการหนังสือเดินทาง" onclick="document.getElementById('passport-picker').scrollIntoView({behavior:'smooth',block:'start'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script>
+    var passports = {
+      ordinary: {
+        coverColor: '#7c1c2e',
+        typeLabel: 'หนังสือเดินทางธรรมดา',
+        no: 'AC7999999',
+        nameEn: 'Somchai Jaidee',
+        nameTh: 'สมชาย ใจดี',
+        dob: '5 JAN 1995',
+        sex: 'M (ชาย)',
+        pob: 'BANGKOK',
+        type: 'หนังสือเดินทางทั่วไป',
+        issue: '01 FEB 2025',
+        expiry: '31 JAN 2035',
+        status: 'ปกติ',
+        statusKind: 'ok',
+        authority: 'MINISTRY OF FOREIGN AFFAIRS'
+      },
+      official: {
+        coverColor: '#1a3a7a',
+        typeLabel: 'หนังสือเดินทางราชการ',
+        no: 'OC1234567',
+        nameEn: 'Somchai Jaidee',
+        nameTh: 'สมชาย ใจดี',
+        dob: '5 JAN 1995',
+        sex: 'M (ชาย)',
+        pob: 'BANGKOK',
+        type: 'หนังสือเดินทางราชการ',
+        issue: '10 MAR 2023',
+        expiry: '09 MAR 2028',
+        status: 'ปกติ',
+        statusKind: 'ok',
+        authority: 'MINISTRY OF FOREIGN AFFAIRS'
+      },
+      diplomatic: {
+        coverColor: '#d3202a',
+        typeLabel: 'หนังสือเดินทางทูต',
+        no: 'DC7654321',
+        nameEn: 'Somchai Jaidee',
+        nameTh: 'สมชาย ใจดี',
+        dob: '5 JAN 1995',
+        sex: 'M (ชาย)',
+        pob: 'BANGKOK',
+        type: 'หนังสือเดินทางทูต',
+        issue: '15 JUN 2024',
+        expiry: '14 JUN 2029',
+        status: 'ปกติ',
+        statusKind: 'ok',
+        authority: 'MINISTRY OF FOREIGN AFFAIRS'
+      },
+      temporary: {
+        coverColor: '#1a7a3a',
+        typeLabel: 'หนังสือเดินทางชั่วคราว',
+        no: 'TC0009988',
+        nameEn: 'Somchai Jaidee',
+        nameTh: 'สมชาย ใจดี',
+        dob: '5 JAN 1995',
+        sex: 'M (ชาย)',
+        pob: 'BANGKOK',
+        type: 'หนังสือเดินทางชั่วคราว',
+        issue: '20 DEC 2025',
+        expiry: '19 DEC 2026',
+        status: 'ใกล้หมดอายุ',
+        statusKind: 'warn',
+        authority: 'MINISTRY OF FOREIGN AFFAIRS'
+      }
+    };
+
+    var currentType = 'ordinary';
+
+    function togglePicker() {
+      var picker = document.getElementById('passport-picker');
+      var collapsed = picker.classList.toggle('is-collapsed');
+      document.getElementById('picker-header').setAttribute('aria-expanded', String(!collapsed));
+    }
+
+    // toggle with keyboard (Enter / Space) for the picker header
+    document.getElementById('picker-header').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePicker(); }
+    });
+
+    function switchPassport(type) {
+      var infoCard = document.getElementById('info-card');
+      if (type === currentType) {
+        if (infoCard) infoCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      currentType = type;
+
+      ['ordinary','official','diplomatic','temporary'].forEach(function(t){
+        document.getElementById('pick-' + t).classList.toggle('passport-row--active', t === type);
+      });
+
+      // re-trigger fade animations
+      ['pp-cover-card','info-card','issue-card'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; }
+      });
+
+      renderPassport(type);
+
+      if (infoCard) {
+        setTimeout(function(){ infoCard.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+      }
+    }
+
+    function renderPassport(type) {
+      var p = passports[type];
+      if (!p) return;
+
+      // Cover hero
+      document.getElementById('pp-cover').style.background = p.coverColor;
+      document.getElementById('pp-cover-no').textContent = p.no;
+
+      // Info card
+      document.getElementById('info-no').textContent = p.no;
+      document.getElementById('info-name-en').textContent = p.nameEn;
+      document.getElementById('info-name-th').textContent = p.nameTh;
+      document.getElementById('info-dob').textContent = p.dob;
+      document.getElementById('info-sex').textContent = p.sex;
+      document.getElementById('info-pob').textContent = p.pob;
+
+      // Issuance card
+      document.getElementById('info-type').textContent = p.type;
+      document.getElementById('info-issue').textContent = p.issue;
+      document.getElementById('info-authority').textContent = p.authority;
+
+      var expEl = document.getElementById('info-expiry');
+      expEl.textContent = p.expiry;
+      expEl.style.fontWeight = 'var(--font-weight-700)';
+
+      var statusEl = document.getElementById('info-status');
+      statusEl.textContent = p.status;
+
+      var noticeEl = document.getElementById('pp-warning-notice');
+      if (p.statusKind === 'exp') {
+        expEl.style.color = 'var(--foreground-negative-default)';
+        statusEl.style.color = 'var(--foreground-negative-default)';
+        showNotice(true, 'หนังสือเดินทางหมดอายุแล้ว · สิ้นสุด ' + p.expiry + ' กรุณาต่ออายุก่อนเดินทาง');
+      } else if (p.statusKind === 'warn') {
+        expEl.style.color = 'var(--foreground-warning-default)';
+        statusEl.style.color = 'var(--foreground-warning-default)';
+        showNotice(false, 'หนังสือเดินทางใกล้หมดอายุ · สิ้นสุด ' + p.expiry + ' หลายประเทศกำหนดให้มีอายุเหลืออย่างน้อย 6 เดือน');
+      } else {
+        expEl.style.color = 'var(--foreground-positive-default)';
+        statusEl.style.color = 'var(--foreground-positive-default)';
+        noticeEl.style.display = 'none';
+      }
+    }
+
+    function showNotice(isExp, text) {
+      var noticeEl = document.getElementById('pp-warning-notice');
+      noticeEl.style.display = 'flex';
+      noticeEl.style.background = isExp ? 'var(--background-negative-light)' : 'var(--background-warning-lighter)';
+      var icon = document.getElementById('pp-notice-icon');
+      icon.textContent = isExp ? 'error' : 'warning';
+      icon.style.color = isExp ? 'var(--foreground-negative-default)' : 'var(--foreground-warning-default)';
+      var txt = document.getElementById('pp-warning-text');
+      txt.style.color = isExp ? 'var(--foreground-negative-default)' : 'var(--foreground-warning-default)';
+      txt.textContent = text;
+    }
+
+    // give the cover card an id for animation reset
+    document.querySelector('.pp-cover').closest('.card').id = 'pp-cover-card';
+    // render initial
+    renderPassport('ordinary');
+  </script>
+
+  <!-- ── Cache / sync logic ── -->
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var CACHE_KEY = 'passport_cache_synced_at';
+
+      function fmt(d) {
+        return d.getDate() + ' ' + m[d.getMonth()] + ' ' + (d.getFullYear() + 543) +
+               ' เวลา ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') + ' น.';
+      }
+
+      function readStored() {
+        try { return localStorage.getItem(CACHE_KEY); } catch (e) { return null; }
+      }
+      function writeStored(v) {
+        try { localStorage.setItem(CACHE_KEY, v); } catch (e) {}
+      }
+
+      // On load: show cached sync time (or seed one if first visit)
+      var stored = readStored();
+      if (!stored) {
+        // pretend it was cached a little while ago
+        var seed = new Date(Date.now() - 26 * 60 * 60 * 1000); // ~1 วันก่อน
+        stored = fmt(seed);
+        writeStored(stored);
+      }
+      document.getElementById('cache-time').textContent = stored;
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = stored; });
+
+      window.syncCache = function() {
+        var btn = document.getElementById('sync-btn');
+        var btnText = document.getElementById('sync-btn-text');
+        var sub = document.getElementById('cache-sub');
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+        btn.classList.add('is-syncing');
+        btnText.textContent = 'กำลังซิงค์…';
+        sub.textContent = 'กำลังดึงข้อมูลล่าสุดจากกรมการกงสุล…';
+
+        // simulate network fetch then update cache
+        setTimeout(function() {
+          var now = new Date();
+          var s = fmt(now);
+          writeStored(s);
+          document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+
+          btn.classList.remove('is-syncing');
+          btn.disabled = false;
+          btnText.textContent = 'ซิงค์ข้อมูล';
+          sub.innerHTML = 'ซิงค์ล่าสุด: <span id="cache-time">' + s + '</span>';
+        }, 1400);
+      };
+    })();
+  </script>
+
+  <!-- Back-to-top visibility -->
+  <script>
+    (function() {
+      var btn = document.getElementById('back-to-top');
+      var threshold = 240;
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', window.pageYOffset > threshold);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
