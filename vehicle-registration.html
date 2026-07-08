@@ -87,6 +87,46 @@
     .tax-tag--ok   { background: var(--background-positive-light); color: var(--foreground-positive-default); }
     .tax-tag--warn { background: var(--background-warning-lighter); color: var(--foreground-warning-default); }
     .tax-tag--exp  { background: var(--background-negative-light);  color: var(--foreground-negative-default); }
+
+    /* ── Sync / cache bar ── */
+    .cache-bar {
+      display: flex; align-items: center; gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--background-neutral-subtle);
+      border-radius: var(--radius-lg);
+      margin-top: var(--spacing-lg);
+    }
+    .cache-bar-icon {
+      width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%;
+      background: var(--primary-95); color: var(--primary-20);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cache-bar-icon .material-symbols-outlined { font-size: 20px; }
+    .cache-bar-text { flex: 1; min-width: 0; }
+    .cache-bar-title {
+      font-size: var(--font-size-body-m); font-weight: var(--font-weight-600);
+      color: var(--foreground-neutral-default); margin: 0;
+    }
+    .cache-bar-sub {
+      font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter);
+      margin: 2px 0 0;
+    }
+    .btn-sync {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--primary-40); background: transparent;
+      color: var(--primary-40); font-family: "Anuphan", sans-serif;
+      font-size: var(--font-size-body-s); font-weight: var(--font-weight-600);
+      cursor: pointer; transition: background 0.15s, opacity 0.15s;
+    }
+    .btn-sync:hover { background: var(--primary-99); }
+    .btn-sync:disabled { opacity: 0.6; cursor: default; }
+    .btn-sync .material-symbols-outlined { font-size: 18px; }
+    .btn-sync.is-syncing .material-symbols-outlined {
+      animation: pp-spin 0.8s linear infinite;
+    }
+    @keyframes pp-spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -278,10 +318,18 @@
             </div>
           </div>
 
-          <div style="margin-top:var(--spacing-lg);">
-            <button class="btn btn-primary" id="reg-tax-btn" onclick="alert('ไปเปิด miniapp ต่อภาษีรถยนต์')">
-              <span class="material-symbols-outlined">calendar_month</span>
-              <span id="reg-tax-btn-text">ต่อภาษีรถยนต์</span>
+          <!-- ── Sync / cache bar ── -->
+          <div class="cache-bar">
+            <div class="cache-bar-icon">
+              <span class="material-symbols-outlined">cached</span>
+            </div>
+            <div class="cache-bar-text">
+              <p class="cache-bar-title">ข้อมูลจากแคช</p>
+              <p class="cache-bar-sub" id="cache-sub">ซิงค์ล่าสุด: <span id="cache-time">—</span></p>
+            </div>
+            <button class="btn-sync" id="sync-btn" onclick="syncCache()">
+              <span class="material-symbols-outlined">sync</span>
+              <span id="sync-btn-text">ซิงค์ข้อมูล</span>
             </button>
           </div>
         </div>
@@ -627,12 +675,6 @@
         noticeEl.style.display = 'none';
       }
 
-      var btnLabelMap = { car: 'รถยนต์', motorcycle: 'รถจักรยานยนต์', truck: 'รถยนต์', civic: 'รถยนต์' };
-      var btnLabel = btnLabelMap[type] || 'รถยนต์';
-      var regBtn = document.getElementById('reg-tax-btn');
-      regBtn.setAttribute('onclick', "alert('ไปเปิด miniapp ต่อภาษี" + btnLabel + "')");
-      document.getElementById('reg-tax-btn-text').textContent = 'ต่อภาษี' + btnLabel;
-
       // Owners
       var ownersHtml = '';
       v.owners.forEach(function(owner) {
@@ -653,12 +695,57 @@
       document.getElementById('owners-container').innerHTML = ownersHtml;
     }
   </script>
+  <!-- ── Cache / sync logic ── -->
   <script>
     (function() {
       var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-      var d = new Date();
-      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+' เวลา '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' น.';
-      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+      var CACHE_KEY = 'vehicle_cache_synced_at';
+
+      function fmt(d) {
+        return d.getDate() + ' ' + m[d.getMonth()] + ' ' + (d.getFullYear() + 543) +
+               ' เวลา ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') + ' น.';
+      }
+
+      function readStored() {
+        try { return localStorage.getItem(CACHE_KEY); } catch (e) { return null; }
+      }
+      function writeStored(v) {
+        try { localStorage.setItem(CACHE_KEY, v); } catch (e) {}
+      }
+
+      // On load: show cached sync time (or seed one if first visit)
+      var stored = readStored();
+      if (!stored) {
+        var seed = new Date(Date.now() - 26 * 60 * 60 * 1000); // ~1 วันก่อน
+        stored = fmt(seed);
+        writeStored(stored);
+      }
+      document.getElementById('cache-time').textContent = stored;
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = stored; });
+
+      window.syncCache = function() {
+        var btn = document.getElementById('sync-btn');
+        var btnText = document.getElementById('sync-btn-text');
+        var sub = document.getElementById('cache-sub');
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+        btn.classList.add('is-syncing');
+        btnText.textContent = 'กำลังซิงค์…';
+        sub.textContent = 'กำลังดึงข้อมูลล่าสุดจากกรมการขนส่งทางบก…';
+
+        setTimeout(function() {
+          var now = new Date();
+          var s = fmt(now);
+          writeStored(s);
+          document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+
+          btn.classList.remove('is-syncing');
+          btn.disabled = false;
+          btnText.textContent = 'ซิงค์ข้อมูล';
+          sub.innerHTML = 'ซิงค์ล่าสุด: <span id="cache-time">' + s + '</span>';
+        }, 1400);
+      };
     })();
   </script>
   <script>
