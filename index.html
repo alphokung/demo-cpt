@@ -26,6 +26,79 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ── Welcome hero (greeting + ticket count) ── */
+    .welcome-hero {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: stretch;
+      margin-bottom: var(--spacing-md);
+    }
+    /* shorter than the default 140px welcome-card */
+    .welcome-hero .welcome-card { height: 112px; }
+    .welcome-hero-greeting { flex: 1 1 62%; min-width: 0; }
+    .welcome-hero-count {
+      flex: 0 0 34%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .welcome-count-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      font-family: "Anuphan", sans-serif;
+      line-height: 1.3;
+    }
+    .welcome-count-value {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .welcome-count-value #welcome-ticket-count {
+      font-size: 40px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      font-family: "Anuphan", sans-serif;
+    }
+    .welcome-count-value #welcome-ticket-count.count-skeleton {
+      display: inline-block;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+    }
+    .welcome-count-unit {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      font-family: "Anuphan", sans-serif;
+    }
+
+    /* ── Ticket filter chips ── */
+    .ticket-filter-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-lg);
+    }
+    .ticket-filter-row .filter-chip {
+      border-color: var(--stroke-neutral-lighter);
+      background: var(--canvas-white);
+      color: var(--foreground-neutral-default);
+    }
+    .ticket-filter-row .filter-chip.active {
+      background: #0d3856;
+      border-color: #0d3856;
+      color: #fff;
+      font-weight: 700;
+    }
+    .filter-dot.dot-unpaid { background-color: #f5a524; }
+    .filter-dot.dot-paid   { background-color: #2e9e5b; }
+  </style>
 </head>
 <body>
   <div class="app-container">
@@ -45,22 +118,41 @@
 
       <!-- Main Content -->
       <main>
-        <!-- Welcome and Points Cards Dashboard -->
-        <div class="dashboard-grid" style="grid-template-columns: 1fr;">
-          <!-- Welcome Card -->
-          <div class="card welcome-card">
+        <!-- Welcome hero: greeting + ticket count -->
+        <div class="welcome-hero">
+          <!-- Greeting Card -->
+          <div class="card welcome-card welcome-hero-greeting">
             <h2 id="welcome-driver-name">
               <span class="skeleton-loading welcome-driver-name-skeleton"></span>
             </h2>
             <p id="welcome-text-1">
               <span class="skeleton-loading welcome-text-1-skeleton"></span>
             </p>
-            <p id="welcome-text-2" class="mt-xs welcome-card-subtext">
-              <span class="skeleton-loading welcome-text-2-skeleton"></span>
-            </p>
           </div>
 
-          <!-- Points Card (Interactive Link to points.html) -->
+          <!-- Ticket Count Card -->
+          <div class="card welcome-card welcome-hero-count">
+            <span class="welcome-count-label">คุณมีใบสั่งทั้งหมด</span>
+            <span class="welcome-count-value">
+              <span id="welcome-ticket-count" class="skeleton-loading count-skeleton"></span>
+              <span class="welcome-count-unit">ใบ</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="ticket-filter-row" id="ticket-filters">
+          <button type="button" class="filter-chip active" data-filter="all" onclick="setFilter('all')">ทั้งหมด</button>
+          <button type="button" class="filter-chip" data-filter="unpaid" onclick="setFilter('unpaid')">
+            <span class="filter-dot dot-unpaid"></span>ยังไม่ได้ชำระ
+          </button>
+          <button type="button" class="filter-chip" data-filter="paid" onclick="setFilter('paid')">
+            <span class="filter-dot dot-paid"></span>ชำระแล้ว
+          </button>
+        </div>
+
+        <!-- Points Card (Interactive Link to points.html) -->
+        <div class="dashboard-grid" style="grid-template-columns: 1fr; display:none;">
           <a href="points.html" class="card points-card card-interactive points-card-link" style="display:none;">
             <span class="points-card-title">คะแนนการขับขี่</span>
             <div class="dashboard-gauge-container">
@@ -211,18 +303,43 @@
       }
     }
 
+    // Active ticket filter: 'all' | 'unpaid' | 'paid'
+    let currentFilter = 'all';
+
+    function setFilter(f) {
+      currentFilter = f;
+      document.querySelectorAll('#ticket-filters .filter-chip').forEach(function(chip) {
+        chip.classList.toggle('active', chip.getAttribute('data-filter') === f);
+      });
+      renderTickets();
+    }
+
     // Render Tickets list
     function renderTickets() {
-      const tickets = DB.getTickets();
-      const isEmpty = tickets.length === 0;
+      const allTickets = DB.getTickets();
+      const total = allTickets.length;
 
-      // Update ticket count in welcome card dynamically
+      // Update total ticket count in the count card (always shows the grand total)
       const welcomeTicketCount = document.getElementById('welcome-ticket-count');
       if (welcomeTicketCount) {
-        welcomeTicketCount.textContent = isEmpty ? 0 : tickets.length;
+        welcomeTicketCount.textContent = total;
+        welcomeTicketCount.classList.remove('skeleton-loading', 'count-skeleton');
       }
 
+      // Apply the active filter (unpaid = ยังไม่ได้ชำระ, รวมใบที่ออกหนังสือเตือน)
+      let tickets = allTickets;
+      if (currentFilter === 'unpaid') {
+        tickets = allTickets.filter(function(t) { return t.status !== 'paid'; });
+      } else if (currentFilter === 'paid') {
+        tickets = allTickets.filter(function(t) { return t.status === 'paid'; });
+      }
+
+      const isEmpty = tickets.length === 0;
+
       if (isEmpty) {
+        const emptyDesc = total === 0
+          ? 'ไม่พบข้อมูลใบสั่งจราจร ในฐานข้อมูลของสำนักงานตำรวจแห่งชาติ'
+          : 'ไม่พบใบสั่งในหมวดที่เลือก ลองเปลี่ยนตัวกรองด้านบน';
         ticketsArea.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon-circle">
@@ -232,7 +349,7 @@
               </svg>
             </div>
             <h3 class="empty-title">ไม่พบข้อมูลใบสั่งจราจร</h3>
-            <p class="empty-desc">ไม่พบข้อมูลใบสั่งจราจร ในฐานข้อมูลของสำนักงานตำรวจแห่งชาติ</p>
+            <p class="empty-desc">${emptyDesc}</p>
           </div>
         `;
       } else {
@@ -308,8 +425,7 @@
     function initPage() {
       const welcomeDriverName = document.getElementById('welcome-driver-name');
       const welcomeText1 = document.getElementById('welcome-text-1');
-      const welcomeText2 = document.getElementById('welcome-text-2');
-      
+
       const gaugeSkeleton = document.getElementById('dashboard-gauge-skeleton');
       const gaugeText = document.getElementById('dashboard-gauge-text');
       
@@ -327,9 +443,6 @@
         }
         if (welcomeText1) {
           welcomeText1.textContent = 'ยินดีต้อนรับสู่บริการ ใบสั่งจราจร';
-        }
-        if (welcomeText2) {
-          welcomeText2.innerHTML = 'คุณมีใบสั่งทั้งหมด <span id="welcome-ticket-count" class="welcome-highlight"></span> ใบ ดังนี้';
         }
 
         renderTickets();
