@@ -270,8 +270,8 @@
           <!-- Main Telephone Button -->
           <a href="tel:021234567" class="btn btn-primary contact-stack-btn contact-btn-blue">02-123-4567</a>
 
-          <!-- LINE Contact Button -->
-          <a href="https://line.me/R/ti/p/%40Police" target="_blank" class="btn btn-primary contact-stack-btn contact-btn-blue">LINE ID: @ Police</a>
+          <!-- Secondary Telephone Button -->
+          <a href="tel:021234568" class="btn btn-primary contact-stack-btn contact-btn-blue">02-123-4568</a>
         </div>
       </div>
     </div>
@@ -497,7 +497,8 @@
         detailStatusSub.textContent = `กรุณาชำระภายในวันที่ ${abbreviateThaiDate(currentTicket.dueDate)}`;
         detailStatusSub.style.display = 'block';
 
-        btnWarningLetter.style.display = 'inline-flex';
+        // ซ่อนปุ่ม "ดูหนังสือเตือนแจ้งให้ชำระค่าปรับ" ไว้ก่อน (ยังไม่ลบออก)
+        // btnWarningLetter.style.display = 'inline-flex';
         btnPayFine.style.display = 'inline-flex';
       } else {
         detailStatusIcon.src = '_media/ticket-pending.svg';

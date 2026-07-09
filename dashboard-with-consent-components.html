@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components — Personalize Dashboard (with consent)</title>
+  <meta name="description" content="รวม component ทั้งหมดที่ใช้ในหน้า dashboard-with-consent">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  <!-- Same stylesheets as dashboard-with-consent.html so components render 1:1 -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard-components.css">
+  <link rel="stylesheet" href="consent.css">
+  <link rel="stylesheet" href="demo-tools.css">
+
+  <style>
+    /* ── Gallery chrome (not part of the design system — showcase only) ── */
+    body {
+      background: var(--neutral-95, #f2f3f5);
+    }
+
+    .gallery {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-lg) 120px;
+    }
+
+    .gallery__masthead {
+      padding: var(--spacing-2xl) var(--spacing-xl);
+      margin-bottom: var(--spacing-2xl);
+      background: var(--canvas-white, #fff);
+      border: 1px solid var(--stroke-neutral-default);
+      border-radius: var(--radius-2xl);
+    }
+
+    .gallery__masthead h1 {
+      margin: 0 0 var(--spacing-xs);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--foreground-neutral-default);
+    }
+
+    .gallery__masthead p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--foreground-neutral-light);
+      line-height: 1.6;
+    }
+
+    .gallery__toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--spacing-lg);
+    }
+
+    .gallery__toc a {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--primary-95, #eef2ff);
+      color: var(--primary-40, #3651d4);
+      text-decoration: none;
+      border: 1px solid var(--stroke-neutral-lighter);
+    }
+
+    .gallery__toc a:hover {
+      background: var(--primary-90);
+    }
+
+    /* Section group */
+    .g-section {
+      margin-top: var(--spacing-3xl);
+    }
+
+    .g-section__head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding-bottom: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--stroke-neutral-default);
+    }
+
+    .g-section__num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-40, #3651d4);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .g-section__title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--foreground-neutral-default);
+    }
+
+    /* Single component block */
+    .g-block {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .g-block__label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .g-block__name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--foreground-neutral-default);
+    }
+
+    .g-block__code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--neutral-90, #e4e6eb);
+      color: var(--foreground-neutral-light);
+    }
+
+    .g-block__note {
+      font-size: 12px;
+      color: var(--foreground-neutral-lighter);
+      margin: 0 0 var(--spacing-sm);
+    }
+
+    /* Canvas that holds the live component */
+    .g-canvas {
+      padding: var(--spacing-lg);
+      background: var(--canvas-white, #fff);
+      border: 1px dashed var(--stroke-neutral-default);
+      border-radius: var(--radius-xl);
+    }
+
+    /* Show modals inline instead of as fixed overlays */
+    .modal-preview .modal-overlay {
+      position: static;
+      inset: auto;
+      display: block;
+      opacity: 1;
+      pointer-events: auto;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      z-index: auto;
+    }
+
+    .modal-preview .modal-content {
+      transform: none;
+      width: 100%;
+      max-width: 100%;
+      max-height: none;
+      box-shadow: none;
+      border: 1px solid var(--stroke-neutral-default);
+    }
+
+    /* Keep the fixed-position demo buttons where they belong for this demo */
+    .g-canvas--fab {
+      position: relative;
+      min-height: 120px;
+    }
+
+    .g-canvas--fab .demo-fab,
+    .g-canvas--fab .back-to-top {
+      position: absolute;
+    }
+
+    .g-canvas--fab .back-to-top {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .g-canvas--fab .demo-fab {
+      left: 20px;
+      bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="gallery">
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <div class="gallery__masthead">
+      <h1>Personalize Dashboard — Component Library</h1>
+      <p>รวม component ทั้งหมดที่ใช้ในหน้า <strong>dashboard-with-consent.html</strong> แสดงในสถานะที่มองเห็นได้ (loaded state)
+        โดยใช้ CSS ชุดเดียวกัน (styles.css, dashboard-components.css, consent.css, demo-tools.css)</p>
+      <nav class="gallery__toc">
+        <a href="#s1">Top nav</a>
+        <a href="#s2">Notice bars</a>
+        <a href="#s3">Consent gates</a>
+        <a href="#s4">Context card</a>
+        <a href="#s5">Did-you-know</a>
+        <a href="#s6">Notice items</a>
+        <a href="#s7">List items</a>
+        <a href="#s8">Detail cards</a>
+        <a href="#s9">Money</a>
+        <a href="#s10">Tier 2 loading</a>
+        <a href="#s11">Skeletons</a>
+        <a href="#s12">Modals</a>
+        <a href="#s13">Floating</a>
+      </nav>
+    </div>
+
+    <!-- ══════════════════ 1. TOP NAV ══════════════════ -->
+    <section class="g-section" id="s1">
+      <div class="g-section__head">
+        <span class="g-section__num">01</span>
+        <span class="g-section__title">แถบด้านบน · Top Nav Bar</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Top nav bar + consent button</span>
+          <span class="g-block__code">.top-nav-bar</span>
+        </div>
+        <div class="g-canvas">
+          <div class="top-nav-bar">
+            <div class="top-nav-bar-content">
+              <div class="top-nav-bar-icon">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <p class="top-nav-bar-title">Personalize Dashboard</p>
+              <button class="top-nav-consent-btn" title="จัดการความยินยอมข้อมูล">
+                <span class="material-symbols-outlined">shield_person</span>
+                <span class="top-nav-consent-btn__label">จัดการความยินยอม</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 2. NOTICE BARS (วันสำคัญ) ══════════════════ -->
+    <section class="g-section" id="s2">
+      <div class="g-section__head">
+        <span class="g-section__num">02</span>
+        <span class="g-section__title">วันสำคัญ · Info Notice Bars</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">วันพระ / วันสำคัญ</span>
+          <span class="g-block__code">.notice-item--info</span>
+        </div>
+        <div class="g-canvas">
+          <div class="notice-list">
+            <div class="notice-item notice-item--info mb-0">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">brightness_5</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__text">วันนี้วันพระ</p>
+              </div>
+            </div>
+            <div class="notice-item notice-item--info">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">auto_awesome</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__text">วันนี้วันวิสาขบูชา</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 3. CONSENT GATES ══════════════════ -->
+    <section class="g-section" id="s3">
+      <div class="g-section__head">
+        <span class="g-section__num">03</span>
+        <span class="g-section__title">ประตูขอความยินยอม · Consent Gates</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Tier 1 locked panel</span>
+          <span class="g-block__code">.tier1-locked-panel</span>
+        </div>
+        <div class="g-canvas">
+          <div class="tier1-locked-panel">
+            <div class="tier1-locked-panel__icon">
+              <span class="material-symbols-outlined">lock</span>
+            </div>
+            <p class="tier1-locked-panel__title">เปิดใช้งานเพื่อดูข้อมูลของคุณ</p>
+            <p class="tier1-locked-panel__desc">
+              อนุญาตให้เข้าถึงตำแหน่ง, ข้อมูลส่วนบุคคลพื้นฐาน (ชื่อ‑นามสกุล, เลขบัตรประชาชน, วันเกิด)
+              และการแจ้งเตือน เพื่อแสดงสภาพอากาศ วันสำคัญ เอกสารราชการ และแจ้งเตือนวันหมดอายุของคุณ
+            </p>
+            <button class="btn btn-primary">
+              <span class="material-symbols-outlined">verified_user</span> ตั้งค่าเปิดใช้งาน
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Tier 2 "ให้ความยินยอมเพิ่มเติม"</span>
+          <span class="g-block__code">.tier2-locked</span>
+        </div>
+        <div class="g-canvas">
+          <div class="tier2-locked">
+            <div class="tier2-locked__icon">
+              <span class="material-symbols-outlined">verified_user</span>
+            </div>
+            <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
+            <p class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล
+              ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
+            <button class="btn btn-primary flex-center card__btn-full">
+              <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 4. CONTEXT CARD (weather / PM2.5 / focus) ══════════════════ -->
+    <section class="g-section" id="s4">
+      <div class="g-section__head">
+        <span class="g-section__num">04</span>
+        <span class="g-section__title">การ์ดต้อนรับ + อากาศ + PM2.5 · Context Card</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Greeting · Weather · PM2.5 · Focus tip</span>
+          <span class="g-block__code">.ctx-card</span>
+        </div>
+        <div class="g-canvas">
+          <div class="loaded-item ctx-card">
+            <div class="ctx-card__deco ctx-card__deco--top"></div>
+            <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+
+            <div class="ctx-card__greeting">
+              <p class="ctx-card__greeting-label">สวัสดีตอนเช้า</p>
+              <p class="ctx-card__greeting-name">คุณสมชาย ใจดี</p>
+              <div class="ctx-card__location-row">
+                <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
+                <span class="ctx-card__location-text">เขตลาดพร้าว กรุงเทพมหานคร</span>
+              </div>
+            </div>
+
+            <div class="ctx-card__divider"></div>
+
+            <div class="ctx-card__weather-row">
+              <div>
+                <div class="ctx-card__temp-row">
+                  <span class="material-symbols-outlined ctx-card__weather-icon">wb_sunny</span>
+                  <div>
+                    <p class="ctx-card__temp">34°</p>
+                    <p class="ctx-card__desc">แดดจัด</p>
+                  </div>
+                </div>
+                <div class="ctx-card__meta-row">
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">water_drop</span>
+                    <span>58%</span>
+                  </div>
+                  <div class="ctx-card__meta-item">
+                    <span class="material-symbols-outlined ctx-card__meta-icon">air</span>
+                    <span>12 กม./ชม.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ctx-pm25">
+                <p class="ctx-pm25__label">PM 2.5</p>
+                <div class="ctx-pm25__value-row">
+                  <span class="ctx-pm25__value">48</span>
+                  <span class="ctx-pm25__unit">μg/m³</span>
+                </div>
+                <span class="ctx-pm25__badge">ปานกลาง</span>
+              </div>
+            </div>
+
+            <div class="ctx-card__divider--spaced"></div>
+
+            <div class="ctx-bar ctx-bar--focus">
+              <span class="material-symbols-outlined ctx-bar__focus-icon">info</span>
+              <p class="ctx-bar__focus-text">อากาศร้อนและ PM 2.5 ปานกลาง แนะนำสวมหน้ากากเมื่ออยู่กลางแจ้งนานๆ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 5. DID-YOU-KNOW ══════════════════ -->
+    <section class="g-section" id="s5">
+      <div class="g-section__head">
+        <span class="g-section__num">05</span>
+        <span class="g-section__title">รู้หรือไม่ · Did-You-Know Card</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Rotating tip card</span>
+          <span class="g-block__code">.dyk-card</span>
+        </div>
+        <div class="g-canvas">
+          <div class="loaded-item dyk-card">
+            <div class="dyk-card__deco"></div>
+            <div class="dyk-card__header">
+              <span class="dyk-card__emoji">💡</span>
+              <p class="dyk-card__text">
+                รู้หรือไม่? คุณสามารถต่ออายุใบอนุญาตขับรถล่วงหน้าได้ 90 วันก่อนหมดอายุ
+                <a class="dyk-card__link">ดูรายละเอียด</a>
+              </p>
+            </div>
+            <div class="dyk-card__footer">
+              <div class="dyk-card__dots">
+                <span class="dyk-card__dot dyk-card__dot--active"></span>
+                <span class="dyk-card__dot"></span>
+                <span class="dyk-card__dot"></span>
+              </div>
+              <span class="dyk-card__next-hint">
+                แตะเพื่อดูถัดไป
+                <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 6. NOTICE ITEMS (สิ่งที่คุณควรรู้) ══════════════════ -->
+    <section class="g-section" id="s6">
+      <div class="g-section__head">
+        <span class="g-section__num">06</span>
+        <span class="g-section__title">สิ่งที่คุณควรรู้ · Notice Items (ทุก variant)</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Notice items — birthday / danger / warning / positive</span>
+          <span class="g-block__code">.notice-item--*</span>
+        </div>
+        <div class="g-canvas">
+          <div class="notice-list">
+            <!-- positive / birthday -->
+            <div class="notice-item notice-item--positive notice-item--birthday">
+              <div class="notice-item__icon-wrap">🎂</div>
+              <div class="notice-item__body">
+                <p class="notice-item__text">สุขสันต์วันเกิด! ขอให้มีความสุขมากๆ นะครับ</p>
+              </div>
+            </div>
+
+            <!-- danger -->
+            <div class="notice-item notice-item--danger">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">warning</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__title">หนังสือเดินทางใกล้หมดอายุ</p>
+                <p class="notice-item__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+              </div>
+              <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+            </div>
+
+            <!-- warning -->
+            <div class="notice-item notice-item--warning">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">schedule</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+                <p class="notice-item__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+              </div>
+              <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+            </div>
+
+            <!-- positive (payment success, no chevron) -->
+            <div class="notice-item notice-item--positive">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">payments</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__title">เบี้ยความพิการเดือนนี้โอนแล้ว</p>
+                <p class="notice-item__sub">โอนเงินเบี้ยความพิการประจำเดือน มิ.ย. 2569 จำนวน 800.00 บาท เข้าบัญชีสำเร็จ</p>
+              </div>
+            </div>
+
+            <!-- danger (ticket) -->
+            <div class="notice-item notice-item--danger">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">receipt_long</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__title">แจ้งเตือนใบสั่ง</p>
+                <p class="notice-item__sub">รถทะเบียน กข 1234 กทม. กรุณาชำระภายในอีก 15 วัน</p>
+              </div>
+              <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+            </div>
+
+            <!-- warning (insurance) -->
+            <div class="notice-item notice-item--warning">
+              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">policy</span></div>
+              <div class="notice-item__body">
+                <p class="notice-item__title">กรมธรรม์ประกันภัยใกล้ถึงกำหนดต่ออายุ</p>
+                <p class="notice-item__sub">ประกันยานพาหนะภาคบังคับและภาคสมัครใจ รถ Honda Civic กข 1234 กทม. · ครบกำหนด 20 เม.ย. 2570</p>
+              </div>
+              <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 7. LIST ITEMS (เอกสาร / ทรัพย์สิน) ══════════════════ -->
+    <section class="g-section" id="s7">
+      <div class="g-section__head">
+        <span class="g-section__num">07</span>
+        <span class="g-section__title">เอกสารราชการ &amp; ทรัพย์สิน · List Items</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">เอกสารราชการ (section card + list items)</span>
+          <span class="g-block__code">.card__inner / .list-item</span>
+        </div>
+        <p class="g-block__note">badge variants: <code>.valid</code>, <code>.expiring</code> · icon variants: <code>.driving</code>, <code>.work</code>, <code>.list-icon--disability</code></p>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">เอกสารราชการ</h3>
+            </div>
+            <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+
+            <div class="cert-list">
+              <!-- Driving License -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                  <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 5 พ.ค. 2572</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <!-- Passport (expiring badge) -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                <div class="list-icon work">
+                  <span class="material-symbols-outlined">public</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                  <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <!-- Disability card (realtime / tier2) -->
+              <a href="javascript:void(0)" class="list-item">
+                <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                <div class="list-icon list-icon--disability">
+                  <span class="material-symbols-outlined">accessible</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                  <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุ: 14 ก.พ. 2571</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">ทรัพย์สิน (รถ + มิเตอร์ พร้อมโลโก้หน่วยงาน)</span>
+          <span class="g-block__code">.list-item + img-helper-frame</span>
+        </div>
+        <p class="g-block__note">icon ที่เป็นรูปโลโก้ใช้ <code>.img-helper-frame.circle.size-sm</code> · badge <code>.valid</code>/<code>.expiring</code></p>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ทรัพย์สินของคุณ</h3>
+            </div>
+            <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+            <div class="cert-list">
+              <!-- Car -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">directions_car</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถยนต์</p>
+                  <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                      <span>รุ่นรถ: Honda Civic</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">update</span>
+                      <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <!-- Motorcycle -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
+                <div class="list-icon driving">
+                  <span class="material-symbols-outlined">two_wheeler</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">รถจักรยานยนต์</p>
+                  <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                      <span>รุ่นรถ: Yamaha Grand Filano</span>
+                    </div>
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <!-- MEA meter -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์ไฟฟ้า</p>
+                  <p class="list-item-hero">เลขที่มิเตอร์: 020012345678</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">business</span>
+                      <span>การไฟฟ้านครหลวง (MEA)</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <!-- MWA meter -->
+              <a href="javascript:void(0)" class="list-item loaded-item">
+                <div class="list-icon driving">
+                  <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">มิเตอร์น้ำประปา</p>
+                  <p class="list-item-hero">เลขที่มิเตอร์: 102548976</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">business</span>
+                      <span>การประปานครหลวง (MWA)</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 8. DETAIL CARDS (Tier 2 สิทธิ/สวัสดิการ) ══════════════════ -->
+    <section class="g-section" id="s8">
+      <div class="g-section__head">
+        <span class="g-section__num">08</span>
+        <span class="g-section__title">สิทธิ &amp; สวัสดิการ · Detail Cards</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">สิทธิการรักษาพยาบาล (bar--primary)</span>
+          <span class="g-block__code">.details-list + .card__btn-full</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สิทธิการรักษาพยาบาล</h3>
+            </div>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                <span class="details-value card-section__value--primary">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สิทธิย่อย:</span>
+                <span class="details-value">สิทธิหลักประกันสุขภาพ (บัตรทอง 30 บาท)</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานพยาบาลประจำ:</span>
+                <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานพยาบาลที่รับการส่งต่อ:</span>
+                <span class="details-value">โรงพยาบาลรามาธิบดี</span>
+              </div>
+            </div>
+            <button class="btn btn-tertiary-outline flex-center card__btn-full">
+              <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">สิทธิประกันสังคม (bar--info) &amp; สิทธิข้าราชการ (bar--warning)</span>
+          <span class="g-block__code">.card-section__bar--info / --warning</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--info"></div>
+              <h3 class="section-title card-section__heading">สิทธิประกันสังคม</h3>
+            </div>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                <span class="details-value card-section__value--info">สิทธิประกันสังคม</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สิทธิย่อย:</span>
+                <span class="details-value">สิทธิเบิกกองทุนประกันสังคม (ผู้ประกันตน)</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สถานพยาบาลประกันสังคม:</span>
+                <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+              </div>
+            </div>
+            <button class="btn btn-tertiary-outline flex-center card__btn-full">
+              <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
+            </button>
+          </div>
+
+          <div class="card card__inner mt-xl">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--warning"></div>
+              <h3 class="section-title card-section__heading">สิทธิข้าราชการ (กบข.)</h3>
+            </div>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                <span class="details-value card-section__value--warning">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
+              </div>
+              <div class="details-item">
+                <span class="details-label">สิทธิย่อย:</span>
+                <span class="details-value">สิทธิเบิกกรมบัญชีกลาง (ผู้รับเบี้ยหวัดบำนาญ)</span>
+              </div>
+            </div>
+            <button class="btn btn-tertiary-outline flex-center card__btn-full">
+              <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">สวัสดิการแห่งรัฐ (details-subvalue) &amp; Empty state</span>
+          <span class="g-block__code">.details-subvalue / .tier2-empty</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--secondary"></div>
+              <h3 class="section-title card-section__heading">สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
+            </div>
+            <p class="list-section-note">บัตรสวัสดิการแห่งรัฐและเงินอุดหนุนที่คุณได้รับสิทธิ์ในระบบ</p>
+            <div class="details-list">
+              <div class="details-item">
+                <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
+                <span class="details-value" style="color: var(--foreground-positive-default); font-weight: 700;">ได้รับสิทธิ์ (สถานะใช้งาน)</span>
+                <span class="details-subvalue">วงเงินส่วนลดซื้อสินค้าอุปโภคบริโภคคงเหลือเดือนนี้: 300.00 บาท</span>
+              </div>
+              <div class="details-item" style="border-top: 1px solid var(--stroke-neutral-lighter); padding-top: var(--spacing-md);">
+                <span class="details-label">เบี้ยยังชีพผู้สูงอายุ:</span>
+                <span class="details-value" style="color: var(--foreground-neutral-lighter); font-weight: 500;">ยังไม่มีสิทธิ์</span>
+                <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60 ปีบริบูรณ์)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div class="tier2-empty" style="margin-top: var(--spacing-lg);">
+            <div class="tier2-empty__icon"><span class="material-symbols-outlined">info</span></div>
+            <p class="tier2-empty__title">ไม่พบข้อมูลสวัสดิการแห่งรัฐ</p>
+            <p class="tier2-empty__hint">ไม่พบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร หรือเบี้ยยังชีพที่ผูกกับคุณในระบบกรมบัญชีกลาง</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">กรมธรรม์ประกันภัย (list items ในการ์ด detail)</span>
+          <span class="g-block__code">.card__inner &gt; .cert-list</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--warning"></div>
+              <h3 class="section-title card-section__heading">ข้อมูลกรมธรรม์ประกันภัย</h3>
+            </div>
+            <p class="list-section-note">กรมธรรม์ประกันภัยที่คุณถือครองในระบบ</p>
+            <div class="cert-list">
+              <a href="javascript:void(0)" class="list-item">
+                <div class="list-icon work">
+                  <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ประกันชีวิต แบบคุ้มครองชีวิตตลอดชีพ</p>
+                  <p class="list-item-hero">เอไอเอ ตลอดชีพ พลัส ชำระเบี้ยประกันภัย 20 ปี (ไม่มีเงินปันผล)</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">badge</span>
+                      เลขที่กรมธรรม์: T23XXXX300
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      วันหมดอายุ: 14 ธ.ค. 2629
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 9. MONEY (เรื่องเงินของคุณ) ══════════════════ -->
+    <section class="g-section" id="s9">
+      <div class="g-section__head">
+        <span class="g-section__num">09</span>
+        <span class="g-section__title">เรื่องเงินของคุณ · Bills &amp; Tickets</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">ค่าน้ำ ค่าไฟ (badge ยังไม่ชำระ / ชำระแล้ว)</span>
+          <span class="g-block__code">.list-badge.expiring / .valid</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--warning"></div>
+              <h3 class="section-title card-section__heading">ค่าน้ำ ค่าไฟ</h3>
+            </div>
+            <p class="list-section-note">ยอดค่าน้ำค่าไฟที่ต้องชำระในระบบ</p>
+            <div class="cert-list">
+              <a href="javascript:void(0)" class="list-item">
+                <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                <div class="list-icon covid">
+                  <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ค่าไฟฟ้า การไฟฟ้านครหลวง (MEA)</p>
+                  <p class="list-item-hero">ยอดที่ต้องชำระ: 1,245.80 บาท</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">tag</span>
+                      มิเตอร์ไฟ: 020012345678
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      กำหนดชำระ: 15 ก.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+
+              <a href="javascript:void(0)" class="list-item">
+                <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                <div class="list-icon covid">
+                  <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ค่าไฟฟ้า การไฟฟ้าส่วนภูมิภาค (PEA)</p>
+                  <p class="list-item-hero">ยอดที่ต้องชำระ: 0.00 บาท</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      ชำระล่าสุด: 29 พ.ค. 2569
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">ใบสั่งที่ต้องชำระ (list-icon danger)</span>
+          <span class="g-block__code">.list-icon.danger</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--warning"></div>
+              <h3 class="section-title card-section__heading">ใบสั่งที่ต้องชำระ</h3>
+            </div>
+            <p class="list-section-note">ใบสั่งจราจรค้างชำระที่ผูกกับทะเบียนรถของคุณ</p>
+            <div class="cert-list">
+              <a href="javascript:void(0)" class="list-item">
+                <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                <div class="list-icon danger">
+                  <span class="material-symbols-outlined">receipt_long</span>
+                </div>
+                <div class="list-body">
+                  <p class="list-item-label">ใบสั่งเลขที่: TP6903001234</p>
+                  <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                      รถทะเบียน กข 1234 กทม. · ไม่หยุดรถตรงป้ายหยุด
+                    </div>
+                  </div>
+                  <div class="list-meta">
+                    <div class="list-meta-item">
+                      <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                      กรุณาชำระภายในอีก 15 วัน
+                    </div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined chevron">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 10. TIER 2 LOADING ══════════════════ -->
+    <section class="g-section" id="s10">
+      <div class="g-section__head">
+        <span class="g-section__num">10</span>
+        <span class="g-section__title">สถานะเชื่อมต่อเรียลไทม์ · Tier 2 Loading</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Realtime spinner + text</span>
+          <span class="g-block__code">.tier2-loading</span>
+        </div>
+        <div class="g-canvas">
+          <div class="tier2-loading" style="display:flex;">
+            <span class="tier2-loading__spinner"></span>
+            <p class="tier2-loading__text">กำลังเชื่อมต่อ สปสช. เพื่อตรวจสอบสิทธิการรักษาพยาบาลแบบเรียลไทม์…</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 11. SKELETONS ══════════════════ -->
+    <section class="g-section" id="s11">
+      <div class="g-section__head">
+        <span class="g-section__num">11</span>
+        <span class="g-section__title">สถานะกำลังโหลด · Skeleton States</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Context card skeleton</span>
+          <span class="g-block__code">.ctx-card__skeleton</span>
+        </div>
+        <div class="g-canvas">
+          <div class="skeleton-item ctx-card__skeleton">
+            <span class="skeleton-loading ctx-card__skel-text--sm"></span>
+            <span class="skeleton-loading ctx-card__skel-text--lg"></span>
+            <div class="ctx-card__skel-row">
+              <div>
+                <span class="skeleton-loading ctx-card__skel-temp"></span>
+                <span class="skeleton-loading ctx-card__skel-desc"></span>
+              </div>
+              <span class="skeleton-loading ctx-card__skel-icon-box"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">List item skeleton</span>
+          <span class="g-block__code">.list-item.skeleton-item</span>
+        </div>
+        <div class="g-canvas">
+          <div class="list-item skeleton-item" style="pointer-events:none;">
+            <span class="list-badge skeleton-loading list-badge--corner"></span>
+            <div class="skeleton-loading skeleton-icon-md"></div>
+            <div class="list-body skeleton-body-gap">
+              <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+              <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+            </div>
+            <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Detail card skeleton</span>
+          <span class="g-block__code">.card.skeleton-item</span>
+        </div>
+        <div class="g-canvas">
+          <div class="card skeleton-item card__inner--no-interact">
+            <div class="skeleton-loading skeleton-title card__skel-title--wide"></div>
+            <div class="details-list">
+              <div class="details-item card__skel-item-gap">
+                <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+              </div>
+              <div class="details-item card__skel-item-gap--last">
+                <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+              </div>
+            </div>
+            <div class="skeleton-loading skeleton-button card__skel-btn"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 12. MODALS ══════════════════ -->
+    <section class="g-section" id="s12">
+      <div class="g-section__head">
+        <span class="g-section__num">12</span>
+        <span class="g-section__title">Modal (แสดงแบบ inline) · Modals</span>
+      </div>
+
+      <!-- Permissions -->
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">การจัดการสิทธิ์ · Permissions</span>
+          <span class="g-block__code">#modal-permissions</span>
+        </div>
+        <div class="g-canvas modal-preview">
+          <div class="modal-overlay">
+            <div class="modal-content modal__content--flex-col">
+              <div class="modal__header">
+                <div>
+                  <p class="modal__header-title">การจัดการสิทธิ์</p>
+                  <p class="modal__header-sub">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+                </div>
+                <button class="modal__close-btn">
+                  <span class="material-symbols-outlined modal__close-icon">close</span>
+                </button>
+              </div>
+              <div class="modal__body">
+                <p class="section-label-xs">Tier 1 · ข้อมูลทั่วไป (แคชในเครื่อง)</p>
+                <div class="modal__section-list"></div>
+                <p class="section-label-xs" style="margin-top:18px;">Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)</p>
+                <div class="modal__section-list--bottom"></div>
+                <div class="consent-revoke-section">
+                  <p class="section-label-xs">การจัดการความยินยอม</p>
+                  <p class="consent-revoke-note">
+                    คุณให้ความยินยอมเพียงครั้งเดียว ระบบจะจดจำไว้จนกว่าคุณจะยกเลิก
+                    การยกเลิกจะลบความยินยอมทั้ง Tier 1 และ Tier 2 พร้อมกันทั้งหมด
+                  </p>
+                  <button class="btn btn-destructive flex-center" style="width:100%;gap:var(--spacing-sm);">
+                    <span class="material-symbols-outlined">block</span> ยกเลิกความยินยอมทั้งหมด
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 1 consent -->
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">ขอสิทธิ์ Tier 1 · Consent</span>
+          <span class="g-block__code">#modal-consent-tier1</span>
+        </div>
+        <div class="g-canvas modal-preview">
+          <div class="modal-overlay">
+            <div class="modal-content modal__content--flex-col">
+              <div class="modal__header">
+                <div>
+                  <p class="modal__header-title">ขอสิทธิ์เข้าถึงข้อมูลพื้นฐาน</p>
+                  <p class="modal__header-sub">ใช้เพื่อแสดงเอกสารราชการและข้อมูลทั่วไปของคุณ</p>
+                </div>
+                <button class="modal__close-btn">
+                  <span class="material-symbols-outlined modal__close-icon">close</span>
+                </button>
+              </div>
+              <div class="modal__body">
+                <span class="consent-modal__badge consent-modal__badge--tier1">
+                  <span class="material-symbols-outlined" style="font-size:14px;">layers</span> Tier 1 · ข้อมูลทั่วไป
+                </span>
+                <div class="consent-modal__perm-list">
+                  <div class="consent-modal__perm-item">
+                    <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">location_on</span></div>
+                    <div>
+                      <p class="consent-modal__perm-title">ตำแหน่งที่ตั้ง (Lat/Lng)</p>
+                      <p class="consent-modal__perm-sub">แสดงสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ</p>
+                    </div>
+                  </div>
+                  <div class="consent-modal__perm-item">
+                    <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">badge</span></div>
+                    <div>
+                      <p class="consent-modal__perm-title">ข้อมูลส่วนบุคคลพื้นฐาน</p>
+                      <p class="consent-modal__perm-sub">เลขบัตรประชาชน, ชื่อ‑นามสกุล, วันเกิด</p>
+                    </div>
+                  </div>
+                  <div class="consent-modal__perm-item">
+                    <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">notifications_active</span></div>
+                    <div>
+                      <p class="consent-modal__perm-title">การแจ้งเตือน (Push Notification)</p>
+                      <p class="consent-modal__perm-sub">แจ้งเตือนวันหมดอายุของเอกสารและรายการที่ใกล้ถึงกำหนด</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="consent-modal__disclaimer">
+                  ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น<br>
+                  ข้อมูลระดับนี้จะถูก<strong>แคชไว้ในเครื่องเพื่อความรวดเร็ว</strong> และคุณให้ความยินยอมเพียงครั้งเดียว
+                </div>
+                <div class="consent-modal__actions">
+                  <button class="btn btn-primary" style="width:100%;">ยินยอมและเข้าใช้งาน</button>
+                  <button class="btn btn-outline" style="width:100%;">ภายหลัง</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo config -->
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">ตั้งค่าการแสดงผล (Demo) · chips</span>
+          <span class="g-block__code">#modal-demo-config / .dc-chip</span>
+        </div>
+        <div class="g-canvas modal-preview">
+          <div class="modal-overlay">
+            <div class="modal-content modal__content--flex-col">
+              <div class="dc-modal__header">
+                <div>
+                  <p class="dc-modal__title">ตั้งค่าการแสดงผล</p>
+                  <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
+                </div>
+                <button class="dc-modal__close-btn">
+                  <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+                </button>
+              </div>
+              <div class="dc-modal__body">
+                <div class="dc-group">
+                  <p class="dc-group-label">👤 ตัวตนผู้ใช้</p>
+                  <div class="dc-chips dc-chips--wrap">
+                    <button class="dc-chip">คุณสมชาย · ทั่วไป (วันเกิด)</button>
+                    <button class="dc-chip">คุณสมศรี · บัตรคนพิการ</button>
+                    <button class="dc-chip">ผู้เยี่ยมชม · ไม่เข้าสู่ระบบ</button>
+                  </div>
+                </div>
+                <div class="dc-group">
+                  <p class="dc-group-label">🌤️ อากาศ</p>
+                  <div class="dc-chips">
+                    <button class="dc-chip">☀️ ร้อน</button>
+                    <button class="dc-chip">🌧️ ฝนตก</button>
+                  </div>
+                </div>
+                <div class="dc-group dc-group--last">
+                  <p class="dc-group-label">💨 PM 2.5</p>
+                  <div class="dc-chips dc-chips--wrap">
+                    <button class="dc-chip" style="--pm-color:#4caf50;">🟢 ต่ำ</button>
+                    <button class="dc-chip" style="--pm-color:#fbbf24;">🟡 กลาง</button>
+                    <button class="dc-chip" style="--pm-color:#f97316;">🟠 สูง</button>
+                    <button class="dc-chip" style="--pm-color:#9c27b0;">🟣 สูงมาก</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ 13. FLOATING ELEMENTS ══════════════════ -->
+    <section class="g-section" id="s13">
+      <div class="g-section__head">
+        <span class="g-section__num">13</span>
+        <span class="g-section__title">ปุ่มลอย · Floating Buttons</span>
+      </div>
+
+      <div class="g-block">
+        <div class="g-block__label">
+          <span class="g-block__name">Demo FAB + Back-to-top</span>
+          <span class="g-block__code">.demo-fab / .back-to-top</span>
+        </div>
+        <div class="g-canvas g-canvas--fab">
+          <button class="demo-fab">
+            <span class="material-symbols-outlined demo-fab__icon">tune</span>
+            Demo การแสดงผล
+          </button>
+          <button class="back-to-top visible" aria-label="กลับขึ้นด้านบน">
+            <span class="material-symbols-outlined">arrow_upward</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+
+</html>
