@@ -519,7 +519,7 @@ main {
   padding: var(--spacing-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-xs);
 }
 
 @media (max-width: 1023px) {
