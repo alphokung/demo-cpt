@@ -72,11 +72,12 @@
       overflow-x: hidden;
     }
 
-    /* ── HERO: พื้นน้ำเงิน + มาสคอต ── */
+    /* ── HERO: พื้นน้ำเงิน + มาสคอต ──
+       ระยะห่างผูกกับความสูงจอ (vh) เพื่อให้ทั้งหน้าจบใน 1 viewport ไม่ต้องเลื่อน */
     .hero {
       position: relative;
       background: radial-gradient(120% 90% at 50% 8%, var(--aip-blue-glow) 0%, var(--aip-blue) 45%, var(--aip-blue-deep) 100%);
-      padding: 40px 20px 96px;
+      padding: clamp(14px, 3vh, 40px) 20px clamp(56px, 11vh, 96px);
       text-align: center;
       overflow: hidden;
     }
@@ -117,12 +118,13 @@
     }
     .hero-badge .material-symbols-outlined { font-size: 16px; }
 
-    /* มาสคอต (SVG inline — ไม่มีไฟล์ภาพในโปรเจกต์) */
+    /* มาสคอต (SVG inline — ไม่มีไฟล์ภาพในโปรเจกต์)
+       ย่อ/ขยายตามความสูงจอ height:auto คำนวณจาก viewBox (สี่เหลี่ยมจัตุรัส) */
     .mascot {
       position: relative;
-      width: 190px;
-      height: 190px;
-      margin: 18px auto 0;
+      width: clamp(104px, 20vh, 190px);
+      height: auto;
+      margin: clamp(8px, 1.5vh, 18px) auto 0;
       display: block;
       filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
       animation: mascot-float 4.5s ease-in-out infinite;
@@ -139,7 +141,7 @@
     .card {
       position: relative;
       margin: -64px 16px 0;
-      padding: 28px 22px 26px;
+      padding: clamp(18px, 3vh, 28px) 22px clamp(16px, 2.5vh, 26px);
       background: var(--aip-surface);
       border-radius: var(--aip-radius-xl);
       box-shadow: var(--aip-shadow-card);
@@ -175,7 +177,7 @@
     }
 
     .headline {
-      margin: 20px 0 8px;
+      margin: clamp(10px, 2vh, 20px) 0 8px;
       font-size: 23px;
       font-weight: 700;
       line-height: 1.35;
@@ -195,8 +197,8 @@
     /* แถบตัวเลข */
     .stats {
       display: flex;
-      margin: 22px 0 0;
-      padding: 14px 0;
+      margin: clamp(12px, 2.2vh, 22px) 0 0;
+      padding: clamp(10px, 1.6vh, 14px) 0;
       border-top: 1px solid var(--aip-line);
       border-bottom: 1px solid var(--aip-line);
     }
@@ -366,7 +368,7 @@
 
     /* ── CTA ── */
     .cta-wrap {
-      padding: 28px 22px 20px;
+      padding: clamp(16px, 3vh, 28px) 22px clamp(12px, 2vh, 20px);
       text-align: center;
     }
     .cta {
@@ -459,23 +461,23 @@
        TABLET — ตั้งแต่ 768px ขึ้นไป
        ───────────────────────────────────────────── */
     @media (min-width: 768px) {
-      .hero { padding: 56px 32px 132px; }
+      .hero { padding: clamp(20px, 4vh, 56px) 32px clamp(72px, 14vh, 132px); }
       .hero::before { width: 420px; height: 420px; top: 24px; }
       .hero::after  { width: 560px; height: 560px; top: -40px; }
 
       .hero-badge { font-size: 14px; padding: 8px 16px; }
-      .mascot { width: 240px; height: 240px; }
+      .mascot { width: clamp(130px, 24vh, 240px); }
 
       .card {
         max-width: 620px;
         margin: -88px auto 0;
-        padding: 38px 40px 32px;
+        padding: clamp(22px, 4vh, 38px) 40px clamp(20px, 3vh, 32px);
       }
       .logo-word { font-size: 46px; }
       .logo-th { width: 34px; height: 34px; font-size: 13px; }
       .logo-spark { width: 30px; height: 30px; }
 
-      .headline { font-size: 30px; margin-top: 24px; }
+      .headline { font-size: 30px; margin-top: clamp(12px, 2.4vh, 24px); }
       .subhead  { font-size: 16px; }
       .stat-num { font-size: 24px; }
       .stat-label { font-size: 13px; }
@@ -497,7 +499,7 @@
       .feature { padding: 20px; }
 
       /* ปุ่มไม่ต้องเต็มความกว้างบนจอใหญ่ — fit-content เพราะ .cta เป็น <a> */
-      .cta-wrap { padding: 40px 32px 24px; }
+      .cta-wrap { padding: clamp(20px, 4vh, 40px) 32px clamp(14px, 2.4vh, 24px); }
       .cta {
         width: fit-content;
         min-width: 320px;
@@ -524,23 +526,28 @@
        DESKTOP — ตั้งแต่ 1024px ขึ้นไป
        ───────────────────────────────────────────── */
     @media (min-width: 1024px) {
-      .hero { padding: 72px 40px 150px; }
+      .hero { padding: clamp(24px, 4.5vh, 72px) 40px clamp(80px, 13vh, 150px); }
       .hero::before { width: 520px; height: 520px; top: 30px; }
       .hero::after  { width: 700px; height: 700px; top: -60px; }
-      .mascot { width: 280px; height: 280px; }
+      .mascot { width: clamp(140px, 22vh, 280px); }
 
       .card {
         max-width: 720px;
         margin: -100px auto 0;
-        padding: 44px 56px 36px;
+        padding: clamp(24px, 4.5vh, 44px) 56px clamp(22px, 3.5vh, 36px);
       }
-      .logo-word { font-size: 54px; }
-      .logo-th { width: 38px; height: 38px; font-size: 14px; }
+      /* ตัวอักษรย่อตามความสูงจอด้วย เพื่อให้จอเตี้ย (เช่น 1280×720) ยังจบในหน้าเดียว */
+      .logo-word { font-size: clamp(38px, 6vh, 54px); }
+      .logo-th {
+        width: clamp(30px, 4.2vh, 38px);
+        height: clamp(30px, 4.2vh, 38px);
+        font-size: 14px;
+      }
 
-      .headline { font-size: 36px; }
-      .subhead  { font-size: 17px; }
-      .stats { margin-top: 28px; padding: 18px 0; }
-      .stat-num { font-size: 28px; }
+      .headline { font-size: clamp(25px, 4vh, 36px); }
+      .subhead  { font-size: clamp(14px, 1.9vh, 17px); }
+      .stats { margin-top: clamp(14px, 2.8vh, 28px); padding: clamp(12px, 1.8vh, 18px) 0; }
+      .stat-num { font-size: clamp(21px, 3.1vh, 28px); }
 
       .section {
         max-width: 1080px;
@@ -563,7 +570,7 @@
 
     /* จอกว้างมาก — กันไม่ให้ hero สูงเกินจำเป็น */
     @media (min-width: 1440px) {
-      .hero { padding: 80px 40px 160px; }
+      .hero { padding: clamp(26px, 4.5vh, 80px) 40px clamp(84px, 13vh, 160px); }
       .section { max-width: 1160px; }
     }
   </style>
@@ -648,56 +655,8 @@
       </div>
     </section>
 
-    <!-- ══ แบนเนอร์ใช้งานฟรี ══ -->
-    <section class="section">
-      <div class="free-banner">
-        <span class="material-symbols-outlined free-banner-icon" aria-hidden="true">redeem</span>
-        <div class="free-banner-text">
-          <p class="free-banner-title">ใช้งานได้ <strong>ฟรี!</strong></p>
-          <p class="free-banner-sub">เป็นระยะเวลา 1 ปี</p>
-        </div>
-      </div>
-    </section>
 
-    <!-- ══ เงื่อนไขหลักของโครงการ ══ -->
-    <section class="section">
-      <h2 class="section-title">เงื่อนไขหลักของโครงการคือ</h2>
-      <p class="section-sub">ตรวจสอบสิทธิ์ของคุณก่อนลงทะเบียน</p>
-
-      <div class="feature-grid">
-        <div class="feature">
-          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">groups</span></div>
-          <div>
-            <p class="feature-title">เปิดให้ประชาชนไทยทุกคน</p>
-            <p class="feature-desc">โครงการเปิดกว้างสำหรับประชาชนสัญชาติไทย ไม่จำกัดอาชีพหรือพื้นที่</p>
-          </div>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">event_available</span></div>
-          <div>
-            <p class="feature-title">ที่มีอายุ 15 ปีขึ้นไป</p>
-            <p class="feature-desc">ผู้ขอรับสิทธิ์ต้องมีอายุตั้งแต่ 15 ปีบริบูรณ์ขึ้นไป ณ วันที่ลงทะเบียน</p>
-          </div>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">assignment_turned_in</span></div>
-          <div>
-            <p class="feature-title">ผ่านกระบวนการลงทะเบียน</p>
-            <p class="feature-desc">ลงทะเบียนและยืนยันตัวตนตามเกณฑ์ที่โครงการกำหนด เพื่อรับสิทธิ์ใช้งาน</p>
-          </div>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">target</span></div>
-          <div>
-            <p class="feature-title">ตั้งเป้าไว้ที่ 5,000,000 สิทธิ์</p>
-            <p class="feature-desc">จำนวนสิทธิ์มีจำกัดตามเป้าหมายของโครงการ แนะนำให้ลงทะเบียนแต่เนิ่น ๆ</p>
-          </div>
-        </div>
-      </div>
-    </section>
+ 
 
     <!-- ══ CTA — เปิดเบราว์เซอร์ภายนอก ══ -->
     <div class="cta-wrap">
@@ -706,7 +665,6 @@
         ลงทะเบียนรับสิทธิ์ AI Passport
       </a>
       <p class="cta-hint">ระบบจะเปิดเบราว์เซอร์ภายนอกเพื่อดำเนินการต่อ</p>
-      <p class="footnote">หมายเหตุ: เงื่อนไขเป็นไปตามที่โครงการกำหนด</p>
     </div>
 
   </main>
