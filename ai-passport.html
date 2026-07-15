@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AiPASS TH — พาสปอร์ต AI ใบเดียว ใช้ได้ทุกโมเดล</title>
+  <meta name="description" content="AiPASS TH — สมัครครั้งเดียว ใช้ AI ชั้นนำได้ทุกค่าย จ่ายตามจริง ไม่มีรายเดือน">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AiPASS TH — พาสปอร์ต AI ใบเดียว ใช้ได้ทุกโมเดล">
+  <meta property="og:description" content="สมัครครั้งเดียว ใช้ AI ชั้นนำได้ทุกค่าย จ่ายตามจริง ไม่มีรายเดือน">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100;200;300;400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <style>
+    /* ─────────────────────────────────────────────
+       AiPASS TH — standalone brand theme
+       (ไม่ใช้ styles.css ของ "ทางรัฐ" เพราะคนละแบรนด์)
+       ───────────────────────────────────────────── */
+    :root {
+      --aip-blue:        #1a53ff;
+      --aip-blue-deep:   #0a2fd6;
+      --aip-blue-glow:   #4d7dff;
+      --aip-ink:         #0b1220;
+      --aip-ink-soft:    #4a5568;
+      --aip-ink-faint:   #8b95a5;
+      --aip-line:        #e6eaf2;
+      --aip-surface:     #ffffff;
+      --aip-canvas:      #f3f5fa;
+
+      --aip-radius-xl:   28px;
+      --aip-radius-lg:   18px;
+      --aip-radius-md:   12px;
+      --aip-radius-pill: 999px;
+
+      --aip-shadow-card: 0 8px 32px rgba(11, 18, 32, 0.10);
+      --aip-shadow-cta:  0 8px 20px rgba(26, 83, 255, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--aip-ink);
+      font-family: "Anuphan", -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--aip-ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+    }
+
+    /* กรอบมือถือ — บนจอใหญ่จัดกึ่งกลาง */
+    .phone {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--aip-canvas);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO: พื้นน้ำเงิน + มาสคอต ── */
+    .hero {
+      position: relative;
+      background: radial-gradient(120% 90% at 50% 8%, var(--aip-blue-glow) 0%, var(--aip-blue) 45%, var(--aip-blue-deep) 100%);
+      padding: 40px 20px 96px;
+      text-align: center;
+      overflow: hidden;
+    }
+    /* เส้นวงโคจรบาง ๆ รอบมาสคอต */
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 320px; height: 320px;
+      top: 10px; left: 50%;
+      transform: translateX(-50%) rotate(-18deg);
+    }
+    .hero::after {
+      width: 430px; height: 430px;
+      top: -40px; left: 50%;
+      transform: translateX(-50%) rotate(12deg);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .hero-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--aip-radius-pill);
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      backdrop-filter: blur(6px);
+    }
+    .hero-badge .material-symbols-outlined { font-size: 16px; }
+
+    /* มาสคอต (SVG inline — ไม่มีไฟล์ภาพในโปรเจกต์) */
+    .mascot {
+      position: relative;
+      width: 190px;
+      height: 190px;
+      margin: 18px auto 0;
+      display: block;
+      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
+      animation: mascot-float 4.5s ease-in-out infinite;
+    }
+    @keyframes mascot-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mascot { animation: none; }
+    }
+
+    /* ── การ์ดขาวซ้อนขึ้นมาทับ hero ── */
+    .card {
+      position: relative;
+      margin: -64px 16px 0;
+      padding: 28px 22px 26px;
+      background: var(--aip-surface);
+      border-radius: var(--aip-radius-xl);
+      box-shadow: var(--aip-shadow-card);
+      text-align: center;
+    }
+
+    /* โลโก้ AiPASS TH */
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .logo-spark { width: 26px; height: 26px; flex-shrink: 0; }
+    .logo-word {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--aip-ink);
+      line-height: 1;
+    }
+    .logo-th {
+      width: 30px; height: 30px;
+      border: 2px solid var(--aip-ink);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      flex-shrink: 0;
+    }
+
+    .headline {
+      margin: 20px 0 8px;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--aip-ink);
+    }
+    .headline em {
+      font-style: normal;
+      color: var(--aip-blue);
+    }
+    .subhead {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--aip-ink-soft);
+    }
+
+    /* แถบตัวเลข */
+    .stats {
+      display: flex;
+      margin: 22px 0 0;
+      padding: 14px 0;
+      border-top: 1px solid var(--aip-line);
+      border-bottom: 1px solid var(--aip-line);
+    }
+    .stat { flex: 1; }
+    .stat + .stat { border-left: 1px solid var(--aip-line); }
+    .stat-num {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--aip-blue);
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--aip-ink-faint);
+      margin-top: 2px;
+    }
+
+    /* ── ส่วนขาย: จุดเด่น ── */
+    .section {
+      padding: 30px 22px 0;
+    }
+    .section-title {
+      margin: 0 0 4px;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--aip-ink);
+    }
+    .section-sub {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: var(--aip-ink-faint);
+    }
+
+    .feature {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: var(--aip-surface);
+      border: 1px solid var(--aip-line);
+      border-radius: var(--aip-radius-lg);
+      text-align: left;
+    }
+    .feature + .feature { margin-top: 10px; }
+    .feature-icon {
+      width: 42px; height: 42px;
+      flex-shrink: 0;
+      border-radius: var(--aip-radius-md);
+      background: rgba(26, 83, 255, 0.08);
+      color: var(--aip-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-icon .material-symbols-outlined { font-size: 22px; }
+    .feature-title {
+      margin: 0 0 3px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--aip-ink);
+    }
+    .feature-desc {
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--aip-ink-soft);
+    }
+
+    /* ── แพ็กเกจ ── */
+    .plan {
+      margin-top: 12px;
+      padding: 22px 20px;
+      border-radius: var(--aip-radius-xl);
+      background: linear-gradient(150deg, var(--aip-blue) 0%, var(--aip-blue-deep) 100%);
+      color: #fff;
+      text-align: left;
+      box-shadow: var(--aip-shadow-cta);
+    }
+    .plan-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--aip-radius-pill);
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .plan-price {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .plan-price small {
+      font-size: 15px;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+    .plan-note {
+      margin: 4px 0 14px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    .plan-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .plan-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      padding: 5px 0;
+    }
+    .plan-list .material-symbols-outlined {
+      font-size: 18px;
+      font-variation-settings: 'FILL' 1;
+      opacity: 0.9;
+    }
+
+    /* ── เสียงจากผู้ใช้ ── */
+    .quote {
+      margin-top: 12px;
+      padding: 18px;
+      background: var(--aip-surface);
+      border: 1px solid var(--aip-line);
+      border-radius: var(--aip-radius-lg);
+      text-align: left;
+    }
+    .quote-text {
+      margin: 0 0 12px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--aip-ink);
+    }
+    .quote-by {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quote-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(140deg, var(--aip-blue-glow), var(--aip-blue-deep));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .quote-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--aip-ink);
+      line-height: 1.3;
+    }
+    .quote-role {
+      font-size: 12px;
+      color: var(--aip-ink-faint);
+    }
+
+    /* ── CTA ── */
+    .cta-wrap {
+      padding: 28px 22px 20px;
+      text-align: center;
+    }
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 16px 20px;
+      border: none;
+      border-radius: var(--aip-radius-pill);
+      background: var(--aip-blue);
+      color: #fff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--aip-shadow-cta);
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+    .cta:hover  { background: var(--aip-blue-deep); }
+    .cta:active { transform: scale(0.98); }
+    .cta:focus-visible {
+      outline: 3px solid var(--aip-blue-glow);
+      outline-offset: 3px;
+    }
+    .cta .material-symbols-outlined { font-size: 20px; }
+    .cta-hint {
+      margin: 10px 0 0;
+      font-size: 12.5px;
+      color: var(--aip-ink-faint);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 8px 22px 34px;
+      text-align: center;
+      color: var(--aip-ink-faint);
+      font-size: 12px;
+    }
+    .footer a {
+      color: var(--aip-blue);
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    .footer-version { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <main class="phone">
+
+    <!-- ══ HERO ══ -->
+    <header class="hero">
+      <span class="hero-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
+        เปิดให้ใช้งานแล้ววันนี้
+      </span>
+
+      <!-- มาสคอต AiPASS -->
+      <svg class="mascot" viewBox="0 0 200 200" role="img" aria-label="มาสคอต AiPASS หุ่นยนต์สีขาว">
+        <defs>
+          <linearGradient id="body-grad" x1="30%" y1="0%" x2="80%" y2="100%">
+            <stop offset="0%"  stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#f2f6ff"/>
+            <stop offset="100%" stop-color="#d8e3ff"/>
+          </linearGradient>
+          <linearGradient id="fin-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"  stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#cfdcff"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ครีบข้าง -->
+        <path d="M42 108 C18 100, 8 118, 22 132 C34 144, 52 136, 56 122 Z" fill="url(#fin-grad)" opacity="0.95"/>
+        <path d="M158 108 C182 100, 192 118, 178 132 C166 144, 148 136, 144 122 Z" fill="url(#fin-grad)" opacity="0.95"/>
+
+        <!-- ลำตัว -->
+        <ellipse cx="100" cy="118" rx="46" ry="40" fill="url(#body-grad)"/>
+
+        <!-- หัว -->
+        <circle cx="100" cy="76" r="52" fill="url(#body-grad)"/>
+
+        <!-- ตา -->
+        <ellipse cx="82" cy="76" rx="9.5" ry="12" fill="#0b1220"/>
+        <ellipse cx="118" cy="76" rx="9.5" ry="12" fill="#0b1220"/>
+        <circle cx="85" cy="71" r="3.2" fill="#ffffff"/>
+        <circle cx="121" cy="71" r="3.2" fill="#ffffff"/>
+
+        <!-- ไฟสถานะกลางอก -->
+        <circle cx="100" cy="122" r="5" fill="#1a53ff" opacity="0.85"/>
+        <circle cx="100" cy="122" r="9" fill="none" stroke="#1a53ff" stroke-width="1.5" opacity="0.35"/>
+
+        <!-- เสาอากาศ -->
+        <line x1="100" y1="26" x2="100" y2="14" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+        <circle cx="100" cy="11" r="4.5" fill="#ffffff"/>
+      </svg>
+    </header>
+
+    <!-- ══ การ์ดหลัก ══ -->
+    <section class="card">
+      <div class="logo">
+        <svg class="logo-spark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 2 L11 8 L17 10 L11 12 L9 18 L7 12 L1 10 L7 8 Z" fill="#1a53ff"/>
+          <circle cx="19" cy="5" r="3" fill="#4d7dff"/>
+        </svg>
+        <span class="logo-word">AiPASS</span>
+        <span class="logo-th">TH</span>
+      </div>
+
+      <h1 class="headline">พาสปอร์ต AI ใบเดียว<br><em>ใช้ได้ทุกโมเดล</em></h1>
+      <p class="subhead">สมัครครั้งเดียว เข้าถึง AI ชั้นนำได้ทุกค่าย<br>จ่ายตามที่ใช้จริง ไม่มีค่ารายเดือน ไม่ผูกสัญญา</p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">28+</div>
+          <div class="stat-label">โมเดลที่รองรับ</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">120K</div>
+          <div class="stat-label">ผู้ใช้งาน</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">99.9%</div>
+          <div class="stat-label">อัปไทม์</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ จุดเด่น ══ -->
+    <section class="section">
+      <h2 class="section-title">ทำไมต้อง AiPASS</h2>
+      <p class="section-sub">บัญชีเดียว จบทุกเรื่อง AI</p>
+
+      <div class="feature">
+        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">key</span></div>
+        <div>
+          <p class="feature-title">คีย์เดียว ใช้ได้ทุกค่าย</p>
+          <p class="feature-desc">ไม่ต้องสมัครทีละเจ้า ไม่ต้องจัดการ API key หลายชุด สลับโมเดลได้ทันทีในที่เดียว</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+        <div>
+          <p class="feature-title">จ่ายเท่าที่ใช้</p>
+          <p class="feature-desc">เติมเครดิตล่วงหน้า ใช้เท่าไหร่หักเท่านั้น เครดิตไม่หมดอายุ ตรวจสอบยอดคงเหลือได้ตลอด</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">shield_lock</span></div>
+        <div>
+          <p class="feature-title">ข้อมูลอยู่ในไทย</p>
+          <p class="feature-desc">เข้ารหัสทุกการเชื่อมต่อ ไม่นำข้อมูลไปเทรนโมเดล สอดคล้องมาตรฐาน PDPA</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span></div>
+        <div>
+          <p class="feature-title">เริ่มได้ใน 2 นาที</p>
+          <p class="feature-desc">ล็อกอินด้วยบัญชีที่มีอยู่ รับเครดิตทดลองฟรีทันที ไม่ต้องผูกบัตรเครดิต</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ แพ็กเกจ ══ -->
+    <section class="section">
+      <h2 class="section-title">แพ็กเกจเริ่มต้น</h2>
+      <p class="section-sub">ยกเลิกเมื่อไหร่ก็ได้ ไม่มีค่าปรับ</p>
+
+      <div class="plan">
+        <span class="plan-tag">แนะนำ</span>
+        <div class="plan-price">฿0 <small>เริ่มต้นฟรี</small></div>
+        <p class="plan-note">รับเครดิตทดลอง ฿150 เมื่อสมัครวันนี้</p>
+        <ul class="plan-list">
+          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> เข้าถึงโมเดลได้ครบทุกตัว</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> ไม่จำกัดจำนวนโปรเจกต์</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> รายงานการใช้งานแบบเรียลไทม์</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> ซัพพอร์ตภาษาไทย ทุกวัน</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══ เสียงจากผู้ใช้ ══ -->
+    <section class="section">
+      <h2 class="section-title">ผู้ใช้พูดถึงเรา</h2>
+      <p class="section-sub">จากทีมที่ใช้งานจริง</p>
+
+      <figure class="quote">
+        <blockquote class="quote-text">“เมื่อก่อนต้องดูแลบัญชี AI สี่เจ้า ทั้งบิลทั้งคีย์ปวดหัวมาก ย้ายมา AiPASS แล้วเหลือใบแจ้งหนี้เดียว ทีมสลับโมเดลกันเองได้เลย”</blockquote>
+        <figcaption class="quote-by">
+          <span class="quote-avatar" aria-hidden="true">ณ</span>
+          <span>
+            <span class="quote-name">ณัฐพงษ์ ศรีวิไล</span><br>
+            <span class="quote-role">Tech Lead, บริษัทซอฟต์แวร์ในกรุงเทพฯ</span>
+          </span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ══ CTA — เปิดเบราว์เซอร์ภายนอก ══ -->
+    <div class="cta-wrap">
+      <button type="button" class="cta" id="openBrowserBtn">
+        <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+        เริ่มใช้งาน AiPASS ฟรี
+      </button>
+      <p class="cta-hint">ระบบจะเปิดเบราว์เซอร์ภายนอกเพื่อดำเนินการต่อ</p>
+    </div>
+
+    <footer class="footer">
+      <a href="#" id="checkCreditLink">ตรวจสอบสิทธิ์คงเหลือ</a>
+      <div class="footer-version">เวอร์ชั่น 1.0.0</div>
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      var EXTERNAL_URL = 'https://uat.ai-passport.humanintelligence.co.th/sign-in';
+
+      // เปิดเบราว์เซอร์ภายนอก — รองรับทั้ง WebView ของแอปและเบราว์เซอร์ปกติ
+      function openExternal(url) {
+        // 1) WebView bridge ของแอป (ถ้ามี)
+        if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === 'function') {
+          window.AndroidBridge.openExternalUrl(url);
+          return;
+        }
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.openExternalUrl) {
+          window.webkit.messageHandlers.openExternalUrl.postMessage(url);
+          return;
+        }
+
+        // 2) เบราว์เซอร์ปกติ — เปิดแท็บใหม่
+        var win = window.open(url, '_blank', 'noopener,noreferrer');
+        if (win) {
+          win.opener = null;
+          return;
+        }
+
+        // 3) ถ้า popup ถูกบล็อก — ใช้ลิงก์จำลองคลิก
+        var a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      document.getElementById('openBrowserBtn').addEventListener('click', function () {
+        openExternal(EXTERNAL_URL);
+      });
+
+      document.getElementById('checkCreditLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        openExternal(EXTERNAL_URL);
+      });
+    })();
+  </script>
+</body>
+</html>
