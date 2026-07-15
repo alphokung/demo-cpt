@@ -230,6 +230,11 @@
       color: var(--aip-ink-faint);
     }
 
+    .feature-grid {
+      display: grid;
+      gap: 10px;
+    }
+
     .feature {
       display: flex;
       gap: 14px;
@@ -240,7 +245,6 @@
       border-radius: var(--aip-radius-lg);
       text-align: left;
     }
-    .feature + .feature { margin-top: 10px; }
     .feature-icon {
       width: 42px; height: 42px;
       flex-shrink: 0;
@@ -409,6 +413,110 @@
       font-weight: 500;
     }
     .footer-version { margin-top: 6px; }
+
+    /* ─────────────────────────────────────────────
+       TABLET — ตั้งแต่ 768px ขึ้นไป
+       เลิกบังคับความกว้างแบบมือถือ ให้เนื้อหาขยายได้
+       ───────────────────────────────────────────── */
+    @media (min-width: 768px) {
+      .phone { max-width: none; }
+
+      .hero { padding: 56px 32px 132px; }
+      .hero::before { width: 420px; height: 420px; top: 24px; }
+      .hero::after  { width: 560px; height: 560px; top: -40px; }
+
+      .hero-badge { font-size: 14px; padding: 8px 16px; }
+      .mascot { width: 240px; height: 240px; }
+
+      .card {
+        max-width: 620px;
+        margin: -88px auto 0;
+        padding: 38px 40px 32px;
+      }
+      .logo-word { font-size: 46px; }
+      .logo-th { width: 34px; height: 34px; font-size: 13px; }
+      .logo-spark { width: 30px; height: 30px; }
+
+      .headline { font-size: 30px; margin-top: 24px; }
+      .subhead  { font-size: 16px; }
+      .stat-num { font-size: 24px; }
+      .stat-label { font-size: 13px; }
+
+      .section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 46px 32px 0;
+        text-align: center;
+      }
+      .section-title { font-size: 24px; }
+      .section-sub { font-size: 15px; margin-bottom: 22px; }
+
+      /* จุดเด่นเรียงสองคอลัมน์ */
+      .feature-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .feature { padding: 20px; }
+
+      /* ปุ่มไม่ต้องเต็มความกว้างบนจอใหญ่ */
+      .cta-wrap { padding: 40px 32px 24px; }
+      .cta {
+        width: auto;
+        min-width: 320px;
+        margin: 0 auto;
+        font-size: 18px;
+        padding: 17px 40px;
+      }
+      .cta-hint { font-size: 13px; }
+      .footer { font-size: 13px; padding-bottom: 48px; }
+    }
+
+    /* ─────────────────────────────────────────────
+       DESKTOP — ตั้งแต่ 1024px ขึ้นไป
+       ───────────────────────────────────────────── */
+    @media (min-width: 1024px) {
+      .hero { padding: 72px 40px 150px; }
+      .hero::before { width: 520px; height: 520px; top: 30px; }
+      .hero::after  { width: 700px; height: 700px; top: -60px; }
+      .mascot { width: 280px; height: 280px; }
+
+      .card {
+        max-width: 720px;
+        margin: -100px auto 0;
+        padding: 44px 56px 36px;
+      }
+      .logo-word { font-size: 54px; }
+      .logo-th { width: 38px; height: 38px; font-size: 14px; }
+
+      .headline { font-size: 36px; }
+      .subhead  { font-size: 17px; }
+      .stats { margin-top: 28px; padding: 18px 0; }
+      .stat-num { font-size: 28px; }
+
+      .section {
+        max-width: 1080px;
+        padding: 60px 40px 0;
+      }
+      .section-title { font-size: 28px; }
+
+      /* สี่คอลัมน์ — ไอคอนวางบนหัวข้อเพื่อให้การ์ดไม่แคบเกินไป */
+      .feature-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .feature {
+        flex-direction: column;
+        gap: 12px;
+        padding: 24px 20px;
+      }
+      .feature-title { font-size: 16px; }
+    }
+
+    /* จอกว้างมาก — กันไม่ให้ hero สูงเกินจำเป็น */
+    @media (min-width: 1440px) {
+      .hero { padding: 80px 40px 160px; }
+      .section { max-width: 1160px; }
+    }
   </style>
 </head>
 <body>
@@ -496,73 +604,41 @@
       <h2 class="section-title">ทำไมต้อง AiPASS</h2>
       <p class="section-sub">บัญชีเดียว จบทุกเรื่อง AI</p>
 
-      <div class="feature">
-        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">key</span></div>
-        <div>
-          <p class="feature-title">คีย์เดียว ใช้ได้ทุกค่าย</p>
-          <p class="feature-desc">ไม่ต้องสมัครทีละเจ้า ไม่ต้องจัดการ API key หลายชุด สลับโมเดลได้ทันทีในที่เดียว</p>
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">key</span></div>
+          <div>
+            <p class="feature-title">คีย์เดียว ใช้ได้ทุกค่าย</p>
+            <p class="feature-desc">ไม่ต้องสมัครทีละเจ้า ไม่ต้องจัดการ API key หลายชุด สลับโมเดลได้ทันทีในที่เดียว</p>
+          </div>
         </div>
-      </div>
 
-      <div class="feature">
-        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
-        <div>
-          <p class="feature-title">จ่ายเท่าที่ใช้</p>
-          <p class="feature-desc">เติมเครดิตล่วงหน้า ใช้เท่าไหร่หักเท่านั้น เครดิตไม่หมดอายุ ตรวจสอบยอดคงเหลือได้ตลอด</p>
+        <div class="feature">
+          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+          <div>
+            <p class="feature-title">จ่ายเท่าที่ใช้</p>
+            <p class="feature-desc">เติมเครดิตล่วงหน้า ใช้เท่าไหร่หักเท่านั้น เครดิตไม่หมดอายุ ตรวจสอบยอดคงเหลือได้ตลอด</p>
+          </div>
         </div>
-      </div>
 
-      <div class="feature">
-        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">shield_lock</span></div>
-        <div>
-          <p class="feature-title">ข้อมูลอยู่ในไทย</p>
-          <p class="feature-desc">เข้ารหัสทุกการเชื่อมต่อ ไม่นำข้อมูลไปเทรนโมเดล สอดคล้องมาตรฐาน PDPA</p>
+        <div class="feature">
+          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">shield_lock</span></div>
+          <div>
+            <p class="feature-title">ข้อมูลอยู่ในไทย</p>
+            <p class="feature-desc">เข้ารหัสทุกการเชื่อมต่อ ไม่นำข้อมูลไปเทรนโมเดล สอดคล้องมาตรฐาน PDPA</p>
+          </div>
         </div>
-      </div>
 
-      <div class="feature">
-        <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span></div>
-        <div>
-          <p class="feature-title">เริ่มได้ใน 2 นาที</p>
-          <p class="feature-desc">ล็อกอินด้วยบัญชีที่มีอยู่ รับเครดิตทดลองฟรีทันที ไม่ต้องผูกบัตรเครดิต</p>
+        <div class="feature">
+          <div class="feature-icon"><span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span></div>
+          <div>
+            <p class="feature-title">เริ่มได้ใน 2 นาที</p>
+            <p class="feature-desc">ล็อกอินด้วยบัญชีที่มีอยู่ รับเครดิตทดลองฟรีทันที ไม่ต้องผูกบัตรเครดิต</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ แพ็กเกจ ══ -->
-    <section class="section">
-      <h2 class="section-title">แพ็กเกจเริ่มต้น</h2>
-      <p class="section-sub">ยกเลิกเมื่อไหร่ก็ได้ ไม่มีค่าปรับ</p>
-
-      <div class="plan">
-        <span class="plan-tag">แนะนำ</span>
-        <div class="plan-price">฿0 <small>เริ่มต้นฟรี</small></div>
-        <p class="plan-note">รับเครดิตทดลอง ฿150 เมื่อสมัครวันนี้</p>
-        <ul class="plan-list">
-          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> เข้าถึงโมเดลได้ครบทุกตัว</li>
-          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> ไม่จำกัดจำนวนโปรเจกต์</li>
-          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> รายงานการใช้งานแบบเรียลไทม์</li>
-          <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> ซัพพอร์ตภาษาไทย ทุกวัน</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ══ เสียงจากผู้ใช้ ══ -->
-    <section class="section">
-      <h2 class="section-title">ผู้ใช้พูดถึงเรา</h2>
-      <p class="section-sub">จากทีมที่ใช้งานจริง</p>
-
-      <figure class="quote">
-        <blockquote class="quote-text">“เมื่อก่อนต้องดูแลบัญชี AI สี่เจ้า ทั้งบิลทั้งคีย์ปวดหัวมาก ย้ายมา AiPASS แล้วเหลือใบแจ้งหนี้เดียว ทีมสลับโมเดลกันเองได้เลย”</blockquote>
-        <figcaption class="quote-by">
-          <span class="quote-avatar" aria-hidden="true">ณ</span>
-          <span>
-            <span class="quote-name">ณัฐพงษ์ ศรีวิไล</span><br>
-            <span class="quote-role">Tech Lead, บริษัทซอฟต์แวร์ในกรุงเทพฯ</span>
-          </span>
-        </figcaption>
-      </figure>
-    </section>
 
     <!-- ══ CTA — เปิดเบราว์เซอร์ภายนอก ══ -->
     <div class="cta-wrap">
