@@ -51,7 +51,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: var(--aip-ink);
+      background: var(--aip-canvas);
       font-family: "Anuphan", -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--aip-ink);
       -webkit-font-smoothing: antialiased;
@@ -62,9 +62,9 @@
       line-height: 1;
     }
 
-    /* กรอบมือถือ — บนจอใหญ่จัดกึ่งกลาง */
+    /* เต็มความกว้างเสมอ — ความกว้างเนื้อหาคุมที่ .card / .section แทน
+       (ถ้าจำกัดความกว้างตรงนี้ จะเกิดขอบพื้นหลังขนาบข้างช่วงจอ 430–768px) */
     .phone {
-      max-width: 430px;
       margin: 0 auto;
       min-height: 100vh;
       background: var(--aip-canvas);
@@ -457,11 +457,8 @@
 
     /* ─────────────────────────────────────────────
        TABLET — ตั้งแต่ 768px ขึ้นไป
-       เลิกบังคับความกว้างแบบมือถือ ให้เนื้อหาขยายได้
        ───────────────────────────────────────────── */
     @media (min-width: 768px) {
-      .phone { max-width: none; }
-
       .hero { padding: 56px 32px 132px; }
       .hero::before { width: 420px; height: 420px; top: 24px; }
       .hero::after  { width: 560px; height: 560px; top: -40px; }
