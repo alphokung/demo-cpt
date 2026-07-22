@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tips of the Day</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Sarabun', 'Prompt', -apple-system, sans-serif;
+    background: #f0f4f8;
+    color: #1a2b3c;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .subtitle { color: #5a6b7c; font-size: 0.9rem; margin-bottom: 20px; }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .card h2 { font-size: 1.05rem; margin-bottom: 14px; }
+  .field { margin-bottom: 14px; }
+  .field label.title { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+  input[type="number"] {
+    width: 120px;
+    padding: 8px 10px;
+    border: 1px solid #c8d4e0;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .checks label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #c8d4e0;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    user-select: none;
+    background: #fff;
+    transition: all .15s;
+  }
+  .checks input { accent-color: #1f6feb; }
+  .checks label:has(input:checked) {
+    background: #e6f0ff;
+    border-color: #1f6feb;
+    color: #0b4dbb;
+  }
+  button.primary {
+    width: 100%;
+    padding: 12px;
+    background: #1f6feb;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.primary:hover { background: #1a5fd0; }
+  .tip {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  .tip .icon { font-size: 1.3rem; }
+  .tip .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 6px;
+  }
+  .tag.all { background: #eef1f5; color: #5a6b7c; }
+  .tag.personal { background: #e2f5e8; color: #17753a; }
+  .empty { text-align: center; color: #5a6b7c; padding: 24px; }
+  #results h2 { font-size: 1.05rem; margin: 4px 0 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>💡 Tips of the Day</h1>
+  <p class="subtitle">เลือกข้อมูลของคุณ เพื่อรับ tips ที่เหมาะกับคุณ 5 รายการ</p>
+
+  <div class="card">
+    <h2>ข้อมูลของคุณ</h2>
+
+    <div class="field">
+      <label class="title" for="age">อายุ</label>
+      <input type="number" id="age" min="0" max="120" placeholder="เช่น 25">
+    </div>
+
+    <div class="field">
+      <label class="title">เอกสาร / ทรัพย์สิน</label>
+      <div class="checks">
+        <label><input type="checkbox" id="driving-license"> มีใบขับขี่</label>
+        <label><input type="checkbox" id="passport"> มี Passport</label>
+        <label><input type="checkbox" id="vehicle"> มีรถ</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">มิเตอร์น้ำ / ไฟ</label>
+      <div class="checks">
+        <label><input type="checkbox" id="mea-meter"> มิเตอร์ไฟ MEA</label>
+        <label><input type="checkbox" id="pea-meter"> มิเตอร์ไฟ PEA</label>
+        <label><input type="checkbox" id="mwa-meter"> มิเตอร์น้ำ MWA</label>
+        <label><input type="checkbox" id="pwa-meter"> มิเตอร์น้ำ PWA</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">อื่นๆ</label>
+      <div class="checks">
+        <label><input type="checkbox" id="disability"> เป็นคนพิการ</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">สิทธิสุขภาพ</label>
+      <div class="checks">
+        <label><input type="radio" name="health" value="none" checked> ไม่ระบุ</label>
+        <label><input type="radio" name="health" value="nhso"> บัตรทอง (สปสช.)</label>
+        <label><input type="radio" name="health" value="gov-agent"> ข้าราชการ</label>
+        <label><input type="radio" name="health" value="sso"> ประกันสังคม</label>
+      </div>
+    </div>
+
+    <button class="primary" onclick="showTips()">🎲 ดู Tips of the Day</button>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+// ข้อมูลจาก sheet "Condition Tips"
+// cond: null = ALL, ไม่งั้นเป็น object เงื่อนไข (ทุก key ต้องผ่าน / anyMeter = มิเตอร์ตัวใดตัวหนึ่ง)
+const TIPS = [
+  { message: "เกิดเหตุ ไม่รู้จะติดต่อใคร ลองเข้าบริการสายด่วนฉุกเฉิน รวมเบอร์ที่คุณต้องรู้ ครบจบในที่เดียว", cond: null },
+  { message: "จำไม่ได้มีประกันของที่ไหนบ้าง ตรวจสอบกรมธรรม์ของคุณ ได้ง่ายๆครบทุกฉบับผ่าน OIC Connect", cond: null },
+  { message: "ช่วงเทศกาลต้องเดินทางไกล ลองเช็คสภาพการจราจรก่อนออกรถ ช่วยให้คุณวางแผนการเดินทางได้ดีขึ้น", cond: null },
+  { message: "เพราะห่วงใย เลยอยากให้ใส่ถุงยาง ชาย หญิงอายุเกิน 15 ปี ขอรับถุงยางได้ปีละ 520 ชิ้น ผ่านจุดบริการ สปสช.", cond: null },
+  { message: "สงสัยว่าจะเจอหมอปลอม ลองตรวจสอบใบอนุญาตคุณหมอ และบุคลากรทางการแพทย์ก่อนเข้ารับการรักษาหน่อยไหม", cond: null },
+  { message: "ตรวจสอบเครดิตบูโรผ่านทางรัฐ นอกจากดูฟรี ได้ทุกที่ ทุกเวลาแล้ว ยังสามารถใช้ประกอบการขอสินเชื่อกับ กยศ ได้ด้วย", cond: { age: "< 30" } },
+  { message: "ฟรีแลนซ์ ค้าขาย หรือยังเรียนอยู่ มาเริ่มต้นสร้างบำนาญ ง่ายๆ เพียงแค่สมัครกองทุนการออมแห่งชาติ", cond: { age: "> 15" } },
+  { message: "ไม่ต้องรอให้อายุครบ 60 ปี คุณสามารถลงทะเบียนรับเบี้ยผู้สูงอายุได้ ตั้งแต่เดือน ต.ค. - ก.ย. ของปีก่อน เพื่อให้รับเงิน 600 - 1,000 บาท (ตามช่วงอายุ) ทันที", cond: { age: "59" } },
+  { message: "ลูกจ้างลาไปทำหมัน หรือพักฟื้นจากการทำหมัน นายจ้างต้องจ่ายค่าจ้างให้ตามปกติ ในวันที่ลา โดยไม่นับรวมกับวันลาป่วย หรือลากิจ", cond: { age: "> 18" } },
+  { message: "รู้หรือไม่? คุณสามารถต่ออายุใบอนุญาตขับรถล่วงหน้าได้ 90 วันก่อนหมดอายุ", cond: { "driving-license": true } },
+  { message: "ใบขับขี่ในทางรัฐ สามารถใช้แสดงตนได้ตามกฎหมายเช่น แสดงให้เจ้าหน้าที่ตำรวจ, ขอรับสิทธิ, เลือกตั้ง เป็นต้น", cond: { "driving-license": true } },
+  { message: "เจ็บป่วยเล็กน้อย คุณสามารถเดินเข้าร้านยา และแจ้งอาการเบื้องต้นกับเภสัชกร เพื่อขอรับยาฟรีได้", cond: { nhso: true } },
+  { message: "บัตรทองไม่ได้มีแค่ถอนหรืออุดฟัน แต่ยังครอบคลุมการขูดหินปูน ผ่าฟันคุด และทำฟันเทียมถอดได้ ช่วยประหยัดค่าใช้จ่ายหลักหมื่นได้มาก", cond: { nhso: true } },
+  { message: "ค่าน้ำ ค่าไฟ สามารถนำไปขอเอกสาร ประกอบการขอสินเชื่อ เพื่อยื่นกู้สินเชื่อต่างๆ กับธนาคารได้ด้วย", cond: { anyMeter: true } },
+  { message: "ใบขับขี่ และบัตรคนพิการในทางรัฐ สามารถใช้แสดงตนได้ตามกฎหมายเช่น แสดงให้เจ้าหน้าที่ตำรวจ, ขอรับสิทธิ, เลือกตั้ง เป็นต้น", cond: { "driving-license": true, disability: true } },
+];
+
+const MAX_TIPS = 5;
+const MAX_ALL = 2;
+
+function getUserAttrs() {
+  const bool = id => document.getElementById(id).checked;
+  const health = document.querySelector('input[name="health"]:checked').value;
+  const ageVal = document.getElementById('age').value;
+  return {
+    age: ageVal === '' ? null : Number(ageVal),
+    'driving-license': bool('driving-license'),
+    passport: bool('passport'),
+    vehicle: bool('vehicle'),
+    'mea-meter': bool('mea-meter'),
+    'pea-meter': bool('pea-meter'),
+    'mwa-meter': bool('mwa-meter'),
+    'pwa-meter': bool('pwa-meter'),
+    disability: bool('disability'),
+    nhso: health === 'nhso',
+    'gov-agent': health === 'gov-agent',
+    sso: health === 'sso',
+  };
+}
+
+function matchAge(rule, age) {
+  if (age === null) return false;
+  const m = rule.match(/^([<>]=?)?\s*(\d+)$/);
+  if (!m) return false;
+  const [, op, numStr] = m;
+  const n = Number(numStr);
+  switch (op) {
+    case '<': return age < n;
+    case '>': return age > n;
+    case '<=': return age <= n;
+    case '>=': return age >= n;
+    default: return age === n;
+  }
+}
+
+function matchTip(tip, attrs) {
+  if (tip.cond === null) return false; // ALL ไม่นับเป็น personalized
+  for (const [key, rule] of Object.entries(tip.cond)) {
+    if (key === 'age') {
+      if (!matchAge(rule, attrs.age)) return false;
+    } else if (key === 'anyMeter') {
+      if (!(attrs['mea-meter'] || attrs['pea-meter'] || attrs['mwa-meter'] || attrs['pwa-meter'])) return false;
+    } else {
+      if (attrs[key] !== true) return false;
+    }
+  }
+  return true;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickTips(attrs) {
+  const allTips = shuffle(TIPS.filter(t => t.cond === null));
+  const personalTips = shuffle(TIPS.filter(t => matchTip(t, attrs)));
+
+  // personalized ก่อน (สูงสุด 5 - MAX_ALL หากมีพอ) แล้วเติม ALL ไม่เกิน 2
+  // ถ้า personalized มีน้อย ให้เติม ALL จนครบ 5
+  const nPersonal = Math.min(personalTips.length, MAX_TIPS - Math.min(MAX_ALL, allTips.length));
+  const picked = personalTips.slice(0, nPersonal)
+    .map(t => ({ ...t, personal: true }))
+    .concat(allTips.slice(0, MAX_TIPS - nPersonal).map(t => ({ ...t, personal: false })));
+
+  return shuffle(picked);
+}
+
+function showTips() {
+  const attrs = getUserAttrs();
+  const tips = pickTips(attrs);
+  const results = document.getElementById('results');
+
+  if (tips.length === 0) {
+    results.innerHTML = '<div class="empty">ไม่พบ tips</div>';
+    return;
+  }
+
+  results.innerHTML = '<h2>✨ Tips สำหรับคุณ</h2>' + tips.map(t => `
+    <div class="tip">
+      <span class="icon">${t.personal ? '🎯' : '💡'}</span>
+      <div>
+        ${escapeHtml(t.message)}
+        <br><span class="tag ${t.personal ? 'personal' : 'all'}">${t.personal ? 'สำหรับคุณโดยเฉพาะ' : 'ทั่วไป'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+</script>
+</body>
+</html>

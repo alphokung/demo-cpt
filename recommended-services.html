@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บริการแนะนำ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Sarabun', 'Prompt', -apple-system, sans-serif;
+    background: #f0f4f8;
+    color: #1a2b3c;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .subtitle { color: #5a6b7c; font-size: 0.9rem; margin-bottom: 20px; }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .card h2 { font-size: 1.05rem; margin-bottom: 14px; }
+  .field { margin-bottom: 14px; }
+  .field label.title { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+  input[type="number"] {
+    width: 120px;
+    padding: 8px 10px;
+    border: 1px solid #c8d4e0;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .checks label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #c8d4e0;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    user-select: none;
+    background: #fff;
+    transition: all .15s;
+  }
+  .checks input { accent-color: #0d9463; }
+  .checks label:has(input:checked) {
+    background: #e2f5e8;
+    border-color: #0d9463;
+    color: #0a6b48;
+  }
+  button.primary {
+    width: 100%;
+    padding: 12px;
+    background: #0d9463;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.primary:hover { background: #0b7d54; }
+  .service {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  .service .icon { font-size: 1.3rem; }
+  .service .name { font-weight: 600; }
+  .service .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 4px;
+  }
+  .tag.all { background: #eef1f5; color: #5a6b7c; }
+  .tag.personal { background: #e2f5e8; color: #17753a; }
+  .empty { text-align: center; color: #5a6b7c; padding: 24px; }
+  #results h2 { font-size: 1.05rem; margin: 4px 0 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏛️ บริการแนะนำ</h1>
+  <p class="subtitle">เลือกข้อมูลของคุณ เพื่อรับบริการแนะนำที่เหมาะกับคุณ 5 รายการ</p>
+
+  <div class="card">
+    <h2>ข้อมูลของคุณ</h2>
+
+    <div class="field">
+      <label class="title" for="age">อายุ</label>
+      <input type="number" id="age" min="0" max="120" placeholder="เช่น 25">
+    </div>
+
+    <div class="field">
+      <label class="title">เอกสาร / ทรัพย์สิน</label>
+      <div class="checks">
+        <label><input type="checkbox" id="driving-license"> มีใบขับขี่</label>
+        <label><input type="checkbox" id="passport"> มี Passport</label>
+        <label><input type="checkbox" id="vehicle"> มีรถ</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">มิเตอร์น้ำ / ไฟ</label>
+      <div class="checks">
+        <label><input type="checkbox" id="mea-meter"> มิเตอร์ไฟ MEA</label>
+        <label><input type="checkbox" id="pea-meter"> มิเตอร์ไฟ PEA</label>
+        <label><input type="checkbox" id="mwa-meter"> มิเตอร์น้ำ MWA</label>
+        <label><input type="checkbox" id="pwa-meter"> มิเตอร์น้ำ PWA</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">อื่นๆ</label>
+      <div class="checks">
+        <label><input type="checkbox" id="disability"> เป็นคนพิการ</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="title">สิทธิสุขภาพ</label>
+      <div class="checks">
+        <label><input type="radio" name="health" value="none" checked> ไม่ระบุ</label>
+        <label><input type="radio" name="health" value="nhso"> บัตรทอง (สปสช.)</label>
+        <label><input type="radio" name="health" value="gov-agent"> ข้าราชการ</label>
+        <label><input type="radio" name="health" value="sso"> ประกันสังคม</label>
+      </div>
+    </div>
+
+    <button class="primary" onclick="showServices()">🎲 ดูบริการแนะนำ</button>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+// ข้อมูลจาก sheet "บริการแนะนำ"
+// cond: null = ALL
+// cond.age = เงื่อนไขอายุ, cond.any = รายชื่อ attribute ที่ติ๊ก YES (มีตัวใดตัวหนึ่งก็ match)
+const SERVICES = [
+  { name: "ตรวจสอบสถานะคดี", cond: null },
+  { name: "ดูข้อมูลสุขภาพส่วนบุคคล", cond: null },
+  { name: "ตรวจสอบกรมธรรม์ประกันภัย", cond: null },
+  { name: "ตรวจสอบใบอนุญาตสถานพยาบาล", cond: null },
+  { name: "ตรวจสอบสิทธิการรักษาพยาบาล", cond: null },
+  { name: "ตรวจสอบทะเบียนรถ", cond: { any: ["driving-license", "vehicle"] } },
+  { name: "ตรวจสอบใบสั่งจราจร", cond: { any: ["driving-license", "vehicle"] } },
+  { name: "ตรวจสอบข้อมูลใบขับขี่", cond: { any: ["driving-license", "vehicle"] } },
+  { name: "กระเป๋าเอกสาร", cond: { any: ["driving-license", "vehicle", "disability"] } },
+  { name: "ตรวจสอบยอดเงิน กบข.", cond: { any: ["gov-agent"] } },
+  { name: "ดูบัตรประจำตัวคนพิการ", cond: { any: ["disability"] } },
+  { name: "ตรวจสอบยอดหนี้กองทุนคนพิการ", cond: { any: ["disability"] } },
+  { name: "ตรวจสอบเบี้ยความพิการ", cond: { any: ["disability"] } },
+  { name: "ตรวจสอบสิทธิคนพิการ", cond: { any: ["disability"] } },
+  { name: "จัดการเงินออม กอช.", cond: { age: "> 15" } },
+  { name: "ดูข้อมูลหนังสือเดินทาง", cond: { any: ["passport"] } },
+  { name: "ตรวจสอบสิทธิสวัสดิการเบี้ยผู้สูงอายุ", cond: { age: "> 60" } },
+  { name: "จ่ายค่าน้ำประปาภูมิภาค (กปภ.)", cond: { any: ["pea-meter", "pwa-meter"] } },
+  { name: "จ่ายค่าไฟส่วนภูมิภาค (กฟภ.)", cond: { any: ["pea-meter", "pwa-meter"] } },
+  { name: "จ่ายค่าไฟฟ้านครหลวง (กฟน.)", cond: { any: ["mea-meter", "mwa-meter"] } },
+  { name: "จ่ายค่าน้ำประปานครหลวง (กปน.)", cond: { any: ["mea-meter", "mwa-meter"] } },
+  { name: "วางแผนการเงิน กบข.", cond: { any: ["gov-agent"] } },
+  { name: "ตรวจสอบเครดิตบูโร", cond: { age: "< 30" } },
+  { name: "รับแจ้งเตือนสิทธิ พม.", cond: { any: ["disability"] } },
+  { name: "งานบริการสำนักงานประกันสังคม", cond: { any: ["sso"] } },
+  { name: "ค้นหารูปแปลงที่ดิน", cond: { any: ["mea-meter", "pea-meter", "mwa-meter", "pwa-meter"] } },
+  { name: "ตรวจสอบหนังสือรับรองผลฯ O-NET", cond: { age: "15 - 30" } },
+];
+
+const MAX_ITEMS = 5;
+const MAX_ALL = 2;
+
+function getUserAttrs() {
+  const bool = id => document.getElementById(id).checked;
+  const health = document.querySelector('input[name="health"]:checked').value;
+  const ageVal = document.getElementById('age').value;
+  return {
+    age: ageVal === '' ? null : Number(ageVal),
+    'driving-license': bool('driving-license'),
+    passport: bool('passport'),
+    vehicle: bool('vehicle'),
+    'mea-meter': bool('mea-meter'),
+    'pea-meter': bool('pea-meter'),
+    'mwa-meter': bool('mwa-meter'),
+    'pwa-meter': bool('pwa-meter'),
+    disability: bool('disability'),
+    nhso: health === 'nhso',
+    'gov-agent': health === 'gov-agent',
+    sso: health === 'sso',
+  };
+}
+
+function matchAge(rule, age) {
+  if (age === null) return false;
+  const range = rule.match(/^(\d+)\s*-\s*(\d+)$/);
+  if (range) return age >= Number(range[1]) && age <= Number(range[2]);
+  const m = rule.match(/^([<>]=?)?\s*(\d+)$/);
+  if (!m) return false;
+  const [, op, numStr] = m;
+  const n = Number(numStr);
+  switch (op) {
+    case '<': return age < n;
+    case '>': return age > n;
+    case '<=': return age <= n;
+    case '>=': return age >= n;
+    default: return age === n;
+  }
+}
+
+function matchService(svc, attrs) {
+  if (svc.cond === null) return false; // ALL ไม่นับเป็น personalized
+  if (svc.cond.age) return matchAge(svc.cond.age, attrs.age);
+  return svc.cond.any.some(key => attrs[key] === true);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickServices(attrs) {
+  const allItems = shuffle(SERVICES.filter(s => s.cond === null));
+  const personalItems = shuffle(SERVICES.filter(s => matchService(s, attrs)));
+
+  // personalized ก่อน (สูงสุด 5 - MAX_ALL หากมีพอ) แล้วเติม ALL ไม่เกิน 2
+  // ถ้า personalized มีน้อย ให้เติม ALL จนครบ 5
+  const nPersonal = Math.min(personalItems.length, MAX_ITEMS - Math.min(MAX_ALL, allItems.length));
+  const picked = personalItems.slice(0, nPersonal)
+    .map(s => ({ ...s, personal: true }))
+    .concat(allItems.slice(0, MAX_ITEMS - nPersonal).map(s => ({ ...s, personal: false })));
+
+  return shuffle(picked);
+}
+
+function showServices() {
+  const attrs = getUserAttrs();
+  const items = pickServices(attrs);
+  const results = document.getElementById('results');
+
+  if (items.length === 0) {
+    results.innerHTML = '<div class="empty">ไม่พบบริการแนะนำ</div>';
+    return;
+  }
+
+  results.innerHTML = '<h2>✨ บริการแนะนำสำหรับคุณ</h2>' + items.map(s => `
+    <div class="service">
+      <span class="icon">${s.personal ? '🎯' : '🏛️'}</span>
+      <div>
+        <div class="name">${escapeHtml(s.name)}</div>
+        <span class="tag ${s.personal ? 'personal' : 'all'}">${s.personal ? 'สำหรับคุณโดยเฉพาะ' : 'ทั่วไป'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+</script>
+</body>
+</html>
