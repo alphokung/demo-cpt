@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Envelope Encryption — Interactive Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;500;600&family=Anuphan:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mist:#EDF1EE; --ink:#12343B; --ink-soft:#4A6670; --line:#D5DDD9;
+  --brass:#B07A16; --teal:#147D74; --danger:#A23B2E; --dark:#0E262C;
+  --disp:'Bai Jamjuree',sans-serif; --body:'Anuphan',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--mist);color:var(--ink);line-height:1.65;min-height:100vh}
+.wrap{max-width:920px;margin:0 auto;padding:clamp(28px,5vw,56px) clamp(18px,4vw,40px) 70px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:12px}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(26px,4.2vw,42px);line-height:1.2;letter-spacing:-.01em}
+h3{font-family:var(--disp);font-weight:600;font-size:clamp(15px,1.6vw,18px)}
+.lead{font-size:clamp(14px,1.5vw,17px);color:var(--ink-soft);max-width:62ch;margin-top:12px}
+.console{background:var(--dark);border-radius:16px;padding:clamp(16px,2.4vw,30px);margin-top:26px;color:#DCE8E4}
+.console h3{color:#F2F6F4}
+.console .sub{color:#9AB2AD;font-size:clamp(13px,1.2vw,14.5px)}
+.dstep{border:1px solid #24444C;border-radius:12px;padding:clamp(12px,1.6vw,18px);margin-top:14px}
+.dstep .dhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.dstep .dnum{font-family:var(--mono);font-size:13px;color:#E9C878;border:1px solid #E9C878;border-radius:7px;padding:3px 9px}
+.btn{font-family:var(--disp);font-weight:600;font-size:14px;background:var(--brass);color:#fff;border:none;border-radius:9px;padding:9px 16px;cursor:pointer}
+.btn:hover{background:#96660F}
+.btn.ghost{background:transparent;color:#E9C878;border:1px solid #E9C878}
+.btn.ghost:hover{background:rgba(233,200,120,.12)}
+.btn.red{background:var(--danger)}
+.btn.red:hover{background:#87301F}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #7FD4C9;outline-offset:2px}
+.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:180px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#9AB2AD;text-transform:uppercase}
+input,select,textarea{font-family:var(--mono);font-size:13.5px;background:#0A1C21;color:#DCE8E4;border:1px solid #2C4E56;border-radius:8px;padding:9px 11px;width:100%}
+textarea{resize:vertical;min-height:64px}
+.hexbox{font-family:var(--mono);font-size:12.5px;line-height:1.9;word-break:break-all;background:#0A1C21;border:1px solid #2C4E56;border-radius:8px;padding:11px 13px;margin-top:10px;min-height:20px}
+.hexbox .h-ms{color:#E9C878}
+.hexbox .h-dek{color:#7FD4C9}
+.hexbox .h-hd{color:#E9C878}
+.hexbox .h-nonce{color:#C9A0E8}
+.hexbox .h-ct{color:#7FD4C9}
+.hexbox .h-tag{color:#F09A8C}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-family:var(--mono);font-size:11px;color:#9AB2AD}
+.legend span::before{content:'■ ';font-size:12px}
+.legend .h-hd::before{color:#E9C878}.legend .h-nonce::before{color:#C9A0E8}
+.legend .h-ct::before{color:#7FD4C9}.legend .h-tag::before{color:#F09A8C}
+.msg{font-size:13.5px;margin-top:10px;padding:9px 12px;border-radius:8px;display:none}
+.msg.on{display:block}
+.msg.ok{background:rgba(20,125,116,.18);color:#8FE0D5;border:1px solid #1E6B63}
+.msg.err{background:rgba(162,59,46,.2);color:#F0A69A;border:1px solid #7A3A2E}
+.msg.info{background:rgba(233,200,120,.1);color:#E9C878;border:1px solid #6B5A2A}
+.vchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.vchip{font-family:var(--mono);font-size:12px;border-radius:999px;padding:4px 12px;border:1px solid #2C4E56;color:#9AB2AD}
+.vchip.active{background:var(--brass);border-color:var(--brass);color:#fff}
+.vchip.old{border-color:#7FD4C9;color:#7FD4C9}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.stat{font-family:var(--mono);font-size:12px;color:#9AB2AD;margin-top:8px}
+.hint{font-size:13px;color:var(--ink-soft);margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Thang Rat citizen data cache · Live demo</div>
+  <h1>Envelope Encryption Demo</h1>
+  <p class="lead">คำนวณจริงด้วย Web Crypto API ในเบราว์เซอร์ของคุณ — HKDF-SHA256 และ AES-256-GCM ตัวเดียวกับ production ไม่มีข้อมูลถูกส่งออกไปไหน ทำตามลำดับ STEP 1 → 4</p>
+
+  <div class="console">
+    <div id="nocrypto" class="msg err">เบราว์เซอร์นี้ไม่รองรับ Web Crypto (crypto.subtle) — ลองเปิดผ่าน Chrome/Edge/Firefox เวอร์ชันปัจจุบัน</div>
+
+    <div class="dstep">
+      <div class="dhead"><span class="dnum">STEP 1</span><h3>Rotation — สร้าง Master Secret (KDK)</h3></div>
+      <p class="sub">จำลอง <span style="font-family:var(--mono)">GenerateDataKey</span>: สุ่ม 32 bytes จาก CSPRNG — ใน production ตัว plaintext นี้อยู่ใน memory ชั่วครู่แล้วถูก wrap เก็บ DB · กด Rotate ซ้ำเพื่อดู version เลื่อนสถานะ</p>
+      <div class="row" style="margin-top:10px"><button class="btn" id="btnGen">GenerateDataKey → MS v1</button><button class="btn ghost" id="btnRotate" disabled>Rotate → สร้าง version ใหม่</button></div>
+      <div class="vchips" id="vchips"></div>
+      <div class="hexbox" id="msHex"><span class="sub">ยังไม่มี master secret — กดปุ่มด้านบน</span></div>
+      <div class="msg info" id="msMsg"></div>
+    </div>
+
+    <div class="dstep">
+      <div class="dhead"><span class="dnum">STEP 2</span><h3>Derive DEK ด้วย HKDF-SHA256</h3></div>
+      <p class="sub">DEK = HKDF(MS[active], salt=dataset, info=SHA-256(citizen_id)) — ลองเปลี่ยนเลขแค่หลักเดียวแล้ว derive ใหม่ DEK จะเปลี่ยนทั้งเส้น</p>
+      <div class="row" style="margin-top:10px">
+        <div class="field"><label for="cid">citizen_id (ตัวอย่าง)</label><input id="cid" value="1103700123456" autocomplete="off"></div>
+        <div class="field"><label for="ds">dataset</label><select id="ds">
+          <option value="1">1 · passport</option><option value="2">2 · driver_license</option>
+          <option value="3">3 · vehicle</option><option value="4">4 · electricity_mea</option>
+          <option value="5">5 · electricity_pea</option><option value="6">6 · water_mwa</option>
+          <option value="7">7 · water_pwa</option><option value="8">8 · traffic_ticket</option>
+          <option value="9">9 · healthcare_rights</option><option value="10">10 · disability_card</option>
+        </select></div>
+        <button class="btn" id="btnDerive" disabled>Derive DEK</button>
+      </div>
+      <div class="hexbox" id="dekHex"><span class="sub">รอ master secret ก่อน</span></div>
+      <div class="stat" id="dekStat"></div>
+    </div>
+
+    <div class="dstep">
+      <div class="dhead"><span class="dnum">STEP 3</span><h3>Encrypt — AES-256-GCM + AAD → Blob</h3></div>
+      <p class="sub">nonce สุ่มใหม่ 12 bytes ทุกครั้ง · AAD = citizen_id ‖ dataset ‖ version ‖ created_at ผูกบริบทกันสลับ blob</p>
+      <div class="field" style="margin-top:10px"><label for="pt">plaintext (JSON ตัวอย่าง)</label><textarea id="pt">{"passport_no":"AA1234567","expiry":"2031-05-14","type":"ordinary"}</textarea></div>
+      <div class="row" style="margin-top:10px"><button class="btn" id="btnEnc" disabled>Encrypt → Blob</button></div>
+      <div class="hexbox" id="blobHex"><span class="sub">รอ DEK ก่อน</span></div>
+      <div class="legend"><span class="h-hd">header (magic·ver·key_v·dataset·created_at)</span><span class="h-nonce">nonce 12B</span><span class="h-ct">ciphertext</span><span class="h-tag">gcm_tag 16B</span></div>
+      <div class="stat" id="blobStat"></div>
+    </div>
+
+    <div class="dstep">
+      <div class="dhead"><span class="dnum">STEP 4</span><h3>Decrypt · Tamper · ข้าม version</h3></div>
+      <p class="sub">decrypt จะ derive DEK เดิมขึ้นมาใหม่จาก version ใน header — ลองแก้ 1 bit หรือเปลี่ยน citizen_id ดูว่า GCM จับได้ไหม · ลอง Rotate ใน STEP 1 ก่อนแล้วค่อยกด Decrypt เพื่อดูว่า blob เก่ายังถอดได้</p>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="btnDec" disabled>Decrypt blob</button>
+        <button class="btn red" id="btnTamper" disabled>แก้ 1 bit แล้ว decrypt</button>
+        <button class="btn red" id="btnSwap" disabled>decrypt ด้วย citizen_id คนอื่น</button>
+      </div>
+      <div class="msg" id="decMsg"></div>
+    </div>
+  </div>
+
+  <p class="hint">เปิดไฟล์นี้ตรงๆ ได้เลย — ต่อเน็ตครั้งแรกเพื่อโหลดฟอนต์เท่านั้น ตัว crypto ทำงาน offline ทั้งหมด</p>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  if(!(window.crypto&&crypto.subtle)){ $('nocrypto').classList.add('on'); return; }
+
+  const enc=new TextEncoder(), dec=new TextDecoder();
+  const state={versions:[],active:0,dek:null,dekMeta:null,blob:null,blobMeta:null};
+
+  const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(' ');
+  const u32be=n=>{const b=new Uint8Array(4);new DataView(b.buffer).setUint32(0,n);return b;};
+  const cat=(...arrs)=>{const t=arrs.reduce((s,a)=>s+a.length,0);const o=new Uint8Array(t);let p=0;for(const a of arrs){o.set(a,p);p+=a.length}return o;};
+
+  function show(el,cls,text){el.className='msg on '+cls;el.textContent=text;}
+
+  function renderVersions(){
+    const box=$('vchips');box.innerHTML='';
+    state.versions.forEach(v=>{
+      const c=document.createElement('span');
+      c.className='vchip '+(v.v===state.active?'active':'old');
+      c.textContent='v'+v.v+(v.v===state.active?' · active':' · decrypt-only');
+      box.appendChild(c);
+    });
+  }
+
+  async function newVersion(){
+    const ms=crypto.getRandomValues(new Uint8Array(32));
+    const v=state.versions.length?state.versions[state.versions.length-1].v+1:1;
+    state.versions.push({v,ms});
+    if(state.versions.length>3) state.versions.shift();
+    state.active=v;
+    renderVersions();
+    $('msHex').innerHTML='<span class="h-ms">'+hex(ms)+'</span>';
+    show($('msMsg'),'info', v===1
+      ? 'MS v1 ถูกสร้าง (32 bytes = 256-bit entropy) — ใน production ตัวนี้ถูก wrap ด้วย Root Key แล้วเก็บ DB ทันที plaintext อยู่ใน memory เท่านั้น'
+      : 'Rotate สำเร็จ — v'+v+' เป็น active สำหรับเขียนใหม่ ส่วน version เก่าเหลือไว้ decrypt ของค้าง (ถือพร้อมกันสูงสุด 3) blob เดิมยังถอดได้เพราะ header บอก version');
+    $('btnRotate').disabled=false; $('btnDerive').disabled=false;
+  }
+
+  async function sha256(bytes){return new Uint8Array(await crypto.subtle.digest('SHA-256',bytes));}
+
+  async function hkdf(ms,datasetId,citizenId){
+    const key=await crypto.subtle.importKey('raw',ms,'HKDF',false,['deriveBits']);
+    const info=await sha256(enc.encode(citizenId));
+    const bits=await crypto.subtle.deriveBits(
+      {name:'HKDF',hash:'SHA-256',salt:enc.encode('ds:'+datasetId),info},key,256);
+    return new Uint8Array(bits);
+  }
+
+  function buildAad(citizenId,datasetId,version,createdAt){
+    return cat(enc.encode(citizenId),new Uint8Array([0,datasetId,version]),u32be(createdAt));
+  }
+
+  $('btnGen').addEventListener('click',()=>{ $('btnGen').disabled=true; newVersion(); });
+  $('btnRotate').addEventListener('click',newVersion);
+
+  $('btnDerive').addEventListener('click',async()=>{
+    const cid=$('cid').value.trim(); if(!cid){$('cid').focus();return;}
+    const ds=parseInt($('ds').value,10);
+    const msRec=state.versions.find(x=>x.v===state.active);
+    const t0=performance.now();
+    const dek=await hkdf(msRec.ms,ds,cid);
+    const t1=performance.now();
+    state.dek=dek; state.dekMeta={cid,ds,v:state.active};
+    $('dekHex').innerHTML='<span class="h-dek">'+hex(dek)+'</span>';
+    $('dekStat').textContent='derive จาก MS v'+state.active+' · dataset '+ds+' · ใช้เวลา ~'+((t1-t0)*1000).toFixed(0)+' µs (รวม overhead ของเบราว์เซอร์ — ใน Node เร็วกว่านี้)';
+    $('btnEnc').disabled=false;
+  });
+
+  $('btnEnc').addEventListener('click',async()=>{
+    const {cid,ds,v}=state.dekMeta;
+    const createdAt=Math.floor(Date.now()/1000);
+    const nonce=crypto.getRandomValues(new Uint8Array(12));
+    const aad=buildAad(cid,ds,v,createdAt);
+    const key=await crypto.subtle.importKey('raw',state.dek,'AES-GCM',false,['encrypt']);
+    const ctTag=new Uint8Array(await crypto.subtle.encrypt(
+      {name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,enc.encode($('pt').value)));
+    const header=cat(new Uint8Array([0x54,0x43,0x01,v,ds]),u32be(createdAt),nonce);
+    const blob=cat(header,ctTag);
+    state.blob=blob; state.blobMeta={cid,ds,v,createdAt};
+    const ct=ctTag.slice(0,ctTag.length-16), tag=ctTag.slice(ctTag.length-16);
+    $('blobHex').innerHTML=
+      '<span class="h-hd">'+hex(header.slice(0,9))+'</span> <span class="h-nonce">'+hex(nonce)+'</span> '+
+      '<span class="h-ct">'+hex(ct)+'</span> <span class="h-tag">'+hex(tag)+'</span>';
+    $('blobStat').textContent='blob รวม '+blob.length+' bytes (overhead 37B) · key_version=v'+v+' · created_at='+createdAt+' — ใน production ตัวนี้คือสิ่งเดียวที่ลง Redis';
+    $('btnDec').disabled=false; $('btnTamper').disabled=false; $('btnSwap').disabled=false;
+  });
+
+  async function tryDecrypt(blob,citizenId){
+    const dv=new DataView(blob.buffer,blob.byteOffset);
+    if(blob[0]!==0x54||blob[1]!==0x43) throw new Error('malformed');
+    const v=blob[3], ds=blob[4], createdAt=dv.getUint32(5), nonce=blob.slice(9,21), ctTag=blob.slice(21);
+    const msRec=state.versions.find(x=>x.v===v);
+    if(!msRec) throw new Error('unknown_version:v'+v+' (หลุดจากชุด 3 versions แล้ว)');
+    const dek=await hkdf(msRec.ms,ds,citizenId);
+    const key=await crypto.subtle.importKey('raw',dek,'AES-GCM',false,['decrypt']);
+    const aad=buildAad(citizenId,ds,v,createdAt);
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,ctTag);
+    return {text:dec.decode(pt),v};
+  }
+
+  $('btnDec').addEventListener('click',async()=>{
+    try{
+      const r=await tryDecrypt(state.blob,state.blobMeta.cid);
+      const note=r.v!==state.active?' (สังเกต: ถอดด้วย version เก่าได้ แม้ active ตอนนี้คือ v'+state.active+' — นี่คือ lazy rotation)':'';
+      show($('decMsg'),'ok','ถอดสำเร็จด้วย MS v'+r.v+': '+r.text+note);
+    }catch(e){ show($('decMsg'),'err','ถอดไม่ผ่าน: '+e.message); }
+  });
+
+  $('btnTamper').addEventListener('click',async()=>{
+    const t=state.blob.slice(); t[25]^=0x01;
+    try{
+      await tryDecrypt(t,state.blobMeta.cid);
+      show($('decMsg'),'err','ไม่ควรเกิด: tamper แล้วยังผ่าน');
+    }catch(e){
+      show($('decMsg'),'ok','GCM จับได้ — แก้แค่ 1 bit ใน ciphertext ก็ verify ไม่ผ่าน ระบบจะลบ entry แล้วตอบเป็น cache miss (ผู้เรียกแยกไม่ออกว่า "ไม่มี" หรือ "ถูกแก้")');
+    }
+  });
+
+  $('btnSwap').addEventListener('click',async()=>{
+    const other=state.blobMeta.cid==='1103700123456'?'1103700999999':'1103700123456';
+    try{
+      await tryDecrypt(state.blob,other);
+      show($('decMsg'),'err','ไม่ควรเกิด: คนอื่นถอดผ่าน');
+    }catch(e){
+      show($('decMsg'),'ok','ถอดด้วย citizen_id '+other+' ไม่ผ่าน — ทั้ง DEK ที่ derive ออกมาคนละตัว และ AAD ที่ผูกเจ้าของไว้ ต่างกันพร้อมกันสองชั้น blob ของใครจึงเป็นของคนนั้นเท่านั้น');
+    }
+  });
+})();
+</script>
+</body>
+</html>
