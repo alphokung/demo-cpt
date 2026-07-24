@@ -61,6 +61,14 @@ textarea{resize:vertical;min-height:64px}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
 .stat{font-family:var(--mono);font-size:12px;color:#9AB2AD;margin-top:8px}
 .hint{font-size:13px;color:var(--ink-soft);margin-top:16px}
+.ftbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+.ftbl th,.ftbl td{padding:7px 10px;border-bottom:1px solid #24444C;text-align:left;vertical-align:top}
+.ftbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#9AB2AD;text-transform:uppercase}
+.ftbl td.fname{font-family:var(--mono);color:#E9C878;white-space:nowrap}
+.ftbl td.fhuman{color:#DCE8E4}
+.ftbl td.fhex{font-family:var(--mono);color:#9AB2AD;word-break:break-all;min-width:120px}
+.ftbl tr.aadrow td{border-top:1px dashed #2C4E56;color:#C9A0E8}
+.ftbl tr.aadrow td.fhuman,.ftbl tr.aadrow td.fhex{color:#C9A0E8}
 </style>
 </head>
 <body>
@@ -107,6 +115,7 @@ textarea{resize:vertical;min-height:64px}
       <div class="hexbox" id="blobHex"><span class="sub">รอ DEK ก่อน</span></div>
       <div class="legend"><span class="h-hd">header (magic·ver·key_v·dataset·created_at)</span><span class="h-nonce">nonce 12B</span><span class="h-ct">ciphertext</span><span class="h-tag">gcm_tag 16B</span></div>
       <div class="stat" id="blobStat"></div>
+      <div id="blobFields"></div>
     </div>
 
     <div class="dstep">
@@ -188,7 +197,7 @@ textarea{resize:vertical;min-height:64px}
     const t1=performance.now();
     state.dek=dek; state.dekMeta={cid,ds,v:state.active};
     $('dekHex').innerHTML='<span class="h-dek">'+hex(dek)+'</span>';
-    $('dekStat').textContent='derive จาก MS v'+state.active+' · dataset '+ds+' · ใช้เวลา ~'+((t1-t0)*1000).toFixed(0)+' µs (รวม overhead ของเบราว์เซอร์ — ใน Node เร็วกว่านี้)';
+    $('dekStat').textContent='input ที่อ่านได้: ikm = MS v'+state.active+' · salt = "ds:'+ds+'" · info = SHA-256("'+cid+'") → ใช้เวลา ~'+((t1-t0)*1000).toFixed(0)+' µs (รวม overhead ของเบราว์เซอร์ — ใน Node เร็วกว่านี้)';
     $('btnEnc').disabled=false;
   });
 
@@ -207,7 +216,27 @@ textarea{resize:vertical;min-height:64px}
     $('blobHex').innerHTML=
       '<span class="h-hd">'+hex(header.slice(0,9))+'</span> <span class="h-nonce">'+hex(nonce)+'</span> '+
       '<span class="h-ct">'+hex(ct)+'</span> <span class="h-tag">'+hex(tag)+'</span>';
-    $('blobStat').textContent='blob รวม '+blob.length+' bytes (overhead 37B) · key_version=v'+v+' · created_at='+createdAt+' — ใน production ตัวนี้คือสิ่งเดียวที่ลง Redis';
+    $('blobStat').textContent='blob รวม '+blob.length+' bytes (overhead 37B) — ใน production ตัวนี้คือสิ่งเดียวที่ลง Redis · ตารางด้านล่างแสดง "ข้อความก่อนกลายเป็น binary" ของแต่ละ field';
+    const dsNames={1:'passport',2:'driver_license',3:'vehicle',4:'electricity_mea',5:'electricity_pea',6:'water_mwa',7:'water_pwa',8:'traffic_ticket',9:'healthcare_rights',10:'disability_card'};
+    const ptText=$('pt').value;
+    const ptShort=ptText.length>48?ptText.slice(0,48)+'…':ptText;
+    const hexShort=(b,n)=>hex(b.slice(0,n))+(b.length>n?' … ('+b.length+'B)':'');
+    const thTime=new Date(createdAt*1000).toLocaleString('th-TH',{dateStyle:'short',timeStyle:'medium'});
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const rows=[
+      ['magic','ข้อความ "TC" — ลายเซ็นบอกว่าเป็น blob ของระบบเรา',hex(blob.slice(0,2))],
+      ['format_ver','เลข 1 — โครงสร้าง blob รุ่นที่ 1',hex(blob.slice(2,3))],
+      ['key_version','v'+v+' — เข้ารหัสด้วย Master Secret v'+v,hex(blob.slice(3,4))],
+      ['dataset_id',ds+' · '+dsNames[ds],hex(blob.slice(4,5))],
+      ['created_at',createdAt+' = '+thTime,hex(blob.slice(5,9))],
+      ['nonce','ค่าสุ่มใช้ครั้งเดียว — ไม่ใช่ความลับ แต่ห้ามซ้ำ',hex(nonce)],
+      ['ciphertext','จาก plaintext '+ptText.length+' ตัวอักษร: '+esc(ptShort),hexShort(ct,12)],
+      ['gcm_tag','ลายเซ็น integrity ครอบ ciphertext + AAD',hex(tag)],
+    ];
+    let html='<table class="ftbl"><tr><th>field</th><th>ข้อความ / ความหมาย ก่อนเป็น binary</th><th>bytes จริงใน blob</th></tr>';
+    for(const r of rows) html+='<tr><td class="fname">'+r[0]+'</td><td class="fhuman">'+r[1]+'</td><td class="fhex">'+r[2]+'</td></tr>';
+    html+='<tr class="aadrow"><td class="fname">AAD</td><td class="fhuman">"'+esc(cid)+'" ‖ 0x00 ‖ dataset='+ds+' ‖ v='+v+' ‖ '+createdAt+' — ไม่ถูกเก็บใน blob แต่ถูกผูกไว้ใน tag (ฝั่งถอดต้องประกอบเองให้ตรงเป๊ะ)</td><td class="fhex">'+hex(aad)+'</td></tr></table>';
+    $('blobFields').innerHTML=html;
     $('btnDec').disabled=false; $('btnTamper').disabled=false; $('btnSwap').disabled=false;
   });
 
