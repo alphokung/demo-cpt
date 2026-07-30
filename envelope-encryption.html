@@ -75,7 +75,7 @@ textarea{resize:vertical;min-height:64px}
 <div class="wrap">
   <div class="eyebrow">Thang Rat citizen data cache · Live demo</div>
   <h1>Envelope Encryption Demo</h1>
-  <p class="lead">คำนวณจริงด้วย Web Crypto API ในเบราว์เซอร์ของคุณ — HKDF-SHA256 และ AES-256-GCM ตัวเดียวกับ production ไม่มีข้อมูลถูกส่งออกไปไหน ทำตามลำดับ STEP 1 → 4</p>
+  <p class="lead">คำนวณจริงด้วย Web Crypto API ในเบราว์เซอร์ของคุณ — HKDF-SHA256 และ AES-256-GCM ตัวเดียวกับ production ไม่มีข้อมูลถูกส่งออกไปไหน ทำตามลำดับ STEP 1 → 5</p>
 
   <div class="console">
     <div id="nocrypto" class="msg err">เบราว์เซอร์นี้ไม่รองรับ Web Crypto (crypto.subtle) — ลองเปิดผ่าน Chrome/Edge/Firefox เวอร์ชันปัจจุบัน</div>
@@ -86,6 +86,7 @@ textarea{resize:vertical;min-height:64px}
       <div class="row" style="margin-top:10px"><button class="btn" id="btnGen">GenerateDataKey → MS v1</button><button class="btn ghost" id="btnRotate" disabled>Rotate → สร้าง version ใหม่</button></div>
       <div class="vchips" id="vchips"></div>
       <div class="hexbox" id="msHex"><span class="sub">ยังไม่มี master secret — กดปุ่มด้านบน</span></div>
+      <p class="sub" style="margin-top:8px">หมายเหตุ: MS ไม่มี "ข้อความต้นฉบับ" — เป็นเลขสุ่มบริสุทธิ์ 32 bytes จาก CSPRNG ทุก bit คือ entropy ไม่ได้แปลงมาจากข้อความ/รหัสผ่าน/สูตรใดๆ (นี่คือคุณสมบัติที่ต้องการ)</p>
       <div class="msg info" id="msMsg"></div>
     </div>
 
@@ -104,6 +105,7 @@ textarea{resize:vertical;min-height:64px}
         <button class="btn" id="btnDerive" disabled>Derive DEK</button>
       </div>
       <div class="hexbox" id="dekHex"><span class="sub">รอ master secret ก่อน</span></div>
+      <p class="sub" style="margin-top:8px">หมายเหตุ: DEK ไม่มี "ข้อความต้นฉบับ" — เป็นผลคำนวณ HKDF จาก input ที่อ่านได้ (แสดงในบรรทัดสถิติหลังกด Derive) ตัวผลลัพธ์ต้องดูไม่ต่างจากเลขสุ่ม และคำนวณย้อนกลับหา input ไม่ได้</p>
       <div class="stat" id="dekStat"></div>
     </div>
 
@@ -114,12 +116,25 @@ textarea{resize:vertical;min-height:64px}
       <div class="row" style="margin-top:10px"><button class="btn" id="btnEnc" disabled>Encrypt → Blob</button></div>
       <div class="hexbox" id="blobHex"><span class="sub">รอ DEK ก่อน</span></div>
       <div class="legend"><span class="h-hd">header (magic·ver·key_v·dataset·created_at)</span><span class="h-nonce">nonce 12B</span><span class="h-ct">ciphertext</span><span class="h-tag">gcm_tag 16B</span></div>
+      <div class="sub" style="margin-top:12px" id="rlbl" hidden><b>เนื้อข้อความจริง "ก่อน" กลายเป็น binary</b> — ตำแหน่งและสีตรงกับแถบ hex ด้านบน:</div>
+      <div class="hexbox" id="blobReadable" hidden></div>
+      <p class="sub" id="rnote" hidden style="margin-top:8px"></p>
       <div class="stat" id="blobStat"></div>
       <div id="blobFields"></div>
     </div>
 
     <div class="dstep">
-      <div class="dhead"><span class="dnum">STEP 4</span><h3>Decrypt · Tamper · ข้าม version</h3></div>
+      <div class="dhead"><span class="dnum">STEP 4</span><h3>Verify — AAD ถูก "ประกอบใหม่" ไม่ได้อ่านจาก blob</h3></div>
+      <p class="sub">AAD เป็น plaintext เสมอโดยนิยาม (Additional <b>Authenticated</b> Data — ไม่ใช่ Encrypted) จึงไม่มีขั้น "ถอดรหัส AAD" อยู่จริง และ design นี้จงใจ<b>ไม่เก็บมันลง blob</b> — ฝั่งถอดต้องประกอบขึ้นใหม่จาก 2 แหล่ง: citizen_id ที่ผู้เรียกส่งมากับ request + ค่าที่อ่านได้จาก header ส่วน gcm_tag คือ "ตราครั่ง" (MAC ทางเดียว) ที่ใช้เทียบได้อย่างเดียว ดึง AAD หรือข้อมูลใดๆ กลับออกมาจากมันไม่ได้ — ขั้น ③ จะโชว์ tag ที่คำนวณใหม่เทียบกับ tag ที่เก็บไว้ให้เห็นกับตา</p>
+      <div class="row" style="margin-top:10px">
+        <div class="field"><label for="vcid">citizen_id ที่ฝั่งถอดใช้ประกอบ AAD (ลองแก้เป็นเลขอื่นแล้วตรวจใหม่)</label><input id="vcid" value="" autocomplete="off"></div>
+        <button class="btn" id="btnVerify" disabled>① ประกอบ AAD → ② ค้นใน blob → ③ ตรวจ tag</button>
+      </div>
+      <div id="verifyOut"></div>
+    </div>
+
+    <div class="dstep">
+      <div class="dhead"><span class="dnum">STEP 5</span><h3>Decrypt · Tamper · ข้าม version</h3></div>
       <p class="sub">decrypt จะ derive DEK เดิมขึ้นมาใหม่จาก version ใน header — ลองแก้ 1 bit หรือเปลี่ยน citizen_id ดูว่า GCM จับได้ไหม · ลอง Rotate ใน STEP 1 ก่อนแล้วค่อยกด Decrypt เพื่อดูว่า blob เก่ายังถอดได้</p>
       <div class="row" style="margin-top:10px">
         <button class="btn" id="btnDec" disabled>Decrypt blob</button>
@@ -142,8 +157,23 @@ textarea{resize:vertical;min-height:64px}
   const state={versions:[],active:0,dek:null,dekMeta:null,blob:null,blobMeta:null};
 
   const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(' ');
+  const hexc=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
   const u32be=n=>{const b=new Uint8Array(4);new DataView(b.buffer).setUint32(0,n);return b;};
   const cat=(...arrs)=>{const t=arrs.reduce((s,a)=>s+a.length,0);const o=new Uint8Array(t);let p=0;for(const a of arrs){o.set(a,p);p+=a.length}return o;};
+
+  const PAD_BUCKETS=[512,2048,8192];
+  function pad(bytes){
+    const bucket=PAD_BUCKETS.find(b=>b>=bytes.length+4);
+    if(!bucket) throw new Error('payload_too_large');
+    const out=new Uint8Array(bucket);            // ค่าเริ่มต้นเป็น 0x00 ทั้งก้อนอยู่แล้ว
+    out.set(u32be(bytes.length),0);              // 4 bytes แรก = ความยาวจริง
+    out.set(bytes,4);
+    return {padded:out,bucket};
+  }
+  function unpad(padded){
+    const len=new DataView(padded.buffer,padded.byteOffset).getUint32(0);
+    return padded.slice(4,4+len);
+  }
 
   function show(el,cls,text){el.className='msg on '+cls;el.textContent=text;}
 
@@ -207,22 +237,28 @@ textarea{resize:vertical;min-height:64px}
     const nonce=crypto.getRandomValues(new Uint8Array(12));
     const aad=buildAad(cid,ds,v,createdAt);
     const key=await crypto.subtle.importKey('raw',state.dek,'AES-GCM',false,['encrypt']);
+    const ptText=$('pt').value;
+    const ptBytes=enc.encode(ptText);
+    let padded,bucket;
+    try{ const p=pad(ptBytes); padded=p.padded; bucket=p.bucket; }
+    catch(e){ $('blobStat').textContent='PayloadTooLargeError — plaintext เกิน 8188 bytes ใส่ bucket ใหญ่สุดไม่ได้'; return; }
     const ctTag=new Uint8Array(await crypto.subtle.encrypt(
-      {name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,enc.encode($('pt').value)));
+      {name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,padded));
     const header=cat(new Uint8Array([0x54,0x43,0x01,v,ds]),u32be(createdAt),nonce);
     const blob=cat(header,ctTag);
-    state.blob=blob; state.blobMeta={cid,ds,v,createdAt};
+    state.blob=blob; state.blobMeta={cid,ds,v,createdAt,padded};
     const ct=ctTag.slice(0,ctTag.length-16), tag=ctTag.slice(ctTag.length-16);
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const hexShort=(b,n)=>hex(b.slice(0,n))+(b.length>n?' … (12B แรก — ค่าเต็มดูแถบด้านบน)':'');
+    const dsNames={1:'passport',2:'driver_license',3:'vehicle',4:'electricity_mea',5:'electricity_pea',6:'water_mwa',7:'water_pwa',8:'traffic_ticket',9:'healthcare_rights',10:'disability_card'};
+    const thTime=new Date(createdAt*1000).toLocaleString('th-TH',{dateStyle:'short',timeStyle:'medium'});
+    const padCount=bucket-4-ptBytes.length;
+
     $('blobHex').innerHTML=
       '<span class="h-hd">'+hex(header.slice(0,9))+'</span> <span class="h-nonce">'+hex(nonce)+'</span> '+
       '<span class="h-ct">'+hex(ct)+'</span> <span class="h-tag">'+hex(tag)+'</span>';
-    $('blobStat').textContent='blob รวม '+blob.length+' bytes (overhead 37B) — ใน production ตัวนี้คือสิ่งเดียวที่ลง Redis · ตารางด้านล่างแสดง "ข้อความก่อนกลายเป็น binary" ของแต่ละ field';
-    const dsNames={1:'passport',2:'driver_license',3:'vehicle',4:'electricity_mea',5:'electricity_pea',6:'water_mwa',7:'water_pwa',8:'traffic_ticket',9:'healthcare_rights',10:'disability_card'};
-    const ptText=$('pt').value;
-    const ptShort=ptText.length>48?ptText.slice(0,48)+'…':ptText;
-    const hexShort=(b,n)=>hex(b.slice(0,n))+(b.length>n?' … ('+b.length+'B)':'');
-    const thTime=new Date(createdAt*1000).toLocaleString('th-TH',{dateStyle:'short',timeStyle:'medium'});
-    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    $('blobStat').textContent='blob รวม '+blob.length+' bytes = header 21B + ciphertext '+ct.length+'B (bucket '+bucket+'B) + tag 16B — ใน production ตัวนี้คือสิ่งเดียวที่ลง Redis';
+
     const rows=[
       ['magic','ข้อความ "TC" — ลายเซ็นบอกว่าเป็น blob ของระบบเรา',hex(blob.slice(0,2))],
       ['format_ver','เลข 1 — โครงสร้าง blob รุ่นที่ 1',hex(blob.slice(2,3))],
@@ -230,13 +266,26 @@ textarea{resize:vertical;min-height:64px}
       ['dataset_id',ds+' · '+dsNames[ds],hex(blob.slice(4,5))],
       ['created_at',createdAt+' = '+thTime,hex(blob.slice(5,9))],
       ['nonce','ค่าสุ่มใช้ครั้งเดียว — ไม่ใช่ความลับ แต่ห้ามซ้ำ',hex(nonce)],
-      ['ciphertext','จาก plaintext '+ptText.length+' ตัวอักษร: '+esc(ptShort),hexShort(ct,12)],
+      ['ciphertext','plaintext '+ptBytes.length+'B + pad '+padCount+'B → bucket '+bucket+'B แล้วเข้ารหัส',hexShort(ct,12)],
       ['gcm_tag','ลายเซ็น integrity ครอบ ciphertext + AAD',hex(tag)],
     ];
     let html='<table class="ftbl"><tr><th>field</th><th>ข้อความ / ความหมาย ก่อนเป็น binary</th><th>bytes จริงใน blob</th></tr>';
     for(const r of rows) html+='<tr><td class="fname">'+r[0]+'</td><td class="fhuman">'+r[1]+'</td><td class="fhex">'+r[2]+'</td></tr>';
-    html+='<tr class="aadrow"><td class="fname">AAD</td><td class="fhuman">"'+esc(cid)+'" ‖ 0x00 ‖ dataset='+ds+' ‖ v='+v+' ‖ '+createdAt+' — ไม่ถูกเก็บใน blob แต่ถูกผูกไว้ใน tag (ฝั่งถอดต้องประกอบเองให้ตรงเป๊ะ)</td><td class="fhex">'+hex(aad)+'</td></tr></table>';
+    html+='<tr class="aadrow"><td class="fname">AAD</td><td class="fhuman">'+esc(cid)+'‖0x00‖'+ds+'‖'+v+'‖'+createdAt+' — ไม่ถูกเก็บใน blob แต่ถูกผูกไว้ใน tag (ฝั่งถอดต้องประกอบเองให้ตรงเป๊ะ — ทดลองพิสูจน์ได้ใน STEP 4)</td><td class="fhex">'+hex(aad)+'</td></tr></table>';
     $('blobFields').innerHTML=html;
+
+    $('rlbl').hidden=false; $('blobReadable').hidden=false; $('rnote').hidden=false;
+    $('blobReadable').innerHTML=
+      '<span class="h-hd">TC‖1‖'+v+'‖'+ds+'‖'+createdAt+'</span>‖'
+      +'<span class="h-nonce">'+hexc(nonce)+'</span>‖'
+      +'<span class="h-ct">'+ptBytes.length+'‖'+esc(ptText)+'‖'+'·'.repeat(padCount)+'</span>‖'
+      +'<span class="h-tag">'+hexc(tag)+'</span>';
+    $('rnote').innerHTML='หมายเหตุ: <b>‖ คือสัญลักษณ์กำกับว่า "ต่อกันตรงๆ"</b> ไม่ใช่ข้อมูล และไม่มีช่องว่างคั่นด้วย — ใน blob จริงไม่มี byte คั่นระหว่าง field เลยแม้แต่ตัวเดียว ระบบหาขอบเขตแต่ละช่องจากตำแหน่ง byte ที่ตกลงไว้ล่วงหน้า (magic 2B, format_ver 1B, key_version 1B, dataset_id 1B, created_at 4B, nonce 12B) ส่วน hex ของ nonce/tag ในแถบนี้จึงแสดงติดกันตามจริง (ต่างจากแถบ binary ด้านบนที่เว้นวรรคทีละ byte เพื่อให้อ่านง่าย) · '
+      +'ช่อง ciphertext ก่อนเข้ารหัสประกอบด้วย 3 ส่วน: ความยาวจริง '+ptBytes.length+' ‖ ตัวข้อมูล ‖ ตัว pad '+padCount+' ตัว แสดงครบทุกตัว (· แทน byte 0x00) รวมเป็น '+bucket+'B พอดีตาม bucket · '
+      +'ตอนถอดจะอ่านเลขความยาวหัวก้อนแล้วตัด pad ทิ้ง ได้ข้อมูลเดิมเป๊ะ · pad ทำ<b>ก่อน</b>เข้ารหัสเสมอ เพื่อให้ tag คุ้มครองตัว pad ด้วย (แก้ pad = tag พัง) · '
+      +'ผลคือทุก record ในระบบมีขนาดเท่ากันหมดที่ '+bucket+'B ต่อให้ข้อมูลจริงต่างกัน — ปิดช่องเดาเนื้อหาจากความยาว (R6)';
+
+    $('vcid').value=cid; $('btnVerify').disabled=false; $('verifyOut').innerHTML='';
     $('btnDec').disabled=false; $('btnTamper').disabled=false; $('btnSwap').disabled=false;
   });
 
@@ -250,8 +299,72 @@ textarea{resize:vertical;min-height:64px}
     const key=await crypto.subtle.importKey('raw',dek,'AES-GCM',false,['decrypt']);
     const aad=buildAad(citizenId,ds,v,createdAt);
     const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,ctTag);
-    return {text:dec.decode(pt),v};
+    return {text:dec.decode(unpad(new Uint8Array(pt))),v};
   }
+
+  function bytesIndexOf(hay,needle){
+    outer: for(let i=0;i<=hay.length-needle.length;i++){
+      for(let j=0;j<needle.length;j++){ if(hay[i+j]!==needle[j]) continue outer; }
+      return i;
+    }
+    return -1;
+  }
+
+  $('btnVerify').addEventListener('click',async()=>{
+    const escV=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const cid=$('vcid').value.trim(); if(!cid){$('vcid').focus();return;}
+    const blob=state.blob;
+    const dv=new DataView(blob.buffer,blob.byteOffset);
+    const v=blob[3], ds=blob[4], createdAt=dv.getUint32(5), nonce=blob.slice(9,21);
+    const aad=buildAad(cid,ds,v,createdAt);
+    const cidBytes=enc.encode(cid);
+    const headerAadPart=cat(new Uint8Array([0,ds,v]),u32be(createdAt));
+    const idxAad=bytesIndexOf(blob,aad);
+    const idxCid=bytesIndexOf(blob,cidBytes);
+    const storedTag=blob.slice(blob.length-16);
+    const sameAsOwner=(cid===state.blobMeta.cid);
+
+    let ok=false, failWhy='', recomputed=null;
+    const msRec=state.versions.find(x=>x.v===v);
+    if(!msRec){ failWhy='ไม่รู้จัก key version v'+v+' (หลุดจากชุด 3 versions แล้ว)'; }
+    else{
+      const dek=await hkdf(msRec.ms,ds,cid);
+      // คำนวณ tag ขึ้นใหม่ฝั่งถอด เพื่อเอามาเทียบให้เห็นกับตา
+      try{
+        const ek=await crypto.subtle.importKey('raw',dek,'AES-GCM',false,['encrypt']);
+        const re=new Uint8Array(await crypto.subtle.encrypt(
+          {name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},ek,state.blobMeta.padded));
+        recomputed=re.slice(re.length-16);
+      }catch(e){}
+      try{
+        const key=await crypto.subtle.importKey('raw',dek,'AES-GCM',false,['decrypt']);
+        await crypto.subtle.decrypt({name:'AES-GCM',iv:nonce,additionalData:aad,tagLength:128},key,blob.slice(21));
+        ok=true;
+      }catch(e){ failWhy='tag ไม่ตรง'; }
+    }
+
+    let html='';
+    html+='<div class="sub" style="margin-top:14px"><b>① อ่าน header</b> — เป็น plaintext อ่านได้เลย ไม่ต้องถอดรหัสอะไรก่อน: key_version=v'+v+' · dataset='+ds+' · created_at='+createdAt+'</div>';
+    html+='<div class="sub" style="margin-top:12px"><b>② ประกอบ AAD ขึ้นใหม่</b> จาก 2 แหล่ง (สีบอกที่มา):</div>';
+    html+='<div class="sub" style="margin-top:6px">รูปอ่านได้ (ต่อกันตรงๆ ไม่มีช่องว่างคั่น): <span style="color:#C9A0E8">'+escV(cid)+'</span><span style="color:#E9C878">‖0x00‖'+ds+'‖'+v+'‖'+createdAt+'</span></div>';
+    html+='<div class="hexbox"><span class="h-nonce">'+hex(cidBytes)+'</span> <span class="h-hd">'+hex(headerAadPart)+'</span></div>';
+    html+='<div class="legend"><span class="h-nonce">citizen_id "'+escV(cid)+'" — มาจากผู้เรียก ไม่อยู่ใน blob</span><span class="h-hd">0x00 ‖ dataset ‖ v ‖ created_at — อ่านจาก header</span></div>';
+
+    const cidNote = sameAsOwner
+      ? 'ค้นหา byte ของ AAD ทั้งเส้นใน blob: <b>'+(idxAad<0?'ไม่พบ':'พบที่ตำแหน่ง '+idxAad)+'</b> · ค้นหาเฉพาะ citizen_id: <b>'+(idxCid<0?'ไม่พบ':'พบ')+'</b> — พิสูจน์ว่า AAD ไม่ได้ถูก "เก็บ" ใน blob (ส่วนที่มองเห็นได้มีแค่ field ใน header ทีละช่อง) มันถูก "ผูก" ผ่านการคำนวณ tag เท่านั้น'
+      : 'หมายเหตุ: กำลังประกอบด้วย citizen_id คนละตัวกับตอน encrypt — การค้นหาจึงไม่พบเป็นธรรมดา ถ้าอยากพิสูจน์ว่า AAD ของแท้ก็ไม่ถูกเก็บ ให้เปลี่ยนกลับเป็นเลขเดิมแล้วตรวจอีกครั้ง';
+    html+='<div class="msg on info" style="display:block">'+cidNote+'</div>';
+
+    html+='<div class="sub" style="margin-top:12px"><b>③ ตรวจ tag</b> — คำนวณ tag ขึ้นใหม่จาก (ciphertext + AAD ที่ประกอบ) ด้วย DEK ที่ derive จาก citizen_id นี้ แล้วเทียบทีละ byte กับ tag ที่เก็บไว้ท้าย blob:</div>';
+    html+='<div class="hexbox">stored&nbsp;&nbsp;&nbsp;&nbsp;: <span class="h-tag">'+hex(storedTag)+'</span><br>คำนวณใหม่: <span class="'+(ok?'h-ct':'h-tag')+'">'+(recomputed?hex(recomputed):'— (ไม่มีกุญแจ version นี้)')+'</span></div>';
+    html+='<div class="sub" style="margin-top:6px">tag ไม่มี "เนื้อข้อความ" ให้เปิดดู — มันคือผลคำนวณทางเดียว (MAC) ขนาด 16B ที่บีบ ciphertext ทั้ง '+(blob.length-37)+'B + AAD + กุญแจ ลงมาเหลือ 16B เหมือนลายนิ้วมือ ใช้ได้อย่างเดียวคือ "คำนวณใหม่แล้วเทียบ" ดึงอะไรกลับออกมาไม่ได้เลย</div>';
+    if(ok){
+      html+='<div class="msg on ok" style="display:block">✓ tag ตรง — ยืนยันทุกอย่างพร้อมกันในการเทียบครั้งเดียว: ciphertext ไม่ถูกแก้ + header ทุกช่องเป็นของแท้ + citizen_id ที่ใช้ประกอบคือเจ้าของจริง · ไม่มีขั้น "ตรวจ AAD แยก" อยู่จริง ทุกอย่างถูกพิสูจน์ผ่าน tag ก้อนเดียว</div>';
+    }else{
+      html+='<div class="msg on err" style="display:block">✗ '+failWhy+' — สังเกตว่า blob ไม่ถูกแตะแม้แต่ byte เดียว แค่ AAD ที่ประกอบไม่ตรงกับตอน encrypt ก็พอ และระบบแยกไม่ออกด้วยซ้ำว่าผิดเพราะ ciphertext ถูกแก้ หรือ AAD ผิด — รู้แค่ "ไม่ตรง" จึงตอบเป็น cache miss เสมอ (กัน oracle)</div>';
+    }
+    $('verifyOut').innerHTML=html;
+  });
 
   $('btnDec').addEventListener('click',async()=>{
     try{
