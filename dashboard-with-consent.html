@@ -1366,8 +1366,8 @@
       <!-- Header -->
       <div class="modal__header">
         <div>
-          <p class="modal__header-title">การจัดการสิทธิ์</p>
-          <p class="modal__header-sub">แอปพลิเคชันที่มีสิทธิ์เข้าถึงข้อมูลของคุณ</p>
+          <p class="modal__header-title">การจัดการความยินยอม</p>
+          <p class="modal__header-sub">บริการที่มีการเข้าถึงข้อมูล</p>
         </div>
         <button onclick="closeModal('modal-permissions')" class="modal__close-btn">
           <span class="material-symbols-outlined modal__close-icon">close</span>
@@ -1377,32 +1377,18 @@
       <!-- Scrollable Content -->
       <div class="modal__body">
 
-        <!-- Tier 1 status banner (dynamic) -->
-        <div id="perm-tier1-status"></div>
+        <!-- One flat list of everything currently reaching the user's data —
+             Tier 1 and Tier 2 together, built by renderPermissionsModal(). -->
+        <p class="modal__header-title perm-list__heading">ข้อมูลที่ขอเข้าถึง</p>
+        <div class="perm-list" id="perm-list"></div>
 
-        <p class="section-label-xs">Tier 1 · ข้อมูลทั่วไป (แคชในเครื่อง)</p>
-        <div class="modal__section-list" id="perm-tier1-list"></div>
-
-        <!-- Tier 2 status banner (dynamic) — shown once at least 1 dataset is granted -->
-        <div id="perm-tier2-status" style="margin-top:18px;"></div>
-
-        <!-- Tier 2 status (dynamic, per dataset) -->
-        <p class="section-label-xs">Tier 2 · ข้อมูลสิทธิ/สุขภาพ (เรียลไทม์)</p>
-        <div class="modal__section-list--bottom" id="perm-tier2-list"></div>
-
-        <!-- Revoke all consent (Tier 1 + Tier 2) -->
-        <div class="consent-revoke-section">
-          <p class="section-label-xs">การจัดการความยินยอม</p>
-          <p class="consent-revoke-note">
-            คุณให้ความยินยอมเพียงครั้งเดียว ระบบจะจดจำไว้จนกว่าคุณจะยกเลิก
-            การยกเลิกจะลบความยินยอมทั้ง Tier 1 (ข้อมูลทั่วไป) และ Tier 2 (ข้อมูลสิทธิ/สุขภาพ) พร้อมกันทั้งหมด
-            และหน้านี้จะหยุดแสดงข้อมูลที่เกี่ยวข้องทันที
-          </p>
-          <button class="btn btn-destructive flex-center" style="width:100%;gap:var(--spacing-sm);"
-            onclick="revokeAllConsent()">
-            <span class="material-symbols-outlined">block</span> ยกเลิกความยินยอมทั้งหมด
-          </button>
+        <div class="consent-modal__disclaimer consent-modal__disclaimer--center">
+          หากคุณยกเลิกความยินยอม ระบบจะลบข้อมูลของคุณทั้งหมด และจะหยุดแสดงข้อมูลที่เกี่ยวข้องในระบบนี้ทันที
         </div>
+
+        <button class="btn btn-destructive flex-center perm-revoke-btn" onclick="revokeAllConsent()">
+          <span class="material-symbols-outlined">block</span> ยกเลิกความยินยอมทั้งหมด
+        </button>
 
       </div>
     </div>
@@ -2131,82 +2117,74 @@
     }
 
     // ─── Permissions modal: rendered from actual consent state, not hardcoded ──
+    // What Tier 1 consent actually unlocks, as listed in the consent-management
+    // modal. Titles use the same "ข้อมูล…" phrasing as the Tier 2 entries so the
+    // combined list reads consistently.
     var TIER1_ITEMS = [
-      { title: 'ใบอนุญาตขับรถยนต์', sub: 'กรมการขนส่งทางบก', icon: 'directions_car', iconClass: 'driving', miniapp: 'e82f601e-ce10-4d45-a297-51d59722d86a' },
-      { title: 'หนังสือเดินทาง', sub: 'กรมการกงสุล', icon: 'public', iconClass: 'work', miniapp: '7a1965f1-27e3-43c5-9b14-4627039a28d2' },
-      { title: 'ทะเบียนยานพาหนะ', sub: 'กรมการขนส่งทางบก', icon: 'car_tag', iconClass: 'driving', miniapp: 'fbc474d8-fde8-4f48-8063-f04d83fabf13' },
-      { title: 'ค่าไฟฟ้า', sub: 'การไฟฟ้านครหลวง (MEA)', img: '_media/mea.png', miniapp: '2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e' },
-      { title: 'ค่าน้ำประปา', sub: 'การประปานครหลวง (MWA)', img: '_media/mwa.svg', miniapp: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f' },
-      { title: 'ค่าไฟฟ้า', sub: 'การไฟฟ้าส่วนภูมิภาค (PEA)', img: '_media/pea.png', miniapp: '4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a' },
-      { title: 'ค่าน้ำประปา', sub: 'การประปาส่วนภูมิภาค (PWA)', img: '_media/pwa.png', miniapp: '7a267a33-1657-477a-8710-d49bef97dabe' },
+      { key: 'passport',   title: 'ข้อมูลหนังสือเดินทาง (Passport)', sub: 'กรมการกงสุล',      icon: 'book_2',         miniapp: '7a1965f1-27e3-43c5-9b14-4627039a28d2' },
+      { key: 'vehicleReg', title: 'ข้อมูลทะเบียนยานพาหนะ',          sub: 'กรมการขนส่งทางบก', icon: 'car_tag',        miniapp: 'fbc474d8-fde8-4f48-8063-f04d83fabf13' },
+      { key: 'license',    title: 'ข้อมูลใบอนุญาตขับรถยนต์',        sub: 'กรมการขนส่งทางบก', icon: 'directions_car', miniapp: 'e82f601e-ce10-4d45-a297-51d59722d86a' },
     ];
+
+    // The agency line shown under each Tier 2 entry in this modal. TIER2_INFO's
+    // own `sub` spells the agency out in full, which is too long here.
+    var TIER2_SOURCE = {
+      health:     'สำนักงานหลักประกันสุขภาพแห่งชาติ',
+      utility:    'การไฟฟ้านครหลวง, การไฟฟ้าส่วนภูมิภาค, การประปานครหลวง และการประปาส่วนภูมิภาค',
+      ticket:     'สำนักงานตำรวจแห่งชาติ',
+      insurance:  'สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย (คปภ.)',
+      welfare:    'กรมบัญชีกลาง กระทรวงการคลัง',
+      disability: 'กรมส่งเสริมคุณภาพชีวิตคนพิการ',
+    };
 
     function buildPermItem(opts) {
       var iconInner = opts.img
         ? '<img src="' + opts.img + '" alt="" class="img-helper-frame circle size-sm">'
         : '<span class="material-symbols-outlined perm-icon">' + opts.icon + '</span>';
-      var iconWrap = opts.granted
-        ? '<div class="list-icon ' + (opts.iconClass || 'driving') + ' perm-item__icon--shrink">' + iconInner + '</div>'
-        : '<div class="perm-item__unconnected">' + iconInner + '</div>';
-      var trailing = opts.granted
-        ? '<span class="material-symbols-outlined perm-icon-check">check_circle</span>'
-        : '<span class="material-symbols-outlined perm-item__linkoff-icon">link_off</span>';
       var el = document.createElement('div');
       el.className = 'perm-item';
-      el.innerHTML = iconWrap +
-        '<div class="perm-item-body"><p class="perm-item-title">' + opts.title + '</p>' +
-        '<p class="perm-item-sub">' + opts.sub + '</p></div>' + trailing;
-      el.addEventListener('click', opts.onClick);
+      el.innerHTML =
+        '<div class="perm-item__icon">' + iconInner + '</div>' +
+        '<div class="perm-item-body">' +
+          '<p class="perm-item-title">' + opts.title + '</p>' +
+          '<p class="perm-item-sub">' + opts.sub + '</p>' +
+        '</div>';
+      if (opts.onClick) {
+        el.classList.add('perm-item--tappable');
+        el.addEventListener('click', opts.onClick);
+      }
       return el;
     }
 
+    // Lists only what currently has access — the modal is titled
+    // "บริการที่มีการเข้าถึงข้อมูล", so anything not consented to has no place here.
     function renderPermissionsModal() {
-      var statusEl = document.getElementById('perm-tier1-status');
-      if (statusEl) {
-        statusEl.innerHTML = consent.tier1
-          ? '<div class="perm-tier-banner perm-tier-banner--granted"><span class="material-symbols-outlined">check_circle</span><span class="perm-tier-banner__label">Tier 1: ให้ความยินยอมแล้ว</span></div>'
-          : '<div class="perm-tier-banner perm-tier-banner--locked"><span class="material-symbols-outlined">lock</span><span class="perm-tier-banner__label">Tier 1: ยังไม่ได้ให้ความยินยอม</span>' +
-          '<button class="btn btn-small btn-primary" onclick="closeModal(\'modal-permissions\'); openTier1ConsentModal();">ให้ความยินยอม</button></div>';
-      }
+      var list = document.getElementById('perm-list');
+      if (!list) return;
+      list.innerHTML = '';
 
-      var list1 = document.getElementById('perm-tier1-list');
-      if (list1) {
-        list1.innerHTML = '';
+      if (consent.tier1) {
         TIER1_ITEMS.forEach(function (item) {
-          list1.appendChild(buildPermItem({
-            title: item.title, sub: item.sub, icon: item.icon, iconClass: item.iconClass, img: item.img,
-            granted: consent.tier1,
+          list.appendChild(buildPermItem({
+            title: item.title, sub: item.sub, icon: item.icon,
             onClick: function () {
               closeModal('modal-permissions');
-              if (consent.tier1) { if (window.czpSdk) window.czpSdk.openMiniApp(item.miniapp); }
-              else { openTier1ConsentModal(); }
+              if (window.czpSdk) window.czpSdk.openMiniApp(item.miniapp);
             },
           }));
         });
       }
 
-      var status2El = document.getElementById('perm-tier2-status');
-      if (status2El) {
-        var anyTier2Granted = Object.keys(TIER2_INFO).some(function (k) { return consent.tier2[k]; });
-        status2El.innerHTML = anyTier2Granted
-          ? '<div class="perm-tier-banner perm-tier-banner--granted"><span class="material-symbols-outlined">check_circle</span><span class="perm-tier-banner__label">Tier 2: ให้ความยินยอมแล้ว</span></div>'
-          : '';
-      }
+      Object.keys(TIER2_INFO).forEach(function (k) {
+        if (!consent.tier2[k]) return;
+        var info = TIER2_INFO[k];
+        list.appendChild(buildPermItem({
+          title: info.title, sub: TIER2_SOURCE[k] || info.sub, icon: info.icon,
+        }));
+      });
 
-      var list2 = document.getElementById('perm-tier2-list');
-      if (list2) {
-        list2.innerHTML = '';
-        Object.keys(TIER2_INFO).forEach(function (k) {
-          var info = TIER2_INFO[k];
-          list2.appendChild(buildPermItem({
-            title: info.title, sub: info.sub, icon: info.icon,
-            granted: consent.tier2[k],
-            onClick: function () {
-              closeModal('modal-permissions');
-              requestTier2Consent(k); // guards on Tier 1 internally
-            },
-          }));
-        });
+      if (!list.childElementCount) {
+        list.innerHTML = '<p class="perm-list__empty">ยังไม่มีบริการใดเข้าถึงข้อมูลของคุณ</p>';
       }
     }
 

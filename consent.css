@@ -322,45 +322,87 @@
 }
 
 /* ── permissions modal: per-tier status banner + revoke-all section ── */
-.perm-tier-banner {
+/* ── consent-management modal: one flat list of everything with data access ──
+   The design drops the tier banners and per-item status icons — the list only
+   contains granted items, so "granted" needs no badge. */
+.perm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.perm-list__heading {
+  margin: 0;
+  padding-top: 12px;
+}
+
+.perm-list__empty {
+  font-size: 13px;
+  color: var(--foreground-neutral-lighter);
+  margin: 0;
+}
+
+/* Overrides the generic .perm-item card look from styles.css. */
+.modal__body .perm-item {
+  gap: 10px;
+  padding: 0 6px;
+  background: transparent;
+  border-radius: 0;
+  cursor: default;
+  align-items: center;
+}
+
+.modal__body .perm-item--tappable {
+  cursor: pointer;
+}
+
+.perm-item__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 99px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border-radius: var(--radius-md);
-  font-size: 12.5px;
+  justify-content: center;
+  background: var(--background-secondary-lighter, #eff3fa);
+  color: var(--foreground-secondary-default, #325fb4);
+}
+
+.perm-item__icon .perm-icon {
+  font-size: 24px;
+}
+
+.modal__body .perm-item-title {
+  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 14px;
-}
-
-.perm-tier-banner .material-symbols-outlined {
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.perm-tier-banner__label {
-  flex: 1;
-}
-
-.perm-tier-banner--granted {
-  background: var(--background-positive-light);
-  color: var(--foreground-positive-default);
-}
-
-.perm-tier-banner--locked {
-  background: var(--background-warning-light);
-  color: var(--foreground-warning-default);
-}
-
-.consent-revoke-section {
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--stroke-neutral-lighter);
-}
-
-.consent-revoke-note {
-  font-size: 12px;
-  color: var(--foreground-neutral-lighter);
-  margin: 0 0 12px;
   line-height: 1.5;
+  margin: 0 0 1px;
+  /* the design wraps rather than truncating — these labels are long */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.modal__body .perm-item-sub {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.consent-modal__disclaimer--center {
+  text-align: center;
+  margin: 8px 0 0;
+}
+
+.perm-revoke-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  gap: var(--spacing-sm, 8px);
+  border-radius: 1000px;
+  background-color: var(--danger-30, #b42318);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
 }
