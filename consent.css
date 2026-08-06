@@ -67,65 +67,53 @@
   line-height: 1.5;
 }
 
-/* ── tier2 gate states: locked / loading / empty (per-dataset card) ── */
+/* ── tier2 gate states: locked / loading / empty (per-dataset card) ──
+   Neutral dashed panel; the green call to action is carried by the button
+   alone, so the panel itself stays quiet in the page. */
 .tier2-locked {
-  background: var(--background-neutral-subtle, #f9fafb);
-  border: 1px dashed var(--stroke-neutral-default, #d1d5db);
+  background: #f4f4f5;
+  border: 1px dashed var(--button-stroke-nuetral, #dde0e2);
   border-radius: var(--radius-lg, 12px);
-  padding: 18px 16px;
+  padding: 29px 21px;
   text-align: center;
+  cursor: pointer;
 }
 
 .tier2-locked__icon {
-  font-size: 20px;
+  font-size: 24px;
   color: var(--foreground-neutral-lighter);
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: var(--background-neutral-light, #e5e7eb);
+  background: var(--canvas-default, #f8f9f9);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 8px;
+  margin: 0 auto 6px;
 }
 
 .tier2-locked__title {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  margin: 0 0 4px;
-}
-
-.tier2-locked__hint {
-  font-size: 12px;
-  color: var(--foreground-neutral-lighter);
-  margin: 0 0 12px;
+  color: var(--foreground-neutral-default, #25272a);
+  margin: 0 0 6px;
   line-height: 1.5;
 }
 
-/* "give additional consent" card: same layout as tier2-locked, but styled to
-   stand out and invite the tap, rather than blend in as a passive locked state. */
-#tier2-consent-more {
-  background: var(--background-positive-light);
-  border: 1.5px solid var(--foreground-positive-default);
-  box-shadow: 0 2px 10px rgba(7, 148, 85, 0.15);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.tier2-locked__hint {
+  font-size: 13px;
+  color: var(--foreground-neutral-lighter, #62676c);
+  margin: 0 0 16px;
+  line-height: 1.5;
 }
 
-#tier2-consent-more:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(7, 148, 85, 0.22);
-}
-
-#tier2-consent-more .tier2-locked__icon {
-  background: var(--foreground-positive-default);
-  color: #fff;
-  font-size: 22px;
-}
-
-#tier2-consent-more .tier2-locked__title {
-  color: var(--foreground-positive-default);
-  font-size: 14px;
+.tier2-locked__btn {
+  width: 100%;
+  min-height: 48px;
+  gap: var(--spacing-sm, 8px);
+  border-radius: 1000px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .tier2-loading {
@@ -230,9 +218,9 @@
 }
 
 .consent-modal__perm-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   flex-shrink: 0;
   background: var(--background-info-light);
   color: var(--info-40);
@@ -271,49 +259,37 @@
   gap: 8px;
 }
 
-/* tier2 consent modal: selectable checklist with a custom green/white checkbox */
+/* tier2 consent modal: selectable cards. The design shows selection as a green
+   card border rather than a visible checkbox, so the input is kept for keyboard
+   and screen-reader use but hidden visually. */
 .consent-modal__perm-item--checkable {
   cursor: pointer;
   border: 1px solid var(--stroke-neutral-lighter);
   border-radius: var(--radius-md);
-  padding: 10px;
+  padding: 12px;
+  transition: border-color 0.15s ease;
+}
+
+.consent-modal__perm-item--checkable:has(.consent-modal__checkbox:checked) {
+  border-color: var(--foreground-positive-default);
+}
+
+.consent-modal__perm-item--checkable:has(.consent-modal__checkbox:focus-visible) {
+  outline: 2px solid var(--foreground-positive-default);
+  outline-offset: 2px;
 }
 
 .consent-modal__checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  margin-top: 2px;
-  border: 1.5px solid var(--stroke-neutral-default, #d1d5db);
-  border-radius: 5px;
-  background: #fff;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.15s, border-color 0.15s;
-}
-
-.consent-modal__checkbox:checked {
-  background: var(--primary-40);
-  border-color: var(--primary-40);
-}
-
-.consent-modal__checkbox:checked::after {
-  content: '';
   position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 9px;
-  border: solid #fff;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.consent-modal__checkbox:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .consent-modal__granted {

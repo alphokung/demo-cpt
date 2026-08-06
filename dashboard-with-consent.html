@@ -42,7 +42,7 @@
           <div class="top-nav-bar-icon">
             <span class="material-symbols-outlined">person</span>
           </div>
-          <p class="top-nav-bar-title">Personalize Dashboard</p>
+          <p class="top-nav-bar-title">ข้อมูลเฉพาะคุณ</p>
           <button id="top-nav-consent-btn" class="top-nav-consent-btn" onclick="openPermissionsModal()"
             title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)" style="display:none;">
             <span class="material-symbols-outlined">shield_person</span>
@@ -62,7 +62,7 @@
           <div id="daily-notice-list" class="notice-list" style="display:none;">
             <!-- วันพระ -->
             <div id="wan-phra-bar" class="notice-item notice-item--info mb-0" style="display:none;">
-              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">brightness_5</span></div>
+              <div id="wan-phra-icon" class="notice-item__icon-wrap">✨</div>
               <div class="notice-item__body">
                 <p id="wan-phra-text" class="notice-item__text">วันนี้วันพระ</p>
               </div>
@@ -70,7 +70,7 @@
 
             <!-- วันสำคัญอื่นๆ -->
             <div id="special-day-bar" class="notice-item notice-item--info" style="display:none;">
-              <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">auto_awesome</span></div>
+              <div class="notice-item__icon-wrap">✨</div>
               <div class="notice-item__body">
                 <p id="special-day-text" class="notice-item__text">—</p>
               </div>
@@ -87,8 +87,7 @@
           </div>
           <p class="tier1-locked-panel__title">เปิดใช้งานเพื่อดูข้อมูลของคุณ</p>
           <p class="tier1-locked-panel__desc">
-            อนุญาตให้เข้าถึงตำแหน่ง, ข้อมูลส่วนบุคคลพื้นฐาน (ชื่อ‑นามสกุล, เลขบัตรประชาชน, วันเกิด)
-            และการแจ้งเตือน เพื่อแสดงสภาพอากาศ วันสำคัญ เอกสารราชการ และแจ้งเตือนวันหมดอายุของคุณ
+            อนุญาตให้เข้าถึงตำแหน่ง, ข้อมูลส่วนบุคคลพื้นฐาน เพื่อแสดงข้อมูลสภาพอากาศ, สิ่งที่คุณควรรู้, เอกสารราชการ, ทรัพย์สินของคุณ และบริการที่คุณน่าจะสนใจ
           </p>
           <button class="btn btn-primary" onclick="openTier1ConsentModal()">
             <span class="material-symbols-outlined">verified_user</span> ตั้งค่าเปิดใช้งาน
@@ -107,12 +106,10 @@
               <span class="skeleton-loading ctx-card__skel-text--sm"></span>
               <span class="skeleton-loading ctx-card__skel-text--lg"></span>
               <div class="ctx-card__skel-row">
-                <div>
-                  <span class="skeleton-loading ctx-card__skel-temp"></span>
-                  <span class="skeleton-loading ctx-card__skel-desc"></span>
-                </div>
-                <span class="skeleton-loading ctx-card__skel-icon-box"></span>
+                <span class="skeleton-loading ctx-card__skel-chip"></span>
+                <span class="skeleton-loading ctx-card__skel-chip"></span>
               </div>
+              <span class="skeleton-loading ctx-card__skel-summary"></span>
             </div>
 
             <!-- Loaded state -->
@@ -134,47 +131,36 @@
               <!-- Divider -->
               <div class="ctx-card__divider"></div>
 
-              <!-- Main weather row -->
-              <div class="ctx-card__weather-row">
-                <div>
-                  <div class="ctx-card__temp-row">
-                    <span id="weather-icon" class="material-symbols-outlined ctx-card__weather-icon">wb_sunny</span>
-                    <div>
-                      <p id="weather-temp" class="ctx-card__temp">—°</p>
-                      <p id="weather-desc" class="ctx-card__desc">กำลังโหลด…</p>
-                    </div>
-                  </div>
-                  <div class="ctx-card__meta-row">
-                    <div class="ctx-card__meta-item">
-                      <span class="material-symbols-outlined ctx-card__meta-icon">water_drop</span>
-                      <span id="weather-humidity">—%</span>
-                    </div>
-                    <div class="ctx-card__meta-item">
-                      <span class="material-symbols-outlined ctx-card__meta-icon">air</span>
-                      <span id="weather-wind">— กม./ชม.</span>
-                    </div>
+              <!-- Weather chip + PM2.5 chip, then the combined advice bar -->
+              <div class="ctx-card__weather-pm">
+
+                <div class="ctx-chip ctx-chip--weather">
+                  <img id="weather-icon" class="ctx-chip__icon" src="_media/weather/w2-partly-cloudy.svg" alt="">
+                  <div class="ctx-chip__text">
+                    <p id="weather-desc" class="ctx-chip__title">กำลังโหลด…</p>
+                    <p id="weather-temp" class="ctx-chip__value">อุณหภูมิ —</p>
+                    <p id="weather-detail" class="ctx-chip__note">—</p>
                   </div>
                 </div>
 
-                <!-- PM2.5 chip -->
-                <div id="pm25-chip" class="ctx-pm25">
-                  <p class="ctx-pm25__label">PM 2.5</p>
-                  <div class="ctx-pm25__value-row">
-                    <span id="pm25-value" class="ctx-pm25__value">—</span>
-                    <span class="ctx-pm25__unit">μg/m³</span>
+                <div id="pm25-chip" class="ctx-chip ctx-chip--pm">
+                  <img class="ctx-chip__icon ctx-chip__icon--pm" src="_media/pm/orange.svg" alt="">
+                  <div class="ctx-chip__text">
+                    <p id="pm25-label" class="ctx-chip__title">—</p>
+                    <p id="pm25-value" class="ctx-chip__value">PM 2.5: — μg/m³</p>
+                    <p id="pm25-station" class="ctx-chip__note">—</p>
                   </div>
-                  <span id="pm25-badge" class="ctx-pm25__badge">—</span>
+                </div>
+
+                <!-- Weather + air-quality advice -->
+                <div id="weather-focus" class="ctx-summary">
+                  <span id="focus-icon" class="material-symbols-outlined ctx-summary__icon">info</span>
+                  <p id="focus-text" class="ctx-summary__text">กำลังโหลดคำแนะนำ…</p>
                 </div>
               </div>
 
               <!-- Divider -->
-              <div class="ctx-card__divider--spaced"></div>
-
-              <!-- Weather focus tip -->
-              <div id="weather-focus" class="ctx-bar ctx-bar--focus">
-                <span id="focus-icon" class="material-symbols-outlined ctx-bar__focus-icon">info</span>
-                <p id="focus-text" class="ctx-bar__focus-text">กำลังโหลดคำแนะนำ…</p>
-              </div>
+              <div class="ctx-card__divider--bottom"></div>
 
             </div><!-- /loaded-item -->
           </div><!-- /loading-wrapper -->
@@ -214,10 +200,6 @@
 
               <div class="dyk-card__footer">
                 <div class="dyk-card__dots" id="dyk-dots"></div>
-                <span class="dyk-card__next-hint">
-                  แตะเพื่อดูถัดไป
-                  <span class="material-symbols-outlined dyk-card__next-icon">chevron_right</span>
-                </span>
               </div>
             </div>
 
@@ -241,30 +223,28 @@
               </div>
 
               <!-- หนังสือเดินทางใกล้หมดอายุ -->
-              <div class="notice-item notice-item--danger"
+              <div id="notice-passport-expiring" class="notice-item notice-item--danger"
                 onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">warning</span></div>
+                <div class="notice-item__icon-wrap">⚠️</div>
                 <div class="notice-item__body">
                   <p class="notice-item__title">หนังสือเดินทางใกล้หมดอายุ</p>
                   <p class="notice-item__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
                 </div>
-                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
               </div>
 
               <!-- ภาษีรถใกล้ถึงกำหนด -->
-              <div class="notice-item notice-item--warning"
+              <div id="notice-tax-due" class="notice-item notice-item--warning"
                 onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">schedule</span></div>
+                <div class="notice-item__icon-wrap">⏱️</div>
                 <div class="notice-item__body">
                   <p class="notice-item__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
                   <p class="notice-item__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
                 </div>
-                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
               </div>
 
               <!-- เบี้ยความพิการ: เฉพาะบุคคลที่มีบัตรคนพิการ และเปิดสิทธิ Tier 2 (disability) แล้ว -->
               <div id="notice-disability-allowance" class="notice-item notice-item--positive" style="display:none;">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">payments</span></div>
+                <div class="notice-item__icon-wrap">💶</div>
                 <div class="notice-item__body">
                   <p class="notice-item__title">เบี้ยความพิการเดือนนี้โอนแล้ว</p>
                   <p class="notice-item__sub">โอนเงินเบี้ยความพิการประจำเดือน มิ.ย. 2569 จำนวน 800.00 บาท
@@ -275,24 +255,22 @@
               <!-- ใบสั่ง: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (ticket) แล้ว -->
               <div id="notice-ticket-reminder" class="notice-item notice-item--danger" style="display:none;"
                 onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">receipt_long</span></div>
+                <div class="notice-item__icon-wrap">🧾</div>
                 <div class="notice-item__body">
                   <p class="notice-item__title">แจ้งเตือนใบสั่ง</p>
                   <p class="notice-item__sub">รถทะเบียน กข 1234 กทม. กรุณาชำระภายในอีก 15 วัน</p>
                 </div>
-                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
               </div>
 
               <!-- กรมธรรม์ใกล้หมดอายุ: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (insurance) แล้ว -->
               <div id="notice-insurance-expiring" class="notice-item notice-item--warning" style="display:none;"
                 onclick="alert('เปิด miniapp คปภ.')">
-                <div class="notice-item__icon-wrap"><span class="material-symbols-outlined">policy</span></div>
+                <div class="notice-item__icon-wrap">📋</div>
                 <div class="notice-item__body">
                   <p class="notice-item__title">กรมธรรม์ประกันภัยใกล้ถึงกำหนดต่ออายุ</p>
                   <p class="notice-item__sub">ประกันยานพาหนะภาคบังคับและภาคสมัครใจ รถ Honda Civic กข 1234 กทม. ·
                     ครบกำหนด 20 เม.ย. 2570</p>
                 </div>
-                <span class="material-symbols-outlined notice-item__chevron">chevron_right</span>
               </div>
             </div>
           </div>
@@ -322,12 +300,48 @@
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
                     <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
-                    <div class="list-icon driving">
+                    <div class="list-icon list-icon--doc">
                       <span class="material-symbols-outlined">directions_car</span>
                     </div>
                     <div class="list-body">
                       <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
                       <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 5 พ.ค. 2572</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Motorcycle Driving License -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">two_wheeler</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบอนุญาตขับรถจักรยานยนต์ส่วนบุคคล 5 ปี</p>
+                      <p class="list-item-hero">ใบอนุญาตเลขที่: 12345999</p>
                       <div class="list-meta">
                         <div class="list-meta-item">
                           <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
@@ -358,8 +372,8 @@
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
                     <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
-                    <div class="list-icon work">
-                      <span class="material-symbols-outlined">public</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">book_2</span>
                     </div>
                     <div class="list-body">
                       <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
@@ -367,7 +381,43 @@
                       <div class="list-meta">
                         <div class="list-meta-item">
                           <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          <span>วันหมดอายุ: 27 มิ.ย. 2569</span>
+                          <span>หมดอายุ: 27 มิ.ย. 2569</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Passport (เล่มที่สอง) -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item" style="pointer-events:none;">
+                    <span class="list-badge skeleton-loading list-badge--corner" class="skeleton-badge-sm"></span>
+                    <div class="skeleton-loading" class="skeleton-icon-md"></div>
+                    <div class="list-body" class="skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle" class="skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">book_2</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                      <p class="list-item-hero">เลขหนังสือเดินทาง: A1234569</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 27 มิ.ย. 2569</span>
                         </div>
 
                         <div class="list-meta-item">
@@ -441,7 +491,7 @@
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
                     <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
-                    <div class="list-icon driving">
+                    <div class="list-icon list-icon--doc">
                       <span class="material-symbols-outlined">directions_car</span>
                     </div>
                     <div class="list-body">
@@ -482,7 +532,7 @@
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
                     <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
-                    <div class="list-icon driving">
+                    <div class="list-icon list-icon--doc">
                       <span class="material-symbols-outlined">two_wheeler</span>
                     </div>
                     <div class="list-body">
@@ -523,7 +573,7 @@
                   </div>
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
-                    <div class="list-icon covid">
+                    <div class="list-icon">
                       <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -553,7 +603,7 @@
                   </div>
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
-                    <div class="list-icon driving">
+                    <div class="list-icon">
                       <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -583,7 +633,7 @@
                   </div>
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
-                    <div class="list-icon covid">
+                    <div class="list-icon">
                       <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -613,7 +663,7 @@
                   </div>
                   <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
                     onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
-                    <div class="list-icon driving">
+                    <div class="list-icon">
                       <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -660,8 +710,9 @@
               <div class="card card__inner" data-state="loaded" style="display: none;">
                 <div class="section-title-container card-section__title-container">
                   <div class="section-bar card-section__bar--primary"></div>
-                  <h3 class="section-title card-section__heading">สิทธิการรักษาพยาบาล</h3>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิหลักประกันสุขภาพแห่งชาติ</h3>
                 </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
@@ -686,7 +737,7 @@
                 </div>
                 <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
-                  <span class="material-symbols-outlined">verified_user</span> ตรวจสอบสิทธิการรักษาพยาบาล
+                  <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสิทธิการรักษาพยาบาล
                 </button>
               </div>
             </div>
@@ -716,9 +767,10 @@
               <!-- Loaded State -->
               <div class="card loaded-item card__inner" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--info"></div>
-                  <h3 class="section-title card-section__heading">สิทธิประกันสังคม</h3>
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิประกันสังคม</h3>
                 </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
@@ -735,7 +787,7 @@
                 </div>
                 <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="alert('เปิด miniapp ประกันสังคม')">
-                  <span class="material-symbols-outlined">shield_person</span> ใช้งานบริการประกันสังคม
+                  <span class="material-symbols-outlined">shield_person</span> ดูรายละเอียดสิทธิประกันสังคม
                 </button>
               </div>
             </div>
@@ -765,9 +817,10 @@
               <!-- Loaded State -->
               <div class="card loaded-item card__inner" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--warning"></div>
-                  <h3 class="section-title card-section__heading">สิทธิข้าราชการ (กบข.)</h3>
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิข้าราชการ</h3>
                 </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
                 <div class="details-list">
                   <div class="details-item">
                     <span class="details-label">สิทธิที่ใช้เบิก:</span>
@@ -780,7 +833,7 @@
                 </div>
                 <button class="btn btn-tertiary-outline flex-center card__btn-full"
                   onclick="alert('เปิด miniapp กบข.')">
-                  <span class="material-symbols-outlined">account_balance</span> ตรวจสอบเงิน กบข.
+                  <span class="material-symbols-outlined">account_balance</span> ดูรายละเอียดสิทธิข้าราชการ
                 </button>
               </div>
             </div>
@@ -806,7 +859,7 @@
               <!-- Loaded state -->
               <div class="card card__inner" data-state="loaded" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--secondary"></div>
+                  <div class="section-bar card-section__bar--primary"></div>
                   <h3 class="section-title card-section__heading">สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
                 </div>
                 <p class="list-section-note">บัตรสวัสดิการแห่งรัฐและเงินอุดหนุนที่คุณได้รับสิทธิ์ในระบบ</p>
@@ -850,7 +903,7 @@
               <!-- Loaded state -->
               <div class="card card__inner" data-state="loaded" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--warning"></div>
+                  <div class="section-bar card-section__bar--primary"></div>
                   <h3 class="section-title card-section__heading">ข้อมูลกรมธรรม์ประกันภัย</h3>
                 </div>
                 <p class="list-section-note">กรมธรรม์ประกันภัยที่คุณถือครองในระบบ</p>
@@ -980,29 +1033,14 @@
 
           </div>
 
-          <!-- Single tap to grant everything not yet consented in this section — -->
-          <!-- placed last, after whatever has already been granted above. -->
-          <div id="tier2-consent-more" class="tier2-locked" style="display:none; margin-top:12px;"
-            onclick="requestTier2ConsentRemaining()">
-            <div class="tier2-locked__icon">
-              <span class="material-symbols-outlined">verified_user</span>
-            </div>
-            <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
-            <p id="tier2-consent-more-hint" class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล
-              ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
-            <button class="btn btn-primary flex-center card__btn-full"
-              onclick="event.stopPropagation(); requestTier2ConsentRemaining();">
-              <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
-            </button>
-          </div>
         </div>
 
         <!-- ═══════════════════════════════════════════ -->
         <!-- เรื่องเงินของคุณ (Tier 2 — explicit per-dataset consent, realtime) -->
         <!-- ═══════════════════════════════════════════ -->
         <div id="money-section" class="list-section" style="display:none;">
-          <p class="list-section-title">เรื่องเงินของคุณ</p>
-          <p class="list-section-note">ค่าน้ำ ค่าไฟ และใบสั่งที่ต้องชำระของคุณ</p>
+          <p class="list-section-title">รายรับรายจ่าย ที่เกี่ยวกับคุณ</p>
+          <p class="list-section-note">รวมเรื่องเงินๆทองๆ ที่คุณอาจจะสนใจ</p>
 
           <div id="money-gate-list" class="cert-list cert-list--single" style="display:none;">
             <!-- Card: ค่าน้ำ ค่าไฟ (Tier 2 — explicit consent, realtime) -->
@@ -1017,15 +1055,15 @@
               <!-- Loaded state -->
               <div class="card card__inner" data-state="loaded" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--warning"></div>
+                  <div class="section-bar card-section__bar--primary"></div>
                   <h3 class="section-title card-section__heading">ค่าน้ำ ค่าไฟ</h3>
                 </div>
-                <p class="list-section-note">ยอดค่าน้ำค่าไฟที่ต้องชำระในระบบ</p>
+                <p class="list-section-note">รวมรายการค่าน้ำค่าไฟที่ต้องชำระ</p>
 
                 <div class="cert-list">
                   <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
                     <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
-                    <div class="list-icon covid">
+                    <div class="list-icon">
                       <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -1039,8 +1077,8 @@
                       </div>
                       <div class="list-meta">
                         <div class="list-meta-item">
-                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          กำหนดชำระ: 15 ก.ค. 2569
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
                         </div>
                       </div>
                     </div>
@@ -1049,7 +1087,7 @@
 
                   <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
                     <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
-                    <div class="list-icon driving">
+                    <div class="list-icon">
                       <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -1063,8 +1101,8 @@
                       </div>
                       <div class="list-meta">
                         <div class="list-meta-item">
-                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          กำหนดชำระ: 15 ก.ค. 2569
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
                         </div>
                       </div>
                     </div>
@@ -1073,7 +1111,7 @@
 
                   <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
                     <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
-                    <div class="list-icon covid">
+                    <div class="list-icon">
                       <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -1087,8 +1125,8 @@
                       </div>
                       <div class="list-meta">
                         <div class="list-meta-item">
-                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          ชำระล่าสุด: 29 พ.ค. 2569
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
                         </div>
                       </div>
                     </div>
@@ -1097,7 +1135,7 @@
 
                   <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
                     <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
-                    <div class="list-icon driving">
+                    <div class="list-icon">
                       <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
                     </div>
                     <div class="list-body">
@@ -1111,8 +1149,8 @@
                       </div>
                       <div class="list-meta">
                         <div class="list-meta-item">
-                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          ชำระล่าสุด: 29 พ.ค. 2569
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
                         </div>
                       </div>
                     </div>
@@ -1134,10 +1172,10 @@
               <!-- Loaded state -->
               <div class="card card__inner" data-state="loaded" style="display: none;">
                 <div class="section-title-container card-section__title-container">
-                  <div class="section-bar card-section__bar--warning"></div>
+                  <div class="section-bar card-section__bar--primary"></div>
                   <h3 class="section-title card-section__heading">ใบสั่งที่ต้องชำระ</h3>
                 </div>
-                <p class="list-section-note">ใบสั่งจราจรค้างชำระที่ผูกกับทะเบียนรถของคุณ</p>
+                <p class="list-section-note">รวมรายการค่าใบสั่งที่ต้องชำระ</p>
 
                 <div class="cert-list">
                   <a href="javascript:void(0)" class="list-item"
@@ -1152,13 +1190,112 @@
                       <div class="list-meta">
                         <div class="list-meta-item">
                           <span class="material-symbols-outlined list-meta-icon">directions_car</span>
-                          รถทะเบียน กข 1234 กทม. · ไม่หยุดรถตรงป้ายหยุด
+                          รถทะเบียน กข 1234 กทม.
                         </div>
                       </div>
                       <div class="list-meta">
                         <div class="list-meta-item">
                           <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
-                          กรุณาชำระภายในอีก 15 วัน
+                          กรุณาชำระภายใน 15 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903001512</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 17 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903002122</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 25 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903002345</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 30 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
                         </div>
                       </div>
                     </div>
@@ -1175,6 +1312,25 @@
 
 
         
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Single tap to grant every Tier 2 dataset not yet consented. Sits -->
+        <!-- directly above บริการที่คุณน่าจะสนใจ so it reads as one clear entry -->
+        <!-- point rather than being buried inside สิทธิ และสวัสดิการ. -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="tier2-consent-more" class="tier2-locked" style="display:none;"
+          onclick="requestTier2ConsentRemaining()">
+          <div class="tier2-locked__icon">
+            <span class="material-symbols-outlined">verified_user</span>
+          </div>
+          <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
+          <p id="tier2-consent-more-hint" class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล
+            ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
+          <button class="btn btn-primary flex-center tier2-locked__btn"
+            onclick="event.stopPropagation(); requestTier2ConsentRemaining();">
+            <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+          </button>
+        </div>
 
         <!-- ═══════════════════════════════════════════ -->
         <!-- บริการที่คุณน่าจะสนใจ (public — ไม่ต้อง consent) -->
@@ -1195,7 +1351,8 @@
         </div>
 
         <div class="footer-timestamp">
-          ข้อมูล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น.
+          ข้อมูล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น. <br>
+          All rights reserved 2023. Digital Government Development Agency (Public Organization) (DGA)
         </div>
 
       </main>
@@ -1256,7 +1413,7 @@
     <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
       <div class="modal__header">
         <div>
-          <p class="modal__header-title">ขอสิทธิ์เข้าถึงข้อมูลพื้นฐาน</p>
+          <p class="modal__header-title">การเข้าถึงข้อมูลพื้นฐาน</p>
           <p class="modal__header-sub">ใช้เพื่อแสดงเอกสารราชการและข้อมูลทั่วไปของคุณ</p>
         </div>
         <button onclick="closeModal('modal-consent-tier1')" class="modal__close-btn">
@@ -1264,9 +1421,8 @@
         </button>
       </div>
       <div class="modal__body">
-        <span class="consent-modal__badge consent-modal__badge--tier1">
-          <span class="material-symbols-outlined" style="font-size:14px;">layers</span> Tier 1 · ข้อมูลทั่วไป
-        </span>
+        <div class="modal__header-title">ข้อมูลที่ขอเข้าถึง</div>
+        
 
         <div class="consent-modal__perm-list">
           <div class="consent-modal__perm-item">
@@ -1280,29 +1436,25 @@
             <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">badge</span></div>
             <div>
               <p class="consent-modal__perm-title">ข้อมูลส่วนบุคคลพื้นฐาน</p>
-              <p class="consent-modal__perm-sub">เลขบัตรประชาชน, ชื่อ‑นามสกุล, วันเกิด —
-                เพื่อยืนยันตัวตนและแสดงเอกสารราชการของคุณ</p>
+              <p class="consent-modal__perm-sub">เลขบัตรประชาชน, ชื่อ‑นามสกุล, วันเกิด — เพื่อยืนยันตัวตน และเข้าถึงข้อมูลต่างๆ ซึ่งประกอบด้วย <br>
+              <ul class="consent-modal__perm-sub">
+                <li>ข้อมูลสิทธิ/สวัสดิการของคุณ</li>
+                <li>ข้อมูลกรมธรรม์ประกันภัยของคุณ</li>
+                <li>ค่าน้ำ ค่าไฟ และใบสั่งที่ต้องชำระของคุณ</li>
+              </ul>
+              </p>
             </div>
-          </div>
-          <div class="consent-modal__perm-item">
-            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">notifications_active</span>
-            </div>
-            <div>
-              <p class="consent-modal__perm-title">การแจ้งเตือน (Push Notification)</p>
-              <p class="consent-modal__perm-sub">แจ้งเตือนวันหมดอายุของเอกสารและรายการที่ใกล้ถึงกำหนด</p>
-            </div>
-          </div>
+          </div>          
         </div>
 
         <div class="consent-modal__disclaimer">
-          ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น<br>
-          ข้อมูลระดับนี้จะถูก<strong>แคชไว้ในเครื่องเพื่อความรวดเร็ว</strong> และคุณให้ความยินยอมเพียงครั้งเดียว
-          สามารถยกเลิกได้ทุกเมื่อจากเมนู “การจัดการสิทธิ์”
+ข้อมูลเหล่านี้ใช้เพื่อแสดงเท่านั้น ไม่ถูกใช้เพื่อวัตถุประสงค์อื่น
+ข้อมูลนี้อาจถูก <strong>แคชเพื่อความรวดเร็ว</strong> โดยหลังจากยินยอมแล้ว  คุณสามารถยกเลิกได้ทุกเมื่อจากเมนู <strong>จัดการความยินยอม</strong>
         </div>
 
         <div class="consent-modal__actions">
           <button class="btn btn-primary" style="width:100%;"
-            onclick="confirmTier1Consent()">ยินยอมและเข้าใช้งาน</button>
+            onclick="confirmTier1Consent()">ตกลงและเข้าใช้งาน</button>
           <button class="btn btn-outline" style="width:100%;"
             onclick="closeModal('modal-consent-tier1')">ภายหลัง</button>
         </div>
@@ -1315,32 +1467,28 @@
     <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
       <div class="modal__header">
         <div>
-          <p class="modal__header-title">ให้ความยินยอมเข้าถึงข้อมูลสิทธิ/สุขภาพ</p>
-          <p class="modal__header-sub">เลือกรายการที่ต้องการให้ความยินยอม (เลือกได้มากกว่า 1 รายการ)</p>
+          <p class="modal__header-title">ให้ความยินยอมเข้าถึงข้อมูลเพิ่มเติม</p>
+          <p class="modal__header-sub">เลือกรายการข้อมูลที่ต้องการให้ความยินยอม</p>
         </div>
         <button onclick="cancelTier2Consent()" class="modal__close-btn">
           <span class="material-symbols-outlined modal__close-icon">close</span>
         </button>
       </div>
       <div class="modal__body">
-        <span class="consent-modal__badge consent-modal__badge--tier2">
-          <span class="material-symbols-outlined" style="font-size:14px;">bolt</span> Tier 2 · ข้อมูลสิทธิ/สุขภาพ
-          (เรียลไทม์)
-        </span>
+        <div class="modal__header-title">ข้อมูลที่ขอเข้าถึง</div>
 
         <div id="tier2-modal-list" class="consent-modal__perm-list"></div>
 
         <div class="consent-modal__disclaimer">
-          เมื่อคุณกดยินยอม ระบบจะเรียกข้อมูลจากหน่วยงานที่เกี่ยวข้อง<strong>แบบเรียลไทม์ทุกครั้ง</strong>ที่เปิดหน้านี้
-          (ไม่แคช)<br><br>
-          ข้อมูลเหล่านี้ใช้เพื่อแสดงสิทธิของคุณเท่านั้น ไม่ถูกนำไปใช้วัตถุประสงค์อื่น
-          ข้อมูลจัดเก็บชั่วคราว 24 ชั่วโมง และลบอัตโนมัติ
+          ข้อมูลเหล่านี้ใช้เพื่อแสดงเท่านั้น ไม่ถูกใช้เพื่อวัตถุประสงค์อื่น
+          ข้อมูลนี้อาจถูก <strong>แคชเพื่อความรวดเร็ว</strong> โดยหลังจากยินยอมแล้ว
+          คุณสามารถยกเลิกได้ทุกเมื่อจากเมนู <strong>จัดการความยินยอม</strong>
         </div>
 
         <div class="consent-modal__actions">
           <button class="btn btn-primary" style="width:100%;"
-            onclick="confirmTier2Consent()">ยินยอมรายการที่เลือก</button>
-          <button class="btn btn-outline" style="width:100%;" onclick="cancelTier2Consent()">ไม่ยินยอม</button>
+            onclick="confirmTier2Consent()">ยินยอมและเข้าใช้งาน</button>
+          <button class="btn btn-outline" style="width:100%;" onclick="cancelTier2Consent()">ภายหลัง</button>
         </div>
       </div>
     </div>
@@ -1379,43 +1527,35 @@
           </div>
         </div>
 
-        <!-- อากาศ -->
+        <!-- อากาศ (Weather chip variants) -->
         <div class="dc-group">
-          <p class="dc-group-label">🌤️ อากาศ</p>
-          <div class="dc-chips">
-            <button class="dc-chip" id="chip-weather-hot" onclick="demoSet('weather','hot')">☀️ ร้อน</button>
-            <button class="dc-chip" id="chip-weather-rain" onclick="demoSet('weather','rain')">🌧️ ฝนตก</button>
-          </div>
+          <p class="dc-group-label">🌤️ อากาศ (Weather Chip)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-weather-chips"></div>
         </div>
 
         <!-- PM 2.5 -->
         <div class="dc-group">
-          <p class="dc-group-label">💨 PM 2.5</p>
-          <div class="dc-chips dc-chips--wrap">
-            <button class="dc-chip" id="chip-pm25-low" onclick="demoSet('pm25','low')" style="--pm-color:#4caf50;">🟢
-              ต่ำ</button>
-            <button class="dc-chip" id="chip-pm25-medium" onclick="demoSet('pm25','medium')"
-              style="--pm-color:#fbbf24;">🟡 กลาง</button>
-            <button class="dc-chip" id="chip-pm25-high" onclick="demoSet('pm25','high')" style="--pm-color:#f97316;">🟠
-              สูง</button>
-            <button class="dc-chip" id="chip-pm25-veryhigh" onclick="demoSet('pm25','veryhigh')"
-              style="--pm-color:#9c27b0;">🟣 สูงมาก</button>
-          </div>
+          <p class="dc-group-label">💨 PM 2.5 (PM2.5 Chip)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-pm25-chips"></div>
         </div>
 
-        <!-- วันสำคัญ -->
+        <!-- วันสำคัญ (event bar) -->
         <div class="dc-group">
-          <p class="dc-group-label">🪷 วันสำคัญ</p>
-          <div class="dc-chips dc-chips--wrap">
-            <button class="dc-chip" id="chip-special-none" onclick="demoSet('special',null)">ไม่มี</button>
-            <button class="dc-chip" id="chip-special-wanphra"
-              onclick="demoSet('special','wanphra')">วันพระทั่วไป</button>
-            <button class="dc-chip" id="chip-special-visakha"
-              onclick="demoSet('special','visakha')">วันวิสาขบูชา</button>
-            <button class="dc-chip" id="chip-special-loykra" onclick="demoSet('special','loykra')">วันลอยกระทง</button>
-            <button class="dc-chip" id="chip-special-valentine"
-              onclick="demoSet('special','valentine')">วันวาเลนไทน์</button>
-            <button class="dc-chip" id="chip-special-chalerm" onclick="demoSet('special','chalerm')">วันเฉลิม</button>
+          <p class="dc-group-label">🎉 วันสำคัญ (daily-notice-list)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-special-chips"></div>
+        </div>
+
+        <!-- สิ่งที่คุณควรรู้ (alert cards) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🔔 สิ่งที่คุณควรรู้ (notice-list) — แตะเพื่อสลับ อัตโนมัติ / แสดง / ซ่อน</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-notice-chips"></div>
+        </div>
+
+        <!-- รู้หรือไม่ (tips) -->
+        <div class="dc-group">
+          <p class="dc-group-label">💡 รู้หรือไม่ (did-you-know) — สุ่ม 5 จาก 15 รายการ</p>
+          <div class="dc-chips">
+            <button class="dc-chip" onclick="dykReshuffle()">🎲 สุ่มชุดใหม่</button>
           </div>
         </div>
 
@@ -1457,7 +1597,8 @@
         if (dailyNotices) dailyNotices.style.display = 'none';
 
         // Random duration up to 2 seconds (between 400ms and 2000ms)
-        const randomDelay = 400 + Math.random() * 1600;
+        //const randomDelay = 400 + Math.random() * 1600;
+        const randomDelay = 1;
 
         setTimeout(() => {
           if (skeleton) skeleton.style.display = 'none';
@@ -1539,36 +1680,42 @@
     var SERVICE_CATALOG = {
       vehicle_reg: {
         title: 'ตรวจสอบทะเบียนรถ',
+        desc: 'ตรวจสอบข้อมูลทะเบียนรถยนต์และรถจักรยานยนต์ วันครบกำหนดภาษี และประวัติการต่อทะเบียนของรถที่คุณถือครอง',
         category: 'ยานพาหนะ',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2023/03/IC_%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%97%E0%B8%B0%E0%B9%80%E0%B8%9A%E0%B8%B5%E0%B8%A2%E0%B8%99%E0%B8%A3%E0%B8%96.jpg',
         url: 'https://www.thangrath.go.th/feature/vehicle-registration-information/',
       },
       traffic_ticket: {
         title: 'ตรวจสอบใบสั่งจราจร',
+        desc: 'ตรวจสอบใบสั่งจราจรของรถยนต์และรถจักรยานยนต์ พร้อมชำระค่าปรับผ่าน QR Code และติดตามสถานะการชำระเงิน',
         category: 'ยานพาหนะ',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2023/03/%E0%B9%83%E0%B8%9A%E0%B8%AA%E0%B8%B1%E0%B9%88%E0%B8%87768.jpg',
         url: 'https://www.thangrath.go.th/feature/%e0%b9%83%e0%b8%9a%e0%b8%aa%e0%b8%b1%e0%b9%88%e0%b8%87%e0%b8%88%e0%b8%a3%e0%b8%b2%e0%b8%88%e0%b8%a3/',
       },
       newborn_subsidy: {
         title: 'เงินอุดหนุนเด็กแรกเกิด',
+        desc: 'ตรวจสอบสิทธิและสถานะการรับเงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด พร้อมยื่นลงทะเบียนออนไลน์',
         category: 'สวัสดิการ',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B9%80%E0%B8%87%E0%B8%B4%E0%B8%99%E0%B8%AD%E0%B8%B8%E0%B8%94%E0%B8%AB%E0%B8%99%E0%B8%B8%E0%B8%99%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81%E0%B9%81%E0%B8%A3%E0%B8%81%E0%B9%80%E0%B8%81%E0%B8%B4%E0%B8%94.png',
         url: 'https://www.thangrath.go.th/feature/%e0%b9%80%e0%b8%87%e0%b8%b4%e0%b8%99%e0%b8%ad%e0%b8%b8%e0%b8%94%e0%b8%ab%e0%b8%99%e0%b8%b8%e0%b8%99%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%81%e0%b9%81%e0%b8%a3%e0%b8%81%e0%b9%80%e0%b8%81%e0%b8%b4%e0%b8%94-3/',
       },
       credit_bureau: {
         title: 'ตรวจสอบเครดิตบูโร',
+        desc: 'ตรวจสอบสรุปข้อมูลเครดิตบูโรและยอดหนี้เบื้องต้น เพื่อดูภาพรวมบัญชีสินเชื่อ และหนี้สินส่วนบุคคลสำหรับใช้วางแผนทางการเงินส่วนบุคคล',
         category: 'การเงิน · ประกัน',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%94%E0%B8%B4%E0%B8%95%E0%B8%9A%E0%B8%B9%E0%B9%82%E0%B8%A3.png',
         url: 'https://www.thangrath.go.th/feature/%e0%b8%95%e0%b8%a3%e0%b8%a7%e0%b8%88%e0%b8%aa%e0%b8%ad%e0%b8%9a%e0%b9%80%e0%b8%84%e0%b8%a3%e0%b8%94%e0%b8%b4%e0%b8%95%e0%b8%9a%e0%b8%b9%e0%b9%82%e0%b8%a3-%e0%b8%87%e0%b9%88%e0%b8%b2%e0%b8%a2%e0%b9%81/',
       },
       medical_rights: {
         title: 'ตรวจสอบสิทธิการรักษาพยาบาล',
+        desc: 'ตรวจสอบสิทธิรักษาพยาบาล ประวัติสุขภาพ ค้นหาหรือเปลี่ยนหน่วยบริการ และสแกนเพื่อเข้ารับบริการทางการแพทย์',
         category: 'สุขภาพ',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B8%A3%E0%B8%B1%E0%B8%81%E0%B8%A9%E0%B8%B2%E0%B8%9E%E0%B8%A2%E0%B8%B2%E0%B8%9A%E0%B8%B2%E0%B8%A5.png',
         url: 'https://www.thangrath.go.th/feature/%e0%b8%95%e0%b8%a3%e0%b8%a7%e0%b8%88%e0%b8%aa%e0%b8%ad%e0%b8%9a%e0%b8%aa%e0%b8%b4%e0%b8%97%e0%b8%98%e0%b8%b4%e0%b8%81%e0%b8%b2%e0%b8%a3%e0%b8%a3%e0%b8%b1%e0%b8%81%e0%b8%a9%e0%b8%b2%e0%b8%9e%e0%b8%a2/',
       },
       social_insurance: {
         title: 'เช็กสิทธิประกันสังคม',
+        desc: 'ตรวจสอบสิทธิประกันสังคม เช็กยอดเงินสมทบชราภาพ และสิทธิรักษาพยาบาล พร้อมทำธุรกรรมออนไลน์สำหรับผู้ประกันตน',
         category: 'สวัสดิการ',
         icon: 'https://www.thangrath.go.th/wp-content/uploads/2022/02/%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%AA%E0%B8%B1%E0%B8%87%E0%B8%84%E0%B8%A1.png',
         url: 'https://www.thangrath.go.th/feature/%e0%b9%80%e0%b8%8a%e0%b9%87%e0%b8%81%e0%b8%aa%e0%b8%b4%e0%b8%97%e0%b8%98%e0%b8%b4%e0%b8%9b%e0%b8%a3%e0%b8%b0%e0%b8%81%e0%b8%b1%e0%b8%99%e0%b8%aa%e0%b8%b1%e0%b8%87%e0%b8%84%e0%b8%a1-%e0%b9%82%e0%b8%84/',
@@ -1637,11 +1784,9 @@
                 '<img src="' + svc.icon + '" alt="" class="img-helper-frame circle size-sm">' +
               '</div>' +
               '<div class="list-body">' +
-                '<p class="list-item-label">' + svc.title + '</p>' +
-                '<div class="list-meta"><div class="list-meta-item">' +
-                  '<span class="material-symbols-outlined list-meta-icon">category</span>' +
-                  '<span>' + svc.category + '</span>' +
-                '</div></div>' +
+                '<p class="service-item__title">' + svc.title + '</p>' +
+                '<p class="service-item__desc">' + svc.desc + '</p>' +
+                '<span class="service-item__category">' + svc.category + '</span>' +
               '</div>' +
               '<span class="material-symbols-outlined chevron">chevron_right</span>' +
             '</a>' +
@@ -1673,6 +1818,9 @@
       if (ticketEl) {
         ticketEl.style.display = consent.tier2.ticket ? '' : 'none';
       }
+
+      // Any demo override wins over the rules above.
+      if (typeof applyNoticeOverrides === 'function') applyNoticeOverrides();
     }
 
     // Switching persona changes who the dashboard belongs to, so any previously
@@ -1685,42 +1833,45 @@
       location.reload();
     }
 
+    // Order matches the consent modal in the design: health, utility, ticket,
+    // insurance, welfare, disability. `desc` is the line shown in that modal;
+    // `sub` is the source agency shown on the dataset cards in the page.
     var TIER2_INFO = {
       health: {
-        title: 'สิทธิการรักษาพยาบาล',
+        title: 'ข้อมูลสิทธิการรักษาพยาบาล',
         sub: 'สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.)',
-        desc: 'ระบบจะเรียกดูสิทธิการรักษาพยาบาลของคุณ (สิทธิที่ใช้เบิก, สถานพยาบาลประจำ/รับส่งต่อ) จาก สปสช. แบบเรียลไทม์',
+        desc: 'เชื่อมต่อข้อมูลสิทธิการรักษาพยาบาลบัตรทอง, สิทธิประกันสังคม, และสิทธิข้าราชการ จากสำนักงานหลักประกันสุขภาพแห่งชาติ',
         icon: 'health_and_safety',
       },
-      disability: {
-        title: 'ข้อมูลบัตรคนพิการ',
-        sub: 'กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ (พก.)',
-        desc: 'ระบบจะเรียกดูสถานะและวันหมดอายุของบัตรประจำตัวคนพิการจาก พก. แบบเรียลไทม์',
-        icon: 'accessible',
-      },
-      welfare: {
-        title: 'สิทธิสวัสดิการแห่งรัฐ',
-        sub: 'กรมบัญชีกลาง กระทรวงการคลัง',
-        desc: 'ระบบจะเรียกดูบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด และเบี้ยยังชีพผู้สูงอายุ จากกรมบัญชีกลาง แบบเรียลไทม์',
-        icon: 'volunteer_activism',
-      },
-      insurance: {
-        title: 'ข้อมูลกรมธรรม์ประกันภัย',
-        sub: 'สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย (คปภ.)',
-        desc: 'ระบบจะเรียกดูกรมธรรม์ประกันภัยที่คุณถืออยู่ (ประเภทกรมธรรม์, ผู้รับประกัน, ระยะเวลาคุ้มครอง) จาก คปภ. แบบเรียลไทม์',
-        icon: 'policy',
+      utility: {
+        title: 'ข้อมูลค่าน้ำ ค่าไฟ',
+        sub: 'การไฟฟ้า/ประปานครหลวงและส่วนภูมิภาค',
+        desc: 'เชื่อมต่อข้อมูลค่าน้ำ ค่าไฟ จากการไฟฟ้านครหลวง, การไฟฟ้าส่วนภูมิภาค, การประปานครหลวง และการประปาส่วนภูมิภาค',
+        icon: 'bolt',
       },
       ticket: {
         title: 'ข้อมูลใบสั่งจราจร',
         sub: 'สำนักงานตำรวจแห่งชาติ',
-        desc: 'ระบบจะเรียกดูใบสั่งจราจรค้างชำระที่ผูกกับทะเบียนรถของคุณจากสำนักงานตำรวจแห่งชาติ แบบเรียลไทม์',
+        desc: 'เชื่อมต่อข้อมูลค่าปรับ และรายละเอียดใบสั่งจราจร จากสำนักงานตำรวจแห่งชาติ',
         icon: 'receipt_long',
       },
-      utility: {
-        title: 'ค่าน้ำ ค่าไฟ',
-        sub: 'การไฟฟ้า/ประปานครหลวงและส่วนภูมิภาค',
-        desc: 'ระบบจะเรียกดูยอดค่าไฟฟ้าและค่าน้ำประปาที่ต้องชำระจาก MEA, MWA, PEA และ PWA แบบเรียลไทม์',
-        icon: 'bolt',
+      insurance: {
+        title: 'ข้อมูลกรมธรรม์ประกันภัย',
+        sub: 'สำนักงานคณะกรรมการกำกับและส่งเสริมการประกอบธุรกิจประกันภัย (คปภ.)',
+        desc: 'เชื่อมต่อข้อมูลกรมธรรม์ จากสำนักงานคณะกรรมการกำกับและส่งเสริม การประกอบธุรกิจประกันภัย (คปภ.)',
+        icon: 'policy',
+      },
+      welfare: {
+        title: 'สิทธิสวัสดิการแห่งรัฐ',
+        sub: 'กรมบัญชีกลาง กระทรวงการคลัง',
+        desc: 'เชื่อมต่อข้อมูลการเป็นผู้มีสิทธิสวัสดิการแห่งรัฐ จากกรมบัญชีกลาง',
+        icon: 'volunteer_activism',
+      },
+      disability: {
+        title: 'ข้อมูลบัตรคนพิการ',
+        sub: 'กรมส่งเสริมและพัฒนาคุณภาพชีวิตคนพิการ (พก.)',
+        desc: 'เชื่อมต่อข้อมูลสถานะความพิการ และวันหมดอายุ กับจากกรมส่งเสริมคุณภาพชีวิตคนพิการ',
+        icon: 'accessible',
       },
     };
 
@@ -1782,9 +1933,12 @@
         var already = !!consent.tier2[k];
         var row = document.createElement('label');
         row.className = 'consent-modal__perm-item consent-modal__perm-item--checkable';
+        // Everything not already granted starts selected: this modal's entry
+        // point promises granting the remaining datasets "ในครั้งเดียว".
+        // Selection shows as a green border on the card, per the design.
         row.innerHTML =
           '<input type="checkbox" class="consent-modal__checkbox" id="tier2-check-' + k + '"' +
-          (already ? ' checked disabled' : '') + '>' +
+          (already ? ' checked disabled' : ' checked') + '>' +
           '<div class="consent-modal__perm-icon"><span class="material-symbols-outlined">' + info.icon + '</span></div>' +
           '<div>' +
           '<p class="consent-modal__perm-title">' + info.title +
@@ -1849,6 +2003,13 @@
       var grantedCount = Object.keys(TIER2_INFO).filter(function (k) { return consent.tier2[k]; }).length;
       var totalCount = Object.keys(TIER2_INFO).length;
 
+      // The banner sits outside #tier2-section now, so it has to gate on Tier 1
+      // itself — Tier 2 data belongs to the same citizen record as Tier 1.
+      if (!consent.tier1) {
+        banner.style.display = 'none';
+        return;
+      }
+
       if (grantedCount === totalCount) {
         banner.style.display = 'none';
         return;
@@ -1878,13 +2039,14 @@
       list.style.display = anyGranted ? '' : 'none';
     }
 
-    // เรื่องเงินของคุณ has no in-section "consent more" entry point (unlike
-    // #tier2-section), so its heading/note would otherwise show with empty
-    // content. Hide the whole section unless at least one of its own tier2
-    // datasets (the cards inside #money-gate-list) has been granted.
-    function updateMoneySectionVisibility() {
-      var section = document.getElementById('money-section');
-      var list = document.getElementById('money-gate-list');
+    // Neither สิทธิ และสวัสดิการ nor เรื่องเงินของคุณ holds a "consent more"
+    // entry point any more — that panel now sits above บริการที่คุณน่าจะสนใจ —
+    // so either section's heading/note would otherwise show above empty content.
+    // Hide the whole section unless at least one of its own tier2 datasets
+    // (the cards inside its gate list) has been granted.
+    function updateGatedSectionVisibility(sectionId, listId) {
+      var section = document.getElementById(sectionId);
+      var list = document.getElementById(listId);
       if (!section || !list) return;
       var anyGranted = consent.tier1 && Object.keys(TIER2_INFO).some(function (k) {
         return consent.tier2[k] && list.querySelector('.tier2-gate[data-tier2-key="' + k + '"]');
@@ -1895,7 +2057,8 @@
     function updateTier2GateListVisibility() {
       updateGateListVisibility('tier2-gate-list');
       updateGateListVisibility('money-gate-list');
-      updateMoneySectionVisibility();
+      updateGatedSectionVisibility('tier2-section', 'tier2-gate-list');
+      updateGatedSectionVisibility('money-section', 'money-gate-list');
     }
 
     // Demo-only shortcut: wipes consent state instantly (no confirm dialog) for quick re-testing.
@@ -1925,7 +2088,7 @@
         if (locked) locked.style.display = 'none';
         if (tier2Section) tier2Section.style.display = '';
         // moneySection stays hidden until one of its own Tier 2 datasets is
-        // granted — handled by updateMoneySectionVisibility() below.
+        // granted — handled by updateTier2GateListVisibility() below.
       } else {
         if (content) content.style.display = 'none';
         // A guest hasn't logged in at all, so prompting them to consent to
@@ -2068,27 +2231,72 @@
     window.addEventListener('pageshow', bootConsent);
 
     // ─── Demo config ───────────────────────────────────────────────────
-    var DEMO = { weather: 'rain', birthday: true, special: 'wanphra', pm25: 'medium' };
-
-    var PM25_LEVELS = {
-      low: { value: 8, label: 'คุณภาพดีมาก', color: '#4caf50', textColor: '#fff', tip: null },
-      medium: { value: 28, label: 'ปานกลาง', color: '#fbbf24', textColor: '#78350f', tip: null },
-      high: {
-        value: 65, label: 'เริ่มส่งผล', color: '#f97316', textColor: '#fff',
-        tip: 'คุณภาพอากาศอยู่ในระดับที่เริ่มส่งผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร'
-      },
-      veryhigh: {
-        value: 160, label: 'อันตราย', color: '#9c27b0', textColor: '#fff',
-        tip: 'ฝุ่น PM 2.5 อยู่ในระดับอันตราย หลีกเลี่ยงการออกกำลังกายกลางแจ้ง และสวมหน้ากาก N95 ตลอดเวลา'
-      },
+    var DEMO = {
+      weather: 'partly', birthday: true, special: 'newyear', pm25: 'unhealthySensitive',
+      // Per-notice overrides for the สิ่งที่คุณควรรู้ list: 'auto' keeps the
+      // page's own rule (persona / consent driven), true or false forces it.
+      notices: { expired: 'auto', almost: 'auto', transfer: 'auto', ticket: 'auto' },
     };
 
+    // ── Weather chip variants (Figma: Weather component set) ────────────────
+    // `detail` is the third line; the "no data" variant is the only one without it.
+    var WEATHER_DETAIL = 'ความชื้น 66.41% : ฝนตก 6.2 ม.ม.';
+    // The chip renders slightly larger than the Figma frame, so the per-variant
+    // icon sizes below are scaled to match.
+    var WEATHER_ICON_SCALE = 1.1;
+    var WEATHER_TYPES = {
+      clear:      { label: 'ท้องฟ้าแจ่มใส',      temp: 'อุณหภูมิ 39°C - 42°C', bg: '#fdb022', fg: '#003c66', icon: 'w1-clear.svg',         w: 26, h: 26 },
+      partly:     { label: 'มีเมฆบางส่วน',       temp: 'อุณหภูมิ 32°C - 34°C', bg: '#0086c9', fg: '#ffffff', icon: 'w2-partly-cloudy.svg', w: 29, h: 23 },
+      mostly:     { label: 'มีเมฆเป็นส่วนมาก',   temp: 'อุณหภูมิ 32°C - 34°C', bg: '#026aa2', fg: '#ffffff', icon: 'w3-cloudy.svg',        w: 32, h: 20 },
+      overcast:   { label: 'มีเมฆมาก',           temp: 'อุณหภูมิ 32°C - 34°C', bg: '#026aa2', fg: '#ffffff', icon: 'w3-cloudy.svg',        w: 32, h: 20 },
+      rainLight:  { label: 'ฝนตกเล็กน้อย',       temp: 'อุณหภูมิ 20°C - 25°C', bg: '#0b4a6f', fg: '#ffffff', icon: 'w5-rain-light.svg',    w: 24, h: 22, rainy: true },
+      rainMedium: { label: 'ฝนตกเล็กปานกลาง',    temp: 'อุณหภูมิ 20°C - 25°C', bg: '#0b4a6f', fg: '#ffffff', icon: 'w6-rain-medium.svg',   w: 24, h: 22, rainy: true },
+      rainHeavy:  { label: 'ฝนตกหนัก',           temp: 'อุณหภูมิ 20°C - 25°C', bg: '#003c66', fg: '#ffffff', icon: 'w7-rain-heavy.svg',    w: 28, h: 24, rainy: true },
+      thunder:    { label: 'ฝนฟ้าคะนอง',         temp: 'อุณหภูมิ 20°C - 25°C', bg: '#003c66', fg: '#ffffff', icon: 'w8-thunderstorm.svg',  w: 28, h: 23, rainy: true },
+      veryCold:   { label: 'อากาศหนาวจัด',       temp: 'อุณหภูมิ 3°C - 5°C',   bg: '#003c66', fg: '#ffffff', icon: 'w9-very-cold.svg',     w: 23, h: 24, flipY: true },
+      cold:       { label: 'อากาศหนาว',          temp: 'อุณหภูมิ 5°C - 10°C',  bg: '#003c66', fg: '#ffffff', icon: 'w10-cold.svg',         w: 21, h: 24, flipY: true },
+      cool:       { label: 'อากาศเย็น',          temp: 'อุณหภูมิ 16°C - 20°C', bg: '#36bffa', fg: '#ffffff', icon: 'w11-cool.svg',         w: 24, h: 24 },
+      veryHot:    { label: 'อากาศร้อนจัด',       temp: 'อุณหภูมิ 42°C - 45°C', bg: '#d92d20', fg: '#ffffff', icon: 'w12-very-hot.svg',     w: 24, h: 24 },
+      unknown:    { label: 'ไม่พบข้อมูลในพื้นที่', temp: 'อุณหภูมิ: ไม่ระบุ',   bg: '#62676c', fg: '#ffffff', icon: 'w-undefined.svg',      w: 25, h: 13, noDetail: true, noData: true },
+    };
+
+    // ── PM2.5 chip variants (Figma: pm-chip component set) ──────────────────
+    var PM25_LEVELS = {
+      good:               { value: 9,    label: 'อากาศดี',             color: '#a2f061', textColor: '#25272a', icon: 'green.svg',  tip: null },
+      moderate:           { value: 64,   label: 'อากาศดีปานกลาง',      color: '#ffec51', textColor: '#25272a', icon: 'yellow.svg', tip: null },
+      unhealthySensitive: { value: 140,  label: 'เริ่มมีผลต่อสุขภาพ',   color: '#ffb14b', textColor: '#25272a', icon: 'orange.svg', tip: null },
+      unhealthy:          { value: 160,  label: 'มีผลต่อสุขภาพ',       color: '#ff6175', textColor: '#ffffff', icon: 'red.svg',
+        tip: 'คุณภาพอากาศอยู่ในระดับที่มีผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร' },
+      hazardous:          { value: 220,  label: 'อันตรายต่อสุขภาพ',    color: '#b36ebd', textColor: '#ffffff', icon: 'purple.svg',
+        tip: 'ฝุ่น PM 2.5 อยู่ในระดับอันตราย หลีกเลี่ยงการออกกำลังกายกลางแจ้ง และสวมหน้ากาก N95 ตลอดเวลา' },
+      unknown:            { value: null, label: 'ไม่พบข้อมูลในพื้นที่', color: '#62676c', textColor: '#ffffff', icon: 'nodata.svg', tip: null, noStation: true, noData: true },
+    };
+
+    // Nearest air-quality monitoring station shown on the PM2.5 chip.
+    var PM25_STATION = 'ห้องสมุดใต้สะพานสมเด็จพระเจ้าตากสิน (0 กม.)';
+
+    // ── Event bar variants (Figma: event component set) ─────────────────────
     var SPECIAL_LABELS = {
-      wanphra: { icon: 'brightness_5', text: 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส' },
-      visakha: { icon: 'brightness_5', text: 'วันนี้วันวิสาขบูชา วันสำคัญทางพระพุทธศาสนา ธนาคารและหน่วยงานรัฐบางแห่งปิดทำการ' },
-      loykra: { icon: 'auto_awesome', text: 'วันนี้วันลอยกระทง เทศกาลลอยเคราะห์และขอพร' },
-      valentine: { icon: 'favorite', text: 'วันนี้วันวาเลนไทน์ เทศกาลแห่งความรัก' },
-      chalerm: { icon: 'auto_awesome', text: 'วันนี้วันเฉลิมพระชนมพรรษา วันหยุดราชการ หน่วยงานรัฐปิดทำการ' },
+      newyear:        { icon: '✨', label: '1 ม.ค. ปีใหม่',       text: 'สวัสดีปีใหม่! ขอให้ปีนี้เป็นปีที่เต็มไปด้วยความสุข ความสำเร็จ และเรื่องราวดีๆ ในทุกวันนะ' },
+      children:       { icon: '🧸', label: 'วันเด็ก',              text: 'สุขสันต์วันเด็ก! ขอให้เด็กๆ ทุกคนมีความสุข สดใส เติบโตอย่างแข็งแรงและมีความสุขในแบบของตัวเอง' },
+      teacher:        { icon: '📚', label: '16 ม.ค. วันครู',       text: 'สุขสันต์วันครู น้อมระลึกถึงพระคุณครูผู้ให้ความรู้และนำทางชีวิต' },
+      chinesenewyear: { icon: '🧧', label: 'ตรุษจีน',              text: 'ซินเจียยู่อี่ ซินนี้ฮวดไช่! มั่งคั่งร่ำรวย สุขภาพแข็งแรง เฮงๆ ปังๆ ตลอดปีนะ' },
+      valentine:      { icon: '🌹', label: '14 ก.พ. วาเลนไทน์',    text: 'สุขสันต์วันแห่งความรัก! ขอให้วันนี้และทุกๆ วันของคุณเต็มไปด้วยความรักและความอบอุ่นนะ' },
+      songkran:       { icon: '💦', label: '13 เม.ย. สงกรานต์',    text: 'สุขสันต์วันสงกรานต์และวันปีใหม่ไทย! ขอให้เย็นฉ่ำชื่นใจ เดินทางปลอดภัย สนุกกับวันหยุดนะ' },
+      labor:          { icon: '💪', label: '1 พ.ค. วันแรงงาน',     text: 'สุขสันต์วันแรงงาน ขอบคุณในความมุ่งมั่นและตั้งใจทำงาน วันนี้พักผ่อนให้เต็มที่นะ' },
+      env:            { icon: '🌍', label: '5 มิ.ย. สิ่งแวดล้อมโลก', text: 'สุขสันต์วันสิ่งแวดล้อมโลก มาร่วมมือกันรักษ์โลกใบนี้ให้น่าอยู่และเขียวขจีไปด้วยกันนะ' },
+      mother:         { icon: '🤱', label: '12 ส.ค. วันแม่',       text: 'สุขสันต์วันแม่ ขอให้คุณแม่ทุกท่านมีความสุขกาย สบายใจ สุขภาพแข็งแรงในทุกๆ วันนะ' },
+      loykrathong:    { icon: '🪷', label: 'ลอยกระทง',             text: 'สุขสันต์วันลอยกระทง ขอให้สิ่งไม่ดีลอยไปกับสายน้ำ และมีแต่สิ่งดีๆ ไหลเวียนเข้ามาในชีวิตนะ' },
+      father:         { icon: '👔', label: '5 ธ.ค. วันพ่อ',        text: 'สุขสันต์วันพ่อ ขอให้คุณพ่อทุกท่านมีความสุข สุขภาพแข็งแรง เป็นร่มโพธิ์ร่มไทรของครอบครัว' },
+    };
+
+    // ── สิ่งที่คุณควรรู้ notice variants (Figma: alert-card component set).
+    // `id` is the row already in the page; the demo can force each on or off.
+    var NOTICE_TYPES = {
+      expired:  { id: 'notice-passport-expiring', label: '⚠️ หนังสือเดินทางใกล้หมดอายุ' },
+      almost:   { id: 'notice-tax-due',           label: '⏱️ ภาษีรถใกล้ถึงกำหนด' },
+      transfer: { id: 'notice-disability-allowance', label: '💶 เบี้ยความพิการโอนแล้ว' },
+      ticket:   { id: 'notice-ticket-reminder',   label: '🧾 แจ้งเตือนใบสั่ง' },
     };
 
     function demoSet(key, value) {
@@ -2097,17 +2305,94 @@
       renderContextBars();
     }
 
+    // Builds one demo chip. `swatch` paints a small colour dot so the weather
+    // and PM2.5 lists read as the variants they select.
+    function buildDemoChip(id, label, onClick, swatch) {
+      var b = document.createElement('button');
+      b.className = 'dc-chip';
+      b.id = id;
+      b.innerHTML = (swatch
+        ? '<span class="dc-chip__swatch" style="background:' + swatch + '"></span>'
+        : '') + label;
+      b.onclick = onClick;
+      return b;
+    }
+
+    // The demo chip lists are generated from the same tables that drive the
+    // page, so adding a variant to a table surfaces it here automatically.
+    function buildDemoChips() {
+      var wrap = document.getElementById('dc-weather-chips');
+      if (wrap && !wrap.childElementCount) {
+        Object.keys(WEATHER_TYPES).forEach(function (k) {
+          wrap.appendChild(buildDemoChip('chip-weather-' + k, WEATHER_TYPES[k].label,
+            function () { demoSet('weather', k); }, WEATHER_TYPES[k].bg));
+        });
+      }
+
+      wrap = document.getElementById('dc-pm25-chips');
+      if (wrap && !wrap.childElementCount) {
+        Object.keys(PM25_LEVELS).forEach(function (k) {
+          var lv = PM25_LEVELS[k];
+          var label = lv.value === null ? lv.label : lv.label + ' · ' + lv.value;
+          wrap.appendChild(buildDemoChip('chip-pm25-' + k, label,
+            function () { demoSet('pm25', k); }, lv.color));
+        });
+      }
+
+      wrap = document.getElementById('dc-special-chips');
+      if (wrap && !wrap.childElementCount) {
+        wrap.appendChild(buildDemoChip('chip-special-none', 'ไม่มี',
+          function () { demoSet('special', null); }));
+        Object.keys(SPECIAL_LABELS).forEach(function (k) {
+          var sp = SPECIAL_LABELS[k];
+          wrap.appendChild(buildDemoChip('chip-special-' + k, sp.icon + ' ' + sp.label,
+            function () { demoSet('special', k); }));
+        });
+      }
+
+      wrap = document.getElementById('dc-notice-chips');
+      if (wrap && !wrap.childElementCount) {
+        Object.keys(NOTICE_TYPES).forEach(function (k) {
+          wrap.appendChild(buildDemoChip('chip-notice-' + k, NOTICE_TYPES[k].label,
+            function () { demoCycleNotice(k); }));
+        });
+      }
+    }
+
+    var NOTICE_STATE_SUFFIX = { true: ' · แสดง', false: ' · ซ่อน' };
+
     function syncChips() {
-      document.getElementById('chip-weather-hot').classList.toggle('active', DEMO.weather === 'hot');
-      document.getElementById('chip-weather-rain').classList.toggle('active', DEMO.weather === 'rain');
+      buildDemoChips();
+
       Object.keys(PERSONAS).forEach(function (p) {
-        document.getElementById('chip-persona-' + p).classList.toggle('active', currentPersonaKey === p);
+        var el = document.getElementById('chip-persona-' + p);
+        if (el) el.classList.toggle('active', currentPersonaKey === p);
       });
-      ['none', 'wanphra', 'visakha', 'loykra', 'valentine', 'chalerm'].forEach(function (v) {
-        document.getElementById('chip-special-' + v).classList.toggle('active', DEMO.special === (v === 'none' ? null : v));
+
+      Object.keys(WEATHER_TYPES).forEach(function (k) {
+        var el = document.getElementById('chip-weather-' + k);
+        if (el) el.classList.toggle('active', DEMO.weather === k);
       });
-      ['low', 'medium', 'high', 'veryhigh'].forEach(function (v) {
-        document.getElementById('chip-pm25-' + v).classList.toggle('active', DEMO.pm25 === v);
+
+      Object.keys(PM25_LEVELS).forEach(function (k) {
+        var el = document.getElementById('chip-pm25-' + k);
+        if (el) el.classList.toggle('active', DEMO.pm25 === k);
+      });
+
+      var noneEl = document.getElementById('chip-special-none');
+      if (noneEl) noneEl.classList.toggle('active', !DEMO.special);
+      Object.keys(SPECIAL_LABELS).forEach(function (k) {
+        var el = document.getElementById('chip-special-' + k);
+        if (el) el.classList.toggle('active', DEMO.special === k);
+      });
+
+      // Notice chips are tri-state, so the label carries the current setting.
+      Object.keys(NOTICE_TYPES).forEach(function (k) {
+        var el = document.getElementById('chip-notice-' + k);
+        if (!el) return;
+        var state = DEMO.notices[k];
+        el.classList.toggle('active', state !== 'auto');
+        el.textContent = NOTICE_TYPES[k].label + (NOTICE_STATE_SUFFIX[state] || '');
       });
     }
 
@@ -2115,51 +2400,117 @@
       var bdBar = document.getElementById('birthday-bar');
       var wpBar = document.getElementById('wan-phra-bar');
       var wpText = document.getElementById('wan-phra-text');
-      var wpIcon = document.querySelector('#wan-phra-bar .material-symbols-outlined');
+      var wpIcon = document.getElementById('wan-phra-icon');
       var focusIcon = document.getElementById('focus-icon');
       var focusText = document.getElementById('focus-text');
 
       // Birthday bar
       if (bdBar) bdBar.style.display = DEMO.birthday ? 'flex' : 'none';
 
-      // Special day bar
+      // Event / special-day bar
       if (DEMO.special && SPECIAL_LABELS[DEMO.special]) {
-        var s = SPECIAL_LABELS[DEMO.special];
-        if (wpText) wpText.textContent = s.text;
-        if (wpIcon) wpIcon.textContent = s.icon;
+        var sp = SPECIAL_LABELS[DEMO.special];
+        if (wpText) wpText.textContent = sp.text;
+        if (wpIcon) wpIcon.textContent = sp.icon;
         if (wpBar) wpBar.style.display = 'flex';
       } else {
         if (wpBar) wpBar.style.display = 'none';
       }
 
-      // PM2.5 chip update
-      var pmData = PM25_LEVELS[DEMO.pm25] || PM25_LEVELS.medium;
-      var pmValueEl = document.getElementById('pm25-value');
-      var pmBadgeEl = document.getElementById('pm25-badge');
-      var pmChipEl = document.getElementById('pm25-chip');
-      if (pmValueEl) pmValueEl.textContent = pmData.value;
-      if (pmBadgeEl) {
-        pmBadgeEl.textContent = pmData.label;
-        pmBadgeEl.style.background = pmData.color;
-        pmBadgeEl.style.color = pmData.textColor;
+      // Weather chip
+      var wData = WEATHER_TYPES[DEMO.weather] || WEATHER_TYPES.partly;
+      var wChipEl = document.querySelector('.ctx-chip--weather');
+      var wIconEl = document.getElementById('weather-icon');
+      var wDescEl = document.getElementById('weather-desc');
+      var wTempEl = document.getElementById('weather-temp');
+      var wDetailEl = document.getElementById('weather-detail');
+      if (wChipEl) {
+        wChipEl.style.background = wData.bg;
+        wChipEl.style.color = wData.fg;
       }
-      if (pmChipEl) {
-        pmChipEl.style.background = 'rgba(255,255,255,0.15)';
+      if (wIconEl) {
+        wIconEl.src = '_media/weather/' + wData.icon;
+        wIconEl.style.width = Math.round(wData.w * WEATHER_ICON_SCALE) + 'px';
+        wIconEl.style.height = Math.round(wData.h * WEATHER_ICON_SCALE) + 'px';
+        // Two icons are drawn flipped in the design.
+        wIconEl.style.transform = wData.flipY ? 'scaleY(-1)' : '';
+      }
+      if (wDescEl) wDescEl.textContent = wData.label;
+      if (wTempEl) wTempEl.textContent = wData.temp;
+      if (wDetailEl) {
+        wDetailEl.textContent = wData.noDetail ? '' : WEATHER_DETAIL;
+        wDetailEl.style.display = wData.noDetail ? 'none' : '';
       }
 
-      // Weather / air quality tip (PM2.5 warning takes priority when severe)
+      // PM2.5 chip — the chip carries the level's colour, the face icon sits on
+      // top of it unfilled.
+      var pmData = PM25_LEVELS[DEMO.pm25] || PM25_LEVELS.moderate;
+      var pmLabelEl = document.getElementById('pm25-label');
+      var pmValueEl = document.getElementById('pm25-value');
+      var pmStationEl = document.getElementById('pm25-station');
+      var pmChipEl = document.getElementById('pm25-chip');
+      var pmIconEl = document.querySelector('.ctx-chip__icon--pm');
+      if (pmLabelEl) pmLabelEl.textContent = pmData.label;
+      if (pmValueEl) {
+        pmValueEl.textContent = pmData.value === null
+          ? 'PM 2.5: ไม่ระบุ'
+          : 'PM 2.5: ' + pmData.value + ' μg/m³';
+      }
+      if (pmStationEl) {
+        pmStationEl.textContent = pmData.noStation ? '' : PM25_STATION;
+        pmStationEl.style.display = pmData.noStation ? 'none' : '';
+      }
+      if (pmIconEl) pmIconEl.src = '_media/pm/' + pmData.icon;
+      if (pmChipEl) {
+        pmChipEl.style.background = pmData.color;
+        pmChipEl.style.color = pmData.textColor;
+      }
+
+      // Weather / air-quality advice (a severe PM2.5 warning takes priority)
       if (focusIcon && focusText) {
-        if (pmData.tip) {
+        if (wData.noData && pmData.noData) {
+          focusIcon.textContent = 'help';
+          focusText.textContent = 'ยังไม่พบข้อมูลสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ ลองใหม่อีกครั้งภายหลัง';
+        } else if (wData.noData) {
+          focusIcon.textContent = 'help';
+          focusText.textContent = 'ยังไม่พบข้อมูลสภาพอากาศในพื้นที่ของคุณ · PM 2.5 ' + pmData.label;
+        } else if (pmData.noData) {
+          focusIcon.textContent = 'help';
+          focusText.textContent = wData.label + ' · ยังไม่พบข้อมูล PM 2.5 ในพื้นที่ของคุณ';
+        } else if (pmData.tip) {
           focusIcon.textContent = 'masks';
           focusText.textContent = pmData.tip;
-        } else if (DEMO.weather === 'rain') {
+        } else if (wData.rainy) {
           focusIcon.textContent = 'umbrella';
           focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง 65% อย่าลืมพกร่มออกจากบ้านด้วย';
         } else {
-          focusIcon.textContent = 'wb_sunny';
-          focusText.textContent = 'วันนี้อากาศร้อน 34°C อย่าลืมดื่มน้ำบ่อยๆ และหลีกเลี่ยงแดดจัดช่วงบ่าย';
+          focusIcon.textContent = 'info';
+          focusText.textContent = wData.label + ' และ PM 2.5 ' + pmData.label + ' แนะนำสวมหน้ากากเมื่ออยู่กลางแจ้งนานๆ';
         }
       }
+
+      applyNoticeOverrides();
+    }
+
+    // Applies the demo's per-notice show/hide overrides. 'auto' leaves whatever
+    // the page's own persona/consent rules already decided.
+    function applyNoticeOverrides() {
+      Object.keys(NOTICE_TYPES).forEach(function (key) {
+        var override = DEMO.notices[key];
+        if (override === 'auto') return;
+        var el = document.getElementById(NOTICE_TYPES[key].id);
+        if (el) el.style.display = override ? 'flex' : 'none';
+      });
+    }
+
+    // Cycles a notice through auto → on → off.
+    function demoCycleNotice(key) {
+      var order = ['auto', true, false];
+      var idx = order.indexOf(DEMO.notices[key]);
+      DEMO.notices[key] = order[(idx + 1) % order.length];
+      updateProactiveNotices();
+      syncChips();
+      renderContextBars();
     }
 
     function openModal(id) {
@@ -2312,39 +2663,13 @@
 
       // ─── Mock weather data (replace with real API call if key available) ───
       // Simulates Bangkok afternoon conditions
-      const MOCK = {
-        location: 'เขตลาดพร้าว, กรุงเทพมหานคร',
-        temp: 34,
-        desc: 'มีเมฆบางส่วน ร้อน',
-        humidity: 72,
-        wind: 14,
-        icon: 'partly_cloudy_day',
-        pm25: 28.4,
-        rainChance: 65,
-      };
+      const MOCK = { location: 'กรุงเทพมหานคร' };
 
+      // Only the location comes from here — the weather chip's own icon, colour
+      // and text are owned by renderContextBars(), which reads the
+      // demo-configurable WEATHER_TYPES variant.
       function applyWeather(d) {
         document.getElementById('weather-location').textContent = d.location;
-        document.getElementById('weather-temp').textContent = d.temp + '°C';
-        document.getElementById('weather-desc').textContent = d.desc;
-        document.getElementById('weather-humidity').textContent = d.humidity + '%';
-        document.getElementById('weather-wind').textContent = d.wind + ' กม./ชม.';
-        document.getElementById('weather-icon').textContent = d.icon;
-
-        // PM2.5
-        const pm = d.pm25;
-        document.getElementById('pm25-value').textContent = pm.toFixed(0);
-        let pmLabel, pmColor;
-        if (pm <= 12) { pmLabel = 'ดีมาก'; pmColor = '#22c55e'; }
-        else if (pm <= 25) { pmLabel = 'ดี'; pmColor = '#86efac'; }
-        else if (pm <= 37.5) { pmLabel = 'ปานกลาง'; pmColor = '#fbbf24'; }
-        else if (pm <= 50) { pmLabel = 'เริ่มมีผล'; pmColor = '#f97316'; }
-        else { pmLabel = 'มีผลต่อสุขภาพ'; pmColor = '#ef4444'; }
-        const badge = document.getElementById('pm25-badge');
-        badge.textContent = pmLabel;
-        badge.style.background = pmColor;
-        badge.style.color = pm <= 25 ? '#064e3b' : '#fff';
-
       }
 
       // Geolocation disabled — use mock data directly
@@ -2362,37 +2687,55 @@
   <!-- รู้หรือไม่ rotating tips -->
   <script>
     (function () {
-      var TIPS = [
-        {
-          text: 'รู้หรือไม่ คุณสามารถดูข้อมูลเครดิตบูโรได้ฟรี ผ่านแอปทางรัฐ ',
-          label: 'ดูเครดิตบูโร →',
-          miniapp: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-        },
-        {
-          text: 'รู้หรือไม่ ชายไทยที่มีสิทธิหลักประกันสุขภาพแห่งชาติ สามารถเบิกถุงยางอนามัยได้ฟรี ผ่านแอปทางรัฐ ',
-          label: 'ตรวจสอบสิทธิ →',
-          miniapp: '3332774b-8a0f-4907-b3aa-29dbc8779d12',
-        },
-        {
-          text: 'รู้หรือไม่ ค่าน้ำ ค่าไฟที่คุณจ่ายทุกเดือน สามารถใช้เป็นหลักฐานในการขอสินเชื่อได้ ',
-          label: 'ดูข้อมูลเพิ่มเติม →',
-          miniapp: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
-        },
+      // All 15 tip variants from the Figma "tips" component set. Only
+      // TIPS_SHOWN of them are surfaced per page load, picked at random.
+      var TIP_POOL = [
+        { text: 'รู้หรือไม่? คุณสามารถต่ออายุใบอนุญาตขับรถล่วงหน้าได้ 90 วันก่อนหมดอายุ ', miniapp: 'e82f601e-ce10-4d45-a297-51d59722d86a' },
+        { text: 'ไม่ต้องรอให้อายุครบ 60 ปี คุณสามารถลงทะเบียนรับเบี้ยผู้สูงอายุได้ ตั้งแต่เดือน ต.ค. - ก.ย. ของปีก่อน เพื่อให้รับเงิน 600 - 1,000 บาท (ตามช่วงอายุ) ทันที ' },
+        { text: 'บัตรทองไม่ได้มีแค่ถอนหรืออุดฟัน แต่ยังครอบคลุมการขูดหินปูน ผ่าฟันคุด และทำฟันเทียมถอดได้ ช่วยประหยัดค่าใช้จ่ายหลักหมื่นได้มาก ', miniapp: '3332774b-8a0f-4907-b3aa-29dbc8779d12' },
+        { text: 'ตรวจสอบเครดิตบูโรผ่านทางรัฐ นอกจากดูฟรี ได้ทุกที่ทุกเวลาแล้ว ยังสามารถใช้ประกอบการขอสินเชื่อกับ กยศ ได้ด้วย ', miniapp: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' },
+        { text: 'ค่าน้ำ ค่าไฟ สามารถนำไปขอเอกสาร ประกอบการขอสินเชื่อ เพื่อยื่นกู้สินเชื่อต่างๆ กับธนาคารได้ด้วย ', miniapp: 'b2c3d4e5-f6a7-8901-bcde-f12345678901' },
+        { text: 'ฟรีแลนซ์ ค้าขาย หรือยังเรียนอยู่ มาเริ่มต้นสร้างบำนาญง่ายๆ เพียงแค่สมัคร กองทุนการออมแห่งชาติ ' },
+        { text: 'ใบขับขี่ และบัตรคนพิการในทางรัฐ สามารถใช้แสดงตนได้ตามกฎหมายเช่น แสดงให้เจ้าหน้าที่ตำรวจ, ขอรับสิทธิ, เลือกตั้ง เป็นต้น ' },
+        { text: 'สงสัยว่าจะเจอหมอปลอม ลองตรวจสอบใบอนุญาตคุณหมอ และบุคลากรทางการแพทย์ก่อนเข้ารับการรักษาหน่อยไหม ' },
+        { text: 'ช่วงเทศกาลต้องเดินทางไกล ลองเช็คสภาพการจราจรก่อนออกรถ ช่วยให้คุณวางแผนการเดินทางได้ดีขึ้น ' },
+        { text: 'เกิดเหตุ ไม่รู้จะติดต่อใคร ลองเข้าบริการสายด่วนฉุกเฉิน รวมเบอร์ที่คุณต้องรู้ ครบจบในที่เดียว ' },
+        { text: 'จำไม่ได้มีประกันของที่ไหนบ้าง ตรวจสอบกรมธรรม์ของคุณได้ง่ายๆ ครบทุกฉบับผ่าน OIC Connect ' },
+        { text: 'เพราะห่วงใย เลยอยากให้ใส่ถุงยาง ชาย หญิงอายุเกิน 15 ปี ขอรับถุงยางได้ปีละ 520 ชิ้น ผ่านจุดบริการ สปสช. ', miniapp: '3332774b-8a0f-4907-b3aa-29dbc8779d12' },
+        { text: 'เจ็บป่วยเล็กน้อย คุณสามารถเดินเข้าร้านยา และแจ้งอาการเบื้องต้นกับเภสัชกร เพื่อขอรับยาฟรีได้ ' },
+        { text: 'ลูกจ้างลาไปทำหมัน หรือพักฟื้นจากการทำหมัน นายจ้างต้องจ่ายค่าจ้างให้ตามปกติในวันที่ลา โดยไม่นับรวมกับวันลาป่วยหรือลากิจ ' },
+        { text: 'ใบขับขี่ ในทางรัฐ สามารถใช้แสดงตนได้ตามกฎหมายเช่น แสดงให้เจ้าหน้าที่ตำรวจ, ขอรับสิทธิ, เลือกตั้ง เป็นต้น ' },
       ];
 
+      var TIPS_SHOWN = 5;
+      var TIP_LINK_LABEL = 'ดูรายละเอียด';
+
+      var TIPS = [];
       var current = 0;
       var textEl = document.getElementById('dyk-text');
       var linkEl = document.getElementById('dyk-link');
       var dotsEl = document.getElementById('dyk-dots');
       var timer;
 
-      // Build dots
-      TIPS.forEach(function (_, i) {
-        var d = document.createElement('div');
-        d.id = 'dyk-dot-' + i;
-        d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#86efac;transition:background 0.3s,width 0.3s;';
-        dotsEl.appendChild(d);
-      });
+      function pickTips() {
+        var pool = TIP_POOL.slice();
+        // Fisher-Yates, then take the first TIPS_SHOWN
+        for (var i = pool.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+        }
+        return pool.slice(0, Math.min(TIPS_SHOWN, pool.length));
+      }
+
+      function buildDots() {
+        dotsEl.innerHTML = '';
+        TIPS.forEach(function (_, i) {
+          var d = document.createElement('div');
+          d.id = 'dyk-dot-' + i;
+          d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#86efac;transition:background 0.3s,width 0.3s;';
+          dotsEl.appendChild(d);
+        });
+      }
 
       function show(idx, userTriggered) {
         var tip = TIPS[idx];
@@ -2406,9 +2749,9 @@
           textEl.childNodes[0] && textEl.childNodes[0].nodeType === 3
             ? textEl.childNodes[0].textContent = tip.text
             : textEl.insertBefore(document.createTextNode(tip.text), linkEl);
-          linkEl.textContent = tip.label;
+          linkEl.textContent = TIP_LINK_LABEL;
           linkEl.onclick = function () {
-            if (window.czpSdk) window.czpSdk.openMiniApp(tip.miniapp);
+            if (tip.miniapp && window.czpSdk) window.czpSdk.openMiniApp(tip.miniapp);
           };
           card.style.opacity = '1';
         }, 180);
@@ -2416,6 +2759,7 @@
         // dots
         TIPS.forEach(function (_, i) {
           var d = document.getElementById('dyk-dot-' + i);
+          if (!d) return;
           d.style.background = i === idx ? '#16a34a' : '#86efac';
           d.style.width = i === idx ? '16px' : '6px';
         });
@@ -2433,6 +2777,17 @@
 
       window.dykNext = function () { show((current + 1) % TIPS.length, true); };
 
+      // Re-rolls which 5 tips are on show — wired to the demo config modal.
+      window.dykReshuffle = function () {
+        TIPS = pickTips();
+        buildDots();
+        clearInterval(timer);
+        show(0, false);
+        timer = setInterval(advance, 15000);
+      };
+
+      TIPS = pickTips();
+      buildDots();
       show(0, false);
       timer = setInterval(advance, 15000);
     })();

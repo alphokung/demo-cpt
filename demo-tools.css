@@ -101,6 +101,17 @@
   font-weight: 600;
 }
 
+/* colour dot on the weather / PM2.5 chips, showing the variant they select */
+.dc-chip__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  vertical-align: -1px;
+}
+
 /* ── floating demo button ── */
 .demo-fab {
   position: fixed;
