@@ -5274,7 +5274,9 @@ code {
 /* ── Skeleton helpers ── */
 .skeleton-badge-sm { width: 60px; height: 18px; border-radius: var(--radius-sm); }
 .skeleton-icon-md  { width: 44px; height: 44px; border-radius: var(--radius-lg); flex-shrink: 0; }
-.skeleton-body-gap { gap: var(--spacing-sm); margin-left: var(--spacing-md); }
+/* No margin-left here: .list-item already supplies the icon→body gap, so an
+   extra margin would offset the skeleton text from where the loaded text lands. */
+.skeleton-body-gap { gap: var(--spacing-sm); }
 .skeleton-dot-sm   { width: 20px; height: 20px; flex-shrink: 0; }
 
 /* ── Top nav bar ── */

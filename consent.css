@@ -259,6 +259,11 @@
   gap: 8px;
 }
 
+/* Stacked confirm/dismiss buttons always span the modal width. */
+.consent-modal__actions .btn {
+  width: 100%;
+}
+
 /* tier2 consent modal: selectable cards. The design shows selection as a green
    card border rather than a visible checkbox, so the input is kept for keyboard
    and screen-reader use but hidden visually. */

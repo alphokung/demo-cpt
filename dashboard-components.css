@@ -337,6 +337,7 @@
   overflow: hidden;
   cursor: pointer;
   user-select: none;
+  transition: opacity 0.2s;
 }
 
 .dyk-card__deco {
@@ -393,6 +394,25 @@
   justify-content: center;
 }
 
+/* Pagination dots — the active tip's dot stretches into a pill. */
+.dyk-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #86efac;
+  transition: background 0.3s, width 0.3s;
+}
+
+.dyk-card__dot--active {
+  width: 16px;
+  background: #16a34a;
+}
+
+/* Crossfade between tips: the card dims while the copy is swapped out. */
+.dyk-card--fading {
+  opacity: 0.6;
+}
+
 .dyk-card__next-hint {
   font-size: 11px;
   color: #16a34a;
@@ -417,6 +437,56 @@
 
 .dyk-card .skeleton-loading::after {
   background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.15), transparent) !important;
+}
+
+/* The skeleton mirrors the loaded card's shape: a round emoji placeholder, then
+   three tapering text lines where the tip copy goes. */
+.dyk-card__skel-emoji {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: block;
+}
+
+.dyk-card__skel-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dyk-card__skel-line {
+  height: 13px;
+  display: block;
+  border-radius: 4px;
+}
+
+.dyk-card__skel-line--long {
+  width: 90%;
+}
+
+.dyk-card__skel-line--mid {
+  width: 70%;
+}
+
+.dyk-card__skel-line--short {
+  width: 40%;
+}
+
+/* Footer placeholders: the pagination dots and the "tap for next" hint. */
+.dyk-card__skel-dots {
+  height: 8px;
+  width: 48px;
+  display: block;
+  border-radius: 4px;
+}
+
+.dyk-card__skel-hint {
+  height: 10px;
+  width: 80px;
+  display: block;
+  border-radius: 4px;
 }
 
 /* ── list-icon--doc: the single neutral icon treatment the design uses for every
@@ -682,9 +752,34 @@
   margin-top: var(--spacing-lg);
 }
 
+/* ── details-list helpers: value emphasis + divided rows ── */
+/* An entitlement the citizen holds — reads heavier than the plain
+   .details-value so "ได้รับสิทธิ์" stands out from the label above it. */
+.details-value--granted {
+  color: var(--foreground-positive-default);
+  font-weight: 700;
+}
+
+/* The opposite: an entitlement they don't hold, muted rather than emphasised. */
+.details-value--none {
+  color: var(--foreground-neutral-lighter);
+  font-weight: 500;
+}
+
+/* Rows after the first in a multi-entitlement card get a hairline separator. */
+.details-item--divided {
+  border-top: 1px solid var(--stroke-neutral-lighter);
+  padding-top: var(--spacing-md);
+}
+
 /* ── misc layout/visibility helpers ── */
 .loading-wrapper--hidden {
   display: none;
+}
+
+/* Skeletons are placeholders, never targets — nothing inside one is clickable. */
+.skeleton-item {
+  pointer-events: none;
 }
 
 .skeleton-text--no-mb {
