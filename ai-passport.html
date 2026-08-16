@@ -59,6 +59,7 @@
         linear-gradient(180deg, #dde8ff 0%, #e9f1ff 26%, #f2f7ff 60%, #f6faff 100%);
       background-attachment: fixed;
       min-height: 100vh;
+      overflow-x: hidden; /* กันสกอลล์แนวนอนจากมาสคอตที่ลอยพ้นขอบการ์ด */
     }
 
     /* ── ชั้นตกแต่งพื้นหลัง (บกเก้ + ประกาย) ── */
@@ -102,19 +103,10 @@
     }
     .hl-blue { display: block; margin-top: 0.1em; font-size: clamp(40px, 10.5vw, 72px); color: var(--blue); }
 
-    /* โลโก้หน่วยงาน (placeholder — แทนที่ด้วยไฟล์ตราจริงได้) */
-    .gov { display: flex; align-items: center; justify-content: center; gap: 18px; margin: clamp(22px, 5vw, 34px) 0 0; }
-    .gov-badge {
-      width: 62px; height: 62px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; text-align: center; line-height: 1.1;
-      border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); box-shadow: var(--shadow-chip);
-    }
-    .gov-badge.is-dark { background: #0d1526; color: #fff; border-color: #0d1526; }
-
     /* ── การ์ดรายละเอียดการลงทะเบียน (3 คอลัมน์) ── */
     .reg-card {
-      margin: clamp(26px, 6vw, 40px) auto 0;
+      position: relative;
+      margin: clamp(46px, 8vw, 64px) auto 0;
       max-width: 860px;
       padding: clamp(22px, 4.5vw, 34px) clamp(20px, 4vw, 40px);
       background: rgba(255, 255, 255, 0.72);
@@ -123,6 +115,18 @@
       box-shadow: var(--shadow-card);
       backdrop-filter: blur(10px);
     }
+
+    /* มาสคอตลอยข้างการ์ด (มุมขวาบน) */
+    .reg-mascot {
+      position: absolute;
+      top: -62px; right: -10px;
+      width: clamp(104px, 12vw, 152px); height: auto;
+      z-index: 3; pointer-events: none;
+      filter: drop-shadow(0 16px 22px rgba(28, 60, 140, 0.22));
+      animation: mascot-float 4.5s ease-in-out infinite;
+    }
+    @keyframes mascot-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @media (prefers-reduced-motion: reduce) { .reg-mascot { animation: none; } }
     .reg-head {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       margin: 0 0 clamp(18px, 3.5vw, 26px);
@@ -144,14 +148,8 @@
     .reg-label { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.35; }
     .reg-value { margin: 3px 0 0; font-size: clamp(15px, 3vw, 17px); font-weight: 700; color: var(--ink); line-height: 1.3; }
     .reg-sub   { margin: 3px 0 0; font-size: 12.5px; color: var(--muted); }
-    .reg-apps  { display: flex; gap: 8px; margin-top: 8px; }
-    .app-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      height: 26px; padding: 0 10px; border-radius: 7px;
-      font-size: 12px; font-weight: 700; box-shadow: var(--shadow-chip); border: 1px solid var(--line);
-    }
-    .app-thaid    { background: #1b1f4b; color: #fff; border-color: #1b1f4b; letter-spacing: 0.3px; }
-    .app-thangrat { background: #fff; color: #0d8a5a; }
+    .reg-apps  { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .app-logo  { height: 30px; width: auto; display: block; border-radius: 7px; }
 
     /* CTA */
     .cta-wrap { margin: clamp(26px, 6vw, 40px) 0 0; }
@@ -177,32 +175,21 @@
     .model-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; max-width: 760px; margin: 0 auto; }
     .chip {
       display: inline-flex; align-items: center; gap: 9px;
-      padding: 9px 18px 9px 10px; border-radius: var(--radius-pill);
+      padding: 10px 20px; border-radius: var(--radius-pill);
       background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-chip);
       font-size: 15px; font-weight: 600; color: var(--ink); white-space: nowrap;
     }
-    .chip-ico {
-      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.3px;
-      background: var(--c, var(--blue));
-    }
+    /* ชิปโลโก้แบรนด์ (ไอคอน + wordmark อยู่ในไฟล์ SVG เดียว) */
+    .chip-logo { padding: 9px 20px; }
+    .model-logo { height: 22px; width: auto; display: block; }
     .tm { margin: clamp(22px, 5vw, 30px) 0 0; font-size: 13px; color: var(--muted); }
-
-    /* มาสคอต */
-    .mascot {
-      width: clamp(120px, 30vw, 190px); height: auto; display: block; margin: clamp(30px, 7vw, 52px) auto 0;
-      filter: drop-shadow(0 22px 26px rgba(28, 60, 140, 0.22));
-      animation: mascot-float 4.5s ease-in-out infinite;
-    }
-    @keyframes mascot-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    @media (prefers-reduced-motion: reduce) { .mascot { animation: none; } }
 
     /* ── มือถือ: การ์ดวางเป็นแนวตั้ง ── */
     @media (max-width: 720px) {
       .reg-cols { flex-direction: column; gap: 0; }
       .reg-col { padding: 16px 0; }
       .reg-col + .reg-col { border-left: none; border-top: 1px solid var(--line); padding-left: 0; }
+      .reg-mascot { top: -44px; right: 0; width: 82px; }
     }
   </style>
 </head>
@@ -229,15 +216,10 @@
       <span class="hl-blue">ให้คนไทยใช้ฟรี</span>
     </h1>
 
-    <!-- โลโก้หน่วยงาน (placeholder) -->
-    <div class="gov" aria-label="หน่วยงานที่เกี่ยวข้อง">
-      <span class="gov-badge">MDES</span>
-      <span class="gov-badge is-dark">BDE</span>
-    </div>
-
     <!-- การ์ดรายละเอียดการลงทะเบียน -->
     <section class="reg-card">
-      <div class="reg-head">รายละเอียดการลงทะเบียน</div>
+      <img class="reg-mascot" src="_media/aipass-mascot.png" alt="มาสคอต AiPASS">
+      <div class="reg-head">ขั้นตอนการละเอียดการลงทะเบียน</div>
       <div class="reg-cols">
 
         <div class="reg-col">
@@ -248,8 +230,8 @@
             <p class="reg-label">ติดตั้งแอปฯยืนยันตัวตน</p>
             <p class="reg-value">ทางรัฐ หรือ ThaID</p>
             <div class="reg-apps">
-              <span class="app-badge app-thangrat">ทางรัฐ</span>
-              <span class="app-badge app-thaid">ThaID</span>
+              <img class="app-logo" src="_media/gov/tang-rat.png" alt="ทางรัฐ">
+              <img class="app-logo" src="_media/gov/thaid.png" alt="ThaID">
             </div>
           </div>
         </div>
@@ -294,26 +276,23 @@
     <section class="models">
       <h2 class="models-title">Supported Models</h2>
       <div class="model-grid">
-        <span class="chip"><span class="chip-ico" style="--c:#1a6dff">B</span>BytePlus</span>
-        <span class="chip"><span class="chip-ico" style="--c:#10a37f">C</span>ChatGPT</span>
-        <span class="chip"><span class="chip-ico" style="--c:#d97757">C</span>Claude</span>
-        <span class="chip"><span class="chip-ico" style="--c:#4285f4">G</span>Gemini</span>
-        <span class="chip"><span class="chip-ico" style="--c:#20b8cd">P</span>Perplexity</span>
-        <span class="chip"><span class="chip-ico" style="--c:#ff6a00">A</span>Alibaba Cloud</span>
-        <span class="chip"><span class="chip-ico" style="--c:#4d6bfe">D</span>DeepSeek</span>
-        <span class="chip"><span class="chip-ico" style="--c:#0866ff">M</span>Meta AI</span>
-        <span class="chip"><span class="chip-ico" style="--c:#ff5a5f">M</span>MiniMax</span>
-        <span class="chip"><span class="chip-ico" style="--c:#fa520f">M</span>Mistral AI</span>
-        <span class="chip"><span class="chip-ico" style="--c:#1c5cff">P</span>Pathumma ThaiLLM</span>
-        <span class="chip"><span class="chip-ico" style="--c:#16182f">M</span>Moonshot AI</span>
-        <span class="chip"><span class="chip-ico" style="--c:#0b1220">S</span>SpaceXAI</span>
-        <span class="chip"><span class="chip-ico" style="--c:#1c5cff">Z</span>Z.ai</span>
+        <span class="chip chip-logo"><img class="model-logo" src="_media/models/byteplus.svg" alt="BytePlus"></span>
+        <span class="chip chip-logo"><img class="model-logo" src="_media/models/chatgpt.svg" alt="ChatGPT"></span>
+        <span class="chip chip-logo"><img class="model-logo" src="_media/models/claude.svg" alt="Claude"></span>
+        <span class="chip chip-logo"><img class="model-logo" src="_media/models/gemini.svg" alt="Gemini"></span>
+        <span class="chip chip-logo"><img class="model-logo" src="_media/models/perplexity.svg" alt="Perplexity"></span>
+        <span class="chip">Alibaba Cloud</span>
+        <span class="chip">DeepSeek</span>
+        <span class="chip">Meta AI</span>
+        <span class="chip">MiniMax</span>
+        <span class="chip">Mistral AI</span>
+        <span class="chip">Pathumma ThaiLLM</span>
+        <span class="chip">Moonshot AI</span>
+        <span class="chip">SpaceXAI</span>
+        <span class="chip">Z.ai</span>
       </div>
       <p class="tm">All Trademarks Are Property Of Their Respective Owners.</p>
     </section>
-
-    <!-- มาสคอต -->
-    <img class="mascot" src="_media/aipass-mascot.png" alt="มาสคอต AiPASS" loading="lazy">
 
   </main>
 </body>
