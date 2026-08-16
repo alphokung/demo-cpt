@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Passport — ใครได้สิทธิ์บ้าง?</title>
-  <meta name="description" content="AI Passport เปิดให้ประชาชนไทยทุกคนอายุ 15 ปีขึ้นไป ลงทะเบียนรับสิทธิ์ใช้งาน AI ฟรี 1 ปี ตั้งเป้า 5,000,000 สิทธิ์">
+  <title>AiPASS TH — รวม AI PRO ให้คนไทยใช้ฟรี</title>
+  <meta name="description" content="AiPASS TH รวม AI PRO ชั้นนำให้คนไทยใช้ฟรี ยืนยันตัวตนด้วย ThaID หรือ ทางรัฐ">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="AI Passport — ใครได้สิทธิ์บ้าง?">
-  <meta property="og:description" content="เปิดให้ประชาชนไทยทุกคนอายุ 15 ปีขึ้นไป ลงทะเบียนรับสิทธิ์ใช้งาน AI ฟรี เป็นระยะเวลา 1 ปี">
+  <meta property="og:title" content="AiPASS TH — รวม AI PRO ให้คนไทยใช้ฟรี">
+  <meta property="og:description" content="รวม AI PRO ชั้นนำให้คนไทยใช้ฟรี ยืนยันตัวตนด้วย ThaID หรือ ทางรัฐ">
   <meta property="og:image" content="_media/og-image.png">
   <meta property="twitter:card" content="summary_large_image">
 
@@ -19,29 +19,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100;200;300;400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 
   <style>
     /* ─────────────────────────────────────────────
-       AiPASS TH — standalone brand theme
-       (ไม่ใช้ styles.css ของ "ทางรัฐ" เพราะคนละแบรนด์)
+       AiPASS TH — light theme (อ้างอิง de.aipass.net)
        ───────────────────────────────────────────── */
     :root {
-      --aip-blue:        #1a53ff;
-      --aip-blue-deep:   #0a2fd6;
-      --aip-blue-glow:   #4d7dff;
-      --aip-ink:         #0b1220;
-      --aip-ink-soft:    #4a5568;
-      --aip-ink-faint:   #8b95a5;
-      --aip-line:        #e6eaf2;
-      --aip-surface:     #ffffff;
-      --aip-canvas:      #f3f5fa;
+      --blue:        #1c5cff;
+      --blue-strong: #1650e6;
+      --blue-glow:   #4d84ff;
 
-      --aip-radius-xl:   28px;
-      --aip-radius-pill: 999px;
+      --ink:         #0d1526;
+      --ink-soft:    #3d4658;
+      --muted:       #8a93a6;
 
-      --aip-shadow-card: 0 8px 32px rgba(11, 18, 32, 0.10);
-      --aip-shadow-cta:  0 8px 20px rgba(26, 83, 255, 0.35);
+      --line:        #e4eaf3;
+      --surface:     #ffffff;
+
+      --radius-xl:   26px;
+      --radius-pill: 999px;
+
+      --shadow-card: 0 14px 40px rgba(28, 60, 140, 0.10);
+      --shadow-chip: 0 4px 12px rgba(28, 60, 140, 0.06);
+      --shadow-cta:  0 10px 24px rgba(28, 92, 255, 0.32);
     }
 
     * { box-sizing: border-box; }
@@ -49,372 +49,272 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: var(--aip-canvas);
       font-family: "Anuphan", -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--aip-ink);
+      color: var(--ink);
       -webkit-font-smoothing: antialiased;
-    }
-
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      line-height: 1;
-    }
-
-    /* เต็มความกว้างเสมอ — ความกว้างเนื้อหาคุมที่ .card / .section แทน
-       (ถ้าจำกัดความกว้างตรงนี้ จะเกิดขอบพื้นหลังขนาบข้างช่วงจอ 430–768px) */
-    .phone {
-      margin: 0 auto;
+      background:
+        radial-gradient(1200px 620px at 50% -8%, #ffffff 0%, rgba(255,255,255,0) 58%),
+        radial-gradient(760px 520px at 12% 34%, rgba(150,185,255,0.30), rgba(150,185,255,0) 62%),
+        radial-gradient(820px 520px at 88% 52%, rgba(175,200,255,0.28), rgba(175,200,255,0) 62%),
+        linear-gradient(180deg, #dde8ff 0%, #e9f1ff 26%, #f2f7ff 60%, #f6faff 100%);
+      background-attachment: fixed;
       min-height: 100vh;
-      background: var(--aip-canvas);
-      position: relative;
-      overflow-x: hidden;
     }
 
-    /* ── HERO: พื้นน้ำเงิน + มาสคอต ──
-       ระยะห่างผูกกับความสูงจอ (vh) เพื่อให้ทั้งหน้าจบใน 1 viewport ไม่ต้องเลื่อน */
-    .hero {
-      position: relative;
-      background: radial-gradient(120% 90% at 50% 8%, var(--aip-blue-glow) 0%, var(--aip-blue) 45%, var(--aip-blue-deep) 100%);
-      padding: clamp(10px, 2.2vh, 28px) 20px clamp(48px, 9vh, 78px);
+    /* ── ชั้นตกแต่งพื้นหลัง (บกเก้ + ประกาย) ── */
+    .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(6px);
+      background: radial-gradient(circle at 35% 35%, rgba(120,165,255,0.55), rgba(120,165,255,0) 70%);
+    }
+    .orb-1 { width: 120px; height: 120px; top: 42%; left: 6%; }
+    .orb-2 { width: 150px; height: 150px; top: 55%; right: 7%; }
+    .orb-3 { width: 70px;  height: 70px;  top: 24%; right: 20%; opacity: 0.7; }
+    .spark { position: absolute; color: #fff; filter: drop-shadow(0 0 8px rgba(190,215,255,0.9)); }
+    .spark svg { display: block; }
+    .spark-1 { top: 10%; left: 11%;  width: 46px; }
+    .spark-2 { top: 30%; right: 9%;  width: 60px; }
+    .spark-3 { top: 5%;  right: 24%; width: 30px; opacity: 0.85; }
+    .spark-4 { top: 20%; left: 4%;   width: 26px; opacity: 0.8; }
+
+    /* ── โครงเนื้อหา ── */
+    .page {
+      position: relative; z-index: 1;
+      max-width: 940px; margin: 0 auto;
+      padding: clamp(36px, 7vw, 72px) 22px clamp(40px, 6vw, 64px);
       text-align: center;
-      overflow: hidden;
-    }
-    /* เส้นวงโคจรบาง ๆ รอบมาสคอต */
-    .hero::before,
-    .hero::after {
-      content: "";
-      position: absolute;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .hero::before {
-      width: 320px; height: 320px;
-      top: 10px; left: 50%;
-      transform: translateX(-50%) rotate(-18deg);
-    }
-    .hero::after {
-      width: 430px; height: 430px;
-      top: -40px; left: 50%;
-      transform: translateX(-50%) rotate(12deg);
-      border-color: rgba(255, 255, 255, 0.12);
     }
 
-    .hero-badge {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: var(--aip-radius-pill);
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      backdrop-filter: blur(6px);
-    }
-    .hero-badge .material-symbols-outlined { font-size: 16px; }
+    /* โลโก้ */
+    .brand-logo { width: clamp(190px, 44vw, 280px); height: auto; display: block; margin: 0 auto; }
 
-    /* มาสคอต (SVG inline — ไม่มีไฟล์ภาพในโปรเจกต์)
-       ย่อ/ขยายตามความสูงจอ height:auto คำนวณจาก viewBox (สี่เหลี่ยมจัตุรัส) */
+    /* พาดหัว */
+    .headline { margin: clamp(20px, 5vw, 40px) 0 0; line-height: 1.12; font-weight: 800; letter-spacing: -0.5px; }
+    .hl-top {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.32em;
+      font-size: clamp(34px, 8.5vw, 58px); color: var(--ink);
+    }
+    .pro {
+      font-size: 0.52em; font-weight: 800; letter-spacing: 0.5px; color: #fff;
+      padding: 0.28em 0.7em; border-radius: var(--radius-pill);
+      background: linear-gradient(180deg, #3b7bff 0%, var(--blue) 55%, var(--blue-strong) 100%);
+      box-shadow: 0 8px 18px rgba(28, 92, 255, 0.35); transform: translateY(-0.06em);
+    }
+    .hl-blue { display: block; margin-top: 0.1em; font-size: clamp(40px, 10.5vw, 72px); color: var(--blue); }
+
+    /* โลโก้หน่วยงาน (placeholder — แทนที่ด้วยไฟล์ตราจริงได้) */
+    .gov { display: flex; align-items: center; justify-content: center; gap: 18px; margin: clamp(22px, 5vw, 34px) 0 0; }
+    .gov-badge {
+      width: 62px; height: 62px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; text-align: center; line-height: 1.1;
+      border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); box-shadow: var(--shadow-chip);
+    }
+    .gov-badge.is-dark { background: #0d1526; color: #fff; border-color: #0d1526; }
+
+    /* ── การ์ดรายละเอียดการลงทะเบียน (3 คอลัมน์) ── */
+    .reg-card {
+      margin: clamp(26px, 6vw, 40px) auto 0;
+      max-width: 860px;
+      padding: clamp(22px, 4.5vw, 34px) clamp(20px, 4vw, 40px);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(10px);
+    }
+    .reg-head {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin: 0 0 clamp(18px, 3.5vw, 26px);
+      font-size: clamp(17px, 3.6vw, 20px); font-weight: 700; color: var(--ink);
+    }
+    .reg-head::before, .reg-head::after { content: "✦"; color: var(--blue); font-size: 0.9em; }
+
+    .reg-cols { display: flex; align-items: stretch; gap: clamp(14px, 3vw, 26px); }
+    .reg-col {
+      flex: 1; display: flex; align-items: flex-start; gap: 14px; text-align: left;
+    }
+    .reg-col + .reg-col { border-left: 1px solid var(--line); padding-left: clamp(14px, 3vw, 26px); }
+    .reg-ico {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
+      background: rgba(28, 92, 255, 0.10); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .reg-ico svg { width: 22px; height: 22px; }
+    .reg-label { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.35; }
+    .reg-value { margin: 3px 0 0; font-size: clamp(15px, 3vw, 17px); font-weight: 700; color: var(--ink); line-height: 1.3; }
+    .reg-sub   { margin: 3px 0 0; font-size: 12.5px; color: var(--muted); }
+    .reg-apps  { display: flex; gap: 8px; margin-top: 8px; }
+    .app-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 26px; padding: 0 10px; border-radius: 7px;
+      font-size: 12px; font-weight: 700; box-shadow: var(--shadow-chip); border: 1px solid var(--line);
+    }
+    .app-thaid    { background: #1b1f4b; color: #fff; border-color: #1b1f4b; letter-spacing: 0.3px; }
+    .app-thangrat { background: #fff; color: #0d8a5a; }
+
+    /* CTA */
+    .cta-wrap { margin: clamp(26px, 6vw, 40px) 0 0; }
+    .cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-width: 300px; padding: 16px 34px; border: none; border-radius: var(--radius-pill);
+      background: linear-gradient(180deg, #3b7bff 0%, var(--blue) 60%, var(--blue-strong) 100%);
+      color: #fff; text-decoration: none; font-family: inherit; font-size: 18px; font-weight: 700;
+      cursor: pointer; box-shadow: var(--shadow-cta); transition: transform 0.12s ease, filter 0.15s ease;
+    }
+    .cta:hover  { filter: brightness(1.05); }
+    .cta:active { transform: scale(0.98); }
+    .cta:focus-visible { outline: 3px solid var(--blue-glow); outline-offset: 3px; }
+    .cta svg { width: 20px; height: 20px; }
+    .cta-hint { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+
+    /* ── ผู้ให้บริการโมเดล AI ── */
+    .models { margin: clamp(40px, 8vw, 64px) 0 0; }
+    .models-title {
+      margin: 0 0 clamp(18px, 4vw, 26px);
+      font-size: 15px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue);
+    }
+    .model-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; max-width: 760px; margin: 0 auto; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 9px 18px 9px 10px; border-radius: var(--radius-pill);
+      background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-chip);
+      font-size: 15px; font-weight: 600; color: var(--ink); white-space: nowrap;
+    }
+    .chip-ico {
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.3px;
+      background: var(--c, var(--blue));
+    }
+    .tm { margin: clamp(22px, 5vw, 30px) 0 0; font-size: 13px; color: var(--muted); }
+
+    /* มาสคอต */
     .mascot {
-      position: relative;
-      width: clamp(96px, 17vh, 160px);
-      height: auto;
-      margin: clamp(6px, 1.2vh, 14px) auto 0;
-      display: block;
-      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
+      width: clamp(120px, 30vw, 190px); height: auto; display: block; margin: clamp(30px, 7vw, 52px) auto 0;
+      filter: drop-shadow(0 22px 26px rgba(28, 60, 140, 0.22));
       animation: mascot-float 4.5s ease-in-out infinite;
     }
-    @keyframes mascot-float {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .mascot { animation: none; }
-    }
+    @keyframes mascot-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @media (prefers-reduced-motion: reduce) { .mascot { animation: none; } }
 
-    /* ── การ์ดขาวซ้อนขึ้นมาทับ hero ── */
-    .card {
-      position: relative;
-      margin: -64px 16px 0;
-      padding: clamp(18px, 3vh, 28px) 22px clamp(16px, 2.5vh, 26px);
-      background: var(--aip-surface);
-      border-radius: var(--aip-radius-xl);
-      box-shadow: var(--aip-shadow-card);
-      text-align: center;
-    }
-
-    /* โลโก้ AiPASS TH */
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .logo-spark { width: 26px; height: 26px; flex-shrink: 0; }
-    .logo-word {
-      font-size: 38px;
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      color: var(--aip-ink);
-      line-height: 1;
-    }
-    .logo-th {
-      width: 30px; height: 30px;
-      border: 2px solid var(--aip-ink);
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0;
-      flex-shrink: 0;
-    }
-
-    .headline {
-      margin: clamp(10px, 2vh, 20px) 0 8px;
-      font-size: 23px;
-      font-weight: 700;
-      line-height: 1.35;
-      color: var(--aip-ink);
-    }
-    .headline em {
-      font-style: normal;
-      color: var(--aip-blue);
-    }
-    .subhead {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--aip-ink-soft);
-    }
-
-    /* แถบตัวเลข */
-    .stats {
-      display: flex;
-      margin: clamp(12px, 2.2vh, 22px) 0 0;
-      padding: clamp(10px, 1.6vh, 14px) 0;
-      border-top: 1px solid var(--aip-line);
-      border-bottom: 1px solid var(--aip-line);
-    }
-    .stat { flex: 1; }
-    .stat + .stat { border-left: 1px solid var(--aip-line); }
-    .stat-num {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--aip-blue);
-      line-height: 1.2;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: var(--aip-ink-faint);
-      margin-top: 2px;
-    }
-
-    /* ── CTA ── */
-    .cta-wrap {
-      padding: clamp(16px, 3vh, 28px) 22px clamp(12px, 2vh, 20px);
-      text-align: center;
-    }
-    .cta {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 16px 20px;
-      border: none;
-      border-radius: var(--aip-radius-pill);
-      background: var(--aip-blue);
-      color: #fff;
-      text-decoration: none;
-      font-family: inherit;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--aip-shadow-cta);
-      transition: transform 0.12s ease, background 0.15s ease;
-    }
-    .cta:hover  { background: var(--aip-blue-deep); }
-    .cta:active { transform: scale(0.98); }
-    .cta:focus-visible {
-      outline: 3px solid var(--aip-blue-glow);
-      outline-offset: 3px;
-    }
-    .cta .material-symbols-outlined { font-size: 20px; }
-    .cta-hint {
-      margin: 10px 0 0;
-      font-size: 12.5px;
-      color: var(--aip-ink-faint);
-    }
-    /* ─────────────────────────────────────────────
-       TABLET — ตั้งแต่ 768px ขึ้นไป
-       ───────────────────────────────────────────── */
-    @media (min-width: 768px) {
-      .hero { padding: clamp(14px, 2.8vh, 38px) 32px clamp(60px, 10vh, 100px); }
-      .hero::before { width: 420px; height: 420px; top: 24px; }
-      .hero::after  { width: 560px; height: 560px; top: -40px; }
-
-      .hero-badge { font-size: 14px; padding: 8px 16px; }
-      .mascot { width: clamp(115px, 19vh, 195px); }
-
-      .card {
-        max-width: 620px;
-        margin: -88px auto 0;
-        padding: clamp(22px, 4vh, 38px) 40px clamp(20px, 3vh, 32px);
-      }
-      .logo-word { font-size: 46px; }
-      .logo-th { width: 34px; height: 34px; font-size: 13px; }
-      .logo-spark { width: 30px; height: 30px; }
-
-      .headline { font-size: 30px; margin-top: clamp(12px, 2.4vh, 24px); }
-      .subhead  { font-size: 16px; }
-      .stat-num { font-size: 24px; }
-      .stat-label { font-size: 13px; }
-
-      /* ปุ่มไม่ต้องเต็มความกว้างบนจอใหญ่ — fit-content เพราะ .cta เป็น <a> */
-      .cta-wrap { padding: clamp(20px, 4vh, 40px) 32px clamp(14px, 2.4vh, 24px); }
-      .cta {
-        width: fit-content;
-        min-width: 320px;
-        margin: 0 auto;
-        font-size: 18px;
-        padding: 17px 40px;
-      }
-      .cta-hint { font-size: 13px; }
-    }
-
-    /* ─────────────────────────────────────────────
-       DESKTOP — ตั้งแต่ 1024px ขึ้นไป
-       ───────────────────────────────────────────── */
-    @media (min-width: 1024px) {
-      .hero { padding: clamp(18px, 3.2vh, 48px) 40px clamp(68px, 10.5vh, 116px); }
-      .hero::before { width: 520px; height: 520px; top: 30px; }
-      .hero::after  { width: 700px; height: 700px; top: -60px; }
-      .mascot { width: clamp(125px, 18vh, 215px); }
-
-      .card {
-        max-width: 720px;
-        margin: -100px auto 0;
-        padding: clamp(24px, 4.5vh, 44px) 56px clamp(22px, 3.5vh, 36px);
-      }
-      /* ตัวอักษรย่อตามความสูงจอด้วย เพื่อให้จอเตี้ย (เช่น 1280×720) ยังจบในหน้าเดียว */
-      .logo-word { font-size: clamp(38px, 6vh, 54px); }
-      .logo-th {
-        width: clamp(30px, 4.2vh, 38px);
-        height: clamp(30px, 4.2vh, 38px);
-        font-size: 14px;
-      }
-
-      .headline { font-size: clamp(25px, 4vh, 36px); }
-      .subhead  { font-size: clamp(14px, 1.9vh, 17px); }
-      .stats { margin-top: clamp(14px, 2.8vh, 28px); padding: clamp(12px, 1.8vh, 18px) 0; }
-      .stat-num { font-size: clamp(21px, 3.1vh, 28px); }
-    }
-
-    /* จอกว้างมาก — กันไม่ให้ hero สูงเกินจำเป็น */
-    @media (min-width: 1440px) {
-      .hero { padding: clamp(20px, 3.2vh, 52px) 40px clamp(70px, 10.5vh, 120px); }
+    /* ── มือถือ: การ์ดวางเป็นแนวตั้ง ── */
+    @media (max-width: 720px) {
+      .reg-cols { flex-direction: column; gap: 0; }
+      .reg-col { padding: 16px 0; }
+      .reg-col + .reg-col { border-left: none; border-top: 1px solid var(--line); padding-left: 0; }
     }
   </style>
 </head>
 <body>
-  <main class="phone">
+  <!-- ชั้นตกแต่งพื้นหลัง -->
+  <div class="bg" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+    <span class="spark spark-1"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7, 17 11, 24 12 C17 13, 13 17, 12 24 C11 17, 7 13, 0 12 C7 11, 11 7, 12 0 Z" fill="currentColor"/></svg></span>
+    <span class="spark spark-2"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7, 17 11, 24 12 C17 13, 13 17, 12 24 C11 17, 7 13, 0 12 C7 11, 11 7, 12 0 Z" fill="currentColor"/></svg></span>
+    <span class="spark spark-3"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7, 17 11, 24 12 C17 13, 13 17, 12 24 C11 17, 7 13, 0 12 C7 11, 11 7, 12 0 Z" fill="currentColor"/></svg></span>
+    <span class="spark spark-4"><svg viewBox="0 0 24 24"><path d="M12 0 C13 7, 17 11, 24 12 C17 13, 13 17, 12 24 C11 17, 7 13, 0 12 C7 11, 11 7, 12 0 Z" fill="currentColor"/></svg></span>
+  </div>
 
-    <!-- ══ HERO ══ -->
-    <header class="hero">
-      <span class="hero-badge">
-        <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
-        เปิดให้ใช้งานแล้ววันนี้
-      </span>
+  <main class="page">
 
-      <!-- มาสคอต AiPASS -->
-      <svg class="mascot" viewBox="0 0 200 200" role="img" aria-label="มาสคอต AiPASS หุ่นยนต์สีขาว">
-        <defs>
-          <linearGradient id="body-grad" x1="30%" y1="0%" x2="80%" y2="100%">
-            <stop offset="0%"  stop-color="#ffffff"/>
-            <stop offset="60%" stop-color="#f2f6ff"/>
-            <stop offset="100%" stop-color="#d8e3ff"/>
-          </linearGradient>
-          <linearGradient id="fin-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"  stop-color="#ffffff"/>
-            <stop offset="100%" stop-color="#cfdcff"/>
-          </linearGradient>
-        </defs>
+    <!-- โลโก้ -->
+    <img class="brand-logo" src="_media/aipass-logo.svg" alt="AiPASS TH">
 
-        <!-- ครีบข้าง -->
-        <path d="M42 108 C18 100, 8 118, 22 132 C34 144, 52 136, 56 122 Z" fill="url(#fin-grad)" opacity="0.95"/>
-        <path d="M158 108 C182 100, 192 118, 178 132 C166 144, 148 136, 144 122 Z" fill="url(#fin-grad)" opacity="0.95"/>
+    <!-- พาดหัว -->
+    <h1 class="headline">
+      <span class="hl-top">รวม AI <span class="pro">PRO</span></span>
+      <span class="hl-blue">ให้คนไทยใช้ฟรี</span>
+    </h1>
 
-        <!-- ลำตัว -->
-        <ellipse cx="100" cy="118" rx="46" ry="40" fill="url(#body-grad)"/>
+    <!-- โลโก้หน่วยงาน (placeholder) -->
+    <div class="gov" aria-label="หน่วยงานที่เกี่ยวข้อง">
+      <span class="gov-badge">MDES</span>
+      <span class="gov-badge is-dark">BDE</span>
+    </div>
 
-        <!-- หัว -->
-        <circle cx="100" cy="76" r="52" fill="url(#body-grad)"/>
+    <!-- การ์ดรายละเอียดการลงทะเบียน -->
+    <section class="reg-card">
+      <div class="reg-head">รายละเอียดการลงทะเบียน</div>
+      <div class="reg-cols">
 
-        <!-- ตา -->
-        <ellipse cx="82" cy="76" rx="9.5" ry="12" fill="#0b1220"/>
-        <ellipse cx="118" cy="76" rx="9.5" ry="12" fill="#0b1220"/>
-        <circle cx="85" cy="71" r="3.2" fill="#ffffff"/>
-        <circle cx="121" cy="71" r="3.2" fill="#ffffff"/>
-
-        <!-- ไฟสถานะกลางอก -->
-        <circle cx="100" cy="122" r="5" fill="#1a53ff" opacity="0.85"/>
-        <circle cx="100" cy="122" r="9" fill="none" stroke="#1a53ff" stroke-width="1.5" opacity="0.35"/>
-
-        <!-- เสาอากาศ -->
-        <line x1="100" y1="26" x2="100" y2="14" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
-        <circle cx="100" cy="11" r="4.5" fill="#ffffff"/>
-      </svg>
-    </header>
-
-    <!-- ══ การ์ดหลัก ══ -->
-    <section class="card">
-      <div class="logo">
-        <svg class="logo-spark" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 2 L11 8 L17 10 L11 12 L9 18 L7 12 L1 10 L7 8 Z" fill="#1a53ff"/>
-          <circle cx="19" cy="5" r="3" fill="#4d7dff"/>
-        </svg>
-        <span class="logo-word">AiPASS</span>
-        <span class="logo-th">TH</span>
-      </div>
-
-      <h1 class="headline">AI Passport<br><em>ใครได้สิทธิ์บ้าง?</em></h1>
-      <p class="subhead">เปิดให้ประชาชนไทยทุกคนที่มีอายุ 15 ปีขึ้นไป<br>ลงทะเบียนรับสิทธิ์ใช้งาน AI ฟรี เป็นระยะเวลา 1 ปี</p>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-num">15+</div>
-          <div class="stat-label">อายุขั้นต่ำ (ปี)</div>
+        <div class="reg-col">
+          <span class="reg-ico">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <p class="reg-label">ติดตั้งแอปฯยืนยันตัวตน</p>
+            <p class="reg-value">ทางรัฐ หรือ ThaID</p>
+            <div class="reg-apps">
+              <span class="app-badge app-thangrat">ทางรัฐ</span>
+              <span class="app-badge app-thaid">ThaID</span>
+            </div>
+          </div>
         </div>
-        <div class="stat">
-          <div class="stat-num">5 ล้าน</div>
-          <div class="stat-label">สิทธิ์ที่ตั้งเป้า</div>
+
+        <div class="reg-col">
+          <span class="reg-ico">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <div>
+            <p class="reg-label">บัญชีอีเมลที่ใช้งานได้จริง</p>
+            <p class="reg-value">Google, Microsoft หรือ Apple</p>
+            <p class="reg-sub">เพื่อลงทะเบียน และเข้าสู่ระบบ</p>
+          </div>
         </div>
-        <div class="stat">
-          <div class="stat-num">1 ปี</div>
-          <div class="stat-label">ใช้งานฟรี</div>
+
+        <div class="reg-col">
+          <span class="reg-ico">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8.5" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17.5 14.3c2.3.5 4 2.4 4 4.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <p class="reg-label">จำนวนสิทธิ์การลงทะเบียน</p>
+            <p class="reg-value">5,000,000 สิทธิ์</p>
+          </div>
         </div>
+
       </div>
     </section>
 
-
- 
-
-    <!-- ══ CTA — เปิดเบราว์เซอร์ภายนอก ══ -->
+    <!-- CTA — เปิดเบราว์เซอร์ภายนอก -->
     <div class="cta-wrap">
-      <a class="cta" href="https://uat.ai-passport.humanintelligence.co.th/sign-in" target="_blank" rel="noopener noreferrer">
-        <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
-        ลงทะเบียนรับสิทธิ์ AI Passport
+      <a class="cta" href="https://de.aipass.net/sign-in" target="_blank" rel="noopener noreferrer">
+        เริ่มใช้งาน AiPASS
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14 4h6v6M20 4l-9 9M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </a>
       <p class="cta-hint">ระบบจะเปิดเบราว์เซอร์ภายนอกเพื่อดำเนินการต่อ</p>
     </div>
 
-  </main>
+    <!-- ผู้ให้บริการโมเดล AI -->
+    <section class="models">
+      <h2 class="models-title">Supported Models</h2>
+      <div class="model-grid">
+        <span class="chip"><span class="chip-ico" style="--c:#1a6dff">B</span>BytePlus</span>
+        <span class="chip"><span class="chip-ico" style="--c:#10a37f">C</span>ChatGPT</span>
+        <span class="chip"><span class="chip-ico" style="--c:#d97757">C</span>Claude</span>
+        <span class="chip"><span class="chip-ico" style="--c:#4285f4">G</span>Gemini</span>
+        <span class="chip"><span class="chip-ico" style="--c:#20b8cd">P</span>Perplexity</span>
+        <span class="chip"><span class="chip-ico" style="--c:#ff6a00">A</span>Alibaba Cloud</span>
+        <span class="chip"><span class="chip-ico" style="--c:#4d6bfe">D</span>DeepSeek</span>
+        <span class="chip"><span class="chip-ico" style="--c:#0866ff">M</span>Meta AI</span>
+        <span class="chip"><span class="chip-ico" style="--c:#ff5a5f">M</span>MiniMax</span>
+        <span class="chip"><span class="chip-ico" style="--c:#fa520f">M</span>Mistral AI</span>
+        <span class="chip"><span class="chip-ico" style="--c:#1c5cff">P</span>Pathumma ThaiLLM</span>
+        <span class="chip"><span class="chip-ico" style="--c:#16182f">M</span>Moonshot AI</span>
+        <span class="chip"><span class="chip-ico" style="--c:#0b1220">S</span>SpaceXAI</span>
+        <span class="chip"><span class="chip-ico" style="--c:#1c5cff">Z</span>Z.ai</span>
+      </div>
+      <p class="tm">All Trademarks Are Property Of Their Respective Owners.</p>
+    </section>
 
-  
+    <!-- มาสคอต -->
+    <img class="mascot" src="_media/aipass-mascot.png" alt="มาสคอต AiPASS" loading="lazy">
+
+  </main>
 </body>
 </html>
