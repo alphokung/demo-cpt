@@ -6,8 +6,6 @@
 /* ─── Tag with icon ─── */
 .tag .material-symbols-outlined { font-size: 14px; margin-right: 2px; vertical-align: -2px; }
 
-/* ─── Menu: 4-col variant ─── */
-@media (min-width: 1024px) { .hp-menu.cp-menu--4 { grid-template-columns: repeat(4, 1fr); } }
 
 /* ─── Hotline strip ─── */
 .cp-hotlines { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }

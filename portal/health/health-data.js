@@ -459,35 +459,32 @@ window.HEALTH = {
   services: [
     {
       id: 'dms-tele',
+      category: 'ปรึกษาแพทย์ทางไกล',
       name: 'ปรึกษาหมอทางไกล (DMS Telemedicine)',
       agency: 'กรมการแพทย์',
       icon: 'https://d1k1jyk7kql7fi.cloudfront.net/logo/miniapp/p/85c47daa-7835-4341-b9f0-59bbfa073e1b.webp',
       tone: 'primary',
       desc: 'นัดหมายพบแพทย์ผ่านวิดีโอคอลกับโรงพยาบาลในสังกัดกรมการแพทย์ รับยาต่อเนื่องทางไปรษณีย์ และชำระเงินผ่านเป๋าตัง',
-      features: ['นัดหมายพบแพทย์ออนไลน์', 'รับยาต่อเนื่องที่บ้าน', 'ชำระค่าบริการผ่านเป๋าตัง'],
-      reason: 'เหมาะกับการติดตามโรคความดันโลหิตสูงที่อาการคงที่',
       url: 'https://teleweb.dms.go.th/'
     },
     {
       id: 'dtam-tele',
+      category: 'แพทย์แผนไทย',
       name: 'ปรึกษาการแพทย์ทางไกล (DTAM Telemedicine)',
       agency: 'กรมการแพทย์แผนไทยและการแพทย์ทางเลือก',
       icon: 'https://d1k1jyk7kql7fi.cloudfront.net/logo/miniapp/p/55d56eca-a224-49b3-8118-4e5e7a82baa0.webp',
       tone: 'secondary',
       desc: 'ปรึกษาแพทย์แผนไทยและการแพทย์ทางเลือกทางไกล รับคำแนะนำการใช้สมุนไพรและการดูแลสุขภาพแบบองค์รวม',
-      features: ['ปรึกษาแพทย์แผนไทย', 'คำแนะนำการใช้สมุนไพร', 'นัดหมายล่วงหน้า'],
-      reason: 'ทางเลือกเสริมสำหรับการดูแลสุขภาพระยะยาว',
       url: 'https://www.dtam.moph.go.th/news-release/49266/'
     },
     {
       id: 'dms-phr',
+      category: 'ข้อมูลสุขภาพ',
       name: 'สมุดสุขภาพส่วนบุคคล (DMS PHR)',
       agency: 'กรมการแพทย์',
       icon: 'https://d1k1jyk7kql7fi.cloudfront.net/logo/miniapp/p/d626d3a3-f17e-4d41-a50f-ed5434b82c2b.webp',
       tone: 'info',
       desc: 'บันทึกข้อมูลสุขภาพส่วนบุคคล (Personal Health Record) เพื่อดูแลตนเองและใช้เป็นประวัติประกอบการส่งต่อรักษา',
-      features: ['บันทึกค่าความดัน น้ำหนัก น้ำตาล', 'ดูประวัติการรักษาย้อนหลัง', 'ใช้ประกอบการส่งต่อผู้ป่วย'],
-      reason: 'ช่วยบันทึกค่าความดันที่วัดเองที่บ้านให้แพทย์ดู',
       url: 'https://www.dms.go.th/'
     }
   ]

@@ -198,7 +198,7 @@
     /** เปิดบริการภายนอก — ยืนยันก่อนออกจากทางรัฐ */
     openExternal: function (svc) {
       var go = function () { window.open(svc.url, '_blank', 'noopener'); };
-      if (!window.ThaiAlert) return go();
+      if (typeof ThaiAlert === 'undefined') return go();
       ThaiAlert.confirm({
         title: 'กำลังออกจากทางรัฐ',
         message: 'ระบบจะเปิดเว็บไซต์ "' + svc.name + '" ของ' + svc.agency + ' ในแท็บใหม่ ต้องการดำเนินการต่อหรือไม่',

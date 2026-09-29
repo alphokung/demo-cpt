@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>บริการสุขภาพแนะนำ — ทางรัฐ</title>
+  <title>บริการอื่นๆ — ทางรัฐ</title>
   <meta name="description" content="บริการสุขภาพที่เกี่ยวข้อง — ปรึกษาหมอทางไกล (DMS), การแพทย์แผนไทยทางไกล (DTAM) และ DMS PHR">
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
   <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
@@ -31,17 +31,22 @@
 
       <main class="hp-main">
 
-        <div class="hp-notice">
-          <span class="material-symbols-outlined">open_in_new</span>
-          <div>บริการในหน้านี้ให้บริการโดยหน่วยงานภายนอก เมื่อกดใช้บริการ ระบบจะเปิดเว็บไซต์ของหน่วยงานนั้นในแท็บใหม่</div>
+        <!-- หน้าตาเดียวกับ crime/services.html และ "บริการแนะนำสำหรับคุณ" ใน dashboard-with-consent.html -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการอื่นๆ</h3>
+            </div>
+          </div>
+          <p class="list-section-note">กดเพื่อเปิดบริการในเว็บไซต์ของหน่วยงานเจ้าของบริการ</p>
+          <div class="cert-list" id="services"></div>
         </div>
-
-        <div class="hp-stack" id="services" style="gap: var(--spacing-xl);"></div>
 
         <div class="source-note">
           <p class="source-note-text">
-            <span class="material-symbols-outlined source-note-icon">verified</span>
-            ข้อมูลบริการจาก กรมการแพทย์ · กรมการแพทย์แผนไทยและการแพทย์ทางเลือก<br>
+            <span class="material-symbols-outlined source-note-icon">open_in_new</span>
+            บริการเหล่านี้เปิดในเว็บไซต์ของหน่วยงานเจ้าของบริการ<br>
             อัปเดตล่าสุด: <span class="source-note-time"></span>
           </p>
         </div>
@@ -61,28 +66,26 @@
   <script>
     (function () {
       var H = HEALTH, e = HP.esc;
+      HP.mountWelcome('บริการอื่นๆ', 'บริการสุขภาพที่เกี่ยวข้องจากหน่วยงานภาครัฐ');
+
       document.getElementById('services').innerHTML = H.services.map(function (s, i) {
-        return '<div class="card hp-service">' +
-          '<div class="hp-service-head">' +
-            HP.svcIcon(s, 'lg') +
-            '<div style="flex:1;min-width:0">' +
-              '<p class="hp-service-name">' + e(s.name) + '</p>' +
-              '<p class="hp-muted">' + e(s.agency) + '</p>' +
-              '<span class="hp-ext-badge"><span class="material-symbols-outlined">language</span>' + e(new URL(s.url).host) + '</span>' +
-            '</div>' +
+        return '<a href="' + e(s.url) + '" target="_blank" rel="noopener" class="list-item" data-svc="' + i + '">' +
+          '<div class="list-icon">' +
+            (/^https?:\/\//.test(s.icon)
+              ? '<img src="' + e(s.icon) + '" alt="" class="img-helper-frame circle size-sm" loading="lazy">'
+              : HP.svcIcon(s)) +
           '</div>' +
-          '<p style="line-height:1.7">' + e(s.desc) + '</p>' +
-          '<ul class="hp-check-list">' + s.features.map(function (f) {
-            return '<li><span class="material-symbols-outlined">check_circle</span>' + e(f) + '</li>';
-          }).join('') + '</ul>' +
-          '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(s.reason) + '</span>' +
-          '<button class="btn btn-primary" data-svc="' + i + '"><span class="material-symbols-outlined">open_in_new</span>ใช้บริการ</button>' +
-        '</div>';
+          '<div class="list-body">' +
+            '<p class="service-item__title">' + e(s.name) + '</p>' +
+            '<p class="service-item__desc">' + e(s.desc) + '</p>' +
+            '<span class="service-item__category">' + e(s.category) + '</span>' +
+          '</div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span>' +
+        '</a>';
       }).join('');
       document.querySelectorAll('[data-svc]').forEach(function (b) {
-        b.addEventListener('click', function () { HP.openExternal(H.services[+b.dataset.svc]); });
+        b.addEventListener('click', function (ev) { ev.preventDefault(); HP.openExternal(H.services[+b.dataset.svc]); });
       });
-      HP.mountWelcome('บริการสุขภาพแนะนำ', 'ปรึกษาแพทย์ทางไกล และสมุดสุขภาพส่วนบุคคล');
     })();
   </script>
 </body>
