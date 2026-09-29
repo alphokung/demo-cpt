@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ตรวจสอบมิจฉาชีพ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">gpp_maybe</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="tabs" id="scam-tabs">
+            <div class="tab-bar" role="tablist">
+              <button class="tab-btn active" data-panel="panel-phone" onclick="switchTab('scam-tabs','panel-phone',this)">เบอร์โทร</button>
+              <button class="tab-btn" data-panel="panel-account" onclick="switchTab('scam-tabs','panel-account',this)">บัญชีธนาคาร</button>
+            </div>
+            <div class="tab-panels">
+
+              <div class="tab-panel active" id="panel-phone">
+                <form class="cp-form cp-form--inline" data-kind="phones">
+                  <label class="hp-search">
+                    <span class="material-symbols-outlined">call</span>
+                    <input type="search" name="q" inputmode="tel" placeholder="เบอร์โทรศัพท์ เช่น 081-234-5678" aria-label="เบอร์โทรที่ต้องการตรวจสอบ" autocomplete="off">
+                  </label>
+                  <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span>ตรวจสอบ</button>
+                </form>
+                <div class="cp-examples" style="margin-top: var(--spacing-sm);">
+                  ลองค้นหา: <button type="button" data-ex="081-234-5678">081-234-5678</button> ·
+                  <button type="button" data-ex="02-123-4567">02-123-4567</button> ·
+                  <button type="button" data-ex="089-000-1111">089-000-1111</button>
+                </div>
+                <div class="cp-out" style="margin-top: var(--spacing-xl);" aria-live="polite"></div>
+              </div>
+
+              <div class="tab-panel" id="panel-account">
+                <form class="cp-form" data-kind="accounts">
+                  <select class="cp-select" name="bank" aria-label="ธนาคาร">
+                    <option value="">ทุกธนาคาร</option>
+                  </select>
+                  <div class="cp-form cp-form--inline">
+                    <label class="hp-search">
+                      <span class="material-symbols-outlined">account_balance</span>
+                      <input type="search" name="q" inputmode="numeric" placeholder="เลขบัญชี / พร้อมเพย์" aria-label="เลขบัญชีที่ต้องการตรวจสอบ" autocomplete="off">
+                    </label>
+                    <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span>ตรวจสอบ</button>
+                  </div>
+                </form>
+                <div class="cp-examples" style="margin-top: var(--spacing-sm);">
+                  ลองค้นหา: <button type="button" data-ex="987-6-54321-0">987-6-54321-0</button> ·
+                  <button type="button" data-ex="123-4-56789-0">123-4-56789-0</button>
+                </div>
+                <div class="cp-out" style="margin-top: var(--spacing-xl);" aria-live="polite"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="hp-notice hp-notice--warning">
+          <span class="material-symbols-outlined">info</span>
+          <div>ผลตรวจสอบมาจากเรื่องที่มีผู้แจ้งความเข้ามา <strong>การไม่พบข้อมูลไม่ได้แปลว่าปลอดภัย</strong> มิจฉาชีพเปลี่ยนเบอร์และบัญชีบ่อย
+            หากถูกหลอกแล้ว ให้โทรธนาคารและ 1441 ทันที</div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก ศูนย์ปฏิบัติการแก้ไขปัญหาอาชญากรรมออนไลน์ (AOC 1441) · บช.สอท.<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var S = CRIME.scams, e = CP.esc;
+      CP.mountWelcome('ตรวจสอบมิจฉาชีพ', 'เช็กเบอร์โทรและเลขบัญชีก่อนรับสาย ก่อนโอน จากฐานข้อมูลการแจ้งความ');
+
+      var RISK = {
+        high:   { cls: 'danger',  icon: 'dangerous', title: 'อันตราย — พบประวัติถูกแจ้งความจำนวนมาก' },
+        medium: { cls: 'warning', icon: 'warning',   title: 'ควรระวัง — พบประวัติถูกแจ้งความ' },
+        low:    { cls: 'warning', icon: 'info',      title: 'พบการแจ้งความจำนวนเล็กน้อย' }
+      };
+
+      var bankSel = document.querySelector('select[name="bank"]');
+      bankSel.innerHTML += S.banks.map(function (b) { return '<option>' + e(b) + '</option>'; }).join('');
+
+      function fmt(kind, v) {
+        if (kind === 'phones') return v.length === 10 ? v.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3') : v.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
+        return v.replace(/(\d{3})(\d)(\d{5})(\d)/, '$1-$2-$3-$4');
+      }
+
+      function check(form) {
+        var kind = form.dataset.kind, out = form.closest('.tab-panel').querySelector('.cp-out');
+        var raw = form.q.value, d = CP.digits(raw);
+        var min = kind === 'phones' ? 9 : 10;
+        if (d.length < min) {
+          out.innerHTML = '<div class="hp-notice"><span class="material-symbols-outlined">edit</span><div>กรุณากรอก' + (kind === 'phones' ? 'เบอร์โทรอย่างน้อย 9 หลัก' : 'เลขบัญชีอย่างน้อย 10 หลัก') + '</div></div>';
+          return;
+        }
+        var bank = form.bank ? form.bank.value : '';
+        var hit = S[kind].filter(function (x) { return x.value === d && (!bank || x.bank === bank); })[0];
+
+        if (!hit) {
+          out.innerHTML = '<div class="cp-result">' +
+            '<span class="hp-icon tone-neutral"><span class="material-symbols-outlined">search_off</span></span>' +
+            '<div class="cp-result-body"><p class="cp-result-title">ไม่พบประวัติการแจ้งความ</p>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-xs)">' + fmt(kind, d) + (bank ? ' · ' + e(bank) : '') + ' ยังไม่มีผู้แจ้งความในระบบ แต่ยังต้องระวัง — ตรวจสอบตัวตนผู้รับเงินทุกครั้ง</p>' +
+            '</div></div>';
+          return;
+        }
+        var r = RISK[hit.risk];
+        out.innerHTML = '<div class="cp-result cp-result--' + r.cls + '">' +
+          '<span class="hp-icon tone-' + (r.cls === 'danger' ? 'danger' : 'warning') + '"><span class="material-symbols-outlined">' + r.icon + '</span></span>' +
+          '<div class="cp-result-body"><p class="cp-result-title">' + r.title + '</p>' +
+          '<div class="details-list">' +
+            CP.detailsItem(kind === 'phones' ? 'เบอร์โทร' : 'เลขบัญชี', fmt(kind, hit.value)) +
+            (hit.bank ? CP.detailsItem('ธนาคาร', e(hit.bank)) : '') +
+            (hit.holder ? CP.detailsItem('ชื่อบัญชี', e(hit.holder)) : '') +
+            CP.detailsItem('จำนวนครั้งที่ถูกแจ้ง', hit.reports.toLocaleString('th-TH') + ' ครั้ง', 'details-value-unpaid') +
+            CP.detailsItem('รูปแบบที่ถูกแจ้ง', hit.types.map(function (t) { return '<span class="tag tag--sm">' + e(t) + '</span>'; }).join(' ')) +
+            CP.detailsItem('แจ้งล่าสุด', CP.dateLong(hit.last)) +
+          '</div>' +
+          '<div class="cp-actions">' +
+            '<a class="btn btn-primary" href="tel:1441"><span class="material-symbols-outlined">call</span>โทร 1441</a>' +
+            '<a class="btn btn-outline" href="guide.html?id=online-fraud"><span class="material-symbols-outlined">checklist</span>ถ้าโอนไปแล้ว ต้องทำอย่างไร</a>' +
+          '</div></div></div>';
+      }
+
+      document.querySelectorAll('form[data-kind]').forEach(function (f) {
+        f.addEventListener('submit', function (ev) { ev.preventDefault(); check(f); });
+      });
+      document.querySelectorAll('[data-ex]').forEach(function (b) {
+        b.onclick = function () {
+          var f = b.closest('.tab-panel').querySelector('form[data-kind]');
+          f.q.value = b.dataset.ex; check(f);
+        };
+      });
+
+      // มาจากหน้า hub: ?q= — เดาประเภทจากรูปแบบตัวเลข (เบอร์มือถือขึ้นต้น 0 ยาว 9–10 หลัก)
+      var q = CP.qs('q');
+      if (q) {
+        var d = CP.digits(q), isPhone = /^0\d{8,9}$/.test(d);
+        var panel = isPhone ? 'phone' : 'account';
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelector('.tab-btn[data-panel="panel-' + panel + '"]').click();
+          var f = document.querySelector('#panel-' + panel + ' form');
+          f.q.value = q; check(f);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

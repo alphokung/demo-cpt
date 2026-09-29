@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ข้อมูลคดี — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">folder_open</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="tabs" id="case-tabs">
+            <div class="tab-bar" role="tablist">
+              <button class="tab-btn active" data-panel="panel-criminal" onclick="switchTab('case-tabs','panel-criminal',this)">คดีอาญา</button>
+              <button class="tab-btn" data-panel="panel-traffic" onclick="switchTab('case-tabs','panel-traffic',this)">คดีจราจร</button>
+              <button class="tab-btn" data-panel="panel-online" onclick="switchTab('case-tabs','panel-online',this)">คดีออนไลน์</button>
+            </div>
+            <div class="tab-panels">
+              <div class="tab-panel active" id="panel-criminal"><div class="hp-stack" data-type="criminal"></div></div>
+              <div class="tab-panel" id="panel-traffic"><div class="hp-stack" data-type="traffic"></div></div>
+              <div class="tab-panel" id="panel-online">
+                <div class="hp-notice" style="margin-bottom: var(--spacing-lg);">
+                  <span class="material-symbols-outlined">language</span>
+                  <div>คดีที่แจ้งผ่าน thaipoliceonline.go.th หรือสายด่วน 1441 จะแสดงที่นี่อัตโนมัติ
+                    <a class="hp-link" href="#" data-ext="thaipoliceonline">แจ้งความออนไลน์ <span class="material-symbols-outlined">open_in_new</span></a></div>
+                </div>
+                <div class="hp-stack" data-type="online"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก ระบบ CRIMES · thaipoliceonline · สำนักงานตำรวจแห่งชาติ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME;
+      CP.mountWelcome('ข้อมูลคดี', 'สถานะคดีที่คุณเกี่ยวข้อง ทั้งในฐานะผู้เสียหาย ผู้กล่าวหา หรือคู่กรณี');
+
+      document.querySelectorAll('[data-type]').forEach(function (el) {
+        var type = el.dataset.type;
+        var list = C.cases.filter(function (c) { return c.type === type; });
+        // คดีที่ยังไม่สิ้นสุดขึ้นก่อน
+        list.sort(function (a, b) { return CP.isClosed(a) - CP.isClosed(b); });
+        el.innerHTML = list.length ? list.map(CP.caseRow).join('')
+          : '<div class="hp-empty"><span class="material-symbols-outlined">folder_off</span>ไม่พบ' + CP.caseTypes[type].label + 'ที่เกี่ยวข้องกับคุณ</div>';
+        var btn = document.querySelector('.tab-btn[data-panel="panel-' + type + '"]');
+        btn.textContent += ' (' + list.length + ')';
+      });
+    })();
+  </script>
+</body>
+</html>

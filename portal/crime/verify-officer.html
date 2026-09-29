@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ตรวจสอบเจ้าหน้าที่ตำรวจ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">badge</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <form class="cp-form cp-form--inline" id="form">
+            <label class="hp-search">
+              <span class="material-symbols-outlined">badge</span>
+              <input type="search" id="q" placeholder="ชื่อ-นามสกุล หรือ เลขบัตรประจำตัวเจ้าหน้าที่" aria-label="ชื่อหรือเลขบัตรเจ้าหน้าที่ตำรวจ" autocomplete="off">
+            </label>
+            <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span>ตรวจสอบ</button>
+          </form>
+          <div class="cp-examples" style="margin-top: var(--spacing-sm);">
+            ลองค้นหา: <button type="button" data-ex="วีระพงษ์ ทองดี">วีระพงษ์ ทองดี</button> ·
+            <button type="button" data-ex="1100-20077">1100-20077</button> ·
+            <button type="button" data-ex="ร.ต.อ. สมหมาย ใจเย็น">ร.ต.อ. สมหมาย ใจเย็น</button>
+          </div>
+          <div id="result" style="margin-top: var(--spacing-xl);" aria-live="polite"></div>
+        </div>
+
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--warning-40);"></div>
+              <h3 class="section-title">สังเกตมิจฉาชีพแอบอ้างเป็นตำรวจ</h3>
+            </div>
+          </div>
+          <ul class="cp-doc-list">
+            <li><span class="material-symbols-outlined" style="color:var(--foreground-negative-default)">close</span>วิดีโอคอลผ่าน LINE / Facebook โดยแต่งเครื่องแบบ และฉากหลังคล้ายสถานีตำรวจ</li>
+            <li><span class="material-symbols-outlined" style="color:var(--foreground-negative-default)">close</span>ข่มขู่ว่าคุณพัวพันคดียาเสพติด ฟอกเงิน หรือพัสดุผิดกฎหมาย</li>
+            <li><span class="material-symbols-outlined" style="color:var(--foreground-negative-default)">close</span>สั่งให้โอนเงินเข้าบัญชี "เพื่อตรวจสอบ" หรือ "เพื่อพิสูจน์ความบริสุทธิ์"</li>
+            <li><span class="material-symbols-outlined" style="color:var(--foreground-negative-default)">close</span>ส่งหมายจับ หมายเรียก หรือบัตรเจ้าหน้าที่เป็นรูปภาพผ่านแชท</li>
+            <li><span class="material-symbols-outlined">check</span>หากสงสัย วางสาย แล้วโทรหาสถานีตำรวจจากเบอร์ทางการด้วยตัวเอง หรือโทร 1599 / 1441</li>
+          </ul>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก กองกำลังพล สำนักงานตำรวจแห่งชาติ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME, e = CP.esc;
+      CP.mountWelcome('ตรวจสอบเจ้าหน้าที่ตำรวจ', 'ยืนยันว่าผู้ที่ติดต่อคุณเป็นเจ้าหน้าที่ตำรวจจริง ก่อนให้ข้อมูลส่วนตัวหรือโอนเงิน');
+
+      var RANK = /^(พล\.?ต\.?[อทต]\.?|พ\.?ต\.?[อทต]\.?|ร\.?ต\.?[อทต]\.?|ด\.?ต\.?|จ\.?ส\.?ต\.?|ส\.?ต\.?[อทต]\.?)\s*(หญิง)?/;
+      function nameKey(s) { return CP.norm(String(s).trim().replace(RANK, '')); }
+
+      function find(q) {
+        var d = CP.digits(q), n = nameKey(q);
+        return C.officers.filter(function (o) {
+          if (d.length >= 6 && (CP.digits(o.badge) === d || CP.digits(o.id) === d)) return true;
+          return n.length >= 3 && nameKey(o.name).indexOf(n) >= 0;
+        });
+      }
+
+      function render(q) {
+        var el = document.getElementById('result');
+        if (!q.trim()) { el.innerHTML = ''; return; }
+        var list = find(q);
+        if (!list.length) {
+          el.innerHTML = '<div class="cp-result cp-result--warning">' +
+            '<span class="hp-icon tone-warning"><span class="material-symbols-outlined">person_off</span></span>' +
+            '<div class="cp-result-body"><p class="cp-result-title">ไม่พบข้อมูลเจ้าหน้าที่ "' + e(q) + '"</p>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-xs)">อาจเป็นการแอบอ้าง ห้ามโอนเงินหรือให้ข้อมูลส่วนตัว ตรวจสอบชื่อและเลขบัตรอีกครั้ง หรือโทรสอบถามสายด่วน 1599</p>' +
+            '<div class="cp-actions"><a class="btn btn-primary" href="tel:1599"><span class="material-symbols-outlined">call</span>โทร 1599</a>' +
+            '<a class="btn btn-outline" href="tel:1441"><span class="material-symbols-outlined">call</span>แจ้ง 1441</a></div></div></div>';
+          return;
+        }
+        el.innerHTML = '<div class="hp-stack">' + list.map(function (o) {
+          var active = o.status === 'active';
+          return '<div class="cp-result cp-result--' + (active ? 'positive' : 'warning') + '">' +
+            '<span class="hp-icon tone-' + (active ? 'positive' : 'warning') + '"><span class="material-symbols-outlined">' + (active ? 'verified_user' : 'person_alert') + '</span></span>' +
+            '<div class="cp-result-body"><p class="cp-result-title">' + (active ? 'เป็นเจ้าหน้าที่ตำรวจที่ยังปฏิบัติราชการ' : 'ไม่ได้ปฏิบัติราชการแล้ว') + '</p>' +
+            '<div class="details-list">' +
+              CP.detailsItem('ยศ ชื่อ-นามสกุล', e(o.name)) +
+              CP.detailsItem('ตำแหน่ง', e(o.position)) +
+              CP.detailsItem('สังกัด', e(o.unit) + ' · ' + e(o.bureau)) +
+              CP.detailsItem('เลขบัตรประจำตัวเจ้าหน้าที่', e(o.badge)) +
+              (o.note ? CP.detailsItem('หมายเหตุ', e(o.note), 'details-value-unpaid') : '') +
+            '</div>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-md)">ตรวจสอบว่าหน่วยงานตรงกับที่อีกฝ่ายแจ้ง ตำรวจจริงไม่ขอให้โอนเงินไม่ว่ากรณีใด</p>' +
+            '</div></div>';
+        }).join('') + '</div>';
+      }
+
+      var input = document.getElementById('q');
+      document.getElementById('form').addEventListener('submit', function (ev) { ev.preventDefault(); render(input.value); });
+      document.querySelectorAll('[data-ex]').forEach(function (b) {
+        b.onclick = function () { input.value = b.dataset.ex; render(input.value); };
+      });
+      var q = CP.qs('q');
+      if (q) { input.value = q; render(q); }
+    })();
+  </script>
+</body>
+</html>

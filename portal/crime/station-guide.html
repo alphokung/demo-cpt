@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เตรียมตัวไปสถานีตำรวจ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">checklist</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="hp-toolbar">
+            <label class="hp-search">
+              <span class="material-symbols-outlined">search</span>
+              <input type="search" id="q" placeholder="พิมพ์เรื่องที่จะไปติดต่อ เช่น คนหาย ถูกโกง รถชน" aria-label="ค้นหาเรื่องที่จะไปติดต่อ" autocomplete="off">
+            </label>
+            <div class="filter-row" id="tags"></div>
+            <p class="hp-count" id="count" aria-live="polite"></p>
+          </div>
+          <div class="cp-guide-list" id="list"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">info</span>
+            ข้อมูลเพื่อการเตรียมตัวเบื้องต้น ขั้นตอนจริงอาจแตกต่างตามสถานีและพฤติการณ์ของแต่ละเรื่อง<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME, e = CP.esc;
+      CP.mountWelcome('เตรียมตัวไปสถานีตำรวจ', 'ค้นหาเรื่องที่จะไปติดต่อ ดูขั้นตอน เอกสารที่ต้องนำไป และเบอร์ติดต่อ');
+
+      var input = document.getElementById('q');
+      var tag = CP.qs('tag') || '';
+      input.value = CP.qs('q') || '';
+
+      function renderTags() {
+        document.getElementById('tags').innerHTML =
+          '<button class="filter-chip' + (!tag ? ' active' : '') + '" data-tag="">ทั้งหมด</button>' +
+          C.guideTags.map(function (t) {
+            return '<button class="filter-chip' + (t.key === tag ? ' active' : '') + '" data-tag="' + t.key + '">' + t.label + '</button>';
+          }).join('');
+        document.querySelectorAll('[data-tag]').forEach(function (b) {
+          b.onclick = function () { tag = b.dataset.tag; renderTags(); render(); };
+        });
+      }
+
+      function render() {
+        var list = CP.searchGuides(input.value, tag);
+        // เรื่องเร่งด่วนขึ้นก่อน
+        list.sort(function (a, b) { return (b.tags.indexOf('urgent') >= 0) - (a.tags.indexOf('urgent') >= 0); });
+        document.getElementById('count').textContent = 'พบ ' + list.length + ' เรื่อง';
+        document.getElementById('list').innerHTML = list.length ? list.map(function (g) {
+          return '<a class="cp-guide" href="guide.html?id=' + g.id + '">' +
+            '<span class="hp-icon tone-' + g.tone + '"><span class="material-symbols-outlined">' + g.icon + '</span></span>' +
+            '<div class="hp-stack" style="gap:var(--spacing-xs);flex:1;min-width:0">' +
+              '<span class="cp-guide-title">' + e(g.title) + '</span>' +
+              (g.tags.length ? '<div class="cp-guide-tags">' + CP.guideTagsHtml(g) + '</div>' : '') +
+              '<span class="cp-guide-sum">' + e(g.summary) + '</span>' +
+            '</div></a>';
+        }).join('') : '<div class="hp-empty" style="grid-column:1/-1"><span class="material-symbols-outlined">search_off</span>ไม่พบเรื่องที่ค้นหา ลองใช้คำอื่น หรือโทรสอบถาม 1599</div>';
+
+        try {
+          var p = new URLSearchParams();
+          if (input.value) p.set('q', input.value);
+          if (tag) p.set('tag', tag);
+          history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
+        } catch (err) {}
+      }
+
+      input.addEventListener('input', render);
+      renderTags();
+      render();
+    })();
+  </script>
+</body>
+</html>

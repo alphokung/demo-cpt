@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บริการอื่นๆ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">apps</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+        <div class="hp-stack" id="services" style="gap: var(--spacing-xl);"></div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">open_in_new</span>
+            บริการเหล่านี้เปิดในเว็บไซต์ของหน่วยงานเจ้าของบริการ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var e = CP.esc;
+      CP.mountWelcome('บริการอื่นๆ', 'บริการที่เกี่ยวข้องจากหน่วยงานภาครัฐและภาคประชาสังคม');
+
+      document.getElementById('services').innerHTML = CRIME.services.map(function (s) {
+        return '<div class="card hp-service" style="margin-bottom:0">' +
+          '<div class="hp-service-head">' +
+            '<span class="hp-icon hp-icon--lg tone-' + s.tone + '"><span class="material-symbols-outlined">' + s.icon + '</span></span>' +
+            '<div style="flex:1;min-width:0">' +
+              '<p class="hp-service-name">' + e(s.name) + '</p>' +
+              '<p class="hp-muted">' + e(s.agency) + '</p>' +
+              '<p class="hp-right-summary">' + e(s.desc) + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<ul class="hp-check-list">' + s.features.map(function (f) {
+            return '<li><span class="material-symbols-outlined">check_circle</span>' + e(f) + '</li>';
+          }).join('') + '</ul>' +
+          '<div class="hp-between">' +
+            '<span class="hp-ext-badge"><span class="material-symbols-outlined">link</span>' + e(s.url.replace(/^https?:\/\//, '').replace(/\/$/, '')) + '</span>' +
+            '<button type="button" class="btn btn-primary" data-ext="' + s.key + '"><span class="material-symbols-outlined">open_in_new</span>เปิดบริการ</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

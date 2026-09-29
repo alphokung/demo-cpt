@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สถานะคดี — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="cases.html" class="btn-back-circle" id="back" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">folder_open</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME, e = CP.esc, app = document.getElementById('app');
+      var c = C.cases.filter(function (x) { return x.id === CP.qs('id'); })[0];
+
+      if (!c) {
+        app.innerHTML = '<div class="card"><div class="hp-empty"><span class="material-symbols-outlined">folder_off</span>ไม่พบข้อมูลคดี<br><a class="hp-link" href="cases.html">กลับไปหน้ารายการคดี</a></div></div>';
+        return;
+      }
+
+      var t = CP.caseTypes[c.type], st = CP.caseStatus(c), closed = CP.isClosed(c);
+      document.getElementById('back').href = t.page;
+      document.title = c.title + ' — ทางรัฐ';
+
+      var inv = c.investigator;
+      app.innerHTML =
+        '<div class="card">' +
+          '<div class="hp-right-hero">' +
+            '<span class="hp-icon hp-icon--lg tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+            '<div style="flex:1;min-width:0">' +
+              '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag ' + st.tag + ' tag--sm tag--dot">' + e(st.label) + '</span>' +
+                '<span class="tag tag--sm">' + e(t.label) + '</span><span class="tag tag--sm">คุณเป็น' + e(c.role) + '</span></div>' +
+              '<p class="hp-right-name" style="margin-top:var(--spacing-xs)">' + e(c.title) + '</p>' +
+              '<p class="hp-muted">' + e(c.caseNo) + '</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="card">' +
+          '<div class="hp-section-head">' + CP.sectionTitle('สถานะทางคดี') + '</div>' +
+          CP.stepper(c) +
+          (closed && c.result
+            ? '<div class="hp-notice" style="margin-top:var(--spacing-lg);background:var(--background-positive-lighter)"><span class="material-symbols-outlined" style="color:var(--foreground-positive-default)">task_alt</span><div><strong>ผลคดี</strong><br>' + e(c.result) + '</div></div>'
+            : c.next
+              ? '<div class="hp-notice" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">pending_actions</span><div><strong>ขั้นตอนถัดไป</strong><br>' + e(c.next) +
+                  (c.nextDate ? '<br><span class="hp-muted">นัดหมาย ' + CP.dateLong(c.nextDate) + ' เวลา ' + CP.time(c.nextDate) + ' (อีก ' + CP.daysUntil(c.nextDate) + ' วัน)</span>' : '') + '</div></div>'
+              : '') +
+        '</div>' +
+
+        '<div class="hp-grid-2">' +
+          '<div class="card">' +
+            '<div class="hp-section-head">' + CP.sectionTitle('รายละเอียดคดี', 'var(--secondary-40-main)') + '</div>' +
+            '<div class="details-list">' +
+              CP.detailsItem('เลขคดี', e(c.caseNo)) +
+              CP.detailsItem('ข้อหา / ฐานความผิด', e(c.charge)) +
+              CP.detailsItem('วันที่แจ้ง', CP.dateLong(c.date) + ' ' + CP.time(c.date)) +
+              CP.detailsItem('หน่วยงานรับผิดชอบ', e(c.station)) +
+              (c.channel ? CP.detailsItem('ช่องทางที่ถูกหลอก', e(c.channel)) : '') +
+              (c.scamAccount ? CP.detailsItem('บัญชีปลายทาง', e(c.scamAccount)) : '') +
+              (c.damage ? CP.detailsItem('มูลค่าความเสียหาย', CP.money(c.damage), 'details-value-unpaid') : '') +
+            '</div>' +
+          '</div>' +
+          '<div class="card">' +
+            '<div class="hp-section-head">' + CP.sectionTitle('พนักงานสอบสวนเจ้าของคดี', 'var(--info-40)') + '</div>' +
+            '<div class="hp-visit" style="border:none;padding:0">' +
+              '<span class="hp-icon tone-primary"><span class="material-symbols-outlined">badge</span></span>' +
+              '<div class="hp-visit-body"><span class="hp-visit-title">' + e(inv.name) + '</span><span class="hp-visit-sub">' + e(inv.position) + '</span></div>' +
+            '</div>' +
+            '<div class="cp-actions">' +
+              '<a class="btn btn-primary" href="tel:' + inv.phone + '"><span class="material-symbols-outlined">call</span>โทร ' + e(inv.phone) + '</a>' +
+              '<a class="btn btn-outline" href="verify-officer.html?q=' + encodeURIComponent(inv.name) + '"><span class="material-symbols-outlined">verified_user</span>ตรวจสอบตัวตน</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="card">' +
+          '<div class="hp-section-head">' + CP.sectionTitle('ความเคลื่อนไหวของคดี', 'var(--warning-40)') + '</div>' +
+          '<div class="timeline">' + c.timeline.slice().reverse().map(function (ev, i) {
+            return '<div class="timeline-item' + (i === 0 ? ' is-active' : ' is-passed') + '">' +
+              '<div class="timeline-item-dot"></div>' +
+              '<div class="timeline-item-content">' +
+                '<p class="timeline-item-title">' + e(ev.title) + '</p>' +
+                '<p class="timeline-item-desc">' + CP.dateLong(ev.date) + ' · ' + CP.time(ev.date) + '</p>' +
+                '<p class="timeline-item-desc">' + e(ev.desc) + '</p>' +
+              '</div></div>';
+          }).join('') + '</div>' +
+        '</div>' +
+
+        '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
+          'ข้อมูลจาก ระบบ CRIMES สำนักงานตำรวจแห่งชาติ<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+    })();
+  </script>
+</body>
+</html>

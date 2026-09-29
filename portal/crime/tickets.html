@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบสั่งจราจร — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">receipt_long</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="cp-total">
+            <div>
+              <div class="cp-total-label">ยอดค่าปรับค้างชำระ</div>
+              <div class="hp-muted" id="plates"></div>
+            </div>
+            <div class="cp-ticket-amount" id="total"></div>
+          </div>
+          <div class="filter-row" id="filters" style="margin-bottom: var(--spacing-lg);"></div>
+          <div class="accordion" id="tickets"></div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">info</span>
+          <div>ชำระค่าปรับภายในวันที่กำหนดในใบสั่ง หากไม่ชำระ เจ้าหน้าที่จะส่งหนังสือเตือน และจะได้รับเพียงหลักฐานการชำระภาษีชั่วคราวแทนป้ายวงกลมเมื่อต่อภาษีรถประจำปี
+            หากไม่เห็นด้วยกับใบสั่ง สามารถโต้แย้งได้ที่สถานีตำรวจที่ออกใบสั่ง</div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก ระบบใบสั่งจราจรอิเล็กทรอนิกส์ (PTM) สำนักงานตำรวจแห่งชาติ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME, e = CP.esc;
+      CP.mountWelcome('ใบสั่งจราจร', 'ใบสั่งทั้งหมดของรถที่จดทะเบียนในชื่อคุณ');
+
+      var unpaid = CP.unpaidTickets();
+      document.getElementById('total').textContent = CP.money(unpaid.reduce(function (s, t) { return s + t.fine; }, 0));
+      document.getElementById('plates').textContent = 'รถในชื่อคุณ: ' + C.user.plates.join(' · ');
+
+      var FILTERS = [['all', 'ทั้งหมด'], ['pending', 'ค้างชำระ'], ['paid', 'ชำระแล้ว']];
+      var filter = 'all';
+      var openId = location.hash.replace('#', '');
+
+      function renderFilters() {
+        document.getElementById('filters').innerHTML = FILTERS.map(function (f) {
+          var n = C.tickets.filter(function (t) { return match(t, f[0]); }).length;
+          return '<button class="filter-chip' + (f[0] === filter ? ' active' : '') + '" data-f="' + f[0] + '">' + f[1] + ' (' + n + ')</button>';
+        }).join('');
+        document.querySelectorAll('[data-f]').forEach(function (b) {
+          b.onclick = function () { filter = b.dataset.f; renderFilters(); render(); };
+        });
+      }
+      function match(t, f) { return f === 'all' || (f === 'paid' ? t.status === 'paid' : t.status !== 'paid'); }
+
+      function render() {
+        var list = C.tickets.filter(function (t) { return match(t, filter); });
+        document.getElementById('tickets').innerHTML = list.map(function (t) {
+          var st = CP.ticketStatus(t);
+          var due = st.key === 'paid'
+            ? 'ชำระเมื่อ ' + CP.dateShort(t.paidAt) + ' ผ่าน ' + e(t.paidVia)
+            : st.key === 'overdue' ? 'เลยกำหนด ' + Math.abs(st.days) + ' วัน (ครบกำหนด ' + CP.dateShort(t.due) + ')'
+            : 'ครบกำหนด ' + CP.dateShort(t.due) + ' (อีก ' + st.days + ' วัน)';
+          return '<div class="accordion-item" id="' + t.id + '">' +
+            '<div class="accordion-header" onclick="toggleAccordion(this)">' +
+              '<div class="cp-accordion-head">' +
+                '<span class="hp-icon tone-' + st.tone + '"><span class="material-symbols-outlined">' + (t.source.indexOf('กล้อง') === 0 ? 'photo_camera' : 'local_police') + '</span></span>' +
+                '<div class="hp-visit-body">' +
+                  '<span class="tag ' + st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + st.label + '</span>' +
+                  '<span class="hp-visit-title">' + e(t.violation) + '</span>' +
+                  '<span class="hp-visit-sub">' + e(t.plate) + ' · ' + CP.dateShort(t.date) + '</span>' +
+                '</div>' +
+                '<span class="cp-ticket-amount' + (st.key === 'overdue' ? ' is-danger' : '') + '">' + t.fine.toLocaleString('th-TH') + ' ฿</span>' +
+              '</div>' +
+              '<span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>' +
+            '</div>' +
+            '<div class="accordion-body"><div class="accordion-body-inner">' +
+              '<div class="details-list">' +
+                CP.detailsItem('เลขที่ใบสั่ง', e(t.ticketNo)) +
+                CP.detailsItem('วันเวลาที่กระทำผิด', CP.dateLong(t.date) + ' ' + CP.time(t.date)) +
+                CP.detailsItem('สถานที่', e(t.location)) +
+                CP.detailsItem('ข้อหา', e(t.violation) + (t.speed ? '<br><span class="hp-muted">' + e(t.speed) + '</span>' : '')) +
+                CP.detailsItem('ฐานความผิด', e(t.law)) +
+                CP.detailsItem('ทะเบียนรถ', e(t.plate) + ' (' + e(t.vehicle) + ')') +
+                CP.detailsItem('ตรวจพบโดย', e(t.source)) +
+                CP.detailsItem('หน่วยงานที่ออกใบสั่ง', e(t.station)) +
+                CP.detailsItem('ค่าปรับ', CP.money(t.fine), st.key === 'paid' ? 'details-value-paid' : 'details-value-unpaid') +
+                CP.detailsItem(st.key === 'paid' ? 'การชำระ' : 'กำหนดชำระ', due) +
+              '</div>' +
+              (t.source.indexOf('กล้อง') === 0 ? '<div class="cp-evidence" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">image</span>ภาพหลักฐานจาก' + e(t.source) + '</div>' : '') +
+              (st.key !== 'paid'
+                ? '<div class="cp-actions">' +
+                    '<button type="button" class="btn btn-primary" data-ext="ptm"><span class="material-symbols-outlined">payments</span>ชำระค่าปรับ</button>' +
+                    '<a class="btn btn-outline" href="station-guide.html?q=' + encodeURIComponent('ใบสั่ง') + '"><span class="material-symbols-outlined">help</span>ไม่เห็นด้วยกับใบสั่ง</a>' +
+                  '</div>'
+                : '') +
+            '</div></div>' +
+          '</div>';
+        }).join('') || '<div class="hp-empty"><span class="material-symbols-outlined">check_circle</span>ไม่มีรายการ</div>';
+
+        var target = openId && document.getElementById(openId);
+        if (target) {
+          CP.toggleAccordion(target.querySelector('.accordion-header'));
+          target.scrollIntoView({ block: 'center' });
+          openId = '';
+        }
+      }
+      renderFilters();
+      render();
+    })();
+  </script>
+</body>
+</html>

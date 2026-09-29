@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เตรียมตัวไปสถานีตำรวจ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="crime.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="station-guide.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">checklist</span>
+          </div>
+          <p class="top-nav-bar-title">Crime Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="crime-data.js"></script>
+  <script src="crime.js"></script>
+  <script>
+    (function () {
+      var C = CRIME, e = CP.esc, app = document.getElementById('app');
+      var g = C.guides.filter(function (x) { return x.id === CP.qs('id'); })[0];
+
+      if (!g) {
+        app.innerHTML = '<div class="card"><div class="hp-empty"><span class="material-symbols-outlined">search_off</span>ไม่พบคู่มือที่ต้องการ<br><a class="hp-link" href="station-guide.html">กลับไปค้นหา</a></div></div>';
+        return;
+      }
+      document.title = g.title + ' — ทางรัฐ';
+
+      app.innerHTML =
+        '<div class="card">' +
+          '<div class="hp-right-hero">' +
+            '<span class="hp-icon hp-icon--lg tone-' + g.tone + '"><span class="material-symbols-outlined">' + g.icon + '</span></span>' +
+            '<div style="flex:1;min-width:0">' +
+              (g.tags.length ? '<div class="cp-guide-tags">' + CP.guideTagsHtml(g) + '</div>' : '') +
+              '<p class="hp-right-name" style="margin-top:var(--spacing-xs)">' + e(g.title) + '</p>' +
+              '<p class="hp-right-summary">' + e(g.summary) + '</p>' +
+            '</div>' +
+          '</div>' +
+          (g.highlight ? '<div class="cp-highlight" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">priority_high</span><div>' + e(g.highlight) + '</div></div>' : '') +
+        '</div>' +
+
+        '<div class="card">' +
+          '<div class="hp-section-head">' + CP.sectionTitle('ติดต่อ', 'var(--danger-40)') + '</div>' +
+          '<div class="cp-contacts">' + g.contacts.map(function (c) { return CP.callBtn(c, 'tone-danger'); }).join('') + '</div>' +
+          (g.links ? '<div class="cp-actions">' + g.links.map(function (l) {
+            return '<button type="button" class="btn btn-outline" data-ext="' + l.service + '"><span class="material-symbols-outlined">open_in_new</span>' + e(l.label) + '</button>';
+          }).join('') + '</div>' : '') +
+        '</div>' +
+
+        '<div class="hp-grid-2">' +
+          '<div class="card">' +
+            '<div class="hp-section-head">' + CP.sectionTitle('ขั้นตอน') + '</div>' +
+            '<ol class="cp-numbered">' + g.steps.map(function (s) {
+              return '<li><div><strong>' + e(s.title) + '</strong><span>' + e(s.desc) + '</span></div></li>';
+            }).join('') + '</ol>' +
+          '</div>' +
+          '<div class="card">' +
+            '<div class="hp-section-head">' + CP.sectionTitle('เอกสารที่ต้องนำไป', 'var(--secondary-40-main)') +
+              '<span class="hp-count" id="doc-count"></span></div>' +
+            '<ul class="cp-doc-list">' + g.documents.map(function (d, i) {
+              return '<li><label><input type="checkbox" data-doc="' + i + '"><span>' + e(d) + '</span></label></li>';
+            }).join('') + '</ul>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-lg)">ติ๊กเพื่อเช็กว่าเตรียมครบแล้ว — ควรถ่ายสำเนาเอกสารสำคัญติดไปด้วย</p>' +
+          '</div>' +
+        '</div>' +
+
+        (g.tips ? '<div class="card"><div class="hp-section-head">' + CP.sectionTitle('ข้อแนะนำ', 'var(--warning-40)') + '</div>' +
+          '<div class="hp-stack">' + g.tips.map(function (t) {
+            return '<div class="hp-notice hp-notice--warning"><span class="material-symbols-outlined">lightbulb</span><div>' + e(t) + '</div></div>';
+          }).join('') + '</div></div>' : '') +
+
+        '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">info</span>' +
+          'ข้อมูลเพื่อการเตรียมตัวเบื้องต้น ขั้นตอนจริงอาจแตกต่างตามสถานีและพฤติการณ์ของแต่ละเรื่อง<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+
+      // ─── เช็กลิสต์เอกสาร (จำไว้ในเครื่องผู้ใช้) ───
+      var KEY = 'cp.docs.' + g.id, saved = [];
+      try { saved = JSON.parse(localStorage.getItem(KEY)) || []; } catch (err) {}
+      var boxes = document.querySelectorAll('[data-doc]');
+      function updateCount() {
+        var n = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).length;
+        document.getElementById('doc-count').textContent = 'เตรียมแล้ว ' + n + '/' + boxes.length;
+      }
+      boxes.forEach(function (b) {
+        b.checked = saved.indexOf(+b.dataset.doc) >= 0;
+        b.onchange = function () {
+          var on = Array.prototype.filter.call(boxes, function (x) { return x.checked; }).map(function (x) { return +x.dataset.doc; });
+          try { localStorage.setItem(KEY, JSON.stringify(on)); } catch (err) {}
+          updateCount();
+        };
+      });
+      updateCount();
+    })();
+  </script>
+</body>
+</html>
