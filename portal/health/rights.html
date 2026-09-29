@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../../dashboard-components.css">
   <link rel="stylesheet" href="health.css">
+  <link rel="stylesheet" href="../../demo-tools.css">
 </head>
 <body>
   <div class="app-container">
@@ -31,12 +32,6 @@
 
       <main class="hp-main">
 
-        <!-- ตัวสลับสิทธิสำหรับสาธิต -->
-        <div class="hp-demo-switch">
-          <span class="hp-demo-switch-label"><span class="material-symbols-outlined">science</span>โหมดสาธิต — เลือกดูหน้าตาของแต่ละสิทธิ</span>
-          <div class="filter-row" id="right-switch"></div>
-        </div>
-
         <!-- สิทธิหลัก -->
         <div class="card" id="hero"></div>
 
@@ -51,9 +46,9 @@
         <!-- สิทธิประโยชน์ด้านส่งเสริมสุขภาพและป้องกันโรค (จาก Excel สปสช.) -->
         <div class="card" id="nhso">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">สิทธิประโยชน์ส่งเสริมสุขภาพและป้องกันโรค (สปสช.)</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สิทธิประโยชน์ส่งเสริมสุขภาพและป้องกันโรค (สปสช.)</h3>
             </div>
             <a class="hp-link" href="data/nhso-benefits-sample.xlsx" download>
               <span class="material-symbols-outlined">download</span>Excel
@@ -88,6 +83,31 @@
     </div>
   </div>
 
+  <!-- ปุ่ม Demo ลอย + modal ตั้งค่า (แบบเดียวกับ dashboard-with-consent.html) -->
+  <button type="button" class="demo-fab" data-demo-open="modal-demo-config" aria-haspopup="dialog">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
+    Demo การแสดงผล
+  </button>
+  <div id="modal-demo-config" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content modal__content--flex-col" role="dialog" aria-modal="true" aria-labelledby="dc-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="dc-title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-demo-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dc-modal__body">
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">🩺 สิทธิการรักษา (เลือกดูหน้าตาของแต่ละสิทธิ)</p>
+          <div class="dc-chips dc-chips--wrap" id="right-switch" role="group" aria-label="สิทธิการรักษา"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
           onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="material-symbols-outlined">arrow_upward</span>
@@ -97,6 +117,7 @@
   <script src="health-data.js"></script>
   <script src="nhso-benefits.js"></script>
   <script src="health.js"></script>
+  <script src="../portal-demo.js"></script>
   <script>
     (function () {
       var H = HEALTH, e = HP.esc, schemes = H.rights.schemes;
@@ -158,7 +179,7 @@
       function renderSwitch() {
         document.getElementById('right-switch').innerHTML = Object.keys(schemes).map(function (k) {
           var s = schemes[k];
-          return '<button class="filter-chip' + (k === state.right ? ' active' : '') + '" data-right="' + k + '">' +
+          return '<button type="button" class="dc-chip' + (k === state.right ? ' active' : '') + '" data-right="' + k + '" aria-pressed="' + (k === state.right) + '">' +
             e(s.shortName) + (k === H.rights.current ? ' · สิทธิของคุณ' : '') + '</button>';
         }).join('');
         document.querySelectorAll('[data-right]').forEach(function (b) {
@@ -195,7 +216,7 @@
               (f.sub ? '<span class="details-subvalue">' + e(f.sub) + '</span>' : '') + '</div>';
           }).join('') + '</div>';
 
-        document.getElementById('contact').innerHTML = HP.sectionTitle('หน่วยงานที่ดูแลสิทธิ', 'var(--secondary-40-main)') +
+        document.getElementById('contact').innerHTML = HP.sectionTitle('หน่วยงานที่ดูแลสิทธิ') +
           '<div class="details-list">' +
             HP.detailsItem('หน่วยงาน', e(s.agency)) +
             HP.detailsItem('สายด่วน', e(s.hotline)) +
@@ -204,7 +225,7 @@
           '<a class="btn btn-secondary" href="tel:' + s.hotline.replace(/[^0-9]/g, '') + '">' +
             '<span class="material-symbols-outlined">call</span>โทร ' + e(s.hotline) + '</a>';
 
-        document.getElementById('benefits').innerHTML = HP.sectionTitle('สิทธิประโยชน์ที่คุณได้รับ', 'var(--primary-40)') +
+        document.getElementById('benefits').innerHTML = HP.sectionTitle('สิทธิประโยชน์ที่คุณได้รับ') +
           '<p class="hp-muted" style="margin-bottom:var(--spacing-lg)">ความคุ้มครองหลักของ' + e(s.name) + '</p>' +
           '<div class="hp-benefits">' + s.benefits.map(function (b) {
             return '<div class="hp-benefit"><span class="hp-icon hp-icon--sm tone-' + s.tone + '"><span class="material-symbols-outlined">' + b.icon + '</span></span>' +

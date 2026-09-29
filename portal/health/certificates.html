@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">description</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -77,10 +77,11 @@
         document.getElementById('certs').innerHTML = list.length ? list.map(function (c) {
           var st = HP.certStatus(c);
           var expiry = c.expires ? (st.key === 'expired' ? 'หมดอายุ ' : 'ใช้ได้ถึง ') + HP.dateShort(c.expires) : 'ไม่ระบุวันหมดอายุ';
-          return '<a class="hp-cert" href="certificate.html?id=' + c.id + '">' +
+          return '<a class="list-item hp-cert" href="certificate.html?id=' + c.id + '">' +
             '<span class="hp-icon tone-' + (st.key === 'expired' ? 'neutral' : 'info') + '"><span class="material-symbols-outlined">description</span></span>' +
             '<div class="hp-visit-body">' +
-              '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag ' + st.tag + ' tag--sm tag--dot">' + st.label + '</span><span class="tag tag--sm">' + e(c.purpose) + '</span></div>' +
+              '<span class="tag ' + st.tag + ' tag--sm tag--dot list-badge--corner">' + st.label + '</span>' +
+              '<span class="list-item-label">' + e(c.purpose) + '</span>' +
               '<span class="hp-visit-title">' + e(c.title) + '</span>' +
               '<span class="hp-visit-sub">' + e(c.hospital) + '</span>' +
               '<div class="list-meta">' +

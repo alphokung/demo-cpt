@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">description</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -76,7 +76,7 @@
               c.usableFor.map(function (x) { return '<span class="tag">' + e(x) + '</span>'; }).join('') + '</div></span></div>' +
           '</div>' +
         '</div>' +
-        '<div class="card">' + HP.sectionTitle('ข้อมูลเอกสาร (Metadata)', 'var(--info-40)') +
+        '<div class="card">' + HP.sectionTitle('ข้อมูลเอกสาร (Metadata)') +
           '<div class="details-list">' +
             HP.detailsItem('เลขที่เอกสาร', e(c.id)) +
             HP.detailsItem('สถานพยาบาลผู้ออก', e(c.hospital) + ' (รหัส ' + e(c.hcode) + ')') +
@@ -92,7 +92,7 @@
       '</div>';
 
       /* ─── Document preview (ส่วนนี้คือสิ่งที่ถูกแปลงเป็น PDF) ─── */
-      html += '<div class="card">' + HP.sectionTitle('ตัวอย่างเอกสาร', 'var(--secondary-40-main)') +
+      html += '<div class="card">' + HP.sectionTitle('ตัวอย่างเอกสาร') +
         '<div class="hp-doc-wrap"><div class="hp-doc" id="doc">' +
           '<div class="hp-doc-head"><div><div class="hp-doc-hosp">' + e(c.hospital) + '</div><div style="font-size:12px;color:#555">รหัสสถานพยาบาล ' + e(c.hcode) + '</div></div>' +
             '<div class="hp-doc-ref">เลขที่ ' + e(c.id) + '<br>ออกให้ ณ วันที่ ' + HP.dateLong(c.issued) + '</div></div>' +

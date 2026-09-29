@@ -21,7 +21,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">checklist</span>
+            <span class="material-symbols-outlined">local_police</span>
           </div>
           <p class="top-nav-bar-title">Crime Portal</p>
         </div>
@@ -64,7 +64,7 @@
         '</div>' +
 
         '<div class="card">' +
-          '<div class="hp-section-head">' + CP.sectionTitle('ติดต่อ', 'var(--danger-40)') + '</div>' +
+          '<div class="hp-section-head">' + CP.sectionTitle('ติดต่อ') + '</div>' +
           '<div class="cp-contacts">' + g.contacts.map(function (c) { return CP.callBtn(c, 'tone-danger'); }).join('') + '</div>' +
           (g.links ? '<div class="cp-actions">' + g.links.map(function (l) {
             return '<button type="button" class="btn btn-outline" data-ext="' + l.service + '"><span class="material-symbols-outlined">open_in_new</span>' + e(l.label) + '</button>';
@@ -79,7 +79,7 @@
             }).join('') + '</ol>' +
           '</div>' +
           '<div class="card">' +
-            '<div class="hp-section-head">' + CP.sectionTitle('เอกสารที่ต้องนำไป', 'var(--secondary-40-main)') +
+            '<div class="hp-section-head">' + CP.sectionTitle('เอกสารที่ต้องนำไป') +
               '<span class="hp-count" id="doc-count"></span></div>' +
             '<ul class="cp-doc-list">' + g.documents.map(function (d, i) {
               return '<li><label><input type="checkbox" data-doc="' + i + '"><span>' + e(d) + '</span></label></li>';
@@ -88,7 +88,7 @@
           '</div>' +
         '</div>' +
 
-        (g.tips ? '<div class="card"><div class="hp-section-head">' + CP.sectionTitle('ข้อแนะนำ', 'var(--warning-40)') + '</div>' +
+        (g.tips ? '<div class="card"><div class="hp-section-head">' + CP.sectionTitle('ข้อแนะนำ') + '</div>' +
           '<div class="hp-stack">' + g.tips.map(function (t) {
             return '<div class="hp-notice hp-notice--warning"><span class="material-symbols-outlined">lightbulb</span><div>' + e(t) + '</div></div>';
           }).join('') + '</div></div>' : '') +

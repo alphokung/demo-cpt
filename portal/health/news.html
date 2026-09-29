@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">newspaper</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -75,14 +75,7 @@
 
       function render() {
         document.getElementById('news').innerHTML = H.news.filter(function (n) { return cat === 'all' || n.category === cat; }).map(function (n) {
-          return '<a class="hp-news" href="article.html?id=' + n.id + '">' +
-            '<div class="hp-news-cover tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
-            '<div class="hp-news-body">' +
-              '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span>' +
-              '<p class="hp-news-title">' + e(n.title) + '</p>' +
-              '<p class="hp-news-excerpt">' + e(n.excerpt) + '</p>' +
-              '<p class="hp-muted">' + e(n.source) + ' · ' + HP.dateShort(n.date) + ' · อ่าน ' + n.readMin + ' นาที</p>' +
-            '</div></a>';
+          return HP.newsCard(n);
         }).join('');
       }
 

@@ -11,10 +11,6 @@
 .ep-where-label { font-size: var(--font-size-label-m); color: var(--foreground-neutral-lighter); }
 .ep-where-value { font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); line-height: 1.35; color: var(--foreground-neutral-default); }
 .ep-where-sub { font-size: var(--font-size-body-s); color: var(--foreground-neutral-light); }
-.ep-demo { margin-top: var(--spacing-lg); }
-.ep-demo-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-sm); }
-@media (min-width: 640px) { .ep-demo-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
-.ep-demo .cp-select { width: 100%; min-width: 0; }
 
 /* ─── Filter toolbar ─── */
 .ep-filters { display: flex; flex-direction: column; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); }
@@ -25,7 +21,7 @@
 .ep-field .cp-select { width: 100%; min-width: 0; }
 .ep-toggle {
   padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-xl);
-  border: 1px solid var(--stroke-neutral-lighter); background: var(--background-neutral-lighter);
+  border: 1px solid var(--stroke-neutral-lighter); background: var(--canvas-white);
 }
 .ep-toggle.toggle-item .toggle-label { font-size: var(--font-size-body-m); }
 .ep-chips { margin-bottom: 0; }
@@ -41,18 +37,15 @@
 .ep-day:first-child { margin-top: 0; }
 
 /* ─── Alert row ─── */
-.ep-alert {
-  display: flex; gap: var(--spacing-md); align-items: flex-start; position: relative; overflow: hidden;
-  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) calc(var(--spacing-lg) + 4px);
-  border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter);
-  background: var(--background-neutral-lighter); color: inherit; text-decoration: none;
-  transition: border-color .2s, box-shadow .2s;
-}
-.ep-alert::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--stroke-neutral-lighter); }
-.ep-alert--danger::before  { background: var(--foreground-negative-default); }
-.ep-alert--warning::before { background: var(--foreground-warning-default); }
-.ep-alert--info::before    { background: var(--foreground-info-default); }
-.ep-alert:hover { border-color: var(--stroke-primary-default); box-shadow: var(--shadow-custom-lg); }
+/* card chrome from .list-item (added in markup); severity shown as the colour-coded
+   left border the dashboard uses on .notice-item */
+.ep-alert { align-items: flex-start; color: inherit; overflow: hidden; border-left-width: 3px; }
+.ep-alert--danger  { border-left-color: var(--foreground-negative-default); }
+.ep-alert--warning { border-left-color: var(--foreground-warning-default); }
+.ep-alert--info    { border-left-color: var(--foreground-info-default); }
+.ep-alert:hover.ep-alert--danger  { border-left-color: var(--foreground-negative-default); }
+.ep-alert:hover.ep-alert--warning { border-left-color: var(--foreground-warning-default); }
+.ep-alert:hover.ep-alert--info    { border-left-color: var(--foreground-info-default); }
 .ep-alert .hp-visit-body { gap: var(--spacing-xxs); }
 .ep-alert .chevron { color: var(--foreground-neutral-lighter); align-self: center; }
 .ep-alert-desc {
@@ -88,3 +81,6 @@
 
 .ep-area-list { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); }
 .ep-area-list .tag.is-mine { background: var(--primary-95); color: var(--primary-20); font-weight: var(--font-weight-600); }
+
+/* "กำลังมีผล" keeps its pulsing dot even when pinned to the row corner */
+.tag.list-badge--corner.ep-live::before { display: inline-block; }

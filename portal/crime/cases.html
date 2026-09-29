@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ข้อมูลคดี — ทางรัฐ</title>
+  <title>คดีและบันทึกประจำวัน — ทางรัฐ</title>
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
   <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
   <link rel="stylesheet" href="../../styles.css">
@@ -21,7 +21,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">folder_open</span>
+            <span class="material-symbols-outlined">local_police</span>
           </div>
           <p class="top-nav-bar-title">Crime Portal</p>
         </div>
@@ -29,15 +29,35 @@
 
       <main class="hp-main">
 
+        <!-- สรุปภาพรวมแต่ละประเภท (กดเพื่อเปิดแท็บ) -->
         <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สรุปภาพรวม</h3>
+            </div>
+          </div>
+          <div class="hp-summary cp-overview" id="overview" role="group" aria-label="สรุปภาพรวมแต่ละประเภท"></div>
+        </div>
+
+        <div class="card" id="records">
           <div class="tabs" id="case-tabs">
             <div class="tab-bar" role="tablist">
-              <button class="tab-btn active" data-panel="panel-criminal" onclick="switchTab('case-tabs','panel-criminal',this)">คดีอาญา</button>
+              <button class="tab-btn active" data-panel="panel-daily" onclick="switchTab('case-tabs','panel-daily',this)">บันทึกประจำวัน</button>
+              <button class="tab-btn" data-panel="panel-criminal" onclick="switchTab('case-tabs','panel-criminal',this)">คดีอาญา</button>
               <button class="tab-btn" data-panel="panel-traffic" onclick="switchTab('case-tabs','panel-traffic',this)">คดีจราจร</button>
               <button class="tab-btn" data-panel="panel-online" onclick="switchTab('case-tabs','panel-online',this)">คดีออนไลน์</button>
             </div>
             <div class="tab-panels">
-              <div class="tab-panel active" id="panel-criminal"><div class="hp-stack" data-type="criminal"></div></div>
+              <div class="tab-panel active" id="panel-daily">
+                <div class="accordion" id="logs"></div>
+                <div class="hp-notice" style="margin-top: var(--spacing-lg);">
+                  <span class="material-symbols-outlined">info</span>
+                  <div>บันทึกประจำวันเป็นการลงบันทึกไว้เป็นหลักฐาน <strong>ไม่ใช่การแจ้งความร้องทุกข์เพื่อดำเนินคดี</strong>
+                    หากต้องการให้ดำเนินคดี ต้องแจ้งความร้องทุกข์กับพนักงานสอบสวน ขอคัดสำเนาฉบับรับรองได้ที่สถานีตำรวจที่ลงบันทึก</div>
+                </div>
+              </div>
+              <div class="tab-panel" id="panel-criminal"><div class="hp-stack" data-type="criminal"></div></div>
               <div class="tab-panel" id="panel-traffic"><div class="hp-stack" data-type="traffic"></div></div>
               <div class="tab-panel" id="panel-online">
                 <div class="hp-notice" style="margin-bottom: var(--spacing-lg);">
@@ -73,19 +93,101 @@
   <script src="crime.js"></script>
   <script>
     (function () {
-      var C = CRIME;
-      CP.mountWelcome('ข้อมูลคดี', 'สถานะคดีที่คุณเกี่ยวข้อง ทั้งในฐานะผู้เสียหาย ผู้กล่าวหา หรือคู่กรณี');
+      var C = CRIME, e = CP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      CP.mountWelcome('คดีและบันทึกประจำวัน', 'บันทึกประจำวันและคดีที่คุณเกี่ยวข้อง ทั้งในฐานะผู้เสียหาย ผู้กล่าวหา หรือคู่กรณี');
 
-      document.querySelectorAll('[data-type]').forEach(function (el) {
-        var type = el.dataset.type;
-        var list = C.cases.filter(function (c) { return c.type === type; });
+      var TYPES = ['criminal', 'traffic', 'online'];
+      var byType = {};
+      TYPES.forEach(function (t) {
         // คดีที่ยังไม่สิ้นสุดขึ้นก่อน
-        list.sort(function (a, b) { return CP.isClosed(a) - CP.isClosed(b); });
-        el.innerHTML = list.length ? list.map(CP.caseRow).join('')
-          : '<div class="hp-empty"><span class="material-symbols-outlined">folder_off</span>ไม่พบ' + CP.caseTypes[type].label + 'ที่เกี่ยวข้องกับคุณ</div>';
-        var btn = document.querySelector('.tab-btn[data-panel="panel-' + type + '"]');
-        btn.textContent += ' (' + list.length + ')';
+        byType[t] = C.cases.filter(function (c) { return c.type === t; })
+          .sort(function (a, b) { return CP.isClosed(a) - CP.isClosed(b); });
       });
+      function tabBtn(key) { return document.querySelector('.tab-btn[data-panel="panel-' + key + '"]'); }
+
+      /* ─── สรุปภาพรวม ─── */
+      function tile(key, icon, tone, label, value, subs) {
+        return '<button type="button" class="hp-stat" data-tab="' + key + '" aria-pressed="false">' +
+          '<span class="hp-stat-label"><span class="hp-icon hp-icon--sm tone-' + tone + '"><span class="material-symbols-outlined">' + icon + '</span></span>' + label + '</span>' +
+          '<span class="hp-stat-value">' + value + '</span>' +
+          subs.filter(Boolean).map(function (s) { return '<span class="hp-stat-sub">' + s + '</span>'; }).join('') +
+        '</button>';
+      }
+      var year = new Date().getFullYear();
+      var logs = C.dailyLogs.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+      var html = tile('daily', 'menu_book', 'secondary', 'บันทึกประจำวัน', logs.length + ' รายการ', [
+        'ปีนี้ ' + logs.filter(function (l) { return new Date(l.date).getFullYear() === year; }).length + ' รายการ',
+        logs.length ? 'ล่าสุด ' + CP.dateShort(logs[0].date) : ''
+      ]);
+      TYPES.forEach(function (key) {
+        var t = CP.caseTypes[key], list = byType[key];
+        var open = list.filter(function (c) { return !CP.isClosed(c); });
+        var damage = list.reduce(function (s, c) { return s + (c.damage || 0); }, 0);
+        var next = open.filter(function (c) { return c.nextDate; }).map(function (c) { return c.nextDate; }).sort()[0];
+        html += tile(key, t.icon, t.tone, t.label, list.length + ' คดี', [
+          list.length ? 'ดำเนินการ ' + open.length + ' · สิ้นสุด ' + (list.length - open.length) : 'ไม่มีคดี',
+          next ? 'นัดถัดไป ' + CP.dateShort(next) : damage ? 'ความเสียหายรวม ' + CP.money(damage) : ''
+        ]);
+      });
+      $('overview').innerHTML = html;
+
+      function syncOverview() {
+        var active = document.querySelector('#case-tabs .tab-btn.active').dataset.panel.replace('panel-', '');
+        document.querySelectorAll('#overview [data-tab]').forEach(function (b) {
+          b.setAttribute('aria-pressed', b.dataset.tab === active ? 'true' : 'false');
+        });
+      }
+      $('overview').onclick = function (ev) {
+        var b = ev.target.closest('[data-tab]'); if (!b) return;
+        tabBtn(b.dataset.tab).click();
+        $('records').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      // แท็บเปลี่ยนได้ทั้งจากการกดแท็บ, กดการ์ดสรุป และ #hash ตอนโหลดหน้า (crime.js)
+      document.querySelector('#case-tabs .tab-bar').addEventListener('click', function () { setTimeout(syncOverview); });
+
+      /* ─── บันทึกประจำวัน ─── */
+      $('logs').innerHTML = logs.map(function (l) {
+        var p = CP.dateParts(l.date);
+        return '<div class="accordion-item">' +
+          '<div class="accordion-header" onclick="toggleAccordion(this)">' +
+            '<div class="cp-accordion-head">' +
+              '<div class="hp-date-box"><div class="hp-date-day">' + p.day + '</div><div class="hp-date-mon">' + p.mon + '</div><div class="hp-date-yr">' + p.yr + '</div></div>' +
+              '<div class="hp-visit-body">' +
+                '<span class="tag tag--sm" style="align-self:flex-start">' + e(l.category) + '</span>' +
+                '<span class="hp-visit-title">' + e(l.subject) + '</span>' +
+                '<span class="hp-visit-sub">' + e(l.entry) + ' · ' + e(l.station) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>' +
+          '</div>' +
+          '<div class="accordion-body"><div class="accordion-body-inner">' +
+            '<div class="details-list">' +
+              CP.detailsItem('เลขที่บันทึก', e(l.entry) + ' (' + e(l.id) + ')') +
+              CP.detailsItem('วันเวลา', CP.dateLong(l.date) + ' ' + CP.time(l.date)) +
+              CP.detailsItem('สถานีตำรวจ', e(l.station)) +
+              CP.detailsItem('เจ้าหน้าที่ผู้บันทึก', e(l.officer)) +
+              CP.detailsItem('วัตถุประสงค์', e(l.purpose)) +
+            '</div>' +
+            '<div class="hp-report" style="margin-top:var(--spacing-lg)"><p class="hp-report-title">รายละเอียด</p><p class="hp-report-text">' + e(l.detail) + '</p></div>' +
+            '<div class="cp-actions"><button type="button" class="btn btn-outline" data-copy="' + l.id + '"><span class="material-symbols-outlined">download</span>ดาวน์โหลดสำเนา (ไม่รับรอง)</button></div>' +
+          '</div></div>' +
+        '</div>';
+      }).join('') || '<div class="hp-empty"><span class="material-symbols-outlined">menu_book</span>ไม่มีบันทึกประจำวัน</div>';
+      document.querySelectorAll('[data-copy]').forEach(function (b) {
+        b.onclick = function () { CP.toast('ตัวอย่างการสาธิต — ยังไม่มีไฟล์สำเนาจริง', 'default', 'download'); };
+      });
+      tabBtn('daily').textContent += ' (' + logs.length + ')';
+
+      /* ─── คดี ─── */
+      TYPES.forEach(function (type) {
+        var list = byType[type];
+        document.querySelector('[data-type="' + type + '"]').innerHTML = list.length ? list.map(CP.caseRow).join('')
+          : '<div class="hp-empty"><span class="material-symbols-outlined">folder_off</span>ไม่พบ' + CP.caseTypes[type].label + 'ที่เกี่ยวข้องกับคุณ</div>';
+        tabBtn(type).textContent += ' (' + list.length + ')';
+      });
+
+      syncOverview();
     })();
   </script>
 </body>

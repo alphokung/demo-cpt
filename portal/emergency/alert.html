@@ -58,9 +58,9 @@
       var user = EP.user(), c = EP.category(a.category), s = EP.severity(a.severity), d = EP.delivery(a, user);
       document.title = a.title + ' — ทางรัฐ';
 
-      function section(title, color, body) {
-        return '<div class="card"><div class="hp-section-head"><div class="section-title-container"><div class="section-bar" style="background-color:' + color +
-          '"></div><h3 class="section-title">' + title + '</h3></div></div>' + body + '</div>';
+      function section(title, body) {
+        return '<div class="card"><div class="hp-section-head"><div class="section-title-container card-section__title-container"><div class="section-bar card-section__bar--primary"></div>' +
+          '<h3 class="section-title card-section__heading">' + title + '</h3></div></div>' + body + '</div>';
       }
 
       // สถานะการส่งถึงผู้ใช้
@@ -98,7 +98,7 @@
 
         '<div class="hp-stack ep-delivery">' + deliveryHtml + '</div>' +
 
-        section('รายละเอียด', 'var(--primary-40)',
+        section('รายละเอียด', 
           '<div class="details-list">' +
             EP.detailsItem('หน่วยงานที่แจ้ง', e(a.agency)) +
             EP.detailsItem('ประเภท', e(c.label)) +
@@ -108,13 +108,13 @@
             EP.detailsItem('รหัสการแจ้งเตือน', e(a.id)) +
           '</div>') +
 
-        section('ผู้รับการแจ้งเตือน', 'var(--secondary-40-main)',
+        section('ผู้รับการแจ้งเตือน', 
           '<div class="hp-stack">' +
             '<div><div class="hp-kv-label">พื้นที่แจ้งเตือน</div><div class="ep-area-list">' + areaTags + '</div></div>' +
             '<div><div class="hp-kv-label">กลุ่มเป้าหมาย</div><div class="hp-kv-value">' + e(EP.audienceLabel(a.audience)) + '</div></div>' +
           '</div>') +
 
-        section('สายด่วนฉุกเฉิน', 'var(--danger-40)', '<div class="cp-hotlines">' + E.hotlines.map(EP.callBtn).join('') + '</div>') +
+        section('สายด่วนฉุกเฉิน', '<div class="cp-hotlines">' + E.hotlines.map(EP.callBtn).join('') + '</div>') +
 
         '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
           'ข้อมูลจาก ' + e(a.agency) + ' ผ่านระบบ Cell Broadcast<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';

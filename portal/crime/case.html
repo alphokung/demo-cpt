@@ -21,7 +21,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">folder_open</span>
+            <span class="material-symbols-outlined">local_police</span>
           </div>
           <p class="top-nav-bar-title">Crime Portal</p>
         </div>
@@ -80,7 +80,7 @@
 
         '<div class="hp-grid-2">' +
           '<div class="card">' +
-            '<div class="hp-section-head">' + CP.sectionTitle('รายละเอียดคดี', 'var(--secondary-40-main)') + '</div>' +
+            '<div class="hp-section-head">' + CP.sectionTitle('รายละเอียดคดี') + '</div>' +
             '<div class="details-list">' +
               CP.detailsItem('เลขคดี', e(c.caseNo)) +
               CP.detailsItem('ข้อหา / ฐานความผิด', e(c.charge)) +
@@ -92,7 +92,7 @@
             '</div>' +
           '</div>' +
           '<div class="card">' +
-            '<div class="hp-section-head">' + CP.sectionTitle('พนักงานสอบสวนเจ้าของคดี', 'var(--info-40)') + '</div>' +
+            '<div class="hp-section-head">' + CP.sectionTitle('พนักงานสอบสวนเจ้าของคดี') + '</div>' +
             '<div class="hp-visit" style="border:none;padding:0">' +
               '<span class="hp-icon tone-primary"><span class="material-symbols-outlined">badge</span></span>' +
               '<div class="hp-visit-body"><span class="hp-visit-title">' + e(inv.name) + '</span><span class="hp-visit-sub">' + e(inv.position) + '</span></div>' +
@@ -105,7 +105,7 @@
         '</div>' +
 
         '<div class="card">' +
-          '<div class="hp-section-head">' + CP.sectionTitle('ความเคลื่อนไหวของคดี', 'var(--warning-40)') + '</div>' +
+          '<div class="hp-section-head">' + CP.sectionTitle('ความเคลื่อนไหวของคดี') + '</div>' +
           '<div class="timeline">' + c.timeline.slice().reverse().map(function (ev, i) {
             return '<div class="timeline-item' + (i === 0 ? ' is-active' : ' is-passed') + '">' +
               '<div class="timeline-item-dot"></div>' +

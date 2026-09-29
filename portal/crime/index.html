@@ -50,57 +50,20 @@
         <!-- สายด่วน -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--danger-40);"></div>
-              <h3 class="section-title">สายด่วนฉุกเฉิน</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สายด่วนฉุกเฉิน</h3>
             </div>
           </div>
           <div class="cp-hotlines" id="hotlines"></div>
         </div>
 
-        <!-- ข้อมูลของฉัน -->
-        <div class="card">
-          <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">ข้อมูลคดีความของฉัน</h3>
-            </div>
-          </div>
-          <nav class="hp-menu" aria-label="ข้อมูลคดีความของฉัน">
-            <a class="hp-tile" href="tickets.html">
-              <span class="hp-icon tone-warning"><span class="material-symbols-outlined">receipt_long</span></span>
-              <span class="hp-tile-title">ใบสั่งจราจร</span>
-              <span class="hp-tile-desc" id="tile-tickets">ใบสั่งและการชำระค่าปรับ</span>
-            </a>
-            <a class="hp-tile" href="daily-log.html">
-              <span class="hp-icon tone-secondary"><span class="material-symbols-outlined">menu_book</span></span>
-              <span class="hp-tile-title">บันทึกประจำวัน</span>
-              <span class="hp-tile-desc">รายการที่คุณลงบันทึกไว้กับตำรวจ</span>
-            </a>
-            <a class="hp-tile" href="cases.html#criminal">
-              <span class="hp-icon tone-danger"><span class="material-symbols-outlined">gavel</span></span>
-              <span class="hp-tile-title">คดีอาญา</span>
-              <span class="hp-tile-desc">สถานะคดีที่คุณเกี่ยวข้อง</span>
-            </a>
-            <a class="hp-tile" href="cases.html#traffic">
-              <span class="hp-icon tone-warning"><span class="material-symbols-outlined">car_crash</span></span>
-              <span class="hp-tile-title">คดีจราจร</span>
-              <span class="hp-tile-desc">อุบัติเหตุและคดีบนท้องถนน</span>
-            </a>
-            <a class="hp-tile" href="cases.html#online">
-              <span class="hp-icon tone-info"><span class="material-symbols-outlined">phishing</span></span>
-              <span class="hp-tile-title">คดีออนไลน์</span>
-              <span class="hp-tile-desc">การแจ้งความผ่าน thaipoliceonline</span>
-            </a>
-          </nav>
-        </div>
-
         <!-- สรุป -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-              <h3 class="section-title">สรุปภาพรวม</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สรุปภาพรวม</h3>
             </div>
           </div>
           <div class="hp-summary" id="summary"></div>
@@ -110,9 +73,9 @@
           <!-- คดีที่กำลังดำเนินการ -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--info-40);"></div>
-                <h3 class="section-title">คดีที่กำลังดำเนินการ</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">คดีที่กำลังดำเนินการ</h3>
               </div>
               <a class="hp-link" href="cases.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
             </div>
@@ -122,9 +85,9 @@
           <!-- ใบสั่งค้างชำระ -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--warning-40);"></div>
-                <h3 class="section-title">ใบสั่งค้างชำระ</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ใบสั่งค้างชำระ</h3>
               </div>
               <a class="hp-link" href="tickets.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
             </div>
@@ -135,9 +98,9 @@
         <!-- เครื่องมือ -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">ตรวจสอบและเตรียมตัว</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการด้านคดีความอื่นๆ</h3>
             </div>
           </div>
           <nav class="hp-menu cp-menu--4" aria-label="เครื่องมือตรวจสอบ">
@@ -162,46 +125,6 @@
               <span class="hp-tile-desc">แจ้งเบาะแสบุหรี่ไฟฟ้า แจ้งความออนไลน์</span>
             </a>
           </nav>
-        </div>
-
-        <div class="hp-grid-2">
-          <!-- ค้นหาคู่มือ -->
-          <div class="card">
-            <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-                <h3 class="section-title">จะไปสถานีตำรวจเรื่องอะไร?</h3>
-              </div>
-            </div>
-            <form class="cp-form" action="station-guide.html" method="get">
-              <label class="hp-search">
-                <span class="material-symbols-outlined">search</span>
-                <input type="search" name="q" placeholder="เช่น คนหาย ถูกโกงออนไลน์ ป้ายทะเบียนหาย" aria-label="ค้นหาเรื่องที่จะไปติดต่อ">
-              </label>
-            </form>
-            <div class="hp-stack" id="popular-guides" style="margin-top: var(--spacing-lg);"></div>
-          </div>
-
-          <!-- เช็กมิจฉาชีพ -->
-          <div class="card">
-            <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--warning-40);"></div>
-                <h3 class="section-title">เช็กก่อนโอน</h3>
-              </div>
-            </div>
-            <form class="cp-form" action="scam-check.html" method="get">
-              <label class="hp-search">
-                <span class="material-symbols-outlined">gpp_maybe</span>
-                <input type="search" name="q" inputmode="numeric" placeholder="เบอร์โทร หรือ เลขบัญชี" aria-label="เบอร์โทรหรือเลขบัญชีที่ต้องการตรวจสอบ">
-              </label>
-              <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">search</span>ตรวจสอบ</button>
-            </form>
-            <div class="hp-notice hp-notice--warning" style="margin-top: var(--spacing-lg);">
-              <span class="material-symbols-outlined">info</span>
-              <div>ตำรวจไม่มีนโยบายให้โอนเงินเพื่อ "ตรวจสอบบัญชี" และไม่ส่งหมายเรียกผ่าน LINE หากสงสัย โทร 1441</div>
-            </div>
-          </div>
         </div>
 
         <div class="source-note">
@@ -248,7 +171,6 @@
 
       document.getElementById('hotlines').innerHTML = C.hotlines.map(function (h) { return CP.callBtn(h, 'tone-' + h.tone); }).join('');
 
-      document.getElementById('tile-tickets').textContent = unpaid.length ? 'ค้างชำระ ' + unpaid.length + ' รายการ' : 'ไม่มีใบสั่งค้างชำระ';
 
       // ─── สรุป ───
       function stat(href, icon, label, value, sub) {
@@ -259,7 +181,7 @@
         stat('tickets.html', 'receipt_long', 'ใบสั่งค้างชำระ', unpaid.length + ' ใบ', 'รวม ' + CP.money(unpaidSum)) +
         stat('cases.html', 'folder_open', 'คดีที่ดำเนินการอยู่', active.length + ' คดี', 'จากทั้งหมด ' + C.cases.length + ' คดี') +
         stat('cases.html#online', 'phishing', 'คดีออนไลน์', C.cases.filter(function (c) { return c.type === 'online'; }).length + ' คดี', 'แจ้งผ่าน thaipoliceonline') +
-        stat('daily-log.html', 'menu_book', 'บันทึกประจำวัน', C.dailyLogs.length + ' รายการ', 'ล่าสุด ' + CP.dateShort(C.dailyLogs[0].date));
+        stat('cases.html#daily', 'menu_book', 'บันทึกประจำวัน', C.dailyLogs.length + ' รายการ', 'ล่าสุด ' + CP.dateShort(C.dailyLogs[0].date));
 
       // ─── คดีที่ดำเนินการ ───
       document.getElementById('active-cases').innerHTML = active.length
@@ -269,21 +191,14 @@
       // ─── ใบสั่งค้างชำระ ───
       document.getElementById('unpaid').innerHTML = unpaid.length ? unpaid.map(function (t) {
         var st = CP.ticketStatus(t);
-        return '<a class="hp-visit" href="tickets.html#' + t.id + '">' +
+        return '<a class="list-item hp-visit" href="tickets.html#' + t.id + '">' +
           '<span class="hp-icon tone-' + st.tone + '"><span class="material-symbols-outlined">receipt_long</span></span>' +
-          '<div class="hp-visit-body"><span class="tag ' + st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + st.label +
+          '<div class="hp-visit-body"><span class="tag ' + st.tag + ' tag--sm tag--dot list-badge--corner">' + st.label +
             (st.key === 'overdue' ? ' ' + Math.abs(st.days) + ' วัน' : ' · อีก ' + st.days + ' วัน') + '</span>' +
           '<span class="hp-visit-title">' + e(t.violation) + '</span><span class="hp-visit-sub">' + e(t.plate) + ' · ' + CP.dateShort(t.date) + '</span></div>' +
           '<span class="cp-ticket-amount' + (st.key === 'overdue' ? ' is-danger' : '') + '">' + t.fine.toLocaleString('th-TH') + ' ฿</span></a>';
       }).join('') : '<div class="hp-empty"><span class="material-symbols-outlined">check_circle</span>ไม่มีใบสั่งค้างชำระ</div>';
 
-      // ─── คู่มือยอดนิยม (เร่งด่วนก่อน) ───
-      document.getElementById('popular-guides').innerHTML = C.guides.filter(function (g) { return g.tags.indexOf('urgent') >= 0; }).slice(0, 3).map(function (g) {
-        return '<a class="hp-visit" href="guide.html?id=' + g.id + '">' +
-          '<span class="hp-icon hp-icon--sm tone-' + g.tone + '"><span class="material-symbols-outlined">' + g.icon + '</span></span>' +
-          '<div class="hp-visit-body"><span class="hp-visit-title">' + e(g.title) + '</span><div class="cp-guide-tags">' + CP.guideTagsHtml(g) + '</div></div>' +
-          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
-      }).join('') + '<a class="hp-link" href="station-guide.html" style="align-self:flex-end">ดูเรื่องทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>';
     })();
   </script>
 </body>

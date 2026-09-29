@@ -14,13 +14,12 @@
 .mp-hero-sub { font-size: var(--font-size-label-m); color: var(--foreground-neutral-lighter); }
 
 /* ─── Due list (hub + per page) ─── */
-.mp-due {
-  display: flex; gap: var(--spacing-md); align-items: center; padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter);
-  background: var(--background-neutral-lighter); color: inherit; text-decoration: none;
-  transition: border-color .2s, box-shadow .2s;
+/* clickable rows add .list-item for the dashboard card chrome; static rows (donations) get the same look without hover */
+.mp-due { display: flex; gap: var(--spacing-md); align-items: center; color: inherit; text-decoration: none; }
+.mp-due:not(.list-item), .mp-asset {
+  padding: var(--spacing-lg) var(--spacing-xl); min-height: 72px;
+  border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter); background: var(--canvas-white);
 }
-a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--shadow-custom-lg); }
 .mp-due .hp-visit-body { gap: 2px; }
 .mp-due .chevron { color: var(--foreground-neutral-lighter); }
 .mp-amount { font-weight: var(--font-weight-700); font-size: var(--font-size-body-l); white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--foreground-neutral-default); }
@@ -28,8 +27,6 @@ a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--
 .mp-amount.is-muted { color: var(--foreground-neutral-lighter); font-weight: var(--font-weight-600); }
 
 /* ─── Summary stat tile as link ─── */
-.mp-stat-link { color: inherit; text-decoration: none; transition: border-color .2s, box-shadow .2s; }
-.mp-stat-link:hover { border-color: var(--stroke-primary-default); box-shadow: var(--shadow-custom-lg); }
 .hp-stat-value.is-danger { color: var(--foreground-negative-default); }
 .hp-stat-value.is-positive { color: var(--foreground-positive-default); }
 
@@ -56,7 +53,7 @@ a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--
 .mp-delta.is-up { color: var(--foreground-warning-dark); }
 .mp-delta.is-down { color: var(--foreground-positive-default); }
 
-.mp-bill-amount { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-md); padding: var(--spacing-lg); border-radius: var(--radius-lg); background: var(--background-neutral-light); flex-wrap: wrap; }
+.mp-bill-amount { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-md); padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--radius-xl); background: var(--background-neutral-light); flex-wrap: wrap; }
 .mp-bill-amount strong { font-size: var(--font-size-title-l); font-weight: var(--font-weight-700); font-variant-numeric: tabular-nums; }
 
 /* ─── Bar chart (usage) ─── */
@@ -73,11 +70,12 @@ a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--
   position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
   background: var(--foreground-neutral-default); color: var(--canvas-white, #fff);
   font-size: var(--font-size-label-m); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-md);
-  white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s; z-index: 2;
+  white-space: nowrap; pointer-events: none; z-index: 2;
+  display: none;   /* not just transparent — a hidden tip must not widen the page */
 }
-.mp-bar:hover .mp-bar-tip, .mp-bar:focus-visible .mp-bar-tip { opacity: 1; }
-.mp-bar:first-child .mp-bar-tip { left: 0; transform: none; }
-.mp-bar:last-child .mp-bar-tip { left: auto; right: 0; transform: none; }
+.mp-bar:hover .mp-bar-tip, .mp-bar:focus-visible .mp-bar-tip { display: block; }
+.mp-bar:nth-child(-n+2) .mp-bar-tip { left: 0; transform: none; }
+.mp-bar:nth-last-child(-n+2) .mp-bar-tip { left: auto; right: 0; transform: none; }
 
 /* ─── History table (bills / tax) ─── */
 .mp-table-wrap { overflow-x: auto; border: 1px solid var(--stroke-neutral-lighter); border-radius: var(--radius-lg); }
@@ -107,7 +105,7 @@ a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--
 .mp-assets { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-md); }
 @media (min-width: 640px) { .mp-assets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .mp-assets { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.mp-asset { display: flex; gap: var(--spacing-md); align-items: flex-start; padding: var(--spacing-lg); border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter); background: var(--background-neutral-lighter); min-width: 0; }
+.mp-asset { display: flex; gap: var(--spacing-md); align-items: center; min-width: 0; }
 .mp-asset .hp-visit-sub { white-space: normal; }
 
 /* ─── Tax breakdown ─── */
@@ -131,9 +129,9 @@ a.mp-due:hover { border-color: var(--stroke-primary-default); box-shadow: var(--
 .mp-upcoming { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-md); }
 @media (min-width: 768px) { .mp-upcoming { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .mp-upcoming { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.mp-soon { display: flex; flex-direction: column; gap: var(--spacing-sm); padding: var(--spacing-lg); border-radius: var(--radius-xl); border: 1px dashed var(--stroke-neutral-default); background: var(--background-neutral-lighter); }
+.mp-soon { display: flex; flex-direction: column; gap: var(--spacing-sm); padding: var(--spacing-lg) var(--spacing-xl); border-radius: var(--radius-xl); border: 1px dashed var(--stroke-neutral-default); background: var(--canvas-white); }
 .mp-soon-head { display: flex; gap: var(--spacing-md); align-items: flex-start; }
-.mp-soon-title { font-weight: var(--font-weight-600); font-size: var(--font-size-body-m); line-height: 1.4; }
+.mp-soon-title { font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); line-height: 1.4; }
 .mp-soon-desc { font-size: var(--font-size-body-s); color: var(--foreground-neutral-light); line-height: 1.6; }
 
 .mp-actions { display: flex; gap: var(--spacing-md); flex-wrap: wrap; margin-top: var(--spacing-lg); }

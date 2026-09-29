@@ -81,11 +81,11 @@
     /** แถวสรุปคดี ใช้ทั้งหน้า hub และหน้ารายการ */
     caseRow: function (c) {
       var t = CASE_TYPES[c.type], st = CP.caseStatus(c), e = CP.esc;
-      return '<a class="hp-visit cp-case" href="case.html?id=' + c.id + '">' +
+      return '<a class="list-item hp-visit cp-case" href="case.html?id=' + c.id + '">' +
         '<span class="hp-icon tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
         '<div class="hp-visit-body">' +
-          '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag ' + st.tag + ' tag--sm tag--dot">' + e(st.label) + '</span>' +
-            '<span class="tag tag--sm">' + e(t.label) + '</span><span class="tag tag--sm">' + e(c.role) + '</span></div>' +
+          '<span class="tag ' + st.tag + ' tag--sm tag--dot list-badge--corner">' + e(st.label) + '</span>' +
+          '<span class="list-item-label">' + e(t.label) + ' · ' + e(c.role) + '</span>' +
           '<span class="hp-visit-title">' + e(c.title) + '</span>' +
           '<span class="hp-visit-sub">' + e(c.caseNo) + ' · ' + e(c.station) + '</span>' +
           '<div class="cp-progress" aria-hidden="true"><span style="width:' + Math.round(c.stage / (CP.stagesOf(c).length - 1) * 100) + '%"></span></div>' +
@@ -121,9 +121,9 @@
         '<small>' + CP.esc(h.label) + '</small></span></a>';
     },
 
-    sectionTitle: function (title, color) {
-      return '<div class="section-title-container"><div class="section-bar" style="background-color:' +
-        (color || 'var(--primary-40)') + '"></div><h3 class="section-title">' + title + '</h3></div>';
+    sectionTitle: function (title) {
+      return '<div class="section-title-container card-section__title-container"><div class="section-bar card-section__bar--primary"></div>' +
+        '<h3 class="section-title card-section__heading">' + title + '</h3></div>';
     },
 
     detailsItem: function (label, value, cls) {
@@ -187,7 +187,7 @@
     openExternal: function (svc) {
       if (typeof svc === 'string') svc = CP.service(svc);
       var go = function () { window.open(svc.url, '_blank', 'noopener'); };
-      if (!window.ThaiAlert) return go();
+      if (typeof ThaiAlert === 'undefined') return go();
       ThaiAlert.confirm({
         title: 'กำลังออกจากทางรัฐ',
         message: 'ระบบจะเปิดเว็บไซต์ "' + svc.name + '" ของ' + svc.agency + ' ในแท็บใหม่ ต้องการดำเนินการต่อหรือไม่',
@@ -209,11 +209,13 @@
     var s = CP.dateLong(now) + ' เวลา ' + CP.time(now);
     document.querySelectorAll('.source-note-time').forEach(function (e) { e.textContent = s; });
 
-    var hash = location.hash.replace('#', '');
-    if (hash) {
-      var btn = document.querySelector('.tab-btn[data-panel="panel-' + hash + '"]');
-      if (btn) btn.click();
+    function openHashTab() {
+      var hash = location.hash.replace('#', '');
+      var btn = hash && document.querySelector('.tab-btn[data-panel="panel-' + hash + '"]');
+      if (btn && !btn.classList.contains('active')) btn.click();
     }
+    openHashTab();
+    window.addEventListener('hashchange', openHashTab);
 
     document.addEventListener('click', function (ev) {
       var a = ev.target.closest('[data-ext]');

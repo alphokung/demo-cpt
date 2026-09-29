@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">newspaper</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -62,15 +62,14 @@
       document.getElementById('article').innerHTML =
         '<article class="card">' +
           '<div class="hp-article-cover tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
-          '<div class="hp-row" style="margin-bottom:var(--spacing-md)"><span class="tag tag--sm">' + e(n.category) + '</span>' +
-            '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span></div>' +
+          '<div class="hp-row" style="margin-bottom:var(--spacing-md)"><span class="tag tag--sm">' + e(n.category) + '</span></div>' +
           '<h1 class="hp-article-title">' + e(n.title) + '</h1>' +
           '<p class="hp-muted" style="margin:var(--spacing-sm) 0 var(--spacing-xl)">' + e(n.source) + ' · ' + HP.dateLong(n.date) + ' · อ่าน ' + n.readMin + ' นาที</p>' +
           '<div class="hp-article-body">' + n.body.map(block).join('') + '</div>' +
           '<div class="hp-notice" style="margin-top:var(--spacing-2xl)"><span class="material-symbols-outlined">info</span>' +
             '<div>ข้อมูลนี้เป็นความรู้ทั่วไป ไม่สามารถใช้แทนคำแนะนำของแพทย์ หากมีอาการผิดปกติควรปรึกษาแพทย์</div></div>' +
         '</article>' +
-        '<div class="card">' + HP.sectionTitle('บทความที่เกี่ยวข้อง', 'var(--warning-40)') +
+        '<div class="card">' + HP.sectionTitle('บทความที่เกี่ยวข้อง') +
           related.map(function (r) {
             return '<a class="hp-news-row" href="article.html?id=' + r.id + '">' +
               '<span class="hp-icon tone-' + r.tone + '"><span class="material-symbols-outlined">' + r.icon + '</span></span>' +

@@ -21,7 +21,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">checklist</span>
+            <span class="material-symbols-outlined">local_police</span>
           </div>
           <p class="top-nav-bar-title">Crime Portal</p>
         </div>
@@ -87,7 +87,7 @@
         list.sort(function (a, b) { return (b.tags.indexOf('urgent') >= 0) - (a.tags.indexOf('urgent') >= 0); });
         document.getElementById('count').textContent = 'พบ ' + list.length + ' เรื่อง';
         document.getElementById('list').innerHTML = list.length ? list.map(function (g) {
-          return '<a class="cp-guide" href="guide.html?id=' + g.id + '">' +
+          return '<a class="list-item cp-guide" href="guide.html?id=' + g.id + '">' +
             '<span class="hp-icon tone-' + g.tone + '"><span class="material-symbols-outlined">' + g.icon + '</span></span>' +
             '<div class="hp-stack" style="gap:var(--spacing-xs);flex:1;min-width:0">' +
               '<span class="cp-guide-title">' + e(g.title) + '</span>' +

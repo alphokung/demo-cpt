@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">clinical_notes</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -115,10 +115,10 @@
           if (v.meds.length) counts.push('ยา ' + v.meds.length);
           if (v.procedures.length) counts.push('หัตถการ ' + v.procedures.length);
           if (v.reports.length) counts.push('รายงานผล ' + v.reports.length);
-          return '<a class="hp-visit" href="visit.html?id=' + v.id + '">' +
+          return '<a class="list-item hp-visit" href="visit.html?id=' + v.id + '">' +
             '<div class="hp-date-box"><div class="hp-date-day">' + p.day + '</div><div class="hp-date-mon">' + p.mon + '</div><div class="hp-date-yr">' + p.yr + '</div></div>' +
             '<div class="hp-visit-body">' +
-              '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag tag--info tag--sm">' + e(v.patientType) + '</span><span class="tag tag--sm">' + e(v.diagnoses[0].code) + '</span></div>' +
+              '<span class="list-item-label">' + e(v.patientType) + ' · ' + e(v.diagnoses[0].code) + '</span>' +
               '<span class="hp-visit-title">' + e(v.clinic) + ' · ' + e(v.hospital) + '</span>' +
               '<span class="hp-visit-sub">' + e(v.diagnoses[0].name) + '</span>' +
               '<span class="hp-muted">' + counts.join(' · ') + '</span>' +

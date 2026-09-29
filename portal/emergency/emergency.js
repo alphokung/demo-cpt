@@ -116,11 +116,13 @@
       return ps.length > 2 ? ps.slice(0, 2).join(', ') + ' และอีก ' + (ps.length - 2) + ' จังหวัด' : ps.join(', ');
     },
 
-    statusTag: function (a) {
-      if (a.resolved) return '<span class="tag tag--success tag--sm tag--dot">คลี่คลายแล้ว</span>';
+    /** cls: extra classes, e.g. 'list-badge--corner' to pin it to a row's corner */
+    statusTag: function (a, cls) {
+      cls = cls ? ' ' + cls : '';
+      if (a.resolved) return '<span class="tag tag--success tag--sm tag--dot' + cls + '">คลี่คลายแล้ว</span>';
       return EP.isActive(a)
-        ? '<span class="tag tag--danger tag--sm tag--dot ep-live">กำลังมีผล</span>'
-        : '<span class="tag tag--sm">สิ้นสุดแล้ว</span>';
+        ? '<span class="tag tag--danger tag--sm tag--dot ep-live' + cls + '">กำลังมีผล</span>'
+        : '<span class="tag tag--sm' + cls + '">สิ้นสุดแล้ว</span>';
     },
     severityTag: function (a) { var s = EP.severity(a.severity); return '<span class="tag ' + s.tag + ' tag--sm">' + s.label + '</span>'; },
     categoryTag: function (a) {
@@ -134,10 +136,11 @@
       var c = EP.category(a.category), s = EP.severity(a.severity), e = EP.esc, d = EP.delivery(a, u);
       var note = !d.received && opts.showDelivery
         ? '<span class="ep-miss"><span class="material-symbols-outlined">notifications_off</span>ไม่ได้ส่งถึงคุณ · ' + e(d.reasons.join(' · ')) + '</span>' : '';
-      return '<a class="ep-alert ep-alert--' + s.tone + (EP.isActive(a) ? ' is-active' : '') + '" href="alert.html?id=' + a.id + '">' +
+      return '<a class="list-item ep-alert ep-alert--' + s.tone + (EP.isActive(a) ? ' is-active' : '') + '" href="alert.html?id=' + a.id + '">' +
         '<span class="hp-icon tone-' + c.tone + '"><span class="material-symbols-outlined">' + c.icon + '</span></span>' +
         '<div class="hp-visit-body">' +
-          '<div class="hp-row" style="gap:var(--spacing-xs)">' + EP.statusTag(a) + EP.severityTag(a) + (opts.hideCategory ? '' : EP.categoryTag(a)) + '</div>' +
+          EP.statusTag(a, 'list-badge--corner') +
+          '<div class="hp-row" style="gap:var(--spacing-xs)">' + EP.severityTag(a) + (opts.hideCategory ? '' : EP.categoryTag(a)) + '</div>' +
           '<span class="hp-visit-title">' + e(a.title) + '</span>' +
           '<span class="ep-alert-desc">' + e(a.description) + '</span>' +
           '<span class="ep-meta">' +

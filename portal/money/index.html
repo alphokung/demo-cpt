@@ -63,9 +63,9 @@
         <!-- เมนู -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">การเงินของฉัน</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">การเงินของฉัน</h3>
             </div>
           </div>
           <nav class="hp-menu" aria-label="การเงินของฉัน">
@@ -100,9 +100,9 @@
         <!-- สรุป -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-              <h3 class="section-title">สรุปภาพรวม</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สรุปภาพรวม</h3>
             </div>
           </div>
           <div class="hp-summary" id="summary"></div>
@@ -112,9 +112,9 @@
           <!-- ใบสั่ง -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--danger-40);"></div>
-                <h3 class="section-title">ใบสั่งจราจรค้างชำระ</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ใบสั่งจราจรค้างชำระ</h3>
               </div>
             </div>
             <div class="mp-cta" id="tickets"></div>
@@ -123,9 +123,9 @@
           <!-- บริจาค -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--success-40, var(--primary-40));"></div>
-                <h3 class="section-title">การบริจาคปีนี้</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">การบริจาคปีนี้</h3>
               </div>
               <a class="hp-link" href="donations.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
             </div>
@@ -136,9 +136,9 @@
         <!-- ทรัพย์สิน -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">ทรัพย์สินในชื่อของฉัน</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ทรัพย์สินในชื่อของฉัน</h3>
             </div>
             <a class="hp-link" href="land-tax.html">ภาษีที่ดิน <span class="material-symbols-outlined">chevron_right</span></a>
           </div>
@@ -216,12 +216,12 @@
       var nOver = items.filter(function (x) { return x.st.key === 'overdue'; }).length;
       $('grand-sub').textContent = items.length + ' รายการ' + (nOver ? ' · เลยกำหนด ' + nOver + ' รายการ' : '') + ' · ข้อมูล ณ ' + MP.dateLong(MP.now);
       $('due-list').innerHTML = items.map(function (x) {
-        return '<a class="mp-due" href="' + x.href + '">' +
+        return '<a class="list-item mp-due" href="' + x.href + '">' +
           '<span class="hp-icon hp-icon--sm tone-' + x.tone + '"><span class="material-symbols-outlined">' + x.icon + '</span></span>' +
           '<div class="hp-visit-body">' +
             '<span class="hp-visit-title">' + e(x.title) + '</span>' +
             '<span class="hp-visit-sub">' + e(x.sub) + '</span>' +
-            '<span class="tag ' + x.st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + e(x.st.label) + '</span>' +
+            '<span class="tag ' + x.st.tag + ' tag--sm tag--dot list-badge--corner">' + e(x.st.label) + '</span>' +
           '</div>' +
           '<span class="mp-amount' + (x.st.key === 'overdue' ? ' is-danger' : '') + '">' + MP.money(x.amount) + '</span>' +
           '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
@@ -241,7 +241,7 @@
         .reduce(function (s, m) { return s + MP.usage(MP.currentBill(m)); }, 0);
       var taxYear = M.landTax.filter(function (t) { return t.year === year; }).reduce(function (s, t) { return s + t.tax; }, 0);
       function stat(href, icon, label, value, sub, cls) {
-        return '<a class="hp-stat mp-stat-link" href="' + href + '">' +
+        return '<a class="hp-stat" href="' + href + '">' +
           '<span class="hp-stat-label"><span class="material-symbols-outlined">' + icon + '</span>' + label + '</span>' +
           '<span class="hp-stat-value' + (cls ? ' ' + cls : '') + '">' + value + '</span>' +
           '<span class="hp-stat-sub">' + sub + '</span></a>';

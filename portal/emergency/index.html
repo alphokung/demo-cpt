@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../health/health.css">
   <link rel="stylesheet" href="../crime/crime.css">
   <link rel="stylesheet" href="emergency.css">
+  <link rel="stylesheet" href="../../demo-tools.css">
 </head>
 <body>
   <div class="app-container">
@@ -56,21 +57,14 @@
               <span class="ep-where-sub" id="who"></span>
             </div>
           </div>
-          <div class="hp-demo-switch ep-demo">
-            <span class="hp-demo-switch-label"><span class="material-symbols-outlined">science</span>จำลองผู้ใช้ (สำหรับสาธิต) — ระบบจริงใช้ตำแหน่งจากโทรศัพท์และข้อมูลทะเบียนราษฎร</span>
-            <div class="ep-demo-row">
-              <select class="cp-select" id="demo-location" aria-label="จำลองพื้นที่ปัจจุบัน"></select>
-              <select class="cp-select" id="demo-persona" aria-label="จำลองเพศและอายุ"></select>
-            </div>
-          </div>
         </div>
 
         <!-- กำลังมีผลในพื้นที่ของคุณ -->
         <div class="card" id="active-card" hidden>
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--danger-40);"></div>
-              <h3 class="section-title">กำลังมีผลในพื้นที่ของคุณ</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">กำลังมีผลในพื้นที่ของคุณ</h3>
             </div>
           </div>
           <div class="hp-stack" id="active"></div>
@@ -79,9 +73,9 @@
         <!-- สายด่วน -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--danger-40);"></div>
-              <h3 class="section-title">สายด่วนฉุกเฉิน</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สายด่วนฉุกเฉิน</h3>
             </div>
           </div>
           <div class="cp-hotlines" id="hotlines"></div>
@@ -90,9 +84,9 @@
         <!-- ประวัติการแจ้งเตือน -->
         <div class="card" id="history">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">ประวัติการแจ้งเตือน</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ประวัติการแจ้งเตือน</h3>
             </div>
           </div>
 
@@ -139,6 +133,35 @@
     </div>
   </div>
 
+  <!-- ปุ่ม Demo ลอย + modal ตั้งค่า (แบบเดียวกับ dashboard-with-consent.html) -->
+  <button type="button" class="demo-fab" data-demo-open="modal-demo-config" aria-haspopup="dialog">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
+    Demo การแสดงผล
+  </button>
+  <div id="modal-demo-config" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content modal__content--flex-col" role="dialog" aria-modal="true" aria-labelledby="dc-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="dc-title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองผู้ใช้ — ระบบจริงใช้ตำแหน่งจากโทรศัพท์และข้อมูลทะเบียนราษฎร</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-demo-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dc-modal__body">
+        <div class="dc-group">
+          <p class="dc-group-label">📍 พื้นที่ปัจจุบัน</p>
+          <div class="dc-chips dc-chips--wrap" id="demo-location" role="group" aria-label="จำลองพื้นที่ปัจจุบัน"></div>
+        </div>
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">👤 เพศและอายุ</p>
+          <div class="dc-chips dc-chips--wrap" id="demo-persona" role="group" aria-label="จำลองเพศและอายุ"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
           onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="material-symbols-outlined">arrow_upward</span>
@@ -146,6 +169,7 @@
 
   <script src="emergency-data.js"></script>
   <script src="emergency.js"></script>
+  <script src="../portal-demo.js"></script>
   <script>
     (function () {
       var E = EMERGENCY, e = EP.esc;
@@ -181,19 +205,26 @@
 
       /* ─── จำลองผู้ใช้ ─── */
       var demo = EP.demo();
-      $('demo-location').innerHTML = E.demoLocations.map(function (l, i) {
-        return '<option value="' + i + '">📍 ' + e(EP.locationLabel(l)) + '</option>';
-      }).join('');
-      $('demo-persona').innerHTML = E.demoPersonas.map(function (p) {
-        return '<option value="' + p.key + '">👤 ' + e(p.label) + '</option>';
-      }).join('');
-      function syncDemoSelects() {
-        var loc = user.location;
-        E.demoLocations.forEach(function (l, i) { if (l.province === loc.province && l.district === loc.district) $('demo-location').value = i; });
-        $('demo-persona').value = demo.persona || E.demoPersonas[0].key;
+      function chip(attr, value, label, active) {
+        return '<button type="button" class="dc-chip' + (active ? ' active' : '') + '" ' + attr + '="' + value + '" aria-pressed="' + active + '">' + e(label) + '</button>';
       }
-      $('demo-location').onchange = function () { demo.location = E.demoLocations[this.value]; EP.saveDemo(demo); refreshUser(); };
-      $('demo-persona').onchange = function () { demo.persona = this.value; EP.saveDemo(demo); refreshUser(); };
+      function syncDemoSelects() {
+        var loc = user.location, persona = demo.persona || E.demoPersonas[0].key;
+        $('demo-location').innerHTML = E.demoLocations.map(function (l, i) {
+          return chip('data-loc', i, EP.locationLabel(l), l.province === loc.province && l.district === loc.district);
+        }).join('');
+        $('demo-persona').innerHTML = E.demoPersonas.map(function (p) {
+          return chip('data-persona', p.key, p.label, p.key === persona);
+        }).join('');
+      }
+      $('demo-location').onclick = function (ev) {
+        var b = ev.target.closest('[data-loc]'); if (!b) return;
+        demo.location = E.demoLocations[b.dataset.loc]; EP.saveDemo(demo); refreshUser();
+      };
+      $('demo-persona').onclick = function (ev) {
+        var b = ev.target.closest('[data-persona]'); if (!b) return;
+        demo.persona = b.dataset.persona; EP.saveDemo(demo); refreshUser();
+      };
 
       function refreshUser() {
         user = EP.user();

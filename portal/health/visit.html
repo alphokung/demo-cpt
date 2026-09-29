@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">clinical_notes</span>
+            <span class="material-symbols-outlined">health_and_safety</span>
           </div>
           <p class="top-nav-bar-title">Health Portal</p>
         </div>
@@ -47,7 +47,7 @@
       var v = hl.visits.filter(function (x) { return x.id === HP.qs('id'); })[0] || hl.visits[0];
 
       function empty(icon, text) { return '<div class="hp-empty"><span class="material-symbols-outlined">' + icon + '</span>' + text + '</div>'; }
-      function card(id, title, color, inner) { return '<div class="card" id="' + id + '" style="scroll-margin-top:72px">' + HP.sectionTitle(title, color) + inner + '</div>'; }
+      function card(id, title, inner) { return '<div class="card" id="' + id + '" style="scroll-margin-top:72px">' + HP.sectionTitle(title) + inner + '</div>'; }
 
       /* ─── Header ─── */
       var html = HP.welcome('รายละเอียดการรักษา',
@@ -60,7 +60,7 @@
       }).join('') + '</div></div>';
 
       /* ─── 1. ข้อมูลการเข้ารับบริการ ─── */
-      html += card('sec-info', 'ข้อมูลการเข้ารับบริการ', 'var(--primary-40)',
+      html += card('sec-info', 'ข้อมูลการเข้ารับบริการ', 
         '<div class="details-list">' +
           HP.detailsItem('วันที่เข้ารับบริการ', HP.dateLong(v.date) + ' เวลา ' + HP.time(v.date)) +
           HP.detailsItem('ประเภทผู้ป่วย', e(v.patientType)) +
@@ -74,7 +74,6 @@
               return '<div style="margin-bottom:var(--spacing-xs)"><span class="tag tag--sm' + (d.type === 'หลัก' ? ' tag--primary' : '') + '">' + e(d.code) + '</span> ' + e(d.name) +
                 ' <span class="hp-muted">(' + e(d.type) + ')</span></div>';
             }).join('') + '</span></div>' +
-          (v.nextAppointment ? HP.detailsItem('นัดหมายครั้งถัดไป', HP.dateLong(v.nextAppointment) + ' เวลา ' + HP.time(v.nextAppointment), 'details-value-paid') : '') +
         '</div>');
 
       /* ─── 2. สัญญาณชีพ / ผลแล็บ ─── */
@@ -107,9 +106,9 @@
           }).join('') + '</tbody></table></div>'
         : empty('biotech', 'ไม่มีผลตรวจทางห้องปฏิบัติการใน visit นี้');
 
-      html += card('sec-vitals', 'สัญญาณชีพ / ผลแล็บ', 'var(--secondary-40-main)',
+      html += card('sec-vitals', 'สัญญาณชีพ / ผลแล็บ', 
         vitalsHtml + '<p class="hp-muted" style="margin-top:var(--spacing-sm)">ช่องสีส้ม = ค่าที่อยู่นอกเกณฑ์ปกติ</p>' +
-        '<h4 class="section-title" style="margin-top:var(--spacing-xl)">ผลตรวจทางห้องปฏิบัติการ</h4>' + labsHtml);
+        '<h4 class="section-title card-section__heading" style="margin-top:var(--spacing-xl)">ผลตรวจทางห้องปฏิบัติการ</h4>' + labsHtml);
 
       /* ─── 3. การจ่ายยา ─── */
       var allergyNames = hl.allergies.map(function (a) { return a.drug.toLowerCase(); });
@@ -122,17 +121,17 @@
             '<p class="hp-muted" style="margin-top:var(--spacing-xxs)">' + e(m.form) + ' · ' + e(m.usage) + '</p></div></div>';
         }).join('')
         : empty('medication', 'ไม่มีรายการจ่ายยาใน visit นี้');
-      html += card('sec-meds', 'ข้อมูลการจ่ายยา', 'var(--primary-40)', medsHtml);
+      html += card('sec-meds', 'ข้อมูลการจ่ายยา', medsHtml);
 
       /* ─── 4. หัตถการ ─── */
-      html += card('sec-proc', 'ประวัติหัตถการ', 'var(--warning-40)', v.procedures.length ?
+      html += card('sec-proc', 'ประวัติหัตถการ', v.procedures.length ?
         '<div class="details-list">' + v.procedures.map(function (p) {
           return HP.detailsItem('ICD-9-CM ' + e(p.code), e(p.name));
         }).join('') + '</div>'
         : empty('healing', 'ไม่มีหัตถการใน visit นี้'));
 
       /* ─── 5. รายงานผลการตรวจ ─── */
-      html += card('sec-report', 'รายงานผลการตรวจ', 'var(--info-40)', v.reports.length ?
+      html += card('sec-report', 'รายงานผลการตรวจ', v.reports.length ?
         v.reports.map(function (r) {
           return '<div class="hp-report"><p class="hp-report-title">' + e(r.title) + '</p>' +
             '<p class="hp-report-text">' + e(r.text) + '</p>' +

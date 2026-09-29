@@ -50,9 +50,9 @@
         <!-- เมนูหลัก 5 หมวด -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">บริการข้อมูลสุขภาพ</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการข้อมูลสุขภาพ</h3>
             </div>
           </div>
           <nav class="hp-menu" aria-label="เมนู Health Portal">
@@ -90,23 +90,22 @@
         <!-- สรุปสุขภาพ -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-              <h3 class="section-title">สรุปข้อมูลสุขภาพ</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">สรุปข้อมูลสุขภาพ</h3>
             </div>
             <a class="hp-link" href="records.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
           </div>
           <div class="hp-summary" id="summary"></div>
-          <div id="appointment" style="margin-top: var(--spacing-lg);"></div>
         </div>
 
         <div class="hp-grid-2">
           <!-- ประวัติการรักษาล่าสุด -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
-                <h3 class="section-title">การรักษาล่าสุด</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">การรักษาล่าสุด</h3>
               </div>
               <a class="hp-link" href="records.html#visits">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
             </div>
@@ -116,9 +115,9 @@
           <!-- ใบรับรองแพทย์ -->
           <div class="card">
             <div class="hp-section-head">
-              <div class="section-title-container">
-                <div class="section-bar" style="background-color: var(--info-40);"></div>
-                <h3 class="section-title">ใบรับรองแพทย์ล่าสุด</h3>
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ใบรับรองแพทย์ล่าสุด</h3>
               </div>
               <a class="hp-link" href="certificates.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
             </div>
@@ -129,25 +128,33 @@
         <!-- ข่าวสุขภาพ -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--warning-40);"></div>
-              <h3 class="section-title">ข่าวสุขภาพสำหรับคุณ</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ข่าวสุขภาพสำหรับคุณ</h3>
             </div>
             <a class="hp-link" href="news.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
           </div>
-          <div id="news"></div>
+          <div class="hp-carousel" id="news">
+            <div class="hp-carousel-track" id="news-track" tabindex="0"></div>
+            <div class="hp-carousel-foot">
+              <button type="button" class="hp-carousel-nav" data-dir="-1" aria-label="ข่าวก่อนหน้า"><span class="material-symbols-outlined">chevron_left</span></button>
+              <div class="hp-carousel-dots dyk-card__dots"></div>
+              <button type="button" class="hp-carousel-nav" data-dir="1" aria-label="ข่าวถัดไป"><span class="material-symbols-outlined">chevron_right</span></button>
+            </div>
+          </div>
         </div>
 
         <!-- บริการแนะนำ -->
         <div class="card">
           <div class="hp-section-head">
-            <div class="section-title-container">
-              <div class="section-bar" style="background-color: var(--primary-40);"></div>
-              <h3 class="section-title">บริการสุขภาพแนะนำ</h3>
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการสุขภาพแนะนำ</h3>
             </div>
             <a class="hp-link" href="services.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
           </div>
-          <div class="hp-stack" id="services"></div>
+          <p class="list-section-note">คัดสรรตามข้อมูลและสิทธิ์ของคุณ</p>
+          <div class="cert-list" id="services"></div>
         </div>
 
         <div class="source-note">
@@ -215,20 +222,12 @@
         stat('records.html#allergy', 'medication', 'แพ้ยา', hl.allergies.length + ' รายการ', hl.allergies.map(function (a) { return a.drug; }).join(', ')) +
         stat('records.html#vaccine', 'vaccines', 'วัคซีนล่าสุด', HP.dateShort(hl.vaccines[0].date), e(hl.vaccines[0].name.split(' (')[0]));
 
-      var appt = hl.visits.filter(function (v) { return v.nextAppointment && HP.daysUntil(v.nextAppointment) >= 0; })[0];
-      if (appt) {
-        document.getElementById('appointment').innerHTML =
-          '<div class="hp-notice"><span class="material-symbols-outlined">event</span><div>' +
-          '<strong>นัดหมายครั้งถัดไป: ' + HP.dateLong(appt.nextAppointment) + ' เวลา ' + HP.time(appt.nextAppointment) + '</strong><br>' +
-          e(appt.clinic) + ' · ' + e(appt.hospital) + ' (อีก ' + HP.daysUntil(appt.nextAppointment) + ' วัน)</div></div>';
-      }
-
       // ─── การรักษาล่าสุด ───
       document.getElementById('recent-visits').innerHTML = hl.visits.slice(0, 3).map(function (v) {
         var p = HP.dateParts(v.date);
-        return '<a class="hp-visit" href="visit.html?id=' + v.id + '">' +
+        return '<a class="list-item hp-visit" href="visit.html?id=' + v.id + '">' +
           '<div class="hp-date-box"><div class="hp-date-day">' + p.day + '</div><div class="hp-date-mon">' + p.mon + '</div><div class="hp-date-yr">' + p.yr + '</div></div>' +
-          '<div class="hp-visit-body"><span class="tag tag--info tag--sm" style="align-self:flex-start">' + e(v.patientType) + '</span>' +
+          '<div class="hp-visit-body"><span class="list-item-label">' + e(v.patientType) + '</span>' +
           '<span class="hp-visit-title">' + e(v.clinic) + '</span><span class="hp-visit-sub">' + e(v.hospital) + '</span></div>' +
           '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
       }).join('');
@@ -236,30 +235,36 @@
       // ─── ใบรับรองแพทย์ ───
       document.getElementById('recent-certs').innerHTML = H.certificates.slice(0, 3).map(function (c) {
         var st = HP.certStatus(c);
-        return '<a class="hp-visit" href="certificate.html?id=' + c.id + '">' +
+        return '<a class="list-item hp-visit" href="certificate.html?id=' + c.id + '">' +
           '<span class="hp-icon tone-info"><span class="material-symbols-outlined">description</span></span>' +
-          '<div class="hp-visit-body"><span class="tag ' + st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + st.label + '</span>' +
+          '<div class="hp-visit-body"><span class="tag ' + st.tag + ' tag--sm tag--dot list-badge--corner">' + st.label + '</span>' +
           '<span class="hp-visit-title">' + e(c.title) + '</span><span class="hp-visit-sub">' + e(c.hospital) + ' · ออก ' + HP.dateShort(c.issued) + '</span></div>' +
           '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
       }).join('');
 
       // ─── ข่าว ───
-      document.getElementById('news').innerHTML = H.news.slice(0, 3).map(function (n) {
-        return '<a class="hp-news-row" href="article.html?id=' + n.id + '">' +
-          '<span class="hp-icon tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></span>' +
-          '<div class="hp-visit-body"><span class="hp-visit-title">' + e(n.title) + '</span>' +
-          '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span></div></a>';
-      }).join('');
+      document.getElementById('news-track').innerHTML = H.news.map(HP.newsCard).join('');
+      HP.carousel(document.getElementById('news'), 'ข่าวสุขภาพสำหรับคุณ');
 
       // ─── บริการแนะนำ ───
       document.getElementById('services').innerHTML = H.services.map(function (s, i) {
-        return '<button type="button" class="hp-visit" style="text-align:left;cursor:pointer;font:inherit;width:100%" data-svc="' + i + '">' +
-          HP.svcIcon(s) +
-          '<div class="hp-visit-body"><span class="hp-visit-title">' + e(s.name) + '</span><span class="hp-visit-sub">' + e(s.agency) + '</span></div>' +
-          '<span class="material-symbols-outlined chevron">open_in_new</span></button>';
+        // markup เดียวกับ "บริการแนะนำสำหรับคุณ" ใน dashboard-with-consent.html (renderServices)
+        return '<a href="' + e(s.url) + '" target="_blank" rel="noopener" class="list-item" data-svc="' + i + '">' +
+          '<div class="list-icon">' +
+            (/^https?:\/\//.test(s.icon)
+              ? '<img src="' + e(s.icon) + '" alt="" class="img-helper-frame circle size-sm" loading="lazy">'
+              : HP.svcIcon(s, 'sm')) +
+          '</div>' +
+          '<div class="list-body">' +
+            '<p class="service-item__title">' + e(s.name) + '</p>' +
+            '<p class="service-item__desc">' + e(s.desc) + '</p>' +
+            '<span class="service-item__category">' + e(s.agency) + '</span>' +
+          '</div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span>' +
+        '</a>';
       }).join('');
       document.querySelectorAll('[data-svc]').forEach(function (b) {
-        b.addEventListener('click', function () { HP.openExternal(H.services[+b.dataset.svc]); });
+        b.addEventListener('click', function (ev) { ev.preventDefault(); HP.openExternal(H.services[+b.dataset.svc]); });
       });
     })();
   </script>

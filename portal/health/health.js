@@ -58,9 +58,9 @@
 
     bmi: function (w, h) { return (w / Math.pow(h / 100, 2)).toFixed(1); },
 
-    sectionTitle: function (title, color) {
-      return '<div class="section-title-container"><div class="section-bar" style="background-color:' +
-        (color || 'var(--primary-40)') + '"></div><h3 class="section-title">' + title + '</h3></div>';
+    sectionTitle: function (title) {
+      return '<div class="section-title-container card-section__title-container"><div class="section-bar card-section__bar--primary"></div>' +
+        '<h3 class="section-title card-section__heading">' + title + '</h3></div>';
     },
 
     detailsItem: function (label, value, cls) {
@@ -97,6 +97,74 @@
     },
     mountWelcome: function (title, sub) {
       document.querySelector('.hp-main').insertAdjacentHTML('afterbegin', HP.welcome(title, sub));
+    },
+
+    /* ─── News card (ใช้ทั้งหน้า news.html และ carousel ในหน้า hub) ─── */
+    newsCard: function (n) {
+      var e = HP.esc;
+      return '<a class="hp-news" href="article.html?id=' + n.id + '">' +
+        '<div class="hp-news-cover tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
+        '<div class="hp-news-body">' +
+          '<p class="hp-news-title">' + e(n.title) + '</p>' +
+          '<p class="hp-news-excerpt">' + e(n.excerpt) + '</p>' +
+          '<p class="hp-muted">' + e(n.source) + ' · ' + HP.dateShort(n.date) + ' · อ่าน ' + n.readMin + ' นาที</p>' +
+        '</div></a>';
+    },
+
+    /**
+     * Carousel แบบ scroll-snap: ปัดได้บนมือถือ, ปุ่มก่อนหน้า/ถัดไปบนจอใหญ่,
+     * จุดบอกตำแหน่งแบบเดียวกับ .dyk-card__dot ของ dashboard
+     */
+    carousel: function (root, label) {
+      var track = root.querySelector('.hp-carousel-track');
+      var slides = [].slice.call(track.children);
+      var dots = root.querySelector('.hp-carousel-dots');
+      var prev = root.querySelector('[data-dir="-1"]'), next = root.querySelector('[data-dir="1"]');
+      root.setAttribute('role', 'region');
+      root.setAttribute('aria-roledescription', 'carousel');
+      root.setAttribute('aria-label', label);
+      slides.forEach(function (s, i) {
+        s.setAttribute('role', 'group');
+        s.setAttribute('aria-roledescription', 'slide');
+        s.setAttribute('aria-label', (i + 1) + ' จาก ' + slides.length);
+      });
+      dots.innerHTML = slides.map(function (s, i) {
+        return '<button type="button" class="hp-carousel-dot" data-i="' + i + '" aria-label="ไปที่ข่าว ' + (i + 1) + '"><span class="dyk-card__dot"></span></button>';
+      }).join('');
+
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: 'smooth' });
+      }
+      function current() {
+        var x = track.scrollLeft, best = 0;
+        slides.forEach(function (s, i) {
+          if (Math.abs(s.offsetLeft - slides[0].offsetLeft - x) < Math.abs(slides[best].offsetLeft - slides[0].offsetLeft - x)) best = i;
+        });
+        // ถ้าเลื่อนสุดขวาแล้ว ให้จุดสุดท้าย active
+        if (x + track.clientWidth >= track.scrollWidth - 2) best = slides.length - 1;
+        return best;
+      }
+      function sync() {
+        var c = current();
+        [].forEach.call(dots.children, function (d, i) {
+          d.firstChild.classList.toggle('dyk-card__dot--active', i === c);
+          d.setAttribute('aria-current', i === c ? 'true' : 'false');
+        });
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      }
+      var t;
+      track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(sync, 60); }, { passive: true });
+      window.addEventListener('resize', sync);
+      dots.onclick = function (ev) { var b = ev.target.closest('[data-i]'); if (b) go(+b.dataset.i); };
+      prev.onclick = function () { go(current() - 1); };
+      next.onclick = function () { go(current() + 1); };
+      track.addEventListener('keydown', function (ev) {
+        if (ev.key === 'ArrowRight') { ev.preventDefault(); go(current() + 1); }
+        if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(current() - 1); }
+      });
+      sync();
     },
 
     /* ─── Service icon: image URL → logo, otherwise Material Symbol ─── */

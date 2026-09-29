@@ -21,14 +21,24 @@
             <span class="material-symbols-outlined">arrow_back</span>
           </a>
           <div class="top-nav-bar-icon">
-            <span class="material-symbols-outlined">apps</span>
+            <span class="material-symbols-outlined">local_police</span>
           </div>
           <p class="top-nav-bar-title">Crime Portal</p>
         </div>
       </div>
 
       <main class="hp-main">
-        <div class="hp-stack" id="services" style="gap: var(--spacing-xl);"></div>
+        <!-- หน้าตาเดียวกับ "บริการแนะนำสำหรับคุณ" ใน dashboard-with-consent.html -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการอื่นๆ</h3>
+            </div>
+          </div>
+          <p class="list-section-note">กดเพื่อเปิดบริการในเว็บไซต์ของหน่วยงานเจ้าของบริการ</p>
+          <div class="cert-list" id="services"></div>
+        </div>
 
         <div class="source-note">
           <p class="source-note-text">
@@ -54,24 +64,16 @@
       var e = CP.esc;
       CP.mountWelcome('บริการอื่นๆ', 'บริการที่เกี่ยวข้องจากหน่วยงานภาครัฐและภาคประชาสังคม');
 
-      document.getElementById('services').innerHTML = CRIME.services.map(function (s) {
-        return '<div class="card hp-service" style="margin-bottom:0">' +
-          '<div class="hp-service-head">' +
-            '<span class="hp-icon hp-icon--lg tone-' + s.tone + '"><span class="material-symbols-outlined">' + s.icon + '</span></span>' +
-            '<div style="flex:1;min-width:0">' +
-              '<p class="hp-service-name">' + e(s.name) + '</p>' +
-              '<p class="hp-muted">' + e(s.agency) + '</p>' +
-              '<p class="hp-right-summary">' + e(s.desc) + '</p>' +
-            '</div>' +
+      document.getElementById('services').innerHTML = CRIME.services.filter(function (s) { return s.listed !== false; }).map(function (s) {
+        return '<a href="' + e(s.url) + '" target="_blank" rel="noopener" class="list-item" data-ext="' + s.key + '">' +
+          '<div class="list-icon"><span class="hp-icon tone-' + s.tone + '"><span class="material-symbols-outlined">' + s.icon + '</span></span></div>' +
+          '<div class="list-body">' +
+            '<p class="service-item__title">' + e(s.name) + '</p>' +
+            '<p class="service-item__desc">' + e(s.desc) + '</p>' +
+            '<span class="service-item__category">' + e(s.category) + '</span>' +
           '</div>' +
-          '<ul class="hp-check-list">' + s.features.map(function (f) {
-            return '<li><span class="material-symbols-outlined">check_circle</span>' + e(f) + '</li>';
-          }).join('') + '</ul>' +
-          '<div class="hp-between">' +
-            '<span class="hp-ext-badge"><span class="material-symbols-outlined">link</span>' + e(s.url.replace(/^https?:\/\//, '').replace(/\/$/, '')) + '</span>' +
-            '<button type="button" class="btn btn-primary" data-ext="' + s.key + '"><span class="material-symbols-outlined">open_in_new</span>เปิดบริการ</button>' +
-          '</div>' +
-        '</div>';
+          '<span class="material-symbols-outlined chevron">chevron_right</span>' +
+        '</a>';
       }).join('');
     })();
   </script>
