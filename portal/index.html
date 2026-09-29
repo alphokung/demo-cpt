@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ข้อมูลเฉพาะคุณ — ทางรัฐ</title>
+  <meta name="description" content="หน้ารวมข้อมูลเฉพาะคุณ — สภาพอากาศ เกร็ดความรู้ แจ้งเตือนที่ควรรู้ และสรุปข้อมูลสำคัญจาก Health, Crime, Document Wallet, Money และ Emergency Portal">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:image" content="../_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../dashboard-components.css">
+  <link rel="stylesheet" href="../demo-tools.css">
+  <link rel="stylesheet" href="hub.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <p class="top-nav-bar-title">ข้อมูลเฉพาะคุณ</p>
+        </div>
+      </div>
+
+      <main class="ph-main">
+
+        <!-- วันสำคัญ / วันพระ (แสดงเฉพาะวันที่ตรง) -->
+        <div class="notice-list mb-xl" id="day-notice" hidden></div>
+
+        <div class="ph-top">
+          <!-- ทักทาย + พยากรณ์อากาศ + PM2.5 (หน้าตาเดียวกับ dashboard ctx-card) -->
+          <div class="ctx-card">
+            <div class="ctx-card__deco ctx-card__deco--top"></div>
+            <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+            <div class="ctx-card__greeting">
+              <p id="greet" class="ctx-card__greeting-label">สวัสดี</p>
+              <p id="greet-name" class="ctx-card__greeting-name ph-greet-name"></p>
+              <div class="ctx-card__location-row">
+                <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
+                <span id="w-location" class="ctx-card__location-text"></span>
+                <span class="ctx-card__location-text" id="w-date"></span>
+              </div>
+            </div>
+            <div class="ctx-card__divider"></div>
+            <div class="ctx-card__weather-pm">
+              <div class="ctx-chip ctx-chip--weather" id="w-chip">
+                <img id="w-icon" class="ctx-chip__icon" src="../_media/weather/w2-partly-cloudy.svg" alt="">
+                <div class="ctx-chip__text">
+                  <p id="w-desc" class="ctx-chip__title"></p>
+                  <p id="w-temp" class="ctx-chip__value"></p>
+                  <p id="w-detail" class="ctx-chip__note"></p>
+                </div>
+              </div>
+              <div class="ctx-chip ctx-chip--pm" id="pm-chip">
+                <img id="pm-icon" class="ctx-chip__icon ctx-chip__icon--pm" src="../_media/pm/yellow.svg" alt="">
+                <div class="ctx-chip__text">
+                  <p id="pm-label" class="ctx-chip__title"></p>
+                  <p id="pm-value" class="ctx-chip__value"></p>
+                  <p id="pm-station" class="ctx-chip__note"></p>
+                </div>
+              </div>
+              <div class="ctx-summary">
+                <span id="focus-icon" class="material-symbols-outlined ctx-summary__icon">info</span>
+                <p id="focus-text" class="ctx-summary__text"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- รู้หรือไม่ (หน้าตาเดียวกับ dashboard dyk-card) -->
+          <div id="tips" class="dyk-card" role="button" tabindex="0" aria-label="เกร็ดความรู้ — แตะเพื่อดูเรื่องถัดไป">
+            <div class="dyk-card__deco"></div>
+            <div class="dyk-card__header">
+              <span class="dyk-card__emoji">💡</span>
+              <p class="dyk-card__text" aria-live="polite"><span id="tip-text"></span><a id="tip-link" class="dyk-card__link"></a></p>
+            </div>
+            <div class="dyk-card__footer">
+              <div class="dyk-card__dots" id="tip-dots"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- แจ้งเตือนที่ควรรู้ (รวมจากทุก Portal) -->
+        <div class="card">
+          <div class="ph-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">แจ้งเตือนที่ควรรู้</h3>
+            </div>
+            <span class="ph-count" id="notice-count" hidden></span>
+          </div>
+          <p class="ph-section-note">รวมเรื่องที่ต้องดำเนินการจากทุกบริการ เรียงตามความเร่งด่วน</p>
+          <div class="ph-stats" id="stats"></div>
+          <div class="notice-list ph-notices" id="notices"></div>
+          <button type="button" class="btn btn-tertiary-outline ph-more" id="notice-more" hidden></button>
+        </div>
+
+        <!-- สรุปจากแต่ละ Portal -->
+        <div class="card">
+          <div class="ph-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">ภาพรวมข้อมูลของคุณ</h3>
+            </div>
+          </div>
+          <p class="ph-section-note">สรุปข้อมูลสำคัญ — แตะเพื่อดูรายละเอียดในแต่ละบริการ</p>
+          <div class="ph-portals" id="portals"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก สปสช. · สำนักงานตำรวจแห่งชาติ · กรมการปกครอง · กฟน. · กปน. · ปภ. · กรมอุตุนิยมวิทยา และหน่วยงานที่เกี่ยวข้อง<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ปุ่ม Demo ลอย + modal ตั้งค่า (แบบเดียวกับ Portal อื่น) -->
+  <button type="button" class="demo-fab" data-demo-open="modal-demo-config" aria-haspopup="dialog">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
+    Demo การแสดงผล
+  </button>
+  <div id="modal-demo-config" class="modal-overlay" aria-hidden="true" data-demo-modal>
+    <div class="modal-content modal__content--flex-col" role="dialog" aria-modal="true" aria-labelledby="dc-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="dc-title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-demo-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dc-modal__body">
+        <div class="dc-group">
+          <p class="dc-group-label">🌤️ สภาพอากาศ</p>
+          <div class="dc-chips dc-chips--wrap" id="demo-weather" role="group" aria-label="สภาพอากาศ"></div>
+        </div>
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">😷 ฝุ่น PM 2.5</p>
+          <div class="dc-chips dc-chips--wrap" id="demo-pm" role="group" aria-label="ฝุ่น PM 2.5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- ข้อมูลและ helper ของแต่ละ Portal — ใช้ตัวเดียวกับหน้า Portal เพื่อให้ตัวเลขตรงกัน -->
+  <script src="health/health-data.js"></script>
+  <script src="health/health.js"></script>
+  <script src="crime/crime-data.js"></script>
+  <script src="crime/crime.js"></script>
+  <script src="money/money-data.js"></script>
+  <script src="money/money.js"></script>
+  <script src="emergency/emergency-data.js"></script>
+  <script src="emergency/emergency.js"></script>
+  <script src="wallet/wallet-data.js"></script>
+  <script src="wallet/wallet.js"></script>
+  <script src="portal-demo.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc;
+      function baht(n) { var f = n % 1 ? 2 : 0; return Number(n).toLocaleString('th-TH', { minimumFractionDigits: f, maximumFractionDigits: f }) + ' บาท'; }
+      function sum(list, f) { return list.reduce(function (s, x) { return s + f(x); }, 0); }
+
+      /* ============================================================
+         1. ทักทาย + วันที่ + วันสำคัญ
+         ============================================================ */
+      var now = new Date(), h = now.getHours();
+      document.getElementById('greet').textContent =
+        h >= 5 && h < 12 ? 'สวัสดีตอนเช้า' : h >= 12 && h < 17 ? 'สวัสดีตอนกลางวัน' : h >= 17 && h < 21 ? 'สวัสดีตอนเย็น' : 'สวัสดีตอนกลางคืน';
+      document.getElementById('greet-name').textContent = 'คุณ' + WALLET.user.fullName.replace(/^(นางสาว|นาย|นาง)/, '');
+      var loc = EP.user().location;
+      document.getElementById('w-location').textContent = EP.locationLabel(loc) + ' ·';
+      document.getElementById('w-date').textContent = DW.dateLong(now);
+
+      var SPECIAL_DAYS = {
+        '1-1': ['✨', 'วันขึ้นปีใหม่ — หน่วยงานรัฐและธนาคารปิดทำการ'], '4-6': ['👑', 'วันจักรี — หน่วยงานรัฐปิดทำการ'],
+        '4-13': ['💦', 'วันสงกรานต์ — หน่วยงานรัฐปิดทำการ 3 วัน'], '5-1': ['💪', 'วันแรงงานแห่งชาติ'],
+        '7-28': ['👑', 'วันเฉลิมพระชนมพรรษา ร.10 — หน่วยงานรัฐปิดทำการ'], '8-12': ['🤱', 'วันแม่แห่งชาติ'],
+        '10-13': ['🕯️', 'วันนวมินทรมหาราช — หน่วยงานรัฐปิดทำการ'], '10-23': ['👑', 'วันปิยมหาราช — หน่วยงานรัฐปิดทำการ'],
+        '12-5': ['👔', 'วันพ่อแห่งชาติ — หน่วยงานรัฐปิดทำการ'], '12-10': ['📜', 'วันรัฐธรรมนูญ'], '12-31': ['🎉', 'วันสิ้นปี']
+      };
+      var WAN_PHRA_2026 = ['1-3','1-10','1-18','1-25','2-2','2-9','2-17','2-24','3-3','3-11','3-19','3-25','4-2','4-9','4-17','4-24',
+        '5-1','5-9','5-17','5-24','5-31','6-4','6-11','6-19','6-26','7-3','7-11','7-18','7-25','8-2','8-9','8-17','8-24','8-31',
+        '9-7','9-15','9-22','9-30','10-7','10-14','10-22','10-29','11-5','11-12','11-20','11-27','12-5','12-12','12-20','12-27'];
+      var md = (now.getMonth() + 1) + '-' + now.getDate(), dayBars = [];
+      if (SPECIAL_DAYS[md]) dayBars.push(SPECIAL_DAYS[md]);
+      if (now.getFullYear() === 2026 && WAN_PHRA_2026.indexOf(md) > -1) dayBars.push(['🪷', 'วันนี้วันพระ อย่าลืมทำบุญหรือรักษาศีลตามโอกาส']);
+      if (dayBars.length) {
+        var dn = document.getElementById('day-notice');
+        dn.innerHTML = dayBars.map(function (b) {
+          return '<div class="notice-item notice-item--info"><div class="notice-item__icon-wrap">' + b[0] + '</div>' +
+            '<div class="notice-item__body"><p class="notice-item__text">' + e(b[1]) + '</p></div></div>';
+        }).join('');
+        dn.hidden = false;
+      }
+
+      /* ============================================================
+         2. พยากรณ์อากาศ + PM2.5 (ตัวแปรเดียวกับ dashboard-demo.js)
+         ============================================================ */
+      var WEATHER = {
+        clear:    { label: 'ท้องฟ้าแจ่มใส', temp: 'อุณหภูมิ 39°C - 42°C', bg: '#fdb022', fg: '#003c66', icon: 'w1-clear.svg' },
+        partly:   { label: 'มีเมฆบางส่วน', temp: 'อุณหภูมิ 32°C - 34°C', bg: '#0086c9', fg: '#ffffff', icon: 'w2-partly-cloudy.svg' },
+        overcast: { label: 'มีเมฆมาก', temp: 'อุณหภูมิ 30°C - 33°C', bg: '#026aa2', fg: '#ffffff', icon: 'w3-cloudy.svg' },
+        rain:     { label: 'ฝนตกปานกลาง', temp: 'อุณหภูมิ 26°C - 31°C', bg: '#0b4a6f', fg: '#ffffff', icon: 'w6-rain-medium.svg', rainy: true },
+        thunder:  { label: 'ฝนฟ้าคะนอง', temp: 'อุณหภูมิ 25°C - 31°C', bg: '#003c66', fg: '#ffffff', icon: 'w8-thunderstorm.svg', rainy: true },
+        cool:     { label: 'อากาศเย็น', temp: 'อุณหภูมิ 16°C - 20°C', bg: '#36bffa', fg: '#ffffff', icon: 'w11-cool.svg' },
+        veryHot:  { label: 'อากาศร้อนจัด', temp: 'อุณหภูมิ 42°C - 45°C', bg: '#d92d20', fg: '#ffffff', icon: 'w12-very-hot.svg', hot: true },
+        unknown:  { label: 'ไม่พบข้อมูลในพื้นที่', temp: 'อุณหภูมิ: ไม่ระบุ', bg: '#62676c', fg: '#ffffff', icon: 'w-undefined.svg', noData: true }
+      };
+      var PM = {
+        good:      { value: 9, label: 'อากาศดี', color: '#a2f061', text: '#25272a', icon: 'green.svg' },
+        moderate:  { value: 32, label: 'อากาศดีปานกลาง', color: '#ffec51', text: '#25272a', icon: 'yellow.svg' },
+        sensitive: { value: 48, label: 'เริ่มมีผลต่อสุขภาพ', color: '#ffb14b', text: '#25272a', icon: 'orange.svg' },
+        unhealthy: { value: 96, label: 'มีผลต่อสุขภาพ', color: '#ff6175', text: '#ffffff', icon: 'red.svg', tip: 'คุณภาพอากาศมีผลต่อสุขภาพ ควรสวมหน้ากากเมื่อออกนอกอาคาร' },
+        hazardous: { value: 180, label: 'อันตรายต่อสุขภาพ', color: '#b36ebd', text: '#ffffff', icon: 'purple.svg', tip: 'ฝุ่น PM 2.5 ระดับอันตราย งดกิจกรรมกลางแจ้ง และสวมหน้ากาก N95' },
+        unknown:   { value: null, label: 'ไม่พบข้อมูลในพื้นที่', color: '#62676c', text: '#ffffff', icon: 'nodata.svg', noData: true }
+      };
+      var DEMO_KEY = 'ph.demo', demo = {};
+      try { demo = JSON.parse(localStorage.getItem(DEMO_KEY)) || {}; } catch (x) {}
+      // ค่าเริ่มต้นสอดคล้องกับแจ้งเตือนฝนตกหนักของ Emergency Portal วันนี้
+      demo.weather = WEATHER[demo.weather] ? demo.weather : 'thunder';
+      demo.pm = PM[demo.pm] ? demo.pm : 'moderate';
+
+      // แจ้งเตือนภัยสภาพอากาศที่มีผลในพื้นที่ผู้ใช้ — ใช้เสริมคำแนะนำ
+      var user = EP.user();
+      var myAlerts = EMERGENCY.alerts.filter(function (a) { return EP.isActive(a) && EP.delivery(a, user).received; });
+      var weatherAlert = myAlerts.filter(function (a) { return a.category === 'weather'; })[0];
+
+      function renderWeather() {
+        var w = WEATHER[demo.weather], p = PM[demo.pm];
+        var chip = document.getElementById('w-chip');
+        chip.style.background = w.bg; chip.style.color = w.fg;
+        document.getElementById('w-icon').src = '../_media/weather/' + w.icon;
+        document.getElementById('w-desc').textContent = w.label;
+        document.getElementById('w-temp').textContent = w.temp;
+        document.getElementById('w-detail').textContent = w.noData ? '' : (w.rainy ? 'โอกาสฝนตก 70% · ความชื้น 82%' : 'ความชื้น 64%');
+        var pc = document.getElementById('pm-chip');
+        pc.style.background = p.color; pc.style.color = p.text;
+        document.getElementById('pm-icon').src = '../_media/pm/' + p.icon;
+        document.getElementById('pm-label').textContent = p.label;
+        document.getElementById('pm-value').textContent = p.value == null ? 'PM 2.5: ไม่ระบุ' : 'PM 2.5: ' + p.value + ' μg/m³';
+        document.getElementById('pm-station').textContent = p.noData ? '' : 'สถานีตรวจวัด เขตจตุจักร (1.2 กม.)';
+
+        var icon = 'info', text;
+        if (w.noData && p.noData) { icon = 'help'; text = 'ยังไม่พบข้อมูลสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ'; }
+        else if (p.tip) { icon = 'masks'; text = p.tip; }
+        else if (w.rainy && weatherAlert) { icon = 'umbrella'; text = 'มีประกาศเตือน' + weatherAlert.title.replace(/ กรุงเทพฯ.*$/, '') + ' ช่วงบ่ายถึงค่ำ พกร่มและเผื่อเวลาเดินทาง'; }
+        else if (w.rainy) { icon = 'umbrella'; text = 'มีโอกาสฝนตกช่วงเย็น อย่าลืมพกร่มออกจากบ้านด้วย'; }
+        else if (w.hot) { icon = 'sunny'; text = 'อากาศร้อนจัด ดื่มน้ำบ่อย ๆ และหลีกเลี่ยงกิจกรรมกลางแจ้งช่วงเที่ยง'; }
+        else text = w.label + ' และ PM 2.5 ' + p.label + ' เหมาะกับการทำกิจกรรมนอกบ้าน';
+        document.getElementById('focus-icon').textContent = icon;
+        document.getElementById('focus-text').textContent = text;
+      }
+      renderWeather();
+
+      function chips(id, table, key) {
+        var el = document.getElementById(id);
+        el.innerHTML = Object.keys(table).map(function (k) {
+          var on = demo[key] === k;
+          return '<button type="button" class="dc-chip' + (on ? ' active' : '') + '" data-k="' + k + '" aria-pressed="' + on + '">' + table[k].label + '</button>';
+        }).join('');
+        el.onclick = function (ev) {
+          var b = ev.target.closest('[data-k]'); if (!b) return;
+          demo[key] = b.dataset.k;
+          try { localStorage.setItem(DEMO_KEY, JSON.stringify(demo)); } catch (x) {}
+          chips(id, table, key); renderWeather();
+        };
+      }
+      chips('demo-weather', WEATHER, 'weather');
+      chips('demo-pm', PM, 'pm');
+
+      /* ============================================================
+         3. รู้หรือไม่ — สุ่ม 5 เรื่อง เลื่อนเองทุก 15 วินาที แตะเพื่อดูเรื่องถัดไป
+         ============================================================ */
+      var TIP_POOL = [
+        { text: 'ใบขับขี่และบัตรคนพิการในทางรัฐ ใช้แสดงตนได้ตามกฎหมาย เช่น แสดงต่อเจ้าหน้าที่ตำรวจ ขอรับสิทธิ หรือเลือกตั้ง', href: 'wallet/cards.html' },
+        { text: 'ต่ออายุใบอนุญาตขับรถได้ล่วงหน้า 90 วันก่อนหมดอายุ ไม่ต้องรอให้ใกล้วันสุดท้าย', href: 'wallet/card.html?id=driving' },
+        { text: 'บัตรทองไม่ได้มีแค่ถอนหรืออุดฟัน แต่ครอบคลุมขูดหินปูน ผ่าฟันคุด และทำฟันเทียมถอดได้ด้วย', href: 'health/rights.html' },
+        { text: 'เจ็บป่วยเล็กน้อย เดินเข้าร้านยาในโครงการ แจ้งอาการกับเภสัชกร รับยาฟรีด้วยสิทธิบัตรทอง', href: 'health/rights.html' },
+        { text: 'ขอชุดเอกสารประกอบการขอสินเชื่อ (ทะเบียนบ้าน รายได้ ภาษี) ได้ในครั้งเดียว ไม่ต้องไปทีละหน่วยงาน', href: 'wallet/request.html?type=loan' },
+        { text: 'ก่อนโอนเงินให้คนแปลกหน้า ตรวจสอบเลขบัญชีหรือเบอร์โทรในฐานข้อมูลมิจฉาชีพก่อนทุกครั้ง', href: 'crime/scam-check.html' },
+        { text: 'บริจาคผ่านระบบ e-Donation ข้อมูลส่งถึงกรมสรรพากรอัตโนมัติ ใช้ลดหย่อนภาษีได้โดยไม่ต้องเก็บใบเสร็จ', href: 'money/donations.html' },
+        { text: 'เกิดเหตุไม่รู้จะติดต่อใคร รวมเบอร์สายด่วนฉุกเฉินที่ต้องรู้ไว้ในที่เดียว', href: 'emergency/index.html' },
+        { text: 'แจ้งความออนไลน์ได้ตลอด 24 ชั่วโมง และติดตามความคืบหน้าคดีได้จากทางรัฐ', href: 'crime/cases.html' }
+      ];
+      var tips = TIP_POOL.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 5), ti = 0, timer;
+      var tipCard = document.getElementById('tips');
+      document.getElementById('tip-dots').innerHTML = tips.map(function () { return '<div class="dyk-card__dot"></div>'; }).join('');
+      function showTip(i) {
+        ti = i;
+        tipCard.classList.add('dyk-card--fading');
+        setTimeout(function () {
+          document.getElementById('tip-text').textContent = tips[i].text + ' ';
+          var l = document.getElementById('tip-link');
+          l.textContent = 'ดูรายละเอียด'; l.href = tips[i].href;
+          tipCard.classList.remove('dyk-card--fading');
+        }, 180);
+        [].forEach.call(document.getElementById('tip-dots').children, function (d, k) { d.classList.toggle('dyk-card__dot--active', k === i); });
+      }
+      function nextTip() { showTip((ti + 1) % tips.length); clearInterval(timer); timer = setInterval(nextTip, 15000); }
+      document.getElementById('tip-link').addEventListener('click', function (ev) { ev.stopPropagation(); });
+      tipCard.addEventListener('click', nextTip);
+      tipCard.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); nextTip(); } });
+      showTip(0); timer = setInterval(nextTip, 15000);
+
+      /* ============================================================
+         4. แจ้งเตือนที่ควรรู้ — รวมจากทุก Portal (danger → warning → info)
+         ============================================================ */
+      var SRC = {
+        emergency: ['Emergency', 'crisis_alert'], crime: ['Crime', 'local_police'], money: ['Money', 'account_balance_wallet'],
+        wallet: ['กระเป๋าเอกสาร', 'wallet'], health: ['Health', 'health_and_safety']
+      };
+      var RANK = { danger: 0, warning: 1, info: 2 };
+      var notices = [];
+      function add(src, tone, icon, title, sub, href) { notices.push({ src: src, tone: tone, icon: icon, title: title, sub: sub, href: href }); }
+
+      // Emergency — แจ้งเตือนภัยที่ยังมีผลในพื้นที่ของคุณ
+      myAlerts.forEach(function (a) {
+        var sev = EP.severity(a.severity);
+        add('emergency', sev.tone, EP.category(a.category).icon, a.title, sev.label + ' · ' + a.agency + ' · ถึง ' + EP.dateShort(a.expiresAt) + ' ' + EP.time(a.expiresAt), 'emergency/alert.html?id=' + a.id);
+      });
+      // Crime — ใบสั่งค้างชำระ
+      CP.unpaidTickets().forEach(function (t) {
+        var st = CP.ticketStatus(t);
+        add('crime', st.key === 'overdue' ? 'danger' : 'warning', 'receipt_long',
+          (st.key === 'overdue' ? 'ใบสั่งเกินกำหนดชำระ' : 'ใบสั่งรอชำระ') + ' ' + baht(t.fine),
+          t.violation + ' · ' + (st.key === 'overdue' ? 'ครบกำหนด ' : 'ชำระภายใน ') + CP.dateShort(t.due), 'crime/tickets.html#' + t.id);
+      });
+      // Money — ค่าน้ำค่าไฟ / ภาษีที่ดิน / เครดิตบูโร
+      MP.unpaidBills().forEach(function (x) {
+        var st = MP.billStatus(x.bill), k = MP.kind(x.meter.kind);
+        if (st.key === 'overdue' || st.days <= 7)
+          add('money', st.key === 'overdue' ? 'danger' : 'warning', k.icon, k.label + ' ' + baht(x.bill.amount) + ' — ' + st.label,
+            MP.property(x.meter.property).name + ' · ' + x.meter.providerShort, 'money/utilities.html');
+      });
+      MP.landTaxDue().forEach(function (t) {
+        add('money', 'danger', 'real_estate_agent', 'ภาษีที่ดินค้างชำระ ' + baht(MP.landTaxTotal(t)),
+          MP.property(t.property).name + (t.noticeDue ? ' · ชำระภายใน ' + MP.dateShort(t.noticeDue) + ' ก่อนถูกเพิ่มเบี้ยปรับ' : ''), 'money/land-tax.html');
+      });
+      MONEY.credit.accounts.filter(function (a) { return a.status !== 'normal'; }).forEach(function (a) {
+        add('money', 'warning', 'credit_score', a.type + ' ' + a.lender + ' ค้างชำระเกิน 30 วัน', 'ส่งผลต่อประวัติเครดิต — ชำระเพื่อกลับสู่สถานะปกติ', 'money/index.html');
+      });
+      // Document Wallet — บัตร/เอกสารใกล้หมดอายุ
+      DW.cards().forEach(function (c) {
+        var st = DW.status(c);
+        if (st.key === 'expiring' || st.key === 'expired')
+          add('wallet', st.key === 'expired' || st.days <= 30 ? 'danger' : 'warning', 'badge',
+            c.name + (st.key === 'expired' ? 'หมดอายุแล้ว' : 'ใกล้หมดอายุ'),
+            (st.key === 'expired' ? 'หมดอายุ ' : 'เหลือ ' + st.days + ' วัน · ครบกำหนด ') + DW.dateShort(c.expires), 'wallet/card.html?id=' + c.id);
+      });
+      DW.docs().forEach(function (d) {
+        var st = DW.status(d);
+        if (st.key === 'expiring') add('wallet', 'warning', 'description', d.title + ' ใกล้หมดอายุ', 'ใช้ได้อีก ' + st.days + ' วัน · ยื่นให้หน่วยงานก่อน ' + DW.dateShort(d.expires), 'wallet/document.html?id=' + d.id);
+      });
+      DW.requests().filter(function (r) { return r.status === 'done'; }).forEach(function (r) {
+        add('wallet', 'info', 'task', 'ได้รับเอกสารแล้ว: ' + r.title, 'คำขอ ' + r.id + ' · เก็บเข้ากระเป๋าเรียบร้อย', 'wallet/document.html?id=' + r.docId);
+      });
+      // Health — ใบรับรองแพทย์ใกล้หมดอายุ
+      HEALTH.certificates.forEach(function (c) {
+        var st = HP.certStatus(c);
+        if (st.key === 'expiring') add('health', 'warning', 'medical_information', c.title + ' ใกล้หมดอายุ', 'เหลือ ' + st.days + ' วัน · ' + c.hospital, 'health/certificate.html?id=' + c.id);
+      });
+
+      notices.sort(function (a, b) { return RANK[a.tone] - RANK[b.tone]; });
+      var LIMIT = 5, expanded = false;
+      function renderNotices() {
+        var list = expanded ? notices : notices.slice(0, LIMIT);
+        document.getElementById('notices').innerHTML = list.length ? list.map(function (n) {
+          var s = SRC[n.src];
+          return '<a class="notice-item notice-item--' + n.tone + '" href="' + n.href + '">' +
+            '<div class="notice-item__icon-wrap"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
+            '<div class="notice-item__body"><span class="ph-notice-src"><span class="material-symbols-outlined">' + s[1] + '</span>' + s[0] + '</span>' +
+              '<p class="notice-item__title">' + e(n.title) + '</p><p class="notice-item__sub">' + e(n.sub) + '</p></div>' +
+            '<span class="material-symbols-outlined notice-item__chevron">chevron_right</span></a>';
+        }).join('') : '<div class="ph-empty"><span class="material-symbols-outlined">task_alt</span>ไม่มีเรื่องที่ต้องดำเนินการ</div>';
+        var more = document.getElementById('notice-more');
+        more.hidden = notices.length <= LIMIT;
+        more.textContent = expanded ? 'แสดงน้อยลง' : 'ดูอีก ' + (notices.length - LIMIT) + ' รายการ';
+        more.setAttribute('aria-expanded', expanded);
+      }
+      document.getElementById('notice-more').onclick = function () { expanded = !expanded; renderNotices(); };
+      renderNotices();
+      var urgent = notices.filter(function (n) { return n.tone === 'danger'; }).length;
+      if (urgent) { var nc = document.getElementById('notice-count'); nc.textContent = urgent; nc.hidden = false; nc.title = 'เรื่องเร่งด่วน ' + urgent + ' รายการ'; }
+
+      // ยอดที่ต้องชำระรวม (ใบสั่ง + ค่าน้ำไฟ + ภาษีที่ดิน)
+      var tickets = CP.unpaidTickets(), bills = MP.unpaidBills(), land = MP.landTaxDue();
+      var totalDue = sum(tickets, function (t) { return t.fine; }) + sum(bills, function (x) { return x.bill.amount; }) + sum(land, MP.landTaxTotal);
+      function stat(cls, icon, label, value, unit) {
+        return '<div class="ph-stat ' + cls + '"><span class="ph-stat-label"><span class="material-symbols-outlined">' + icon + '</span>' + label + '</span>' +
+          '<span class="ph-stat-value">' + value + (unit ? '<small>' + unit + '</small>' : '') + '</span></div>';
+      }
+      document.getElementById('stats').innerHTML =
+        stat(urgent ? 'ph-stat--danger' : '', 'priority_high', 'เร่งด่วน', urgent, 'เรื่อง') +
+        stat(totalDue ? 'ph-stat--warning' : '', 'payments', 'ยอดรอชำระ', Math.round(totalDue).toLocaleString('th-TH'), 'บาท') +
+        stat(myAlerts.length ? 'ph-stat--danger' : '', 'crisis_alert', 'เตือนภัย', myAlerts.length, 'ประกาศ');
+
+      /* ============================================================
+         5. ภาพรวมจากแต่ละ Portal
+         ============================================================ */
+      function row(label, value, tone) {
+        return '<div class="ph-row"><span class="ph-row-label">' + label + '</span><span class="ph-row-value' + (tone ? ' is-' + tone : '') + '">' + value + '</span></div>';
+      }
+      function portal(href, icon, tone, title, desc, rows, foot) {
+        return '<a class="ph-portal" href="' + href + '">' +
+          '<div class="ph-portal-head"><span class="ph-icon tone-' + tone + '"><span class="material-symbols-outlined">' + icon + '</span></span>' +
+            '<div class="ph-portal-name"><p class="ph-portal-title">' + title + '</p><p class="ph-portal-desc">' + desc + '</p></div>' +
+            '<span class="material-symbols-outlined chevron">chevron_right</span></div>' +
+          '<div class="ph-rows">' + rows.join('') + '</div>' + (foot || '') + '</a>';
+      }
+
+      // Health
+      var hl = HEALTH.healthLink, right = HP.currentRight();
+      var validCerts = HEALTH.certificates.filter(function (c) { var k = HP.certStatus(c).key; return k !== 'expired'; }).length;
+      var health = portal('health/index.html', 'health_and_safety', 'primary', 'สุขภาพ', 'Health Portal', [
+        row('สิทธิการรักษา', e(right.shortName) + ' · ใช้สิทธิได้', 'positive'),
+        row('แพ้ยา', hl.allergies.length ? hl.allergies.map(function (a) { return e(a.drug); }).join(', ') : 'ไม่มี', hl.allergies.length ? 'danger' : ''),
+        row('ความดันล่าสุด', e(hl.visits[0].vitals.bp) + ' mmHg · ' + HP.dateShort(hl.visits[0].date)),
+        row('ใบรับรองแพทย์ใช้ได้', validCerts + ' ฉบับ')
+      ]);
+
+      // Crime
+      var openCases = CRIME.cases.filter(function (c) { return !CP.isClosed(c); });
+      var overdueT = tickets.filter(function (t) { return CP.ticketStatus(t).key === 'overdue'; }).length;
+      var crime = portal('crime/index.html', 'local_police', 'secondary', 'คดีและใบสั่ง', 'Crime Portal', [
+        row('ใบสั่งค้างชำระ', tickets.length ? tickets.length + ' ใบ · ' + baht(sum(tickets, function (t) { return t.fine; })) : 'ไม่มี', overdueT ? 'danger' : tickets.length ? 'warning' : 'positive'),
+        row('คดีที่กำลังดำเนินการ', openCases.length + ' คดี'),
+        openCases[0] ? row('ล่าสุด', e(openCases[0].title) + ' · ' + e(CP.caseStatus(openCases[0]).label)) : ''
+      ]);
+
+      // Document Wallet
+      var cards = DW.cards(), docs = DW.docs();
+      var soon = cards.concat(docs).filter(function (x) { var k = DW.status(x).key; return k === 'expiring'; }).length;
+      var pending = DW.requests().filter(function (r) { return r.status !== 'done'; }).length;
+      var wallet = portal('wallet/index.html', 'wallet', 'info', 'กระเป๋าเอกสาร', 'Document Wallet', [
+        row('บัตรในกระเป๋า', cards.length + ' ใบ'),
+        row('เอกสาร', docs.length + ' ฉบับ'),
+        row('ใกล้หมดอายุ', soon ? soon + ' รายการ' : 'ไม่มี', soon ? 'warning' : 'positive'),
+        row('คำขอที่รอดำเนินการ', pending + ' คำขอ')
+      ]);
+
+      // Money
+      var billTotal = sum(bills, function (x) { return x.bill.amount; });
+      var lateCredit = MONEY.credit.accounts.filter(function (a) { return a.status !== 'normal'; }).length;
+      var money = portal('money/index.html', 'account_balance_wallet', 'warning', 'การเงิน', 'Money Portal', [
+        row('ค่าน้ำ-ค่าไฟรอชำระ', bills.length ? bills.length + ' บิล · ' + baht(billTotal) : 'ไม่มี',
+          bills.some(function (x) { return MP.billStatus(x.bill).key === 'overdue'; }) ? 'danger' : bills.length ? 'warning' : 'positive'),
+        row('ภาษีที่ดินค้างชำระ', land.length ? baht(sum(land, MP.landTaxTotal)) : 'ไม่มี', land.length ? 'danger' : 'positive'),
+        row('เครดิตบูโร', lateCredit ? lateCredit + ' บัญชีค้างชำระ' : 'ปกติทุกบัญชี', lateCredit ? 'warning' : 'positive')
+      ]);
+
+      // Emergency
+      var emergency = portal('emergency/index.html', 'crisis_alert', 'danger', 'แจ้งเตือนภัย', 'Emergency Portal', [
+        row('พื้นที่ของคุณ', e(EP.locationLabel(loc))),
+        row('ประกาศที่มีผลอยู่', myAlerts.length ? myAlerts.length + ' ประกาศ' : 'ไม่มี', myAlerts.length ? 'danger' : 'positive'),
+        myAlerts[0] ? row('ล่าสุด', e(myAlerts[0].title)) : ''
+      ], '<div class="ph-portal-foot">' + EMERGENCY.hotlines.slice(0, 3).map(function (h) {
+        return '<span class="ph-call" data-tel="' + h.number + '" role="link" tabindex="0" title="โทร ' + e(h.label) + '"><span class="material-symbols-outlined">call</span>' + h.number + '</span>';
+      }).join('') + '</div>');
+
+      document.getElementById('portals').innerHTML = emergency + crime + money + wallet + health;
+      // ปุ่มสายด่วนอยู่ในการ์ดที่เป็นลิงก์ → โทรแทนการเปิด Portal
+      document.getElementById('portals').addEventListener('click', function (ev) {
+        var t = ev.target.closest('[data-tel]');
+        if (t) { ev.preventDefault(); location.href = 'tel:' + t.dataset.tel; }
+      });
+    })();
+  </script>
+</body>
+</html>
