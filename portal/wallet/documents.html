@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เอกสารของฉัน — ทางรัฐ</title>
+  <meta name="description" content="เอกสารที่หน่วยงานรัฐออกให้ — เอกสารประกอบการขอสินเชื่อ ผลสอบ ก.พ. หนังสือรับรอง SME ผลการศึกษา พร้อมติดตามคำขอเอกสาร">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../../demo-tools.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main">
+
+        <div class="card">
+          <div class="tabs" id="doc-tabs">
+            <div class="tab-bar" role="tablist">
+              <button class="tab-btn active" role="tab" data-panel="panel-docs">เอกสารของฉัน</button>
+              <button class="tab-btn" role="tab" data-panel="panel-requests" id="tab-req">คำขอของฉัน</button>
+            </div>
+            <div class="tab-panels">
+              <div class="tab-panel active" id="panel-docs" role="tabpanel">
+                <div class="filter-row" id="filters" style="margin-bottom: var(--spacing-lg);"></div>
+                <div class="dw-stack" id="docs"></div>
+              </div>
+              <div class="tab-panel" id="panel-requests" role="tabpanel">
+                <div class="dw-stack" id="reqs"></div>
+                <a class="btn btn-primary" href="request.html" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">note_add</span>ขอเอกสารใหม่</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก สำนักงาน ก.พ. · สสว. · สถาบันอุดมศึกษา · กรมการปกครอง · สำนักงานประกันสังคม · กรมสรรพากร<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script src="../portal-demo.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, T = WALLET.docTypes, docs = DW.docs(), reqs = DW.requests(), filter = 'all';
+      DW.mountWelcome('เอกสารของฉัน', 'เอกสารที่หน่วยงานรัฐออกให้ ' + docs.length + ' ฉบับ — ดูรายละเอียด ดาวน์โหลด PDF หรือแชร์ให้หน่วยงานปลายทาง');
+
+      /* ─── Tabs (#requests เปิดแท็บคำขอ) ─── */
+      var tabs = document.getElementById('doc-tabs');
+      function tab(id) {
+        tabs.querySelectorAll('.tab-btn').forEach(function (b) { var on = b.dataset.panel === id; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+        tabs.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.toggle('active', p.id === id); });
+        history.replaceState(null, '', id === 'panel-requests' ? '#requests' : location.pathname);
+      }
+      tabs.querySelectorAll('.tab-btn').forEach(function (b) { b.onclick = function () { tab(b.dataset.panel); }; });
+
+      /* ─── เอกสาร ─── */
+      var FILTERS = [['all', 'ทั้งหมด']].concat(Object.keys(T).map(function (k) { return [k, T[k].short]; }));
+      function renderFilters() {
+        document.getElementById('filters').innerHTML = FILTERS.map(function (f) {
+          var n = f[0] === 'all' ? docs.length : docs.filter(function (d) { return d.type === f[0]; }).length;
+          return '<button class="filter-chip' + (filter === f[0] ? ' active' : '') + '" data-f="' + f[0] + '" aria-pressed="' + (filter === f[0]) + '">' + f[1] + ' (' + n + ')</button>';
+        }).join('');
+        document.querySelectorAll('[data-f]').forEach(function (b) { b.onclick = function () { filter = b.dataset.f; renderFilters(); render(); }; });
+      }
+      function render() {
+        var list = docs.filter(function (d) { return filter === 'all' || d.type === filter; });
+        var html = list.map(function (d) {
+          var st = DW.status(d), t = T[d.type];
+          var exp = d.expires ? (st.key === 'expired' ? 'หมดอายุ ' : 'ใช้ได้ถึง ') + DW.dateShort(d.expires) : 'ไม่มีวันหมดอายุ';
+          return '<a class="list-item dw-item" href="document.html?id=' + d.id + '">' +
+            '<span class="dw-icon tone-' + (st.key === 'expired' ? 'neutral' : t.tone) + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+            '<div class="dw-item-body">' + DW.tag(st, true) +
+              '<span class="list-item-label">' + e(t.title) + '</span>' +
+              '<span class="dw-item-title">' + e(d.title) + '</span>' +
+              '<span class="dw-item-sub">' + e(d.issuer) + '</span>' +
+              '<div class="list-meta">' +
+                '<div class="list-meta-item"><span class="material-symbols-outlined list-meta-icon">calendar_today</span><span>ออกเมื่อ ' + DW.dateShort(d.issued) + '</span></div>' +
+                '<div class="list-meta-item"><span class="material-symbols-outlined list-meta-icon">event_available</span><span>' + exp + '</span></div>' +
+                (st.key === 'expired' ? '<div class="list-meta-item dw-meta-lock"><span class="material-symbols-outlined list-meta-icon">lock</span><span>ดาวน์โหลดไม่ได้</span></div>' : '') +
+              '</div>' +
+            '</div>' +
+            '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+        }).join('');
+        // หมวดที่ยังไม่มีเอกสาร → ชวนขอเอกสาร
+        if (!list.length) html = DW.empty('folder_off', 'ยังไม่มี' + T[filter].title + 'ในกระเป๋า') +
+          '<a class="btn btn-secondary" href="request.html?type=' + filter + '"><span class="material-symbols-outlined">note_add</span>ขอ' + e(T[filter].title) + '</a>';
+        document.getElementById('docs').innerHTML = html;
+      }
+      renderFilters(); render();
+
+      /* ─── คำขอ ─── */
+      var pending = reqs.filter(function (r) { return r.status !== 'done'; }).length;
+      if (pending) document.getElementById('tab-req').textContent = 'คำขอของฉัน (' + pending + ')';
+      document.getElementById('reqs').innerHTML = reqs.length ? reqs.map(function (r) {
+        var t = T[r.type], done = r.status === 'done';
+        var stepsNow = done ? 4 : 1;
+        var tl = ['ยื่นคำขอ · ' + DW.dateTime(r.submitted), 'หน่วยงานตรวจสอบข้อมูล', 'ออกเอกสารและลงลายมือชื่ออิเล็กทรอนิกส์', 'เก็บเข้ากระเป๋าเอกสาร'];
+        return '<div class="dw-req"><div class="dw-item">' +
+          '<span class="dw-icon tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+          '<div class="dw-item-body"><span class="list-item-label">คำขอเลขที่ ' + e(r.id) + '</span><span class="dw-item-title">' + e(r.title) + '</span>' +
+            '<span class="dw-item-sub">' + e(t.issuer) + '</span></div>' +
+          (done ? '<span class="tag tag--success tag--sm tag--dot">ได้รับเอกสารแล้ว</span>' : '<span class="tag tag--warning tag--sm tag--dot">กำลังดำเนินการ</span>') +
+          '</div>' +
+          '<ol class="dw-tl">' + tl.map(function (x, i) {
+            return '<li class="' + (i < stepsNow ? 'is-done' : i === stepsNow ? 'is-now' : '') + '">' + e(x) + '</li>';
+          }).join('') + '</ol>' +
+          (done ? '<a class="btn btn-secondary btn-small" style="margin-top:var(--spacing-lg)" href="document.html?id=' + e(r.docId) + '"><span class="material-symbols-outlined">description</span>ดูเอกสาร</a>'
+                : '<p class="dw-muted" style="margin-top:var(--spacing-md)">คาดว่าจะได้รับ' + e(t.eta) + ' ระบบจะแจ้งเตือนเมื่อเอกสารพร้อม</p>') +
+        '</div>';
+      }).join('') : DW.empty('inbox', 'ยังไม่มีคำขอเอกสาร');
+
+      if (location.hash === '#requests') tab('panel-requests');
+      DW.mountDemo();
+    })();
+  </script>
+</body>
+</html>

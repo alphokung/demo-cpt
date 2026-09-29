@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บัตรของฉัน — ทางรัฐ</title>
+  <meta name="description" content="Virtual Card — บัตรประชาชน ใบขับขี่ บัตรคนพิการ หนังสือเดินทาง ซิงก์อัตโนมัติ และเพิ่มบัตรเฉพาะอาชีพได้">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../../demo-tools.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main">
+
+        <!-- บัตรสำคัญ -->
+        <div class="card">
+          <div class="dw-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บัตรสำคัญ</h3>
+            </div>
+          </div>
+          <div class="dw-sync" id="sync"></div>
+          <div class="dw-card-grid" id="core"></div>
+        </div>
+
+        <!-- บัตรเฉพาะอาชีพ -->
+        <div class="card">
+          <div class="dw-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บัตรเฉพาะอาชีพ</h3>
+            </div>
+            <button type="button" class="dw-link" data-add-card>เพิ่มบัตร <span class="material-symbols-outlined">add</span></button>
+          </div>
+          <p class="dw-section-desc">บัตรนักศึกษา บัตรประจำตัวทหาร บัตรสื่อมวลชน และบัตรพนักงาน — เพิ่มได้เอง ระบบจะตรวจสอบกับหน่วยงานผู้ออกบัตรก่อนเก็บเข้ากระเป๋า</p>
+          <div class="dw-card-grid" id="pro"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก กรมการปกครอง · กรมการขนส่งทางบก · พก. · กรมการกงสุล และหน่วยงานผู้ออกบัตร<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal เพิ่มบัตร: เลือกประเภท → กรอกข้อมูล → ตรวจสอบกับหน่วยงาน → ยืนยัน -->
+  <div class="modal-overlay" id="modal-add" aria-hidden="true">
+    <div class="modal-content dw-modal-wide" role="dialog" aria-modal="true" aria-labelledby="add-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="add-title">เพิ่มบัตรเฉพาะอาชีพ</h3>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="ปิด">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body dw-modal-steps" id="add-steps">
+
+        <div data-step="type" class="is-active">
+          <p class="dw-muted">เลือกประเภทบัตรที่ต้องการเพิ่ม</p>
+          <div class="dw-types" id="add-types" role="radiogroup" aria-label="ประเภทบัตร"></div>
+          <button type="button" class="btn btn-primary" data-go="form">ถัดไป</button>
+        </div>
+
+        <form data-step="form" id="add-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="add-issuer" id="add-issuer-label">หน่วยงานผู้ออกบัตร</label>
+            <div class="select-wrapper">
+              <select class="input" id="add-issuer" required></select>
+              <span class="material-symbols-outlined select-arrow">expand_more</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="add-number" id="add-number-label">เลขที่บัตร</label>
+            <input class="input" id="add-number" autocomplete="off" required aria-describedby="add-number-hint add-number-err">
+            <p class="form-hint" id="add-number-hint"></p>
+            <p class="dw-error" id="add-number-err" role="alert"></p>
+          </div>
+          <label class="dw-consent">
+            <input type="checkbox" id="add-consent">
+            <span>ยินยอมให้ทางรัฐส่ง<strong>เลขประจำตัวประชาชนและเลขที่บัตร</strong>ไปตรวจสอบกับหน่วยงานผู้ออกบัตร และรับข้อมูลบัตรกลับมาเก็บในกระเป๋าเอกสาร (ยกเลิกได้โดยนำบัตรออก)</span>
+          </label>
+          <p class="dw-error" id="add-consent-err" role="alert">กรุณายืนยันความยินยอมก่อนตรวจสอบ</p>
+          <div class="dw-nav-row">
+            <button type="button" class="btn btn-tertiary-outline" data-go="type">ย้อนกลับ</button>
+            <button type="submit" class="btn btn-primary">ตรวจสอบกับหน่วยงาน</button>
+          </div>
+        </form>
+
+        <div data-step="verify">
+          <div class="dw-verify" role="status">
+            <span class="material-symbols-outlined dw-spin">progress_activity</span>
+            <p id="verify-text">กำลังตรวจสอบกับหน่วยงาน…</p>
+          </div>
+        </div>
+
+        <div data-step="preview">
+          <div class="dw-notice dw-notice--positive"><span class="material-symbols-outlined">verified</span>
+            <div class="dw-notice-body"><strong>ตรวจสอบสำเร็จ</strong> — พบข้อมูลบัตรของคุณ ตรวจสอบความถูกต้องก่อนเพิ่มเข้ากระเป๋า</div></div>
+          <div id="add-preview"></div>
+          <div class="dw-nav-row">
+            <button type="button" class="btn btn-tertiary-outline" data-go="form">แก้ไข</button>
+            <button type="button" class="btn btn-primary" id="add-confirm"><span class="material-symbols-outlined">add_card</span>เพิ่มเข้ากระเป๋า</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script src="../portal-demo.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, W = WALLET, P = W.proTypes;
+      DW.mountWelcome('บัตรของฉัน', 'Virtual Card ใช้แสดงตนแทนบัตรจริง — แตะบัตรเพื่อดูรายละเอียด พลิกดูด้านหลัง หรือแสดงเต็มจอ');
+
+      function tile(c) {
+        var st = DW.status(c);
+        return '<a class="dw-wcard" href="card.html?id=' + c.id + '">' +
+          '<div class="dw-cardbox">' + DW.cardFace(c, 'front', { masked: true }) + '</div>' +
+          '<div class="dw-wcard-meta"><div><p class="dw-wcard-name">' + e(c.name) + '</p><p class="dw-wcard-sub">' + e(c.issuerShort) +
+            ' · ' + (c.expires ? 'หมดอายุ ' + DW.dateShort(c.expires) : 'ไม่มีวันหมดอายุ') + '</p></div>' + DW.tag(st) + '</div></a>';
+      }
+
+      function render() {
+        var cards = DW.cards(), s = DW.state();
+        var core = cards.filter(function (c) { return c.kind === 'core'; });
+        var html = core.map(tile).join('');
+        // บัตรคนพิการ: ไม่ใช่ทุกคนที่มี → แสดงช่องว่างพร้อมคำอธิบาย
+        if (!core.some(function (c) { return c.id === 'disability'; })) {
+          html += '<div class="dw-wcard"><div class="dw-slot"><span class="material-symbols-outlined">accessible</span>ไม่พบข้อมูลบัตรประจำตัวคนพิการ<span class="dw-muted">ระบบจะเพิ่มให้อัตโนมัติเมื่อ พก. ออกบัตรให้คุณ</span></div></div>';
+        }
+        document.getElementById('core').innerHTML = html;
+
+        var pro = cards.filter(function (c) { return c.kind === 'pro'; });
+        document.getElementById('pro').innerHTML = pro.map(tile).join('') +
+          '<div class="dw-wcard"><button type="button" class="dw-slot" data-add-card><span class="material-symbols-outlined">add_card</span>เพิ่มบัตร</button></div>';
+
+        var last = s.syncedAt || W.cards[0].sync.lastSync;
+        document.getElementById('sync').innerHTML =
+          '<span class="material-symbols-outlined">sync</span>' +
+          '<div class="dw-sync-text"><strong>ซิงก์อัตโนมัติ</strong> — ดึงข้อมูลล่าสุดจากหน่วยงานทุกครั้งที่เปิดแอป<br><span class="dw-muted">ล่าสุด ' + DW.dateTime(last) + '</span></div>' +
+          '<button type="button" class="btn btn-small btn-outline" id="btn-sync"><span class="material-symbols-outlined">refresh</span>ซิงก์ตอนนี้</button>';
+        document.getElementById('btn-sync').onclick = function () {
+          var b = this;
+          b.classList.add('is-loading');
+          setTimeout(function () {
+            DW.update(function (x) { x.syncedAt = new Date().toISOString(); });
+            render();
+            DW.toast('ซิงก์ข้อมูลบัตรล่าสุดจากหน่วยงานเรียบร้อย', 'success', 'check_circle');
+          }, 1200);
+        };
+      }
+      render();
+
+      /* ─── เพิ่มบัตร ─── */
+      var sel = { type: null, issuer: null, number: null }, draft = null;
+      var steps = document.getElementById('add-steps');
+      function go(step) {
+        steps.querySelectorAll('[data-step]').forEach(function (x) { x.classList.toggle('is-active', x.dataset.step === step); });
+        var f = steps.querySelector('[data-step="' + step + '"] input, [data-step="' + step + '"] select');
+        if (f) f.focus();
+      }
+
+      document.getElementById('add-types').innerHTML = Object.keys(P).map(function (k, i) {
+        var t = P[k];
+        return '<label class="dw-type"><input type="radio" name="ptype" value="' + k + '"' + (i === 0 ? ' checked' : '') + '>' +
+          '<span class="dw-icon tone-primary"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+          '<span class="dw-type-body"><span class="dw-type-title">' + e(t.name) + '</span><span class="dw-type-desc" style="display:block">' + e(t.desc) + '</span></span>' +
+          '<span class="material-symbols-outlined dw-type-check">check_circle</span></label>';
+      }).join('');
+
+      function openAdd() {
+        steps.querySelectorAll('.dw-error').forEach(function (x) { x.classList.remove('is-visible'); });
+        document.getElementById('add-form').reset();
+        go('type');
+        DW.openModal('modal-add');
+      }
+      document.addEventListener('click', function (ev) {
+        if (ev.target.closest('[data-add-card]')) openAdd();
+        var g = ev.target.closest('[data-go]');
+        if (!g) return;
+        if (g.dataset.go === 'form' && steps.querySelector('[data-step="type"]').classList.contains('is-active')) {
+          sel.type = steps.querySelector('input[name="ptype"]:checked').value;
+          var t = P[sel.type];
+          document.getElementById('add-issuer-label').textContent = t.issuerLabel;
+          document.getElementById('add-issuer').innerHTML = t.issuers.map(function (x) { return '<option>' + e(x) + '</option>'; }).join('');
+          document.getElementById('add-number-label').textContent = t.numberLabel;
+          document.getElementById('add-number').placeholder = t.placeholder;
+          document.getElementById('add-number-hint').textContent = t.hint;
+        }
+        go(g.dataset.go);
+      });
+
+      document.getElementById('add-form').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var t = P[sel.type], num = document.getElementById('add-number').value.trim();
+        var numErr = document.getElementById('add-number-err'), cErr = document.getElementById('add-consent-err');
+        var ok = true;
+        if (!new RegExp(t.pattern).test(num)) { numErr.textContent = 'รูปแบบ' + t.numberLabel + 'ไม่ถูกต้อง (' + t.hint + ')'; numErr.classList.add('is-visible'); ok = false; }
+        else numErr.classList.remove('is-visible');
+        cErr.classList.toggle('is-visible', !document.getElementById('add-consent').checked);
+        if (!document.getElementById('add-consent').checked) ok = false;
+        sel.issuer = document.getElementById('add-issuer').value;
+        var dup = DW.cards().some(function (c) { return c.proType === sel.type && c.issuer === sel.issuer; });
+        if (ok && dup) { numErr.textContent = 'คุณมี' + t.name + 'จาก' + sel.issuer + 'อยู่ในกระเป๋าแล้ว'; numErr.classList.add('is-visible'); ok = false; }
+        if (!ok) return;
+        sel.number = num;
+
+        document.getElementById('verify-text').textContent = 'กำลังตรวจสอบกับ' + sel.issuer + '…';
+        go('verify');
+        setTimeout(function () {
+          var issued = new Date(DW.today);
+          var exp = new Date(issued); exp.setFullYear(exp.getFullYear() + t.years);
+          draft = {
+            id: sel.type + '-' + Date.now().toString(36), kind: 'pro', proType: sel.type, theme: t.theme, icon: t.icon,
+            name: t.name, nameEn: t.nameEn, issuer: sel.issuer, issuerShort: sel.issuer.replace(/ \(.*\)$/, '').replace(/ จำกัด.*$/, ''),
+            numberLabel: t.numberLabel, number: num, numberMasked: num.slice(0, 3) + num.slice(3, -2).replace(/[A-Za-z0-9]/g, 'X') + num.slice(-2),
+            issued: issued.toISOString().slice(0, 10), expires: exp.toISOString().slice(0, 10), warnDays: 60,
+            front: t.sample.front, back: t.sample.back, code: { label: 'ID', value: num },
+            details: t.sample.front.concat(t.sample.back),
+            share: ['ชื่อ-นามสกุล', 'รูปถ่าย', t.numberLabel, 'สังกัด', 'วันหมดอายุ'],
+            added: new Date().toISOString(), verified: new Date().toISOString(),
+            log: [{ at: new Date().toISOString(), action: 'เพิ่มบัตรเข้ากระเป๋า', where: 'ตรวจสอบกับ' + sel.issuer + 'สำเร็จ', icon: 'add_card' }]
+          };
+          document.getElementById('add-preview').innerHTML =
+            '<div class="dw-cardbox">' + DW.cardFace(draft, 'front') + '</div>' +
+            '<div class="details-list" style="margin-top:var(--spacing-lg)">' +
+              DW.detailsItem('หน่วยงานผู้ออกบัตร', e(draft.issuer)) +
+              DW.detailsItem(e(draft.numberLabel), e(draft.number)) +
+              draft.front.map(function (r) { return DW.detailsItem(e(r[0]), e(r[1])); }).join('') +
+              DW.detailsItem('วันหมดอายุ', DW.dateLong(draft.expires)) +
+            '</div>';
+          go('preview');
+        }, 1400);
+      });
+
+      document.getElementById('add-confirm').onclick = function () {
+        DW.update(function (s) { s.added.push(draft); });
+        DW.closeModal('modal-add');
+        render();
+        DW.toast('เพิ่ม' + draft.name + 'เข้ากระเป๋าเรียบร้อยแล้ว', 'success', 'check_circle');
+      };
+
+      if (location.hash === '#add') { history.replaceState(null, '', location.pathname); openAdd(); }
+      DW.mountDemo();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดบัตร — ทางรัฐ</title>
+  <meta name="description" content="รายละเอียด Virtual Card — พลิกดูหน้า-หลังบัตร แสดงบัตรเต็มจอ และแชร์ข้อมูลเฉพาะที่จำเป็นผ่าน QR">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="cards.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main" id="app"></main>
+    </div>
+  </div>
+
+  <!-- Modal แชร์ข้อมูลบัตร (Selective disclosure) -->
+  <div class="modal-overlay" id="modal-share" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="share-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="share-title">ยืนยันตัวตนด้วย QR</h3>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="ปิด">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body dw-modal-steps" id="share-steps">
+        <div data-step="pick" class="is-active">
+          <p class="dw-muted">เลือกเฉพาะข้อมูลที่ผู้ตรวจสอบต้องใช้ — ข้อมูลที่ไม่เลือกจะไม่ถูกส่งออกไป</p>
+          <div class="check-list" id="share-fields"></div>
+          <button type="button" class="btn btn-primary" id="share-make"><span class="material-symbols-outlined">qr_code_2</span>สร้าง QR</button>
+        </div>
+        <div data-step="qr">
+          <div class="dw-qr-box">
+            <div class="dw-qr" id="share-qr"></div>
+            <p class="dw-qr-code" id="share-code"></p>
+            <div class="dw-qr-timer"><div class="dw-qr-timer-bar"><span id="share-bar"></span></div><p class="dw-qr-timer-text" id="share-left"></p></div>
+            <div class="dw-claims" id="share-claims"></div>
+          </div>
+          <p class="dw-muted">ให้เจ้าหน้าที่สแกนด้วยแอปทางรัฐหรือระบบตรวจสอบของหน่วยงาน QR ใช้ได้ครั้งเดียวและเปลี่ยนใหม่ทุก 60 วินาที</p>
+          <button type="button" class="btn btn-tertiary-outline" data-share-back>เลือกข้อมูลใหม่</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="../../alert.js"></script>
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, list = DW.cards();
+      var c = DW.card(DW.qs('id')) || list[0];
+      var st = DW.status(c), root = document.getElementById('app'), masked = false;
+
+      /* ─── Status banner ─── */
+      var banner = {
+        valid:    ['check_circle', 'บัตรยังใช้งานได้', 'หมดอายุ ' + (c.expires ? DW.dateLong(c.expires) + ' (อีก ' + st.days + ' วัน)' : '')],
+        expiring: ['schedule', c.name + 'ใกล้หมดอายุ', 'หมดอายุ ' + (c.expires ? DW.dateLong(c.expires) + ' (อีก ' + st.days + ' วัน)' : '') + (c.id === 'passport' ? ' — ควรต่ออายุก่อนเดินทาง หลายประเทศกำหนดอายุคงเหลืออย่างน้อย 6 เดือน' : '')],
+        expired:  ['error', 'บัตรหมดอายุแล้ว', 'หมดอายุเมื่อ ' + (c.expires ? DW.dateLong(c.expires) : '') + ' — ไม่สามารถใช้ยืนยันตัวตนได้'],
+        none:     ['info', 'บัตรไม่มีวันหมดอายุ', '']
+      }[st.key];
+
+      var html =
+        '<div class="status-banner ' + st.banner + '"><span class="material-symbols-outlined">' + banner[0] + '</span>' +
+        '<div class="status-banner-text"><p class="status-banner-title">' + e(banner[1]) + '</p><p class="status-banner-subtitle">' + e(banner[2]) + '</p></div></div>';
+
+      /* ─── บัตร (พลิกได้) ─── */
+      html += '<div class="card"><div class="dw-stage">' +
+          '<div id="flip-host" style="width:100%"></div>' +
+          '<div class="dw-row" style="justify-content:center">' +
+            '<div class="dw-seg" role="group" aria-label="ด้านของบัตร">' +
+              '<button type="button" data-side="front" aria-pressed="true">ด้านหน้า</button>' +
+              '<button type="button" data-side="back" aria-pressed="false">ด้านหลัง</button></div>' +
+            '<button type="button" class="dw-link" id="btn-mask"><span class="material-symbols-outlined">visibility_off</span><span>ซ่อนเลขบัตร</span></button>' +
+          '</div>' +
+          '<p class="dw-hint"><span class="material-symbols-outlined">swipe</span>แตะ หรือปัดบัตรซ้าย-ขวา เพื่อพลิกดูด้านหลัง</p>' +
+          '<div class="dw-actions">' +
+            '<button type="button" class="btn btn-primary" id="btn-fs"><span class="material-symbols-outlined">fullscreen</span>แสดงเต็มจอ</button>' +
+            '<button type="button" class="btn btn-secondary" id="btn-share"' + (st.key === 'expired' ? ' disabled' : '') + '><span class="material-symbols-outlined">qr_code_2</span>ยืนยันตัวตนด้วย QR</button>' +
+          '</div>' +
+        '</div></div>';
+
+      /* ─── รายละเอียด + ข้อมูลบัตร ─── */
+      var meta = DW.detailsItem('หน่วยงานผู้ออกบัตร', e(c.issuer)) +
+        DW.detailsItem('วันออกบัตร', DW.dateLong(c.issued)) +
+        DW.detailsItem('วันหมดอายุ', c.expires ? DW.dateLong(c.expires) : 'ไม่มีวันหมดอายุ', st.key === 'expired' ? 'details-value-warning' : '') +
+        DW.detailsItem('สถานะ', DW.tag(st));
+      if (c.kind === 'core') {
+        meta += DW.detailsItem('การอัปเดตข้อมูล', 'ซิงก์อัตโนมัติ · ล่าสุด ' + DW.dateTime(DW.state().syncedAt || c.sync.lastSync)) +
+          DW.detailsItem('แหล่งข้อมูล', e(c.sync.source));
+      } else {
+        meta += DW.detailsItem('เพิ่มเข้ากระเป๋าเมื่อ', DW.dateTime(c.added)) +
+          DW.detailsItem('ตรวจสอบกับหน่วยงานล่าสุด', DW.dateTime(c.verified));
+      }
+      var extra = '';
+      if (c.renewUrl && st.key !== 'valid') extra += '<button type="button" class="btn btn-secondary" id="btn-renew" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">event_available</span>นัดหมายต่ออายุหนังสือเดินทาง</button>';
+      if (c.kind === 'pro') extra += '<button type="button" class="btn btn-tertiary-outline" id="btn-remove" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">credit_card_off</span>นำบัตรออกจากกระเป๋า</button>';
+
+      html += '<div class="dw-grid-2">' +
+        '<div class="card">' + DW.sectionTitle('รายละเอียดบัตร') + '<div class="details-list">' +
+          DW.detailsItem('ชื่อ-นามสกุล', e(WALLET.user.fullName)) +
+          DW.detailsItem(e(c.numberLabel), '<span id="num">' + e(c.number) + '</span>') +
+          (c.details || []).map(function (r) { return DW.detailsItem(e(r[0]), e(r[1])); }).join('') +
+        '</div></div>' +
+        '<div class="card">' + DW.sectionTitle('ข้อมูลบัตร') + '<div class="details-list">' + meta + '</div>' + extra + '</div>' +
+      '</div>';
+
+      html += '<div class="card">' + DW.sectionTitle('ประวัติการใช้งานบัตร') + DW.logList(c.log) + '</div>';
+
+      html += '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
+        'ข้อมูลจาก' + e(c.issuer) + '<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+
+      root.innerHTML = html;
+      DW.mountWelcome(c.name, c.issuer);
+
+      /* ─── พลิกบัตร ─── */
+      var flipper, segs = root.querySelectorAll('[data-side]');
+      function mountFlip(side) {
+        document.getElementById('flip-host').innerHTML = DW.flipCard(c, { masked: masked });
+        flipper = DW.bindFlip(root.querySelector('.dw-flip'), function (s) {
+          segs.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.side === s ? 'true' : 'false'); });
+        });
+        if (side === 'back') flipper.set('back');
+      }
+      mountFlip();
+      segs.forEach(function (b) { b.onclick = function () { flipper.set(b.dataset.side); }; });
+
+      document.getElementById('btn-mask').onclick = function () {
+        masked = !masked;
+        this.querySelector('.material-symbols-outlined').textContent = masked ? 'visibility' : 'visibility_off';
+        this.querySelector('span:last-child').textContent = masked ? 'แสดงเลขบัตร' : 'ซ่อนเลขบัตร';
+        document.getElementById('num').textContent = masked ? c.numberMasked : c.number;
+        mountFlip(flipper.side());
+      };
+
+      /* ─── เต็มจอ: เริ่มที่บัตรนี้ เลื่อนไปบัตรอื่นในกระเป๋าได้ ─── */
+      document.getElementById('btn-fs').onclick = function () {
+        DW.fullscreen(list, Math.max(0, list.map(function (x) { return x.id; }).indexOf(c.id)));
+      };
+
+      if (document.getElementById('btn-renew')) document.getElementById('btn-renew').onclick = function () {
+        DW.openExternal('ระบบนัดหมายทำหนังสือเดินทาง', 'กรมการกงสุล', c.renewUrl);
+      };
+      if (document.getElementById('btn-remove')) document.getElementById('btn-remove').onclick = function () {
+        var go = function () {
+          DW.update(function (s) {
+            var n = s.added.length;
+            s.added = s.added.filter(function (x) { return x.id !== c.id; });
+            if (s.added.length === n) s.removed.push(c.id);
+          });
+          location.href = 'cards.html';
+        };
+        if (typeof ThaiAlert === 'undefined') return go();
+        ThaiAlert.confirm({
+          title: 'นำบัตรออกจากกระเป๋า', type: 'warning',
+          message: 'บัตร' + c.name + 'จะถูกลบออกจากอุปกรณ์นี้ และยกเลิกการเชื่อมต่อกับ' + c.issuer + ' — เพิ่มกลับได้ภายหลัง',
+          confirmText: 'นำออก', cancelText: 'ยกเลิก'
+        }).then(function (ok) { if (ok) go(); });
+      };
+
+      /* ─── ยืนยันตัวตนด้วย QR (เลือกแชร์เฉพาะข้อมูลที่จำเป็น) ─── */
+      var steps = document.getElementById('share-steps'), timer;
+      function step(n) { steps.querySelectorAll('[data-step]').forEach(function (x) { x.classList.toggle('is-active', x.dataset.step === n); }); }
+      var fields = (c.share || []).slice();
+      var age = DW.today.getFullYear() - new Date(WALLET.user.birthDate).getFullYear();
+      document.getElementById('share-fields').innerHTML =
+        fields.map(function (f, i) {
+          return '<label class="check-item"><input type="checkbox" value="' + e(f) + '"' + (i < 2 ? ' checked' : '') + '><span class="check-item-label">' + e(f) + '</span></label>';
+        }).join('') +
+        '<label class="check-item"><input type="checkbox" value="อายุ 20 ปีขึ้นไป"><span><span class="check-item-label">ยืนยันว่า "อายุ 20 ปีขึ้นไป"</span><br><span class="check-item-desc">แชร์เฉพาะคำตอบ ใช่/ไม่ใช่ โดยไม่เปิดเผยวันเกิด</span></span></label>';
+
+      function makeQr() {
+        var picked = [].map.call(steps.querySelectorAll('#share-fields input:checked'), function (x) { return x.value; });
+        if (!picked.length) { DW.toast('กรุณาเลือกข้อมูลอย่างน้อย 1 รายการ', 'warning', 'warning'); return; }
+        clearInterval(timer);
+        var left = 60, code = DW.token(6);
+        DW.qr(document.getElementById('share-qr'), 'https://verify.thangrath.go.th/c/' + code + '?card=' + c.id + '&f=' + picked.length, 184);
+        document.getElementById('share-code').textContent = code.slice(0, 3) + ' ' + code.slice(3);
+        document.getElementById('share-claims').innerHTML = picked.map(function (p) {
+          var v = p === 'อายุ 20 ปีขึ้นไป' ? p + ': ' + (age >= 20 ? 'ใช่' : 'ไม่ใช่') : p;
+          return '<span class="tag tag--sm">' + e(v) + '</span>';
+        }).join('');
+        function tick() {
+          document.getElementById('share-bar').style.width = (left / 60 * 100) + '%';
+          document.getElementById('share-left').textContent = 'QR จะเปลี่ยนใหม่ใน ' + left + ' วินาที';
+          if (left-- <= 0) makeQr();
+        }
+        tick(); timer = setInterval(tick, 1000);
+        step('qr');
+      }
+      document.getElementById('btn-share').onclick = function () { step('pick'); DW.openModal('modal-share'); };
+      document.getElementById('share-make').onclick = makeQr;
+      steps.querySelector('[data-share-back]').onclick = function () { clearInterval(timer); step('pick'); };
+      new MutationObserver(function () {
+        if (!document.getElementById('modal-share').classList.contains('active')) clearInterval(timer);
+      }).observe(document.getElementById('modal-share'), { attributes: true, attributeFilter: ['class'] });
+    })();
+  </script>
+</body>
+</html>

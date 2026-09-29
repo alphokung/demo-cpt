@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ขอเอกสาร — ทางรัฐ</title>
+  <meta name="description" content="ขอเอกสารจากหน่วยงานรัฐ — เอกสารประกอบการขอสินเชื่อ ผลสอบ ก.พ. หนังสือรับรองการ SME ผลการศึกษาจากมหาวิทยาลัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ" id="nav-back">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main">
+        <div class="card">
+          <div class="dw-steps" id="steps" aria-label="ขั้นตอนการขอเอกสาร">
+            <div class="dw-step" data-s="1">1. เลือกเอกสาร</div>
+            <div class="dw-step" data-s="2">2. กรอกข้อมูล</div>
+            <div class="dw-step" data-s="3">3. ยืนยันคำขอ</div>
+          </div>
+          <div id="view"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ส่งคำขอไปยังหน่วยงานผู้ออกเอกสารโดยตรง · ยืนยันตัวตนด้วยบัญชีทางรัฐ<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, T = WALLET.docTypes, F = WALLET.requestForms;
+      var view = document.getElementById('view');
+      var st = { step: 1, type: T[DW.qs('type')] ? DW.qs('type') : null, answers: {} };
+      DW.mountWelcome('ขอเอกสาร', 'เลือกเอกสารที่ต้องการ ระบบจะส่งคำขอไปยังหน่วยงานผู้ออก และเก็บเอกสารเข้ากระเป๋าให้อัตโนมัติ');
+
+      function markSteps() {
+        document.querySelectorAll('.dw-step').forEach(function (x) {
+          var n = +x.dataset.s;
+          x.classList.toggle('is-done', n < st.step);
+          x.classList.toggle('is-active', n === st.step);
+          if (n === st.step) x.setAttribute('aria-current', 'step'); else x.removeAttribute('aria-current');
+        });
+        document.getElementById('steps').style.display = st.step > 3 ? 'none' : '';
+      }
+
+      /* ─── ขั้นที่ 1: เลือกประเภทเอกสาร ─── */
+      function step1() {
+        var docs = DW.docs();
+        view.innerHTML = '<div class="dw-types" role="radiogroup" aria-label="ประเภทเอกสาร">' + Object.keys(T).map(function (k) {
+          var t = T[k];
+          var has = docs.filter(function (d) { return d.type === k && DW.status(d).key !== 'expired'; }).length;
+          return '<label class="dw-type"><input type="radio" name="dtype" value="' + k + '"' + (st.type === k ? ' checked' : '') + '>' +
+            '<span class="dw-icon tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+            '<span class="dw-type-body"><span class="dw-type-title" style="display:block">' + e(t.title) + '</span>' +
+              '<span class="dw-type-desc" style="display:block">' + e(t.desc) + '</span>' +
+              '<span class="dw-type-meta"><span class="tag tag--sm">' + e(t.eta) + '</span><span class="tag tag--sm">' + e(t.validity) + '</span>' +
+                (has ? '<span class="tag tag--success tag--sm">มีฉบับที่ใช้ได้แล้ว ' + has + ' ฉบับ</span>' : '') + '</span></span>' +
+            '<span class="material-symbols-outlined dw-type-check">check_circle</span></label>';
+        }).join('') + '</div>' +
+        '<p class="dw-error" id="err-type" role="alert">กรุณาเลือกเอกสารที่ต้องการ</p>' +
+        '<div class="dw-nav-row"><button type="button" class="btn btn-primary" id="next">ถัดไป</button></div>';
+        document.getElementById('next').onclick = function () {
+          var c = view.querySelector('input[name="dtype"]:checked');
+          if (!c) { document.getElementById('err-type').classList.add('is-visible'); return; }
+          if (c.value !== st.type) st.answers = {};
+          st.type = c.value; go(2);
+        };
+      }
+
+      /* ─── ขั้นที่ 2: แบบฟอร์มตามประเภท ─── */
+      function step2() {
+        var t = T[st.type];
+        view.innerHTML = '<div class="dw-row" style="margin-bottom:var(--spacing-xl)"><span class="dw-icon tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+            '<div><p class="dw-item-title">' + e(t.title) + '</p><p class="dw-muted">' + e(t.issuer) + '</p></div></div>' +
+          '<form class="dw-form" id="form" novalidate>' + F[st.type].map(function (f) {
+            var prev = st.answers[f.label];
+            var hint = f.hint ? '<p class="form-hint">' + e(f.hint) + '</p>' : '';
+            if (f.type === 'select') {
+              return '<div class="form-group"><label class="form-label" for="f-' + f.id + '">' + e(f.label) + '</label>' +
+                '<div class="select-wrapper"><select class="input" id="f-' + f.id + '" data-label="' + e(f.label) + '">' +
+                f.options.map(function (o) { return '<option' + (prev === o ? ' selected' : '') + '>' + e(o) + '</option>'; }).join('') +
+                '</select><span class="material-symbols-outlined select-arrow">expand_more</span></div>' + hint + '</div>';
+            }
+            var multi = f.type === 'checks';
+            var chosen = prev ? prev.split(', ') : null;
+            return '<fieldset class="form-group" style="border:none;padding:0;margin:0" data-label="' + e(f.label) + '" data-type="' + f.type + '">' +
+              '<legend class="form-label">' + e(f.label) + '</legend>' +
+              (multi ? '<div class="check-list">' : '<div class="dw-choice">') +
+              f.options.map(function (o, i) {
+                var on = chosen ? chosen.indexOf(o) > -1 : (multi ? (f.checked || []).indexOf(i) > -1 : i === 0);
+                return multi
+                  ? '<label class="check-item"><input type="checkbox" value="' + e(o) + '"' + (on ? ' checked' : '') + '><span class="check-item-label">' + e(o) + '</span></label>'
+                  : '<label><input type="radio" name="f-' + f.id + '" value="' + e(o) + '"' + (on ? ' checked' : '') + '>' + e(o) + '</label>';
+              }).join('') + '</div>' + hint +
+              '<p class="dw-error" role="alert">กรุณาเลือกอย่างน้อย 1 รายการ</p></fieldset>';
+          }).join('') + '</form>' +
+          '<div class="dw-nav-row"><button type="button" class="btn btn-tertiary-outline" id="back">ย้อนกลับ</button><button type="button" class="btn btn-primary" id="next">ถัดไป</button></div>';
+        document.getElementById('back').onclick = function () { go(1); };
+        document.getElementById('next').onclick = function () {
+          var ok = true;
+          view.querySelectorAll('select[data-label]').forEach(function (s) { st.answers[s.dataset.label] = s.value; });
+          view.querySelectorAll('fieldset[data-label]').forEach(function (fs) {
+            var v = [].map.call(fs.querySelectorAll('input:checked'), function (x) { return x.value; });
+            fs.querySelector('.dw-error').classList.toggle('is-visible', !v.length);
+            if (!v.length) ok = false;
+            st.answers[fs.dataset.label] = v.join(', ');
+          });
+          if (ok) go(3);
+        };
+      }
+
+      /* ─── ขั้นที่ 3: ตรวจสอบและยืนยัน ─── */
+      function step3() {
+        var t = T[st.type], u = WALLET.user;
+        view.innerHTML = DW.sectionTitle('ตรวจสอบข้อมูลคำขอ') +
+          '<div class="details-list">' +
+            DW.detailsItem('เอกสารที่ขอ', e(t.title)) +
+            DW.detailsItem('ผู้ขอ', e(u.fullName) + ' · ' + e(u.pidMasked)) +
+            Object.keys(st.answers).map(function (k) { return DW.detailsItem(e(k), e(st.answers[k]).replace(/, /g, '<br>')); }).join('') +
+            DW.detailsItem('หน่วยงานผู้ออก', e(t.issuer)) +
+            DW.detailsItem('ระยะเวลาดำเนินการ', e(t.eta)) +
+            DW.detailsItem('อายุเอกสาร', e(t.validity)) +
+            DW.detailsItem('ค่าธรรมเนียม', e(t.fee)) +
+          '</div>' +
+          '<label class="dw-consent" style="margin-top:var(--spacing-xl)"><input type="checkbox" id="consent">' +
+            '<span>ข้าพเจ้ายินยอมให้ทางรัฐส่งข้อมูลข้างต้นไปยัง<strong>' + e(t.issuer) + '</strong> เพื่อออกเอกสาร และจัดเก็บเอกสารไว้ในกระเป๋าเอกสารของข้าพเจ้า</span></label>' +
+          '<p class="dw-error" id="err-consent" role="alert">กรุณายืนยันความยินยอมก่อนส่งคำขอ</p>' +
+          '<div class="dw-nav-row"><button type="button" class="btn btn-tertiary-outline" id="back">แก้ไข</button>' +
+            '<button type="button" class="btn btn-primary" id="submit"><span class="material-symbols-outlined">send</span>ส่งคำขอ</button></div>';
+        document.getElementById('back').onclick = function () { go(2); };
+        document.getElementById('submit').onclick = function () {
+          if (!document.getElementById('consent').checked) { document.getElementById('err-consent').classList.add('is-visible'); return; }
+          var b = this;
+          b.classList.add('is-loading');
+          setTimeout(function () {
+            var now = new Date();
+            var req = {
+              id: 'REQ-2569-0929-' + String(Math.floor(Math.random() * 900) + 100), type: st.type, submitted: now.toISOString(), status: 'processing',
+              title: st.type === 'edu' ? st.answers['ประเภทเอกสาร'] : st.type === 'loan' ? 'ชุดเอกสารประกอบการขอ' + st.answers['ประเภทสินเชื่อ'] : t.title,
+              answers: Object.keys(st.answers).map(function (k) { return [k, st.answers[k]]; })
+            };
+            DW.update(function (s) { s.requests.unshift(req); });
+            done(req);
+          }, 1100);
+        };
+      }
+
+      /* ─── ส่งคำขอสำเร็จ ─── */
+      function done(req) {
+        st.step = 4; markSteps();
+        var t = T[req.type];
+        view.innerHTML = '<div class="dw-success" role="status">' +
+            '<div class="dw-success-icon"><span class="material-symbols-outlined">task_alt</span></div>' +
+            '<p class="dw-success-title">ส่งคำขอเรียบร้อยแล้ว</p>' +
+            '<p class="dw-muted">เลขที่คำขอ <strong>' + e(req.id) + '</strong><br>' + e(t.issuer) + ' จะออกเอกสารให้' + e(t.eta) +
+              ' เมื่อเอกสารพร้อม ระบบจะแจ้งเตือนและเก็บเข้ากระเป๋าให้อัตโนมัติ</p>' +
+          '</div>' +
+          '<div class="dw-nav-row"><a class="btn btn-tertiary-outline" href="index.html">กลับหน้ากระเป๋า</a>' +
+            '<a class="btn btn-primary" href="documents.html#requests">ติดตามคำขอ</a></div>';
+        document.getElementById('nav-back').href = 'index.html';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function go(n) {
+        st.step = n; markSteps();
+        [step1, step2, step3][n - 1]();
+        var f = view.querySelector('input, select, button');
+        if (n > 1 && f) f.focus({ preventScroll: true });
+      }
+      // มาจากปุ่ม "ขอเอกสารฉบับใหม่" (?type=) → ข้ามไปกรอกข้อมูลเลย
+      go(st.type ? 2 : 1);
+    })();
+  </script>
+</body>
+</html>

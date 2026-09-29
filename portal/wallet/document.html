@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดเอกสาร — ทางรัฐ</title>
+  <meta name="description" content="รายละเอียดเอกสารจากหน่วยงานรัฐ ดาวน์โหลดเป็น PDF หรือแชร์ลิงก์ชั่วคราวให้หน่วยงานปลายทาง">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="documents.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main" id="app"></main>
+    </div>
+  </div>
+
+  <!-- Modal แชร์ลิงก์ชั่วคราว -->
+  <div class="modal-overlay" id="modal-link" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="link-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="link-title">แชร์ลิงก์ชั่วคราว</h3>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="ปิด">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body dw-modal-steps" id="link-steps">
+        <div data-step="set" class="is-active">
+          <p class="dw-muted">ส่งลิงก์ให้หน่วยงานปลายทางเปิดดูและตรวจสอบลายมือชื่ออิเล็กทรอนิกส์ได้ โดยไม่ต้องแนบไฟล์ — ยกเลิกลิงก์ได้ทุกเมื่อ</p>
+          <div class="form-group">
+            <span class="form-label" id="link-exp-label">ลิงก์ใช้ได้</span>
+            <div class="dw-choice" role="radiogroup" aria-labelledby="link-exp-label">
+              <label><input type="radio" name="exp" value="1"> 1 วัน</label>
+              <label><input type="radio" name="exp" value="7" checked> 7 วัน</label>
+              <label><input type="radio" name="exp" value="30"> 30 วัน</label>
+            </div>
+          </div>
+          <label class="check-item"><input type="checkbox" id="link-once"><span class="check-item-label">เปิดดูได้ครั้งเดียว</span></label>
+          <button type="button" class="btn btn-primary" id="link-make"><span class="material-symbols-outlined">link</span>สร้างลิงก์</button>
+        </div>
+        <div data-step="done">
+          <div class="dw-qr-box">
+            <div class="dw-qr" id="link-qr"></div>
+            <p class="dw-qr-code" id="link-url" style="font-size:var(--font-size-body-s);letter-spacing:0;word-break:break-all;text-align:center"></p>
+            <p class="dw-muted" id="link-note" style="text-align:center"></p>
+          </div>
+          <button type="button" class="btn btn-primary" id="link-copy"><span class="material-symbols-outlined">content_copy</span>คัดลอกลิงก์</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- html2pdf แปลง DOM → PDF ฝั่ง browser (รองรับฟอนต์ไทยเพราะ render ผ่าน canvas) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, docs = DW.docs();
+      var d = DW.doc(DW.qs('id')) || docs[0];
+      var t = WALLET.docTypes[d.type], st = DW.status(d), expired = st.key === 'expired';
+      var root = document.getElementById('app');
+
+      /* ─── Status banner ─── */
+      var banner = {
+        valid:    ['check_circle', 'เอกสารยังมีผลใช้งาน', 'ใช้ได้ถึง ' + (d.expires ? DW.dateLong(d.expires) + ' (อีก ' + st.days + ' วัน)' : '')],
+        expiring: ['schedule', 'เอกสารใกล้หมดอายุ', 'ใช้ได้ถึง ' + (d.expires ? DW.dateLong(d.expires) + ' (อีก ' + st.days + ' วัน) — ยื่นให้หน่วยงานปลายทางก่อนวันหมดอายุ' : '')],
+        expired:  ['error', 'เอกสารหมดอายุแล้ว', 'หมดอายุเมื่อ ' + (d.expires ? DW.dateLong(d.expires) : '') + ' — ดาวน์โหลดและแชร์ไม่ได้ กรุณาขอเอกสารฉบับใหม่'],
+        none:     ['verified', 'เอกสารไม่มีวันหมดอายุ', 'ลงลายมือชื่ออิเล็กทรอนิกส์โดย' + t.issuer]
+      }[st.key];
+      var html =
+        '<div class="status-banner ' + st.banner + '"><span class="material-symbols-outlined">' + banner[0] + '</span>' +
+        '<div class="status-banner-text"><p class="status-banner-title">' + e(banner[1]) + '</p><p class="status-banner-subtitle">' + e(banner[2]) + '</p></div></div>';
+
+      /* ─── รายละเอียด + Metadata ─── */
+      html += '<div class="dw-grid-2">' +
+        '<div class="card">' + DW.sectionTitle('รายละเอียดเอกสาร') + '<div class="details-list">' +
+          DW.detailsItem('ประเภทเอกสาร', e(t.title)) +
+          DW.detailsItem('ชื่อผู้รับเอกสาร', e(WALLET.user.fullName)) +
+          d.fields.map(function (f) { return DW.detailsItem(e(f[0]), e(f[1])); }).join('') +
+          (d.data.items ? '<div class="details-item"><span class="details-label">เอกสารในชุด</span><span class="details-value">' +
+            d.data.items.map(function (it) { return '• ' + e(it.name) + ' <span class="dw-muted">(' + e(it.from) + ')</span>'; }).join('<br>') + '</span></div>' : '') +
+          '<div class="details-item"><span class="details-label">ใช้ได้กับ</span><span class="details-value"><div class="tag-list">' +
+            d.usableFor.map(function (x) { return '<span class="tag">' + e(x) + '</span>'; }).join('') + '</div></span></div>' +
+        '</div></div>' +
+        '<div class="card">' + DW.sectionTitle('ข้อมูลเอกสาร (Metadata)') + '<div class="details-list">' +
+          DW.detailsItem('เลขที่เอกสาร', e(d.id)) +
+          DW.detailsItem('หน่วยงานผู้ออก', e(t.issuer)) +
+          DW.detailsItem('วันที่ออกเอกสาร', DW.dateLong(d.issued)) +
+          DW.detailsItem('วันหมดอายุ', d.expires ? DW.dateLong(d.expires) : 'ไม่มีวันหมดอายุ', expired ? 'details-value-warning' : '') +
+          DW.detailsItem('สถานะ', DW.tag(st)) +
+          DW.detailsItem('การลงนาม', 'ลงลายมือชื่ออิเล็กทรอนิกส์ (Digital Signature)') +
+          DW.detailsItem('รูปแบบไฟล์', 'PDF · ' + d.pages + ' หน้า · ' + e(d.fileSize)) +
+        '</div></div>' +
+      '</div>';
+
+      /* ─── ตัวอย่างเอกสาร + ดาวน์โหลด ─── */
+      html += '<div class="card">' + DW.sectionTitle('ตัวอย่างเอกสาร') +
+        (expired ? '<div class="dw-lock"><span class="material-symbols-outlined">lock</span><div><strong>ไม่สามารถดาวน์โหลดหรือแชร์เอกสารที่หมดอายุแล้ว</strong><br>' +
+          'เพื่อป้องกันการนำเอกสารเก่าไปใช้ หน่วยงานปลายทางจะไม่รับเอกสารที่หมดอายุ — ขอฉบับใหม่ได้' + e(t.eta) + ' ' + e(t.fee) + '</div></div>' : '') +
+        '<div class="dw-doc-wrap">' + DW.docPreview(d) + '</div>' +
+        '<div class="dw-actions" style="margin-top:var(--spacing-xl)">' +
+          (expired
+            ? '<a class="btn btn-primary" href="request.html?type=' + d.type + '"><span class="material-symbols-outlined">note_add</span>ขอเอกสารฉบับใหม่</a>' +
+              '<button class="btn btn-tertiary-outline" disabled aria-disabled="true"><span class="material-symbols-outlined">download</span>ดาวน์โหลด PDF</button>'
+            : '<button class="btn btn-primary" id="btn-pdf"><span class="material-symbols-outlined">download</span>ดาวน์โหลด PDF</button>' +
+              '<button class="btn btn-tertiary-outline" id="btn-link"><span class="material-symbols-outlined">share</span>แชร์ลิงก์ชั่วคราว</button>') +
+        '</div>' +
+      '</div>';
+
+      html += '<div class="card">' + DW.sectionTitle('ประวัติการเข้าถึงเอกสาร') +
+        '<p class="dw-section-desc" style="margin-top:0">ทุกครั้งที่มีการดาวน์โหลด แชร์ หรือหน่วยงานเปิดดูเอกสาร จะถูกบันทึกไว้ที่นี่</p>' +
+        '<div id="log">' + DW.logList(d.log) + '</div></div>';
+
+      html += '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
+        'ข้อมูลจาก' + e(t.issuer) + '<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+
+      root.innerHTML = html;
+      DW.mountWelcome(d.title, t.title + ' · ' + d.issuer);
+      DW.renderQrs(root);
+
+      if (expired) return;
+
+      function addLog(action, where, icon) {
+        d.log = [{ at: new Date().toISOString(), action: action, where: where, icon: icon }].concat(d.log || []);
+        document.getElementById('log').innerHTML = DW.logList(d.log);
+      }
+
+      /* ─── Download PDF ─── */
+      var btn = document.getElementById('btn-pdf');
+      btn.addEventListener('click', function () {
+        // ตรวจวันหมดอายุซ้ำตอนกด — กันกรณีเปิดหน้าค้างไว้ข้ามวันหมดอายุ
+        if (DW.status(d).key === 'expired') { DW.toast('เอกสารหมดอายุแล้ว ไม่สามารถดาวน์โหลดได้', 'danger', 'lock'); return; }
+        DW.downloadPdf(document.getElementById('doc'), d.id + '.pdf', btn).then(function (ok) {
+          if (ok) addLog('ดาวน์โหลด PDF', 'บนอุปกรณ์นี้', 'download');
+        });
+      });
+
+      /* ─── แชร์ลิงก์ชั่วคราว ─── */
+      var steps = document.getElementById('link-steps'), url;
+      function step(n) { steps.querySelectorAll('[data-step]').forEach(function (x) { x.classList.toggle('is-active', x.dataset.step === n); }); }
+      document.getElementById('btn-link').onclick = function () { step('set'); DW.openModal('modal-link'); };
+      document.getElementById('link-make').onclick = function () {
+        var days = +steps.querySelector('input[name="exp"]:checked').value, once = document.getElementById('link-once').checked;
+        var until = new Date(); until.setDate(until.getDate() + days);
+        // ลิงก์ไม่อยู่นานกว่าอายุเอกสาร
+        if (d.expires && until > new Date(d.expires + 'T23:59:59')) until = new Date(d.expires + 'T23:59:59');
+        url = 'https://wallet.thangrath.go.th/s/' + DW.token(10);
+        DW.qr(document.getElementById('link-qr'), url, 168);
+        document.getElementById('link-url').textContent = url;
+        document.getElementById('link-note').textContent = 'ใช้ได้ถึง ' + DW.dateTime(until) + (once ? ' · เปิดดูได้ครั้งเดียว' : '');
+        addLog('แชร์ลิงก์ชั่วคราว (' + days + ' วัน)', once ? 'เปิดดูได้ครั้งเดียว' : 'ยังไม่มีผู้เปิดดู', 'share');
+        step('done');
+      };
+      document.getElementById('link-copy').onclick = function () {
+        var done = function () { DW.toast('คัดลอกลิงก์แล้ว', 'success', 'content_copy'); };
+        var fail = function () { DW.toast('คัดลอกไม่สำเร็จ — กดค้างที่ลิงก์เพื่อคัดลอกเอง', 'warning', 'warning'); };
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, fail); else fail();
+      };
+    })();
+  </script>
+</body>
+</html>

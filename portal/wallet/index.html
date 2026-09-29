@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>กระเป๋าเอกสาร — ทางรัฐ</title>
+  <meta name="description" content="Document Wallet รวมบัตรสำคัญ (Virtual Card) และเอกสารที่หน่วยงานรัฐออกให้ไว้ในที่เดียว — ดูบัตรเต็มจอ ดาวน์โหลดเอกสาร PDF และขอเอกสารใหม่">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:image" content="../../_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../../demo-tools.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="../index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">wallet</span>
+          </div>
+          <p class="top-nav-bar-title">กระเป๋าเอกสาร</p>
+        </div>
+      </div>
+
+      <main class="dw-main">
+
+        <div class="ctx-card dw-welcome">
+          <div class="ctx-card__deco ctx-card__deco--top"></div>
+          <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+          <div class="ctx-card__greeting mb-0">
+            <p class="ctx-card__greeting-label" id="greet"></p>
+            <p class="ctx-card__greeting-name">กระเป๋าเอกสารของคุณ</p>
+            <div class="dw-welcome-sub">บัตรสำคัญและเอกสารจากหน่วยงานรัฐ พกพาได้ ใช้แทนตัวจริงได้ทุกที่</div>
+            <div class="dw-welcome-stats" id="stats"></div>
+          </div>
+        </div>
+
+        <!-- รายการที่ต้องดำเนินการ (ใกล้หมดอายุ / หมดอายุ) -->
+        <div class="dw-stack mb-xl" id="alerts"></div>
+
+        <!-- Virtual Card -->
+        <div class="card">
+          <div class="dw-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บัตรของฉัน</h3>
+            </div>
+            <a class="dw-link" href="cards.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+          </div>
+          <div id="card-carousel">
+            <div class="dw-carousel-track" id="card-track" tabindex="0"></div>
+            <div class="dw-carousel-foot">
+              <button type="button" class="dw-carousel-nav" data-dir="-1" aria-label="บัตรก่อนหน้า"><span class="material-symbols-outlined">chevron_left</span></button>
+              <div class="dw-carousel-dots dyk-card__dots"></div>
+              <button type="button" class="dw-carousel-nav" data-dir="1" aria-label="บัตรถัดไป"><span class="material-symbols-outlined">chevron_right</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- เมนู -->
+        <div class="card">
+          <div class="dw-section-head">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการกระเป๋าเอกสาร</h3>
+            </div>
+          </div>
+          <nav class="dw-menu" aria-label="เมนูกระเป๋าเอกสาร">
+            <a class="dw-tile" href="cards.html">
+              <span class="dw-icon tone-primary"><span class="material-symbols-outlined">id_card</span></span>
+              <span class="dw-tile-title">บัตรของฉัน</span>
+              <span class="dw-tile-desc">บัตรสำคัญ ซิงก์อัตโนมัติ และบัตรเฉพาะอาชีพ</span>
+            </a>
+            <a class="dw-tile" href="documents.html">
+              <span class="dw-icon tone-info"><span class="material-symbols-outlined">folder_open</span></span>
+              <span class="dw-tile-title">เอกสารของฉัน</span>
+              <span class="dw-tile-desc">เอกสารจากหน่วยงานรัฐ ดาวน์โหลด PDF</span>
+            </a>
+            <a class="dw-tile" href="request.html">
+              <span class="dw-icon tone-secondary"><span class="material-symbols-outlined">note_add</span></span>
+              <span class="dw-tile-title">ขอเอกสาร</span>
+              <span class="dw-tile-desc">สินเชื่อ · ผลสอบ ก.พ. · SME · ผลการศึกษา</span>
+            </a>
+            <a class="dw-tile" href="cards.html#add">
+              <span class="dw-icon tone-warning"><span class="material-symbols-outlined">add_card</span></span>
+              <span class="dw-tile-title">เพิ่มบัตร</span>
+              <span class="dw-tile-desc">นักศึกษา · ทหาร · สื่อมวลชน · พนักงาน</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="dw-grid-2">
+          <!-- เอกสารล่าสุด -->
+          <div class="card">
+            <div class="dw-section-head">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">เอกสารล่าสุด</h3>
+              </div>
+              <a class="dw-link" href="documents.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+            </div>
+            <div class="dw-stack" id="recent-docs"></div>
+          </div>
+
+          <!-- คำขอ -->
+          <div class="card">
+            <div class="dw-section-head">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ติดตามคำขอเอกสาร</h3>
+              </div>
+              <a class="dw-link" href="documents.html#requests">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+            </div>
+            <div class="dw-stack" id="requests"></div>
+          </div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก กรมการปกครอง · กรมการขนส่งทางบก · กรมการกงสุล · พก. · สำนักงาน ก.พ. · สสว. · สถาบันอุดมศึกษา<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="wallet-data.js"></script>
+  <script src="wallet.js"></script>
+  <script src="../portal-demo.js"></script>
+  <script>
+    (function () {
+      var e = DW.esc, cards = DW.cards(), docs = DW.docs(), reqs = DW.requests();
+      var h = new Date().getHours();
+      document.getElementById('greet').textContent =
+        (h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น') + ' คุณ' + WALLET.user.fullName.replace(/^(นางสาว|นาย|นาง)/, '');
+      var pending = reqs.filter(function (r) { return r.status !== 'done'; });
+      document.getElementById('stats').innerHTML =
+        '<span class="dw-welcome-stat"><span class="material-symbols-outlined">id_card</span>บัตร ' + cards.length + ' ใบ</span>' +
+        '<span class="dw-welcome-stat"><span class="material-symbols-outlined">description</span>เอกสาร ' + docs.length + ' ฉบับ</span>' +
+        (pending.length ? '<span class="dw-welcome-stat"><span class="material-symbols-outlined">pending</span>รอดำเนินการ ' + pending.length + ' คำขอ</span>' : '');
+
+      // ─── แจ้งเตือนบัตร / เอกสารที่ใกล้หมดอายุหรือหมดอายุ ───
+      var alerts = [];
+      cards.forEach(function (c) {
+        var st = DW.status(c);
+        if (st.key === 'expiring') alerts.push({ href: 'card.html?id=' + c.id, cls: 'warning', icon: 'schedule',
+          text: '<strong>' + e(c.name) + '</strong> จะหมดอายุใน ' + st.days + ' วัน (' + DW.dateShort(c.expires) + ')' +
+            (c.id === 'passport' ? ' — หลายประเทศกำหนดให้หนังสือเดินทางมีอายุคงเหลืออย่างน้อย 6 เดือน' : '') });
+        if (st.key === 'expired') alerts.push({ href: 'card.html?id=' + c.id, cls: 'danger', icon: 'error', text: '<strong>' + e(c.name) + '</strong> หมดอายุแล้ว' });
+      });
+      docs.forEach(function (d) {
+        var st = DW.status(d);
+        if (st.key === 'expiring') alerts.push({ href: 'document.html?id=' + d.id, cls: 'warning', icon: 'schedule',
+          text: '<strong>' + e(d.title) + '</strong> ใช้ได้อีก ' + st.days + ' วัน — ยื่นให้หน่วยงานก่อน ' + DW.dateShort(d.expires) });
+      });
+      document.getElementById('alerts').innerHTML = alerts.map(function (a) {
+        return '<a class="dw-notice dw-notice--' + a.cls + '" href="' + a.href + '"><span class="material-symbols-outlined">' + a.icon + '</span>' +
+          '<div class="dw-notice-body">' + a.text + '</div><span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('');
+      if (!alerts.length) document.getElementById('alerts').remove();
+
+      // ─── Virtual Card carousel (เลขบัตรถูกซ่อนบางส่วน — ดูเต็มในหน้ารายละเอียด) ───
+      document.getElementById('card-track').innerHTML = cards.map(function (c) {
+        var st = DW.status(c);
+        return '<a class="dw-wcard" href="card.html?id=' + c.id + '">' +
+          '<div class="dw-cardbox">' + DW.cardFace(c, 'front', { masked: true }) + '</div>' +
+          '<div class="dw-wcard-meta"><div><p class="dw-wcard-name">' + e(c.name) + '</p><p class="dw-wcard-sub">' +
+            (c.kind === 'core' ? 'ซิงก์อัตโนมัติ · ' : 'เพิ่มเอง · ') + e(c.issuerShort) + '</p></div>' + DW.tag(st) + '</div></a>';
+      }).join('');
+      DW.carousel(document.getElementById('card-carousel'), 'บัตรของฉัน', 'บัตร');
+
+      // ─── เอกสารล่าสุด ───
+      document.getElementById('recent-docs').innerHTML = docs.slice(0, 3).map(function (d) {
+        var st = DW.status(d), t = WALLET.docTypes[d.type];
+        return '<a class="list-item dw-item" href="document.html?id=' + d.id + '">' +
+          '<span class="dw-icon tone-' + (st.key === 'expired' ? 'neutral' : t.tone) + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+          '<div class="dw-item-body">' + DW.tag(st, true) +
+            '<span class="list-item-label">' + e(t.title) + '</span>' +
+            '<span class="dw-item-title">' + e(d.title) + '</span>' +
+            '<span class="dw-item-sub">' + e(d.issuer) + ' · ออก ' + DW.dateShort(d.issued) + '</span></div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('');
+
+      // ─── คำขอ ───
+      document.getElementById('requests').innerHTML = (pending.length ? pending.slice(0, 3).map(function (r) {
+        var t = WALLET.docTypes[r.type];
+        return '<a class="list-item dw-item" href="documents.html#requests">' +
+          '<span class="dw-icon tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+          '<div class="dw-item-body"><span class="tag tag--warning tag--sm tag--dot list-badge--corner">กำลังดำเนินการ</span>' +
+            '<span class="list-item-label">คำขอเลขที่ ' + e(r.id) + '</span>' +
+            '<span class="dw-item-title">' + e(r.title) + '</span>' +
+            '<span class="dw-item-sub">ยื่นเมื่อ ' + DW.dateTime(r.submitted) + ' · คาดว่าได้รับ' + e(t.eta) + '</span></div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('') : DW.empty('inbox', 'ไม่มีคำขอที่รอดำเนินการ')) +
+        '<a class="btn btn-secondary" href="request.html"><span class="material-symbols-outlined">note_add</span>ขอเอกสารใหม่</a>';
+
+      DW.mountDemo();
+    })();
+  </script>
+</body>
+</html>
