@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>การเงินและทรัพย์สิน — ทางรัฐ</title>
+  <meta name="description" content="Money Portal รวมข้อมูลการเงินและทรัพย์สินของคุณ — ค่าน้ำค่าไฟ ใบสั่งจราจร ภาษีที่ดินและสิ่งปลูกสร้าง ประวัติการบริจาค และเครดิตบูโร">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:image" content="../../_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="money.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="../../dashboard-with-consent.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <p class="top-nav-bar-title">Money Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app">
+
+        <div class="ctx-card hp-welcome">
+          <div class="ctx-card__deco ctx-card__deco--top"></div>
+          <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+          <div class="ctx-card__greeting mb-0">
+            <p class="ctx-card__greeting-label">สวัสดี</p>
+            <p id="name" class="ctx-card__greeting-name"></p>
+            <div class="hp-welcome-sub">รวมค่าใช้จ่ายที่ต้องชำระ ภาษี และทรัพย์สินที่อยู่ในชื่อคุณ ครบในที่เดียว</div>
+          </div>
+        </div>
+
+        <!-- ยอดที่ต้องชำระทั้งหมด -->
+        <div class="card">
+          <div class="mp-hero">
+            <div class="mp-hero-top">
+              <div>
+                <div class="mp-hero-label"><span class="material-symbols-outlined">payments</span>ยอดที่ต้องชำระทั้งหมด</div>
+                <div class="mp-hero-amount" id="grand-total"></div>
+                <div class="mp-hero-sub" id="grand-sub"></div>
+              </div>
+            </div>
+            <div class="hp-stack" id="due-list"></div>
+          </div>
+        </div>
+
+        <!-- เมนู -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">การเงินของฉัน</h3>
+            </div>
+          </div>
+          <nav class="hp-menu" aria-label="การเงินของฉัน">
+            <a class="hp-tile" href="utilities.html">
+              <span class="hp-icon tone-warning"><span class="material-symbols-outlined">bolt</span></span>
+              <span class="hp-tile-title">ค่าน้ำ ค่าไฟ</span>
+              <span class="hp-tile-desc" id="tile-utilities">บิลเดือนนี้และประวัติ 6 เดือน</span>
+            </a>
+            <a class="hp-tile" href="../crime/tickets.html">
+              <span class="hp-icon tone-danger"><span class="material-symbols-outlined">receipt_long</span></span>
+              <span class="hp-tile-title">ใบสั่งจราจร</span>
+              <span class="hp-tile-desc" id="tile-tickets">ดูรายละเอียดที่ Crime Portal</span>
+            </a>
+            <a class="hp-tile" href="land-tax.html">
+              <span class="hp-icon tone-secondary"><span class="material-symbols-outlined">real_estate_agent</span></span>
+              <span class="hp-tile-title">ภาษีที่ดินและสิ่งปลูกสร้าง</span>
+              <span class="hp-tile-desc" id="tile-landtax">ยอดที่ต้องชำระและประวัติ</span>
+            </a>
+            <a class="hp-tile" href="donations.html">
+              <span class="hp-icon tone-positive"><span class="material-symbols-outlined">volunteer_activism</span></span>
+              <span class="hp-tile-title">ประวัติการบริจาค</span>
+              <span class="hp-tile-desc">ข้อมูลจาก e-Donation กรมสรรพากร</span>
+            </a>
+            <a class="hp-tile" href="services.html">
+              <span class="hp-icon tone-info"><span class="material-symbols-outlined">credit_score</span></span>
+              <span class="hp-tile-title">เครดิตบูโรและบริการอื่นๆ</span>
+              <span class="hp-tile-desc">สรุปเครดิตแบบย่อ และบริการที่กำลังจะมา</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- สรุป -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+              <h3 class="section-title">สรุปภาพรวม</h3>
+            </div>
+          </div>
+          <div class="hp-summary" id="summary"></div>
+        </div>
+
+        <div class="hp-grid-2">
+          <!-- ใบสั่ง -->
+          <div class="card">
+            <div class="hp-section-head">
+              <div class="section-title-container">
+                <div class="section-bar" style="background-color: var(--danger-40);"></div>
+                <h3 class="section-title">ใบสั่งจราจรค้างชำระ</h3>
+              </div>
+            </div>
+            <div class="mp-cta" id="tickets"></div>
+          </div>
+
+          <!-- บริจาค -->
+          <div class="card">
+            <div class="hp-section-head">
+              <div class="section-title-container">
+                <div class="section-bar" style="background-color: var(--success-40, var(--primary-40));"></div>
+                <h3 class="section-title">การบริจาคปีนี้</h3>
+              </div>
+              <a class="hp-link" href="donations.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+            </div>
+            <div class="mp-cta" id="donation"></div>
+          </div>
+        </div>
+
+        <!-- ทรัพย์สิน -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">ทรัพย์สินในชื่อของฉัน</h3>
+            </div>
+            <a class="hp-link" href="land-tax.html">ภาษีที่ดิน <span class="material-symbols-outlined">chevron_right</span></a>
+          </div>
+          <div class="mp-assets" id="assets"></div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">lock</span>
+          <div>ข้อมูลการเงินแสดงเฉพาะเจ้าของข้อมูลที่ยืนยันตัวตนแล้ว ทางรัฐดึงข้อมูลจากหน่วยงานต้นทางตามที่คุณให้ความยินยอม และไม่เก็บข้อมูลบัญชีธนาคารของคุณ</div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก กฟน. · กปน. · สำนักงานตำรวจแห่งชาติ · กรมสรรพากร · องค์กรปกครองส่วนท้องถิ่น · กรมที่ดิน · กรมการขนส่งทางบก<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="../crime/crime-data.js"></script>
+  <script src="money-data.js"></script>
+  <script src="money.js"></script>
+  <script>
+    (function () {
+      var M = MONEY, e = MP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+
+      $('name').textContent = 'คุณ' + M.user.fullName.replace(/^(นางสาว|นาย|นาง)/, '');
+
+      /* ─── รวมรายการที่ต้องชำระ ─── */
+      var bills = MP.unpaidBills(), tickets = MP.unpaidTickets(), taxes = MP.landTaxDue();
+      var items = [];
+      bills.forEach(function (x) {
+        var k = MP.kind(x.meter.kind), p = MP.property(x.meter.property), st = MP.billStatus(x.bill);
+        items.push({
+          icon: k.icon, tone: k.tone, title: k.label + ' ' + MP.monthLong(x.bill.period),
+          sub: x.meter.providerShort + ' · ' + p.name, amount: x.bill.amount, due: x.bill.due, st: st,
+          href: 'utilities.html?meter=' + x.meter.key
+        });
+      });
+      if (tickets.length) {
+        var tt = tickets.reduce(function (s, t) { return s + t.fine; }, 0);
+        var overdue = tickets.filter(function (t) { return t.status === 'overdue'; }).length;
+        var firstDue = tickets.map(function (t) { return t.due; }).sort()[0];
+        items.push({
+          icon: 'receipt_long', tone: 'danger', title: 'ค่าปรับใบสั่งจราจร ' + tickets.length + ' ใบ',
+          sub: 'Crime Portal · สำนักงานตำรวจแห่งชาติ', amount: tt, due: firstDue,
+          st: overdue ? { label: 'เลยกำหนด ' + overdue + ' ใบ', tag: 'tag--danger', key: 'overdue' } : MP.billStatus({ due: firstDue }),
+          href: '../crime/tickets.html'
+        });
+      }
+      taxes.forEach(function (t) {
+        var p = MP.property(t.property), total = MP.landTaxTotal(t);
+        items.push({
+          icon: 'real_estate_agent', tone: 'secondary', title: 'ภาษีที่ดินฯ ปี ' + MP.be(t.year),
+          sub: p.name + ' · ' + t.office, amount: total, due: t.noticeDue || t.due,
+          st: t.status === 'overdue' ? { label: 'ค้างชำระ · ชำระภายใน ' + MP.dateShort(t.noticeDue), tag: 'tag--danger', key: 'overdue' } : MP.billStatus({ due: t.due }),
+          href: 'land-tax.html#' + t.id
+        });
+      });
+      items.sort(function (a, b) { return (a.st.key === 'overdue' ? 0 : 1) - (b.st.key === 'overdue' ? 0 : 1) || (a.due < b.due ? -1 : 1); });
+
+      var grand = items.reduce(function (s, x) { return s + x.amount; }, 0);
+      $('grand-total').textContent = MP.money(grand);
+      var nOver = items.filter(function (x) { return x.st.key === 'overdue'; }).length;
+      $('grand-sub').textContent = items.length + ' รายการ' + (nOver ? ' · เลยกำหนด ' + nOver + ' รายการ' : '') + ' · ข้อมูล ณ ' + MP.dateLong(MP.now);
+      $('due-list').innerHTML = items.map(function (x) {
+        return '<a class="mp-due" href="' + x.href + '">' +
+          '<span class="hp-icon hp-icon--sm tone-' + x.tone + '"><span class="material-symbols-outlined">' + x.icon + '</span></span>' +
+          '<div class="hp-visit-body">' +
+            '<span class="hp-visit-title">' + e(x.title) + '</span>' +
+            '<span class="hp-visit-sub">' + e(x.sub) + '</span>' +
+            '<span class="tag ' + x.st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + e(x.st.label) + '</span>' +
+          '</div>' +
+          '<span class="mp-amount' + (x.st.key === 'overdue' ? ' is-danger' : '') + '">' + MP.money(x.amount) + '</span>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('') || '<div class="hp-empty"><span class="material-symbols-outlined">task_alt</span>ไม่มีรายการค้างชำระ</div>';
+
+      /* ─── tile descriptions ─── */
+      var utilTotal = bills.reduce(function (s, x) { return s + x.bill.amount; }, 0);
+      $('tile-utilities').textContent = bills.length ? 'รอชำระ ' + bills.length + ' บิล · ' + MP.money(utilTotal) : 'ชำระครบแล้ว';
+      if (tickets.length) $('tile-tickets').textContent = 'ค้างชำระ ' + tickets.length + ' ใบ · ดูที่ Crime Portal';
+      if (taxes.length) $('tile-landtax').textContent = 'ค้างชำระ ' + taxes.length + ' รายการ';
+
+      /* ─── สรุป ─── */
+      var year = MP.now.getFullYear();
+      var don = MP.donationsIn(year);
+      var donTotal = don.reduce(function (s, d) { return s + d.amount; }, 0);
+      var elec = M.meters.filter(function (m) { return m.kind === 'electric'; })
+        .reduce(function (s, m) { return s + MP.usage(MP.currentBill(m)); }, 0);
+      var taxYear = M.landTax.filter(function (t) { return t.year === year; }).reduce(function (s, t) { return s + t.tax; }, 0);
+      function stat(href, icon, label, value, sub, cls) {
+        return '<a class="hp-stat mp-stat-link" href="' + href + '">' +
+          '<span class="hp-stat-label"><span class="material-symbols-outlined">' + icon + '</span>' + label + '</span>' +
+          '<span class="hp-stat-value' + (cls ? ' ' + cls : '') + '">' + value + '</span>' +
+          '<span class="hp-stat-sub">' + sub + '</span></a>';
+      }
+      $('summary').innerHTML =
+        stat('utilities.html', 'bolt', 'ค่าน้ำค่าไฟเดือนนี้', MP.money(utilTotal), M.meters.length + ' มิเตอร์ · ไฟฟ้ารวม ' + MP.num(elec) + ' หน่วย') +
+        stat('../crime/tickets.html', 'receipt_long', 'ค่าปรับใบสั่งค้างชำระ', MP.money(tickets.reduce(function (s, t) { return s + t.fine; }, 0)), tickets.length + ' ใบ', tickets.length ? 'is-danger' : '') +
+        stat('land-tax.html', 'real_estate_agent', 'ภาษีที่ดินฯ ปี ' + MP.be(year), MP.money(taxYear), M.properties.length + ' แปลง/ห้องชุดในชื่อคุณ') +
+        stat('donations.html', 'volunteer_activism', 'ยอดบริจาคปี ' + MP.be(year), MP.money(donTotal), don.length + ' รายการ · ลดหย่อนได้ ' + MP.money(don.reduce(function (s, d) { return s + MP.deductible(d); }, 0)), 'is-positive');
+
+      /* ─── ใบสั่ง ─── */
+      var ticketTotal = tickets.reduce(function (s, t) { return s + t.fine; }, 0);
+      $('tickets').innerHTML = tickets.length
+        ? '<span class="hp-icon hp-icon--lg tone-danger"><span class="material-symbols-outlined">receipt_long</span></span>' +
+          '<div class="mp-cta-body">' +
+            '<span class="hp-muted">ยอดค่าปรับรวม ' + tickets.length + ' ใบ</span>' +
+            '<span class="cp-ticket-amount is-danger">' + MP.money(ticketTotal) + '</span>' +
+            '<span class="hp-muted">' + e(tickets.map(function (t) { return t.violation; }).join(' · ')) + '</span>' +
+          '</div>' +
+          '<a class="btn btn-primary" href="../crime/tickets.html"><span class="material-symbols-outlined">open_in_new</span>ดูรายละเอียดที่ Crime Portal</a>'
+        : '<div class="hp-empty" style="width:100%"><span class="material-symbols-outlined">task_alt</span>ไม่มีใบสั่งค้างชำระ</div>';
+
+      /* ─── บริจาค ─── */
+      $('donation').innerHTML =
+        '<span class="hp-icon hp-icon--lg tone-positive"><span class="material-symbols-outlined">volunteer_activism</span></span>' +
+        '<div class="mp-cta-body">' +
+          '<span class="hp-muted">ยอดบริจาครวมปี ' + MP.be(year) + ' (' + don.length + ' รายการ)</span>' +
+          '<span class="cp-ticket-amount">' + MP.money(donTotal) + '</span>' +
+          '<span class="hp-muted">ล่าสุด: ' + (don[0] ? e(don[0].to) + ' · ' + MP.dateShort(don[0].date) : '-') + '</span>' +
+        '</div>';
+
+      /* ─── ทรัพย์สิน ─── */
+      var plates = window.CRIME ? CRIME.user.plates : [];
+      $('assets').innerHTML = M.properties.map(function (p) {
+        return '<div class="mp-asset">' +
+          '<span class="hp-icon tone-primary"><span class="material-symbols-outlined">' + p.icon + '</span></span>' +
+          '<div class="hp-visit-body">' +
+            '<span class="hp-visit-title">' + e(p.name) + '</span>' +
+            '<span class="hp-visit-sub">' + e(p.type) + ' · ' + e(p.area) + '</span>' +
+            '<span class="hp-muted">ราคาประเมิน ' + MP.money(p.appraised) + '</span>' +
+          '</div></div>';
+      }).join('') + plates.map(function (pl, i) {
+        return '<div class="mp-asset">' +
+          '<span class="hp-icon tone-info"><span class="material-symbols-outlined">' + (i ? 'two_wheeler' : 'directions_car') + '</span></span>' +
+          '<div class="hp-visit-body">' +
+            '<span class="hp-visit-title">' + e(pl) + '</span>' +
+            '<span class="hp-visit-sub">' + (i ? 'รถจักรยานยนต์' : 'รถยนต์นั่งส่วนบุคคล') + ' · กรมการขนส่งทางบก</span>' +
+            '<span class="hp-muted">ภาษีรถประจำปี — เร็วๆ นี้</span>' +
+          '</div></div>';
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

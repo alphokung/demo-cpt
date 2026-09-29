@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ประวัติการบริจาค — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="money.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <p class="top-nav-bar-title">Money Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="mp-chips" id="years" role="group" aria-label="เลือกปีภาษี"></div>
+          <div class="mp-don-sum" id="sum"></div>
+          <div id="mix"></div>
+        </div>
+
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title" id="list-title">รายการบริจาค</h3>
+            </div>
+            <span class="hp-count" id="count"></span>
+          </div>
+          <div class="hp-stack" id="list"></div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">info</span>
+          <div>แสดงเฉพาะเงินบริจาคที่หน่วยรับบริจาคส่งข้อมูลเข้าระบบ e-Donation ของกรมสรรพากร ซึ่งใช้หักลดหย่อนได้โดยไม่ต้องเก็บใบเสร็จ
+            · เงินบริจาครวมหักลดหย่อนได้ไม่เกิน 10% ของเงินได้หลังหักค่าใช้จ่ายและค่าลดหย่อนอื่น
+            · ไม่พบรายการ? ติดต่อหน่วยรับบริจาคให้ส่งข้อมูลเข้าระบบ หรือตรวจสอบที่ระบบ e-Donation</div>
+        </div>
+
+        <div class="mp-actions" style="margin-top:0">
+          <button type="button" class="btn btn-outline" data-ext="edonation"><span class="material-symbols-outlined">open_in_new</span>ตรวจสอบที่ระบบ e-Donation กรมสรรพากร</button>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก ระบบ e-Donation กรมสรรพากร<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="money-data.js"></script>
+  <script src="money.js"></script>
+  <script>
+    (function () {
+      var M = MONEY, e = MP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      MP.mountWelcome('ประวัติการบริจาค', 'เงินบริจาคที่บันทึกในระบบ e-Donation ของกรมสรรพากร ดูย้อนหลังได้ 2 ปี');
+
+      var years = MP.donationYears();
+      var year = Number(MP.qs('year')) || years[0];
+      if (years.indexOf(year) < 0) year = years[0];
+
+      function render() {
+        try { history.replaceState(null, '', location.pathname + (year === years[0] ? '' : '?year=' + year)); } catch (err) {}
+        $('years').innerHTML = years.map(function (y, i) {
+          return '<button type="button" class="filter-chip' + (y === year ? ' active' : '') + '" data-year="' + y + '" aria-pressed="' + (y === year) + '">' +
+            'ปีภาษี ' + MP.be(y) + (i === 0 ? ' (ปีนี้)' : '') + '</button>';
+        }).join('');
+
+        var list = MP.donationsIn(year);
+        var total = list.reduce(function (s, d) { return s + d.amount; }, 0);
+        var ded = list.filter(function (d) { return d.type !== 'party'; }).reduce(function (s, d) { return s + MP.deductible(d); }, 0);
+        var party = Math.min(10000, list.filter(function (d) { return d.type === 'party'; }).reduce(function (s, d) { return s + d.amount; }, 0));
+        var orgs = list.map(function (d) { return d.to; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).length;
+
+        $('sum').innerHTML =
+          '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">volunteer_activism</span>ยอดบริจาครวม</span>' +
+            '<span class="hp-stat-value">' + MP.money(total) + '</span><span class="hp-stat-sub">' + list.length + ' รายการ · ' + orgs + ' หน่วยรับบริจาค</span></div>' +
+          '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">receipt</span>ใช้หักลดหย่อนได้</span>' +
+            '<span class="hp-stat-value is-positive">' + MP.money(ded + party) + '</span><span class="hp-stat-sub">รวมสิทธิ 2 เท่า' + (party ? ' และพรรคการเมือง ' + MP.money(party) : '') + '</span></div>' +
+          '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">event</span>ใช้ลดหย่อนในแบบ</span>' +
+            '<span class="hp-stat-value" style="font-size:var(--font-size-title-m)">ภ.ง.ด.90/91 ปีภาษี ' + MP.be(year) + '</span><span class="hp-stat-sub">' +
+            (year === years[0] ? 'ยื่นแบบภายใน 31 มี.ค. ' + MP.be(year + 1) : 'ระบบดึงยอดนี้ไปกรอกให้อัตโนมัติ') + '</span></div>';
+
+        // สัดส่วนตามประเภท (แถบเดียว + legend พร้อมยอด — ไม่พึ่งสีอย่างเดียว)
+        var byType = M.donationTypes.map(function (t) {
+          return { t: t, sum: list.filter(function (d) { return d.type === t.key; }).reduce(function (s, d) { return s + d.amount; }, 0) };
+        }).filter(function (x) { return x.sum; });
+        $('mix').innerHTML = total
+          ? '<div class="mp-mix" role="img" aria-label="สัดส่วนยอดบริจาคตามประเภท">' + byType.map(function (x) {
+              return '<span class="mp-c-' + x.t.key + '" style="width:' + (x.sum / total * 100) + '%" title="' + e(x.t.label + ' ' + MP.money(x.sum)) + '"></span>';
+            }).join('') + '</div>' +
+            '<div class="mp-mix-legend">' + byType.map(function (x) {
+              return '<span><i class="mp-c-' + x.t.key + '"></i>' + e(x.t.label) + ' ' + MP.money(x.sum) + '</span>';
+            }).join('') + '</div>'
+          : '';
+
+        $('list-title').textContent = 'รายการบริจาคปี ' + MP.be(year);
+        $('count').textContent = list.length + ' รายการ';
+        $('list').innerHTML = list.map(function (d) {
+          var t = MP.donationType(d.type), dd = MP.deductible(d);
+          return '<div class="mp-due">' +
+            '<span class="hp-icon hp-icon--sm tone-' + t.tone + '"><span class="material-symbols-outlined">' + t.icon + '</span></span>' +
+            '<div class="hp-visit-body">' +
+              '<span class="hp-visit-title">' + e(d.to) + '</span>' +
+              '<span class="hp-visit-sub">' + MP.dateLong(d.date) + ' · ' + e(t.label) + '</span>' +
+              '<span class="hp-row" style="gap:var(--spacing-xs)">' +
+                '<span class="tag ' + (t.deduct === 2 ? 'tag--success' : 'tag--info') + ' tag--sm">' + MP.deductLabel(t) + (t.deduct === 2 ? ' · ' + MP.money(dd) : '') + '</span>' +
+                '<span class="hp-muted">อ้างอิง ' + e(d.ref) + '</span>' +
+              '</span>' +
+            '</div>' +
+            '<span class="mp-amount">' + MP.money(d.amount) + '</span></div>';
+        }).join('') || '<div class="hp-empty"><span class="material-symbols-outlined">volunteer_activism</span>ไม่มีรายการบริจาคในปีนี้</div>';
+      }
+
+      $('years').onclick = function (ev) {
+        var b = ev.target.closest('[data-year]'); if (!b) return;
+        year = Number(b.dataset.year); render();
+      };
+      render();
+    })();
+  </script>
+</body>
+</html>

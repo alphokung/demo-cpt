@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ค่าน้ำ ค่าไฟ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="money.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <p class="top-nav-bar-title">Money Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <!-- เลือกมิเตอร์ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">มิเตอร์ในชื่อของคุณ</h3>
+            </div>
+          </div>
+          <div class="mp-chips" id="meters" role="group" aria-label="เลือกมิเตอร์"></div>
+          <div class="hp-stack" id="meter-info"></div>
+        </div>
+
+        <!-- บิลเดือนนี้ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--warning-40);"></div>
+              <h3 class="section-title" id="bill-title">บิลเดือนนี้</h3>
+            </div>
+          </div>
+          <div class="hp-stack" id="bill"></div>
+        </div>
+
+        <!-- ย้อนหลัง -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+              <h3 class="section-title">ปริมาณการใช้ 7 เดือนล่าสุด</h3>
+            </div>
+          </div>
+          <div id="chart"></div>
+        </div>
+
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">ประวัติการชำระย้อนหลัง 6 เดือน</h3>
+            </div>
+          </div>
+          <div class="mp-table-wrap"><table class="mp-table" id="history"></table></div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">info</span>
+          <div>ค่าไฟฟ้ารวมค่าไฟฟ้าฐาน ค่า Ft ค่าบริการ และภาษีมูลค่าเพิ่ม 7% · หากชำระเกินกำหนดอาจถูกระงับการจ่ายไฟ/น้ำ และต้องเสียค่าต่อกลับ
+            · ชำระผ่านทางรัฐแล้ว ยอดจะอัปเดตภายใน 1 วันทำการ</div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก การไฟฟ้านครหลวง (กฟน.) · การประปานครหลวง (กปน.)<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="money-data.js"></script>
+  <script src="money.js"></script>
+  <script>
+    (function () {
+      var M = MONEY, e = MP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      MP.mountWelcome('ค่าน้ำ ค่าไฟ', 'บิลตามมิเตอร์ในเดือนนี้ และประวัติการชำระย้อนหลัง 6 เดือน');
+
+      var current = MP.meter(MP.qs('meter')) || M.meters[0];
+
+      function renderChips() {
+        $('meters').innerHTML = M.meters.map(function (m) {
+          var k = MP.kind(m.kind), p = MP.property(m.property), unpaid = !MP.currentBill(m).paidAt;
+          return '<button type="button" class="filter-chip' + (m === current ? ' active' : '') + '" data-meter="' + m.key + '" aria-pressed="' + (m === current) + '">' +
+            '<span class="material-symbols-outlined">' + k.icon + '</span>' + k.label.replace('ค่า', '') + ' · ' + e(p.name) +
+            (unpaid ? ' <span class="tag tag--warning tag--sm">รอชำระ</span>' : '') + '</button>';
+        }).join('');
+      }
+
+      function render() {
+        var m = current, k = MP.kind(m.kind), p = MP.property(m.property);
+        var bill = MP.currentBill(m), prevBill = m.bills[m.bills.length - 2], st = MP.billStatus(bill);
+        var use = MP.usage(bill), prevUse = MP.usage(prevBill), diff = use - prevUse;
+        try { history.replaceState(null, '', location.pathname + '?meter=' + m.key); } catch (err) {}
+        renderChips();
+
+        $('meter-info').innerHTML =
+          '<div class="mp-asset" style="border:none;padding:0;background:none">' +
+            '<span class="hp-icon tone-' + k.tone + '"><span class="material-symbols-outlined">' + k.icon + '</span></span>' +
+            '<div class="hp-visit-body">' +
+              '<span class="hp-visit-title">' + e(m.provider) + '</span>' +
+              '<span class="hp-visit-sub" style="white-space:normal">' + e(p.address) + '</span>' +
+            '</div></div>' +
+          '<div class="details-list">' +
+            MP.detailsItem('บัญชีผู้ใช้', e(m.account)) +
+            MP.detailsItem('หมายเลขมิเตอร์', e(m.meterNo)) +
+            MP.detailsItem('การชำระ', m.autoPay ? '<span class="tag tag--success tag--sm">หักบัญชีอัตโนมัติ</span>' : 'ชำระเอง') +
+          '</div>';
+
+        $('bill-title').textContent = k.label + ' ' + MP.monthLong(bill.period);
+        $('bill').innerHTML =
+          '<div class="hp-between"><span class="tag ' + st.tag + ' tag--sm tag--dot">' + e(st.label) + '</span>' +
+            '<span class="hp-muted">จดมิเตอร์ ' + MP.dateShort(bill.read) + '</span></div>' +
+          '<div class="mp-reading">' +
+            '<div><div class="mp-reading-label">เลขครั้งก่อน</div><div class="mp-reading-value">' + MP.num(bill.prev) + '</div></div>' +
+            '<div><div class="mp-reading-label">เลขครั้งนี้</div><div class="mp-reading-value">' + MP.num(bill.curr) + '</div></div>' +
+            '<div class="is-use"><div class="mp-reading-label">ใช้ไป (' + e(m.unit) + ')</div><div class="mp-reading-value">' + MP.num(use) + '</div>' +
+              '<span class="mp-delta ' + (diff > 0 ? 'is-up' : diff < 0 ? 'is-down' : '') + '"><span class="material-symbols-outlined">' + (diff > 0 ? 'arrow_upward' : diff < 0 ? 'arrow_downward' : 'remove') + '</span>' +
+              (diff ? MP.num(Math.abs(diff)) + ' จากเดือนก่อน' : 'เท่าเดือนก่อน') + '</span></div>' +
+          '</div>' +
+          '<div class="mp-bill-amount"><span class="hp-muted">ยอดที่ต้องชำระ · ครบกำหนด ' + MP.dateLong(bill.due) + '</span><strong>' + MP.money(bill.amount) + '</strong></div>' +
+          (bill.paidAt
+            ? '<div class="hp-notice"><span class="material-symbols-outlined">task_alt</span><div>ชำระแล้วเมื่อ ' + MP.dateLong(bill.paidAt) + ' ผ่าน ' + e(bill.paidVia) + '</div></div>'
+            : m.autoPay
+              ? '<div class="hp-notice"><span class="material-symbols-outlined">autorenew</span><div>บิลนี้จะหักบัญชีอัตโนมัติในวันที่ ' + MP.dateLong(bill.due) + ' — ไม่ต้องชำระเอง</div></div>'
+              : '<div class="mp-actions" style="margin-top:0">' +
+                  '<button type="button" class="btn btn-primary" data-pay="' + e(k.label + ' ' + MP.monthLong(bill.period) + ' (' + m.providerShort + ')') + '" data-amount="' + bill.amount + '"><span class="material-symbols-outlined">qr_code_2</span>ชำระด้วยพร้อมเพย์</button>' +
+                  '<button type="button" class="btn btn-outline" data-ext="' + m.ext + '"><span class="material-symbols-outlined">open_in_new</span>เปิดแอป ' + e(m.providerShort) + '</button>' +
+                '</div>');
+
+        $('chart').innerHTML = MP.barChart(m.bills.map(function (b, i) {
+          return { label: MP.monthShort(b.period), value: MP.usage(b), sub: MP.money(b.amount), current: i === m.bills.length - 1 };
+        }), m.unit);
+
+        var past = m.bills.slice(0, -1).reverse();   // 6 เดือนก่อนหน้า (ใหม่ → เก่า)
+        $('history').innerHTML =
+          '<thead><tr><th>รอบบิล</th><th class="num">ใช้ไป</th><th class="num">ยอดเงิน</th><th>วันที่ชำระ</th><th>ช่องทาง</th></tr></thead><tbody>' +
+          past.map(function (b) {
+            var s = MP.billStatus(b);
+            return '<tr><td>' + MP.monthLong(b.period) + '</td>' +
+              '<td class="num">' + MP.num(MP.usage(b)) + '</td>' +
+              '<td class="num"><strong>' + MP.money(b.amount, false) + '</strong></td>' +
+              '<td>' + MP.dateShort(b.paidAt) + (s.tag === 'tag--warning' ? ' <span class="tag tag--warning tag--sm">ล่าช้า</span>' : '') + '</td>' +
+              '<td>' + e(b.paidVia) + '</td></tr>';
+          }).join('') +
+          '</tbody><tfoot><tr><td><strong>รวม 6 เดือน</strong></td><td class="num">' + MP.num(past.reduce(function (s, b) { return s + MP.usage(b); }, 0)) + '</td>' +
+          '<td class="num"><strong>' + MP.money(past.reduce(function (s, b) { return s + b.amount; }, 0), false) + '</strong></td><td colspan="2" class="hp-muted">เฉลี่ย ' +
+          MP.money(Math.round(past.reduce(function (s, b) { return s + b.amount; }, 0) / past.length * 100) / 100) + ' / เดือน</td></tr></tfoot>';
+      }
+
+      $('meters').onclick = function (ev) {
+        var b = ev.target.closest('[data-meter]'); if (!b) return;
+        current = MP.meter(b.dataset.meter); render();
+      };
+      render();
+    })();
+  </script>
+</body>
+</html>

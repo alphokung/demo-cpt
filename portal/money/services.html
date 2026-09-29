@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เครดิตบูโรและบริการอื่นๆ — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="money.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <p class="top-nav-bar-title">Money Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <!-- เครดิตบูโรแบบย่อ -->
+        <div class="card mp-credit" id="credit-card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">ข้อมูลเครดิตบูโรแบบย่อ</h3>
+            </div>
+            <span class="hp-count" id="credit-updated"></span>
+          </div>
+
+          <div class="mp-credit-reveal">
+            <span class="hp-icon tone-primary"><span class="material-symbols-outlined">visibility_lock</span></span>
+            <div class="hp-muted">ข้อมูลสินเชื่อเป็นข้อมูลส่วนบุคคลที่อ่อนไหว ซ่อนไว้จนกว่าคุณจะกดแสดง</div>
+            <button type="button" class="btn btn-primary" id="reveal"><span class="material-symbols-outlined">visibility</span>แสดงข้อมูล</button>
+          </div>
+
+          <div class="mp-don-sum" id="credit-sum"></div>
+          <div id="credit-status"></div>
+          <div id="credit-list" style="margin-top:var(--spacing-md)"></div>
+
+          <div class="mp-actions">
+            <button type="button" class="btn btn-outline" id="hide" hidden><span class="material-symbols-outlined">visibility_off</span>ซ่อนข้อมูล</button>
+            <button type="button" class="btn btn-primary" data-ext="ncb"><span class="material-symbols-outlined">open_in_new</span>ขอรายงานฉบับเต็มจาก NCB</button>
+          </div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">info</span>
+          <div>สรุปนี้แสดงเฉพาะสถานะการชำระของแต่ละบัญชี ไม่ใช่คะแนนเครดิต · รายงานฉบับเต็มและคะแนนเครดิต (Credit Score) ขอได้จากบริษัท ข้อมูลเครดิตแห่งชาติ จำกัด (NCB)
+            · การดูข้อมูลของตัวเองไม่มีผลต่อประวัติการขอสินเชื่อ</div>
+        </div>
+
+        <!-- บริการที่กำลังจะมา -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+              <h3 class="section-title">บริการที่กำลังจะมา</h3>
+            </div>
+          </div>
+          <p class="hp-muted" style="margin-bottom:var(--spacing-lg)">บริการด้านการเงินและทรัพย์สินที่ทางรัฐวางแผนจะเชื่อมต่อเพิ่มใน Money Portal</p>
+          <div class="mp-upcoming" id="upcoming"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก บริษัท ข้อมูลเครดิตแห่งชาติ จำกัด (NCB)<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="money-data.js"></script>
+  <script src="money.js"></script>
+  <script>
+    (function () {
+      var M = MONEY, C = M.credit, e = MP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      MP.mountWelcome('เครดิตบูโรและบริการอื่นๆ', 'สรุปสถานะสินเชื่อแบบย่อ และบริการด้านการเงินอื่นๆ');
+
+      var STATUS = {
+        normal: { label: 'ชำระปกติ', tag: 'tag--success' },
+        late30: { label: 'ค้างชำระ 1–30 วัน', tag: 'tag--warning' },
+        late90: { label: 'ค้างชำระเกิน 90 วัน (NPL)', tag: 'tag--danger' }
+      };
+      var debt = C.accounts.reduce(function (s, a) { return s + a.balance; }, 0);
+      var late = C.accounts.filter(function (a) { return a.status !== 'normal'; });
+      var cards = C.accounts.filter(function (a) { return a.type === 'บัตรเครดิต'; });
+      var cardUtil = Math.round(cards.reduce(function (s, a) { return s + a.balance; }, 0) / cards.reduce(function (s, a) { return s + a.limit; }, 0) * 100);
+
+      $('credit-updated').textContent = 'ข้อมูล ณ ' + MP.dateShort(C.updated);
+      $('credit-sum').innerHTML =
+        '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">account_balance</span>บัญชีสินเชื่อ</span>' +
+          '<span class="hp-stat-value">' + C.accounts.length + ' บัญชี</span><span class="hp-stat-sub">' + C.inquiries6m + ' ครั้งที่ถูกตรวจสอบใน 6 เดือน</span></div>' +
+        '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">request_quote</span>ยอดหนี้คงเหลือรวม</span>' +
+          '<span class="hp-stat-value mp-masked">' + MP.money(debt) + '</span><span class="hp-stat-sub">รวมสินเชื่อบ้านและรถ</span></div>' +
+        '<div class="hp-stat"><span class="hp-stat-label"><span class="material-symbols-outlined">credit_card</span>ใช้วงเงินบัตรเครดิต</span>' +
+          '<span class="hp-stat-value mp-masked">' + cardUtil + '%</span><span class="hp-stat-sub">แนะนำไม่เกิน 30% ของวงเงิน</span></div>';
+
+      $('credit-status').innerHTML = late.length
+        ? '<div class="hp-notice hp-notice--warning"><span class="material-symbols-outlined">warning</span><div>มี ' + late.length + ' บัญชีที่ค้างชำระ — ชำระให้ตรงเวลาเพื่อไม่ให้ถูกบันทึกประวัติค้างชำระในรายงานเครดิต</div></div>'
+        : '<div class="hp-notice"><span class="material-symbols-outlined">task_alt</span><div>ทุกบัญชีชำระปกติ</div></div>';
+
+      $('credit-list').innerHTML = C.accounts.map(function (a) {
+        var st = STATUS[a.status], pct = Math.min(100, Math.round(a.balance / a.limit * 100));
+        return '<div class="mp-credit-row">' +
+          '<span class="hp-icon hp-icon--sm tone-' + (a.status === 'normal' ? 'primary' : 'warning') + '"><span class="material-symbols-outlined">' + a.icon + '</span></span>' +
+          '<div class="hp-visit-body">' +
+            '<span class="hp-visit-title">' + e(a.type) + ' · ' + e(a.lender) + '</span>' +
+            '<span class="hp-muted mp-masked">คงเหลือ ' + MP.money(a.balance) + ' จากวงเงิน ' + MP.money(a.limit) + '</span>' +
+            '<div class="mp-util mp-masked" aria-hidden="true"><span style="width:' + pct + '%"></span></div>' +
+          '</div>' +
+          '<span class="tag ' + st.tag + ' tag--sm tag--dot">' + st.label + '</span></div>';
+      }).join('');
+
+      function reveal(on) {
+        $('credit-card').classList.toggle('is-revealed', on);
+        $('hide').hidden = !on;
+        document.querySelectorAll('.mp-masked').forEach(function (el) { el.setAttribute('aria-hidden', on ? 'false' : 'true'); });
+      }
+      $('reveal').onclick = function () { reveal(true); };
+      $('hide').onclick = function () { reveal(false); };
+      reveal(false);
+
+      $('upcoming').innerHTML = M.upcoming.map(function (s) {
+        return '<div class="mp-soon">' +
+          '<div class="mp-soon-head">' +
+            '<span class="hp-icon hp-icon--sm tone-' + s.tone + '"><span class="material-symbols-outlined">' + s.icon + '</span></span>' +
+            '<div class="hp-visit-body">' +
+              '<span class="mp-soon-title">' + e(s.title) + '</span>' +
+              '<span class="hp-muted">' + e(s.agency) + '</span>' +
+            '</div>' +
+            '<span class="tag tag--sm">เร็วๆ นี้</span>' +
+          '</div>' +
+          '<p class="mp-soon-desc">' + e(s.desc) + '</p>' +
+        '</div>';
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

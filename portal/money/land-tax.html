@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ภาษีที่ดินและสิ่งปลูกสร้าง — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="money.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+          </div>
+          <p class="top-nav-bar-title">Money Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <!-- ยอดที่ต้องชำระ -->
+        <div class="card">
+          <div class="cp-total">
+            <div>
+              <div class="cp-total-label">ยอดภาษีที่ต้องชำระ</div>
+              <div class="hp-muted" id="due-sub"></div>
+            </div>
+            <div class="cp-ticket-amount" id="due-total"></div>
+          </div>
+          <div class="hp-stack" id="due"></div>
+        </div>
+
+        <!-- ปีนี้ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title" id="year-title">ภาษีปีนี้ แยกตามทรัพย์สิน</h3>
+            </div>
+          </div>
+          <div class="accordion" id="current"></div>
+        </div>
+
+        <!-- ประวัติ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+              <h3 class="section-title">ประวัติการชำระย้อนหลัง</h3>
+            </div>
+          </div>
+          <div class="mp-table-wrap"><table class="mp-table" id="history"></table></div>
+        </div>
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">info</span>
+          <div>ภาษีที่ดินและสิ่งปลูกสร้างชำระกับองค์กรปกครองส่วนท้องถิ่น (อปท.) ที่ทรัพย์สินตั้งอยู่ โดยปกติ อปท. จะส่งแบบแจ้งการประเมินภายในเดือนกุมภาพันธ์ และต้องชำระภายในเดือนเมษายนของทุกปี
+            (ยอดเกิน 3,000 บาทขอผ่อนชำระได้ 3 งวด) · หากไม่ชำระตามกำหนดจะมีเบี้ยปรับและเงินเพิ่มร้อยละ 1 ต่อเดือน
+            · บ้านหลังหลักที่มีชื่ออยู่ในทะเบียนบ้านได้รับยกเว้นเมื่อมูลค่าไม่เกิน 50 ล้านบาท</div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก องค์กรปกครองส่วนท้องถิ่น · กรมส่งเสริมการปกครองท้องถิ่น · ราคาประเมินจากกรมธนารักษ์<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="money-data.js"></script>
+  <script src="money.js"></script>
+  <script>
+    (function () {
+      var M = MONEY, e = MP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      MP.mountWelcome('ภาษีที่ดินและสิ่งปลูกสร้าง', 'ยอดที่ต้องชำระ รายละเอียดการคำนวณ และประวัติการชำระของทรัพย์สินในชื่อคุณ');
+
+      var year = MP.now.getFullYear();
+
+      function breakdown(t) {
+        var p = MP.property(t.property);
+        return '<div class="mp-breakdown">' +
+          '<div><span>ฐานภาษี (ราคาประเมิน)</span><span>' + MP.money(t.base) + '</span></div>' +
+          '<div><span>อัตราภาษี<small>' + e(t.category) + '</small></span><span>' + e(t.rateText) + '</span></div>' +
+          '<div><span>ภาษีที่ต้องชำระ</span><span>' + MP.money(t.tax) + '</span></div>' +
+          (t.penalty ? '<div><span>เบี้ยปรับ<small>' + e(t.penaltyText) + '</small></span><span>' + MP.money(t.penalty) + '</span></div>' : '') +
+          (t.surcharge ? '<div><span>เงินเพิ่ม<small>' + e(t.surchargeText) + '</small></span><span>' + MP.money(t.surcharge) + '</span></div>' : '') +
+          '<div class="is-total"><span>รวม</span><span>' + MP.money(MP.landTaxTotal(t)) + '</span></div>' +
+        '</div>';
+      }
+
+      /* ─── ยอดที่ต้องชำระ ─── */
+      var due = MP.landTaxDue();
+      var dueTotal = due.reduce(function (s, t) { return s + MP.landTaxTotal(t); }, 0);
+      $('due-total').textContent = MP.money(dueTotal);
+      $('due-total').classList.toggle('is-danger', due.some(function (t) { return t.status === 'overdue'; }));
+      $('due-sub').textContent = due.length ? due.length + ' รายการ' : 'ไม่มียอดค้างชำระ';
+      $('due').innerHTML = due.map(function (t) {
+        var p = MP.property(t.property), total = MP.landTaxTotal(t);
+        return '<div class="hp-notice hp-notice--danger"><span class="material-symbols-outlined">warning</span><div>' +
+            '<strong>' + e(p.name) + ' — ค้างชำระภาษีปี ' + MP.be(t.year) + '</strong><br>' +
+            'เลยกำหนดชำระ ' + MP.dateLong(t.due) + ' แล้ว ' + e(t.office) + ' ออก' + e(t.notice) +
+            ' กรุณาชำระภายใน <strong>' + MP.dateLong(t.noticeDue) + '</strong> เพื่อไม่ให้ถูกเรียกเก็บเบี้ยปรับเพิ่มเป็น 40%' +
+          '</div></div>' +
+          breakdown(t) +
+          '<div class="mp-actions" style="margin-top:0">' +
+            '<button type="button" class="btn btn-primary" data-pay="' + e('ภาษีที่ดินฯ ปี ' + MP.be(t.year) + ' — ' + p.name) + '" data-amount="' + total + '"><span class="material-symbols-outlined">qr_code_2</span>ชำระด้วยพร้อมเพย์</button>' +
+            '<button type="button" class="btn btn-outline" data-ext="landtax"><span class="material-symbols-outlined">open_in_new</span>ระบบภาษีที่ดินของ อปท.</button>' +
+          '</div>';
+      }).join('') || '<div class="hp-empty"><span class="material-symbols-outlined">task_alt</span>ชำระภาษีครบทุกรายการแล้ว</div>';
+
+      /* ─── ปีนี้ ─── */
+      $('year-title').textContent = 'ภาษีปี ' + MP.be(year) + ' แยกตามทรัพย์สิน';
+      var openId = location.hash.replace('#', '');
+      $('current').innerHTML = M.landTax.filter(function (t) { return t.year === year; }).map(function (t) {
+        var p = MP.property(t.property), st = MP.landTaxStatus(t), total = MP.landTaxTotal(t);
+        return '<div class="accordion-item" id="' + t.id + '">' +
+          '<div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleAccordion(this)}">' +
+            '<div class="cp-accordion-head">' +
+              '<span class="hp-icon tone-' + st.tone + '"><span class="material-symbols-outlined">' + p.icon + '</span></span>' +
+              '<div class="hp-visit-body">' +
+                '<span class="tag ' + st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + st.label + '</span>' +
+                '<span class="hp-visit-title">' + e(p.name) + '</span>' +
+                '<span class="hp-visit-sub">' + e(t.category) + ' · ' + e(t.office) + '</span>' +
+              '</div>' +
+              '<span class="mp-amount' + (t.status === 'overdue' ? ' is-danger' : t.tax ? '' : ' is-muted') + '">' + MP.money(total) + '</span>' +
+            '</div>' +
+            '<span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>' +
+          '</div>' +
+          '<div class="accordion-body"><div class="accordion-body-inner">' +
+            '<div class="details-list">' +
+              MP.detailsItem('ที่ตั้ง', e(p.address)) +
+              MP.detailsItem('เอกสารสิทธิ์', e(p.deed) + ' · ' + e(p.area)) +
+              MP.detailsItem('ประเภทการใช้ประโยชน์', e(t.category)) +
+              MP.detailsItem('หน่วยงานจัดเก็บ', e(t.office)) +
+              (t.paidAt ? MP.detailsItem('การชำระ', 'ชำระเมื่อ ' + MP.dateLong(t.paidAt) + ' ผ่าน ' + e(t.paidVia) + '<br><span class="hp-muted">ใบเสร็จ ' + e(t.receipt) + '</span>', 'details-value-paid') : '') +
+              (t.due && !t.paidAt ? MP.detailsItem('กำหนดชำระ', MP.dateLong(t.due) + (t.noticeDue ? '<br><span class="hp-muted">ตามหนังสือแจ้งเตือน: ภายใน ' + MP.dateLong(t.noticeDue) + '</span>' : ''), 'details-value-unpaid') : '') +
+            '</div>' +
+            '<div style="margin-top:var(--spacing-lg)">' + breakdown(t) + '</div>' +
+          '</div></div>' +
+        '</div>';
+      }).join('');
+      var target = openId && document.getElementById(openId);
+      if (target) setTimeout(function () { toggleAccordion(target.querySelector('.accordion-header')); target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
+
+      /* ─── ประวัติ ─── */
+      var past = M.landTax.filter(function (t) { return t.year < year; })
+        .sort(function (a, b) { return b.year - a.year || (a.property < b.property ? -1 : 1); });
+      $('history').innerHTML =
+        '<thead><tr><th>ปีภาษี</th><th>ทรัพย์สิน</th><th class="num">ยอดชำระ</th><th>สถานะ</th><th>วันที่ชำระ / ใบเสร็จ</th></tr></thead><tbody>' +
+        past.map(function (t) {
+          var st = MP.landTaxStatus(t);
+          return '<tr><td>' + MP.be(t.year) + '</td>' +
+            '<td>' + e(MP.property(t.property).name) + '</td>' +
+            '<td class="num"><strong>' + MP.money(t.tax, false) + '</strong></td>' +
+            '<td><span class="tag ' + (t.late ? 'tag--warning' : st.tag) + ' tag--sm">' + (t.late ? 'ชำระล่าช้า' : st.label) + '</span></td>' +
+            '<td>' + (t.paidAt ? MP.dateShort(t.paidAt) + ' · ' + e(t.receipt) + (t.late ? '<br><span class="hp-muted">' + e(t.late) + '</span>' : '') : '<span class="hp-muted">—</span>') + '</td></tr>';
+        }).join('') + '</tbody>';
+    })();
+  </script>
+</body>
+</html>
