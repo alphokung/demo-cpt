@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบรับรองแพทย์ — ทางรัฐ</title>
+  <meta name="description" content="รวมใบรับรองแพทย์ดิจิทัลที่คุณได้รับ ดูรายละเอียดและดาวน์โหลดเป็น PDF">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">description</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="filter-row" id="cert-filters" style="margin-bottom: var(--spacing-lg);"></div>
+          <div class="hp-stack" id="certs"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจากระบบใบรับรองแพทย์ดิจิทัล กระทรวงสาธารณสุข<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, e = HP.esc, filter = 'all';
+      HP.mountWelcome('ใบรับรองแพทย์', 'ใบรับรองแพทย์ดิจิทัลของคุณ ' + H.certificates.length + ' ฉบับ');
+
+      var FILTERS = [['all', 'ทั้งหมด'], ['valid', 'ใช้งานได้'], ['expiring', 'ใกล้หมดอายุ'], ['expired', 'หมดอายุ'], ['none', 'ไม่ระบุวันหมดอายุ']];
+
+      function renderFilters() {
+        document.getElementById('cert-filters').innerHTML = FILTERS.map(function (f) {
+          var n = f[0] === 'all' ? H.certificates.length : H.certificates.filter(function (c) { return HP.certStatus(c).key === f[0]; }).length;
+          return '<button class="filter-chip' + (filter === f[0] ? ' active' : '') + '" data-f="' + f[0] + '">' + f[1] + ' (' + n + ')</button>';
+        }).join('');
+        document.querySelectorAll('[data-f]').forEach(function (b) {
+          b.onclick = function () { filter = b.dataset.f; renderFilters(); render(); };
+        });
+      }
+
+      function render() {
+        var list = H.certificates.filter(function (c) { return filter === 'all' || HP.certStatus(c).key === filter; });
+        document.getElementById('certs').innerHTML = list.length ? list.map(function (c) {
+          var st = HP.certStatus(c);
+          var expiry = c.expires ? (st.key === 'expired' ? 'หมดอายุ ' : 'ใช้ได้ถึง ') + HP.dateShort(c.expires) : 'ไม่ระบุวันหมดอายุ';
+          return '<a class="hp-cert" href="certificate.html?id=' + c.id + '">' +
+            '<span class="hp-icon tone-' + (st.key === 'expired' ? 'neutral' : 'info') + '"><span class="material-symbols-outlined">description</span></span>' +
+            '<div class="hp-visit-body">' +
+              '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag ' + st.tag + ' tag--sm tag--dot">' + st.label + '</span><span class="tag tag--sm">' + e(c.purpose) + '</span></div>' +
+              '<span class="hp-visit-title">' + e(c.title) + '</span>' +
+              '<span class="hp-visit-sub">' + e(c.hospital) + '</span>' +
+              '<div class="list-meta">' +
+                '<div class="list-meta-item"><span class="material-symbols-outlined list-meta-icon">calendar_today</span><span>ออกเมื่อ ' + HP.dateShort(c.issued) + '</span></div>' +
+                '<div class="list-meta-item"><span class="material-symbols-outlined list-meta-icon">event_available</span><span>' + expiry + '</span></div>' +
+              '</div>' +
+            '</div>' +
+            '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+        }).join('') : '<div class="hp-empty"><span class="material-symbols-outlined">folder_off</span>ไม่พบใบรับรองแพทย์ในหมวดนี้</div>';
+      }
+
+      renderFilters();
+      render();
+    })();
+  </script>
+</body>
+</html>

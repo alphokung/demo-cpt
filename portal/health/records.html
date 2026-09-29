@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ประวัติสุขภาพ — ทางรัฐ</title>
+  <meta name="description" content="ประวัติสุขภาพจาก Health Link — ประวัติการรักษา โรคประจำตัว ข้อมูลการแพ้ยา และประวัติการรับวัคซีน">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">clinical_notes</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="card">
+          <div class="tabs" id="records-tabs">
+            <div class="tab-bar" role="tablist">
+              <button class="tab-btn active" data-panel="panel-visits" onclick="switchTab('records-tabs','panel-visits',this)">ประวัติการรักษา</button>
+              <button class="tab-btn" data-panel="panel-chronic" onclick="switchTab('records-tabs','panel-chronic',this)">โรคประจำตัว</button>
+              <button class="tab-btn" data-panel="panel-allergy" onclick="switchTab('records-tabs','panel-allergy',this)">แพ้ยา</button>
+              <button class="tab-btn" data-panel="panel-vaccine" onclick="switchTab('records-tabs','panel-vaccine',this)">วัคซีน</button>
+            </div>
+            <div class="tab-panels">
+
+              <div class="tab-panel active" id="panel-visits">
+                <div class="filter-row" id="visit-filters" style="margin-bottom: var(--spacing-lg);"></div>
+                <div class="hp-stack" id="visits"></div>
+              </div>
+
+              <div class="tab-panel" id="panel-chronic">
+                <div id="chronic"></div>
+              </div>
+
+              <div class="tab-panel" id="panel-allergy">
+                <div class="hp-notice hp-notice--danger" style="margin-bottom: var(--spacing-lg);">
+                  <span class="material-symbols-outlined">warning</span>
+                  <div>แจ้งประวัติแพ้ยาต่อแพทย์ พยาบาล และเภสัชกรทุกครั้งที่รับบริการ รวมถึงเมื่อซื้อยาที่ร้านขายยา</div>
+                </div>
+                <div id="allergy"></div>
+              </div>
+
+              <div class="tab-panel" id="panel-vaccine">
+                <div class="timeline" id="vaccine"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก Health Link · กระทรวงสาธารณสุข<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, hl = H.healthLink, e = HP.esc;
+      HP.mountWelcome('ประวัติสุขภาพ', 'ข้อมูลจาก Health Link — ระบบแลกเปลี่ยนข้อมูลสุขภาพระหว่างสถานพยาบาล');
+
+      /* ─── ประวัติการรักษา (แยกราย visit, กรองตามปี) ─── */
+      var years = [];
+      hl.visits.forEach(function (v) { var y = new Date(v.date).getFullYear() + 543; if (years.indexOf(y) < 0) years.push(y); });
+      var yearFilter = 'all';
+
+      function renderVisitFilters() {
+        document.getElementById('visit-filters').innerHTML =
+          ['all'].concat(years).map(function (y) {
+            return '<button class="filter-chip' + (String(y) === String(yearFilter) ? ' active' : '') + '" data-year="' + y + '">' +
+              (y === 'all' ? 'ทั้งหมด' : 'ปี ' + y) + '</button>';
+          }).join('');
+        document.querySelectorAll('[data-year]').forEach(function (b) {
+          b.onclick = function () { yearFilter = b.dataset.year; renderVisitFilters(); renderVisits(); };
+        });
+      }
+
+      function renderVisits() {
+        var list = hl.visits.filter(function (v) { return yearFilter === 'all' || String(new Date(v.date).getFullYear() + 543) === yearFilter; });
+        document.getElementById('visits').innerHTML = list.map(function (v) {
+          var p = HP.dateParts(v.date);
+          var counts = [];
+          if (v.labs.length) counts.push('ผลแล็บ ' + v.labs.length);
+          if (v.meds.length) counts.push('ยา ' + v.meds.length);
+          if (v.procedures.length) counts.push('หัตถการ ' + v.procedures.length);
+          if (v.reports.length) counts.push('รายงานผล ' + v.reports.length);
+          return '<a class="hp-visit" href="visit.html?id=' + v.id + '">' +
+            '<div class="hp-date-box"><div class="hp-date-day">' + p.day + '</div><div class="hp-date-mon">' + p.mon + '</div><div class="hp-date-yr">' + p.yr + '</div></div>' +
+            '<div class="hp-visit-body">' +
+              '<div class="hp-row" style="gap:var(--spacing-xs)"><span class="tag tag--info tag--sm">' + e(v.patientType) + '</span><span class="tag tag--sm">' + e(v.diagnoses[0].code) + '</span></div>' +
+              '<span class="hp-visit-title">' + e(v.clinic) + ' · ' + e(v.hospital) + '</span>' +
+              '<span class="hp-visit-sub">' + e(v.diagnoses[0].name) + '</span>' +
+              '<span class="hp-muted">' + counts.join(' · ') + '</span>' +
+            '</div>' +
+            '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+        }).join('');
+      }
+      renderVisitFilters();
+      renderVisits();
+
+      /* ─── โรคประจำตัว ─── */
+      document.getElementById('chronic').innerHTML = hl.chronic.length ? hl.chronic.map(function (c) {
+        return '<div class="hp-record">' +
+          '<span class="hp-icon tone-' + c.tone + '"><span class="material-symbols-outlined">vital_signs</span></span>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div class="hp-between"><p class="hp-record-title">' + e(c.name) + '</p><span class="tag tag--' + (c.tone === 'positive' ? 'success' : c.tone) + ' tag--sm tag--dot">' + e(c.status) + '</span></div>' +
+            '<div class="hp-record-meta">' +
+              '<span><span class="material-symbols-outlined">tag</span>ICD-10 ' + e(c.icd10) + '</span>' +
+              '<span><span class="material-symbols-outlined">event</span>วินิจฉัยเมื่อ ' + HP.dateShort(c.since) + '</span>' +
+              '<span><span class="material-symbols-outlined">local_hospital</span>' + e(c.hospital) + '</span>' +
+            '</div>' +
+          '</div></div>';
+      }).join('') : '<div class="hp-empty"><span class="material-symbols-outlined">check_circle</span>ไม่มีข้อมูลโรคประจำตัว</div>';
+
+      /* ─── แพ้ยา ─── */
+      document.getElementById('allergy').innerHTML = hl.allergies.length ? hl.allergies.map(function (a) {
+        return '<div class="hp-record hp-record--' + a.tone + '">' +
+          '<span class="hp-icon tone-' + a.tone + '"><span class="material-symbols-outlined">medication</span></span>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div class="hp-between"><p class="hp-record-title">' + e(a.drug) + '</p><span class="tag tag--' + a.tone + ' tag--sm">ความรุนแรง: ' + e(a.severity) + '</span></div>' +
+            '<p class="hp-muted">' + e(a.group) + '</p>' +
+            '<div class="details-list" style="margin-top:var(--spacing-md)">' +
+              HP.detailsItem('อาการที่เกิด', e(a.reaction)) +
+            '</div>' +
+            '<div class="hp-record-meta">' +
+              '<span><span class="material-symbols-outlined">event</span>บันทึกเมื่อ ' + HP.dateShort(a.recorded) + '</span>' +
+              '<span><span class="material-symbols-outlined">local_hospital</span>' + e(a.hospital) + '</span>' +
+            '</div>' +
+          '</div></div>';
+      }).join('') : '<div class="hp-empty"><span class="material-symbols-outlined">check_circle</span>ไม่มีประวัติแพ้ยา</div>';
+
+      /* ─── วัคซีน ─── */
+      document.getElementById('vaccine').innerHTML = hl.vaccines.map(function (v, i) {
+        return '<div class="timeline-item' + (i === 0 ? ' is-active' : ' is-passed') + '">' +
+          '<div class="timeline-item-dot"></div>' +
+          '<div class="timeline-item-content">' +
+            '<p class="timeline-item-title">' + e(v.name) + '</p>' +
+            '<p class="timeline-item-desc">' + e(v.dose) + ' · ' + HP.dateLong(v.date) + '</p>' +
+            '<p class="timeline-item-desc">' + e(v.hospital) + ' · Lot ' + e(v.lot) + '</p>' +
+          '</div></div>';
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

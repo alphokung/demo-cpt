@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดการรักษา — ทางรัฐ</title>
+  <meta name="description" content="รายละเอียดการเข้ารับบริการ — สัญญาณชีพ ผลแล็บ การจ่ายยา หัตถการ และรายงานผลการตรวจ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="records.html#visits" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">clinical_notes</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="visit"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, hl = H.healthLink, e = HP.esc;
+      var root = document.getElementById('visit');
+      var v = hl.visits.filter(function (x) { return x.id === HP.qs('id'); })[0] || hl.visits[0];
+
+      function empty(icon, text) { return '<div class="hp-empty"><span class="material-symbols-outlined">' + icon + '</span>' + text + '</div>'; }
+      function card(id, title, color, inner) { return '<div class="card" id="' + id + '" style="scroll-margin-top:72px">' + HP.sectionTitle(title, color) + inner + '</div>'; }
+
+      /* ─── Header ─── */
+      var html = HP.welcome('รายละเอียดการรักษา',
+        HP.dateLong(v.date) + ' เวลา ' + HP.time(v.date) + ' · ' + v.clinic + ' · ' + v.hospital + ' · ' + v.patientType);
+
+      /* ─── Jump chips ─── */
+      var sections = [['sec-info', 'ข้อมูลการรับบริการ'], ['sec-vitals', 'สัญญาณชีพ / ผลแล็บ'], ['sec-meds', 'การจ่ายยา'], ['sec-proc', 'หัตถการ'], ['sec-report', 'รายงานผลการตรวจ']];
+      html += '<div class="hp-jump"><div class="filter-row">' + sections.map(function (s, i) {
+        return '<button class="filter-chip' + (i === 0 ? ' active' : '') + '" data-jump="' + s[0] + '">' + s[1] + '</button>';
+      }).join('') + '</div></div>';
+
+      /* ─── 1. ข้อมูลการเข้ารับบริการ ─── */
+      html += card('sec-info', 'ข้อมูลการเข้ารับบริการ', 'var(--primary-40)',
+        '<div class="details-list">' +
+          HP.detailsItem('วันที่เข้ารับบริการ', HP.dateLong(v.date) + ' เวลา ' + HP.time(v.date)) +
+          HP.detailsItem('ประเภทผู้ป่วย', e(v.patientType)) +
+          HP.detailsItem('สถานพยาบาล', e(v.hospital) + ' (รหัส ' + e(v.hcode) + ')') +
+          HP.detailsItem('แผนก / คลินิก', e(v.clinic)) +
+          HP.detailsItem('แพทย์ผู้ตรวจ', e(v.doctor)) +
+          HP.detailsItem('สิทธิการรักษาที่ใช้', e(v.right)) +
+          HP.detailsItem('อาการสำคัญ', e(v.chiefComplaint)) +
+          '<div class="details-item"><span class="details-label">การวินิจฉัย</span><span class="details-value">' +
+            v.diagnoses.map(function (d) {
+              return '<div style="margin-bottom:var(--spacing-xs)"><span class="tag tag--sm' + (d.type === 'หลัก' ? ' tag--primary' : '') + '">' + e(d.code) + '</span> ' + e(d.name) +
+                ' <span class="hp-muted">(' + e(d.type) + ')</span></div>';
+            }).join('') + '</span></div>' +
+          (v.nextAppointment ? HP.detailsItem('นัดหมายครั้งถัดไป', HP.dateLong(v.nextAppointment) + ' เวลา ' + HP.time(v.nextAppointment), 'details-value-paid') : '') +
+        '</div>');
+
+      /* ─── 2. สัญญาณชีพ / ผลแล็บ ─── */
+      var vt = v.vitals, sys = +vt.bp.split('/')[0], dia = +vt.bp.split('/')[1];
+      var bmi = HP.bmi(vt.weight, vt.height);
+      function vital(label, value, unit, alert) {
+        return '<div class="hp-vital' + (alert ? ' hp-vital--alert' : '') + '"><div class="hp-vital-label">' + label + '</div>' +
+          '<div class="hp-vital-value">' + value + '<span class="hp-vital-unit">' + unit + '</span></div></div>';
+      }
+      var vitalsHtml = '<div class="hp-vitals">' +
+        vital('ความดันโลหิต', vt.bp, 'mmHg', sys >= 140 || dia >= 90) +
+        vital('ชีพจร', vt.pulse, 'ครั้ง/นาที', vt.pulse > 100 || vt.pulse < 60) +
+        vital('อุณหภูมิ', vt.temp, '°C', vt.temp >= 37.5) +
+        vital('อัตราการหายใจ', vt.rr, 'ครั้ง/นาที', vt.rr > 20) +
+        vital('ออกซิเจนในเลือด', vt.spo2, '%', vt.spo2 < 95) +
+        vital('น้ำหนัก', vt.weight, 'กก.') +
+        vital('ส่วนสูง', vt.height, 'ซม.') +
+        vital('ดัชนีมวลกาย', bmi, 'kg/m²', bmi >= 25) +
+      '</div>';
+
+      var labsHtml = v.labs.length ?
+        '<div class="data-table-wrap" style="margin-top:var(--spacing-lg)"><table class="data-table"><thead><tr>' +
+          '<th>รายการตรวจ</th><th>ผล</th><th>หน่วย</th><th>ค่าปกติ</th><th></th></tr></thead><tbody>' +
+          v.labs.map(function (l) {
+            return '<tr><td data-label="รายการตรวจ">' + e(l.test) + '</td>' +
+              '<td data-label="ผล"><span class="' + (l.flag ? 'hp-result-high' : '') + '">' + e(l.result) + '</span></td>' +
+              '<td data-label="หน่วย">' + (e(l.unit) || '-') + '</td>' +
+              '<td data-label="ค่าปกติ">' + e(l.range) + '</td>' +
+              '<td data-label="สถานะ">' + (l.flag ? '<span class="hp-flag hp-flag--' + l.flag + '">' + (l.flag === 'H' ? 'สูง' : 'ต่ำ') + '</span>' : '<span class="hp-muted">ปกติ</span>') + '</td></tr>';
+          }).join('') + '</tbody></table></div>'
+        : empty('biotech', 'ไม่มีผลตรวจทางห้องปฏิบัติการใน visit นี้');
+
+      html += card('sec-vitals', 'สัญญาณชีพ / ผลแล็บ', 'var(--secondary-40-main)',
+        vitalsHtml + '<p class="hp-muted" style="margin-top:var(--spacing-sm)">ช่องสีส้ม = ค่าที่อยู่นอกเกณฑ์ปกติ</p>' +
+        '<h4 class="section-title" style="margin-top:var(--spacing-xl)">ผลตรวจทางห้องปฏิบัติการ</h4>' + labsHtml);
+
+      /* ─── 3. การจ่ายยา ─── */
+      var allergyNames = hl.allergies.map(function (a) { return a.drug.toLowerCase(); });
+      var medsHtml = v.meds.length ?
+        '<div class="hp-notice" style="margin-bottom:var(--spacing-lg)"><span class="material-symbols-outlined">verified_user</span><div>ตรวจสอบกับประวัติแพ้ยาแล้ว — ' +
+          (v.meds.some(function (m) { return allergyNames.some(function (a) { return m.name.toLowerCase().indexOf(a) >= 0; }); }) ? '<strong>พบยาที่เคยแพ้</strong>' : 'ไม่พบยาที่คุณเคยแพ้') + '</div></div>' +
+        v.meds.map(function (m) {
+          return '<div class="hp-record"><span class="hp-icon hp-icon--sm tone-positive"><span class="material-symbols-outlined">pill</span></span>' +
+            '<div style="flex:1;min-width:0"><div class="hp-between"><p class="hp-record-title" style="font-size:var(--font-size-body-m)">' + e(m.name) + '</p><span class="tag tag--sm">' + e(m.qty) + '</span></div>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-xxs)">' + e(m.form) + ' · ' + e(m.usage) + '</p></div></div>';
+        }).join('')
+        : empty('medication', 'ไม่มีรายการจ่ายยาใน visit นี้');
+      html += card('sec-meds', 'ข้อมูลการจ่ายยา', 'var(--primary-40)', medsHtml);
+
+      /* ─── 4. หัตถการ ─── */
+      html += card('sec-proc', 'ประวัติหัตถการ', 'var(--warning-40)', v.procedures.length ?
+        '<div class="details-list">' + v.procedures.map(function (p) {
+          return HP.detailsItem('ICD-9-CM ' + e(p.code), e(p.name));
+        }).join('') + '</div>'
+        : empty('healing', 'ไม่มีหัตถการใน visit นี้'));
+
+      /* ─── 5. รายงานผลการตรวจ ─── */
+      html += card('sec-report', 'รายงานผลการตรวจ', 'var(--info-40)', v.reports.length ?
+        v.reports.map(function (r) {
+          return '<div class="hp-report"><p class="hp-report-title">' + e(r.title) + '</p>' +
+            '<p class="hp-report-text">' + e(r.text) + '</p>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-sm)">รายงานโดย ' + e(r.by) + '</p></div>';
+        }).join('')
+        : empty('lab_profile', 'ไม่มีรายงานผลการตรวจใน visit นี้'));
+
+      html += '<div class="source-note"><p class="source-note-text">' +
+        '<span class="material-symbols-outlined source-note-icon">verified</span>' +
+        'ข้อมูลจาก Health Link · ' + e(v.hospital) + '<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+
+      root.innerHTML = html;
+
+      document.querySelectorAll('[data-jump]').forEach(function (b) {
+        b.onclick = function () {
+          document.querySelectorAll('[data-jump]').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          document.getElementById(b.dataset.jump).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+      });
+    })();
+  </script>
+</body>
+</html>

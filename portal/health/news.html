@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ข่าวสุขภาพสำหรับคุณ — ทางรัฐ</title>
+  <meta name="description" content="บทความและข่าวสุขภาพที่คัดเลือกตามข้อมูลสุขภาพของคุณ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">newspaper</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">person_check</span>
+          <div>บทความเหล่านี้คัดเลือกจาก<strong>โรคประจำตัว ประวัติแพ้ยา ผลตรวจ อายุ และสิทธิการรักษา</strong>ของคุณ</div>
+        </div>
+
+        <div class="filter-row" id="news-filters"></div>
+        <div class="hp-news-list" id="news"></div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            เนื้อหาจาก กรมควบคุมโรค · กรมอนามัย · สปสช. · สภาเภสัชกรรม<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, e = HP.esc, cat = 'all';
+      var cats = [];
+      H.news.forEach(function (n) { if (cats.indexOf(n.category) < 0) cats.push(n.category); });
+
+      function renderFilters() {
+        document.getElementById('news-filters').innerHTML = ['all'].concat(cats).map(function (c) {
+          return '<button class="filter-chip' + (c === cat ? ' active' : '') + '" data-cat="' + e(c) + '">' + (c === 'all' ? 'ทั้งหมด' : e(c)) + '</button>';
+        }).join('');
+        document.querySelectorAll('[data-cat]').forEach(function (b) {
+          b.onclick = function () { cat = b.dataset.cat; renderFilters(); render(); };
+        });
+      }
+
+      function render() {
+        document.getElementById('news').innerHTML = H.news.filter(function (n) { return cat === 'all' || n.category === cat; }).map(function (n) {
+          return '<a class="hp-news" href="article.html?id=' + n.id + '">' +
+            '<div class="hp-news-cover tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
+            '<div class="hp-news-body">' +
+              '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span>' +
+              '<p class="hp-news-title">' + e(n.title) + '</p>' +
+              '<p class="hp-news-excerpt">' + e(n.excerpt) + '</p>' +
+              '<p class="hp-muted">' + e(n.source) + ' · ' + HP.dateShort(n.date) + ' · อ่าน ' + n.readMin + ' นาที</p>' +
+            '</div></a>';
+        }).join('');
+      }
+
+      renderFilters();
+      render();
+      HP.mountWelcome('ข่าวสุขภาพสำหรับคุณ', 'บทความที่คัดเลือกให้ตรงกับข้อมูลสุขภาพของคุณ');
+    })();
+  </script>
+</body>
+</html>

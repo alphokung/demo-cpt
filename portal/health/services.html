@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บริการสุขภาพแนะนำ — ทางรัฐ</title>
+  <meta name="description" content="บริการสุขภาพที่เกี่ยวข้อง — ปรึกษาหมอทางไกล (DMS), การแพทย์แผนไทยทางไกล (DTAM) และ DMS PHR">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">video_call</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main">
+
+        <div class="hp-notice">
+          <span class="material-symbols-outlined">open_in_new</span>
+          <div>บริการในหน้านี้ให้บริการโดยหน่วยงานภายนอก เมื่อกดใช้บริการ ระบบจะเปิดเว็บไซต์ของหน่วยงานนั้นในแท็บใหม่</div>
+        </div>
+
+        <div class="hp-stack" id="services" style="gap: var(--spacing-xl);"></div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลบริการจาก กรมการแพทย์ · กรมการแพทย์แผนไทยและการแพทย์ทางเลือก<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, e = HP.esc;
+      document.getElementById('services').innerHTML = H.services.map(function (s, i) {
+        return '<div class="card hp-service">' +
+          '<div class="hp-service-head">' +
+            HP.svcIcon(s, 'lg') +
+            '<div style="flex:1;min-width:0">' +
+              '<p class="hp-service-name">' + e(s.name) + '</p>' +
+              '<p class="hp-muted">' + e(s.agency) + '</p>' +
+              '<span class="hp-ext-badge"><span class="material-symbols-outlined">language</span>' + e(new URL(s.url).host) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<p style="line-height:1.7">' + e(s.desc) + '</p>' +
+          '<ul class="hp-check-list">' + s.features.map(function (f) {
+            return '<li><span class="material-symbols-outlined">check_circle</span>' + e(f) + '</li>';
+          }).join('') + '</ul>' +
+          '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(s.reason) + '</span>' +
+          '<button class="btn btn-primary" data-svc="' + i + '"><span class="material-symbols-outlined">open_in_new</span>ใช้บริการ</button>' +
+        '</div>';
+      }).join('');
+      document.querySelectorAll('[data-svc]').forEach(function (b) {
+        b.addEventListener('click', function () { HP.openExternal(H.services[+b.dataset.svc]); });
+      });
+      HP.mountWelcome('บริการสุขภาพแนะนำ', 'ปรึกษาแพทย์ทางไกล และสมุดสุขภาพส่วนบุคคล');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทความสุขภาพ — ทางรัฐ</title>
+  <meta name="description" content="บทความสุขภาพที่เกี่ยวข้องกับคุณ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="news.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">newspaper</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="article"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, e = HP.esc;
+      var n = H.news.filter(function (x) { return x.id === HP.qs('id'); })[0] || H.news[0];
+      document.title = n.title + ' — ทางรัฐ';
+
+      // แปลง body แบบย่อ: "## หัวข้อ", "- รายการ", "1. รายการ", อื่น ๆ = ย่อหน้า
+      function block(b) {
+        if (b.indexOf('## ') === 0) return '<h4>' + e(b.slice(3)) + '</h4>';
+        var lines = b.split('\n');
+        if (lines.every(function (l) { return /^- /.test(l); }))
+          return '<ul>' + lines.map(function (l) { return '<li>' + e(l.slice(2)) + '</li>'; }).join('') + '</ul>';
+        if (lines.every(function (l) { return /^\d+\. /.test(l); }))
+          return '<ol>' + lines.map(function (l) { return '<li>' + e(l.replace(/^\d+\. /, '')) + '</li>'; }).join('') + '</ol>';
+        return '<p>' + e(b) + '</p>';
+      }
+
+      var related = H.news.filter(function (x) { return x.id !== n.id; }).slice(0, 3);
+
+      document.getElementById('article').innerHTML =
+        '<article class="card">' +
+          '<div class="hp-article-cover tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
+          '<div class="hp-row" style="margin-bottom:var(--spacing-md)"><span class="tag tag--sm">' + e(n.category) + '</span>' +
+            '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span></div>' +
+          '<h1 class="hp-article-title">' + e(n.title) + '</h1>' +
+          '<p class="hp-muted" style="margin:var(--spacing-sm) 0 var(--spacing-xl)">' + e(n.source) + ' · ' + HP.dateLong(n.date) + ' · อ่าน ' + n.readMin + ' นาที</p>' +
+          '<div class="hp-article-body">' + n.body.map(block).join('') + '</div>' +
+          '<div class="hp-notice" style="margin-top:var(--spacing-2xl)"><span class="material-symbols-outlined">info</span>' +
+            '<div>ข้อมูลนี้เป็นความรู้ทั่วไป ไม่สามารถใช้แทนคำแนะนำของแพทย์ หากมีอาการผิดปกติควรปรึกษาแพทย์</div></div>' +
+        '</article>' +
+        '<div class="card">' + HP.sectionTitle('บทความที่เกี่ยวข้อง', 'var(--warning-40)') +
+          related.map(function (r) {
+            return '<a class="hp-news-row" href="article.html?id=' + r.id + '">' +
+              '<span class="hp-icon tone-' + r.tone + '"><span class="material-symbols-outlined">' + r.icon + '</span></span>' +
+              '<div class="hp-visit-body"><span class="hp-visit-title">' + e(r.title) + '</span><span class="hp-muted">' + e(r.source) + ' · ' + HP.dateShort(r.date) + '</span></div></a>';
+          }).join('') +
+        '</div>';
+      HP.mountWelcome('บทความสุขภาพ', n.category + ' · ' + n.source);
+    })();
+  </script>
+</body>
+</html>

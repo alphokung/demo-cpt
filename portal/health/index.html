@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สุขภาพของฉัน — ทางรัฐ</title>
+  <meta name="description" content="Health Portal รวมข้อมูลสุขภาพของคุณไว้ในที่เดียว — สิทธิการรักษา ประวัติสุขภาพ ใบรับรองแพทย์ ข่าวสุขภาพ และบริการที่เกี่ยวข้อง">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:image" content="../../_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="../../dashboard-with-consent.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">health_and_safety</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app">
+
+        <div class="ctx-card hp-welcome">
+          <div class="ctx-card__deco ctx-card__deco--top"></div>
+          <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+          <div class="ctx-card__greeting mb-0">
+            <p id="greet" class="ctx-card__greeting-label">สวัสดีตอนเช้า</p>
+            <p id="name" class="ctx-card__greeting-name"></p>
+            <div class="hp-welcome-sub">ยินดีต้อนรับสู่ Health Portal รวมข้อมูลสุขภาพของคุณ ครบในที่เดียว</div>
+          </div>
+          
+        </div>
+
+        <div id="allergy-banner"></div>
+
+        <!-- เมนูหลัก 5 หมวด -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">บริการข้อมูลสุขภาพ</h3>
+            </div>
+          </div>
+          <nav class="hp-menu" aria-label="เมนู Health Portal">
+            <a class="hp-tile" href="rights.html">
+              <span class="hp-icon tone-primary"><span class="material-symbols-outlined">health_and_safety</span></span>
+              <span class="hp-tile-title">สิทธิการรักษาพยาบาล</span>
+              <span class="hp-tile-desc">สิทธิที่คุณมี และสิทธิประโยชน์ที่ได้รับ</span>
+            </a>
+            <a class="hp-tile" href="records.html">
+              <span class="hp-icon tone-secondary"><span class="material-symbols-outlined">clinical_notes</span></span>
+              <span class="hp-tile-title">ประวัติสุขภาพ</span>
+              <span class="hp-tile-desc">ประวัติการรักษา โรคประจำตัว แพ้ยา วัคซีน</span>
+            </a>
+            <a class="hp-tile" href="certificates.html">
+              <span class="hp-icon tone-info"><span class="material-symbols-outlined">description</span></span>
+              <span class="hp-tile-title">ใบรับรองแพทย์</span>
+              <span class="hp-tile-desc">ดูรายละเอียดและดาวน์โหลด PDF</span>
+            </a>
+            <a class="hp-tile" href="news.html">
+              <span class="hp-icon tone-warning"><span class="material-symbols-outlined">newspaper</span></span>
+              <span class="hp-tile-title">ข่าวสุขภาพสำหรับคุณ</span>
+              <span class="hp-tile-desc">บทความที่เกี่ยวข้องกับสุขภาพของคุณ</span>
+            </a>
+            <a class="hp-tile" href="services.html">
+              <span class="hp-icon tone-positive"><span class="material-symbols-outlined">video_call</span></span>
+              <span class="hp-tile-title">บริการสุขภาพแนะนำ</span>
+              <span class="hp-tile-desc">ปรึกษาแพทย์ทางไกล และ PHR</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- สิทธิการรักษา -->
+        <div class="card" id="right-card"></div>
+
+        <!-- สรุปสุขภาพ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+              <h3 class="section-title">สรุปข้อมูลสุขภาพ</h3>
+            </div>
+            <a class="hp-link" href="records.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+          </div>
+          <div class="hp-summary" id="summary"></div>
+          <div id="appointment" style="margin-top: var(--spacing-lg);"></div>
+        </div>
+
+        <div class="hp-grid-2">
+          <!-- ประวัติการรักษาล่าสุด -->
+          <div class="card">
+            <div class="hp-section-head">
+              <div class="section-title-container">
+                <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+                <h3 class="section-title">การรักษาล่าสุด</h3>
+              </div>
+              <a class="hp-link" href="records.html#visits">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+            </div>
+            <div class="hp-stack" id="recent-visits"></div>
+          </div>
+
+          <!-- ใบรับรองแพทย์ -->
+          <div class="card">
+            <div class="hp-section-head">
+              <div class="section-title-container">
+                <div class="section-bar" style="background-color: var(--info-40);"></div>
+                <h3 class="section-title">ใบรับรองแพทย์ล่าสุด</h3>
+              </div>
+              <a class="hp-link" href="certificates.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+            </div>
+            <div class="hp-stack" id="recent-certs"></div>
+          </div>
+        </div>
+
+        <!-- ข่าวสุขภาพ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--warning-40);"></div>
+              <h3 class="section-title">ข่าวสุขภาพสำหรับคุณ</h3>
+            </div>
+            <a class="hp-link" href="news.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+          </div>
+          <div id="news"></div>
+        </div>
+
+        <!-- บริการแนะนำ -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">บริการสุขภาพแนะนำ</h3>
+            </div>
+            <a class="hp-link" href="services.html">ดูทั้งหมด <span class="material-symbols-outlined">chevron_right</span></a>
+          </div>
+          <div class="hp-stack" id="services"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก สปสช. · สำนักงานประกันสังคม · กรมบัญชีกลาง · Health Link · กระทรวงสาธารณสุข<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="../../alert.js"></script>
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, u = H.user, hl = H.healthLink, e = HP.esc;
+      var right = HP.currentRight();
+
+      document.getElementById('name').textContent = 'คุณ' + u.fullName.replace(/^(นางสาว|นาย|นาง)/, '');
+
+      // ─── แจ้งเตือนแพ้ยา ───
+      if (hl.allergies.length) {
+        document.getElementById('allergy-banner').innerHTML =
+          '<a href="records.html#allergy" class="status-banner expired" style="text-decoration:none">' +
+            '<span class="material-symbols-outlined">medication</span>' +
+            '<div class="status-banner-text">' +
+              '<p class="status-banner-title">คุณมีประวัติแพ้ยา ' + hl.allergies.length + ' รายการ</p>' +
+              '<p class="status-banner-subtitle">' + hl.allergies.map(function (a) { return e(a.drug); }).join(', ') + ' — แจ้งแพทย์และเภสัชกรทุกครั้งที่รับบริการ</p>' +
+            '</div>' +
+          '</a>';
+      }
+
+      // ─── สิทธิการรักษา ───
+      document.getElementById('right-card').innerHTML =
+        '<div class="hp-section-head">' + HP.sectionTitle('สิทธิสุขภาพของคุณ') +
+          '<a class="hp-link" href="rights.html">รายละเอียดสิทธิ <span class="material-symbols-outlined">chevron_right</span></a></div>' +
+        '<div class="hp-right-hero">' +
+          '<span class="hp-icon hp-icon--lg tone-' + right.tone + '"><span class="material-symbols-outlined">' + right.icon + '</span></span>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div class="hp-row"><span class="tag tag--success tag--sm tag--dot">ใช้สิทธิได้</span><span class="tag tag--sm">' + e(right.code) + '</span></div>' +
+            '<p class="hp-right-name" style="margin-top:var(--spacing-xs)">' + e(right.name) + '</p>' +
+            '<p class="hp-right-summary">' + e(right.summary) + '</p>' +
+            '<p class="hp-muted" style="margin-top:var(--spacing-xs)">' + e(right.unit) + '</p>' +
+          '</div>' +
+        '</div>';
+
+      // ─── สรุปสุขภาพ ───
+      var last = hl.visits[0];
+      function stat(href, icon, label, value, sub) {
+        return '<a class="hp-stat" href="' + href + '"><span class="hp-stat-label"><span class="material-symbols-outlined">' + icon + '</span>' + label + '</span>' +
+          '<span class="hp-stat-value">' + value + '</span><span class="hp-stat-sub">' + sub + '</span></a>';
+      }
+      document.getElementById('summary').innerHTML =
+        stat('visit.html?id=' + last.id, 'monitor_heart', 'ความดันล่าสุด', last.vitals.bp, 'mmHg · ' + HP.dateShort(last.date)) +
+        stat('records.html#chronic', 'vital_signs', 'โรคประจำตัว', hl.chronic.length + ' โรค', hl.chronic.map(function (c) { return c.name; }).join(', ')) +
+        stat('records.html#allergy', 'medication', 'แพ้ยา', hl.allergies.length + ' รายการ', hl.allergies.map(function (a) { return a.drug; }).join(', ')) +
+        stat('records.html#vaccine', 'vaccines', 'วัคซีนล่าสุด', HP.dateShort(hl.vaccines[0].date), e(hl.vaccines[0].name.split(' (')[0]));
+
+      var appt = hl.visits.filter(function (v) { return v.nextAppointment && HP.daysUntil(v.nextAppointment) >= 0; })[0];
+      if (appt) {
+        document.getElementById('appointment').innerHTML =
+          '<div class="hp-notice"><span class="material-symbols-outlined">event</span><div>' +
+          '<strong>นัดหมายครั้งถัดไป: ' + HP.dateLong(appt.nextAppointment) + ' เวลา ' + HP.time(appt.nextAppointment) + '</strong><br>' +
+          e(appt.clinic) + ' · ' + e(appt.hospital) + ' (อีก ' + HP.daysUntil(appt.nextAppointment) + ' วัน)</div></div>';
+      }
+
+      // ─── การรักษาล่าสุด ───
+      document.getElementById('recent-visits').innerHTML = hl.visits.slice(0, 3).map(function (v) {
+        var p = HP.dateParts(v.date);
+        return '<a class="hp-visit" href="visit.html?id=' + v.id + '">' +
+          '<div class="hp-date-box"><div class="hp-date-day">' + p.day + '</div><div class="hp-date-mon">' + p.mon + '</div><div class="hp-date-yr">' + p.yr + '</div></div>' +
+          '<div class="hp-visit-body"><span class="tag tag--info tag--sm" style="align-self:flex-start">' + e(v.patientType) + '</span>' +
+          '<span class="hp-visit-title">' + e(v.clinic) + '</span><span class="hp-visit-sub">' + e(v.hospital) + '</span></div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('');
+
+      // ─── ใบรับรองแพทย์ ───
+      document.getElementById('recent-certs').innerHTML = H.certificates.slice(0, 3).map(function (c) {
+        var st = HP.certStatus(c);
+        return '<a class="hp-visit" href="certificate.html?id=' + c.id + '">' +
+          '<span class="hp-icon tone-info"><span class="material-symbols-outlined">description</span></span>' +
+          '<div class="hp-visit-body"><span class="tag ' + st.tag + ' tag--sm tag--dot" style="align-self:flex-start">' + st.label + '</span>' +
+          '<span class="hp-visit-title">' + e(c.title) + '</span><span class="hp-visit-sub">' + e(c.hospital) + ' · ออก ' + HP.dateShort(c.issued) + '</span></div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('');
+
+      // ─── ข่าว ───
+      document.getElementById('news').innerHTML = H.news.slice(0, 3).map(function (n) {
+        return '<a class="hp-news-row" href="article.html?id=' + n.id + '">' +
+          '<span class="hp-icon tone-' + n.tone + '"><span class="material-symbols-outlined">' + n.icon + '</span></span>' +
+          '<div class="hp-visit-body"><span class="hp-visit-title">' + e(n.title) + '</span>' +
+          '<span class="hp-reason"><span class="material-symbols-outlined">person_check</span>' + e(n.reason) + '</span></div></a>';
+      }).join('');
+
+      // ─── บริการแนะนำ ───
+      document.getElementById('services').innerHTML = H.services.map(function (s, i) {
+        return '<button type="button" class="hp-visit" style="text-align:left;cursor:pointer;font:inherit;width:100%" data-svc="' + i + '">' +
+          HP.svcIcon(s) +
+          '<div class="hp-visit-body"><span class="hp-visit-title">' + e(s.name) + '</span><span class="hp-visit-sub">' + e(s.agency) + '</span></div>' +
+          '<span class="material-symbols-outlined chevron">open_in_new</span></button>';
+      }).join('');
+      document.querySelectorAll('[data-svc]').forEach(function (b) {
+        b.addEventListener('click', function () { HP.openExternal(H.services[+b.dataset.svc]); });
+      });
+    })();
+  </script>
+</body>
+</html>

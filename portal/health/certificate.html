@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดใบรับรองแพทย์ — ทางรัฐ</title>
+  <meta name="description" content="รายละเอียดใบรับรองแพทย์ดิจิทัล พร้อมข้อมูลเอกสาร (Metadata) และดาวน์โหลดเป็น PDF">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="health.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="certificates.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">description</span>
+          </div>
+          <p class="top-nav-bar-title">Health Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="cert"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- html2pdf แปลง DOM → PDF ฝั่ง browser (รองรับฟอนต์ไทยเพราะ render ผ่าน canvas) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="health-data.js"></script>
+  <script src="health.js"></script>
+  <script>
+    (function () {
+      var H = HEALTH, u = H.user, e = HP.esc;
+      var c = H.certificates.filter(function (x) { return x.id === HP.qs('id'); })[0] || H.certificates[0];
+      var st = HP.certStatus(c);
+      var root = document.getElementById('cert');
+
+      /* ─── Status banner ─── */
+      var bannerText = {
+        valid:    ['ใบรับรองแพทย์ยังมีผลใช้งาน', 'หมดอายุ ' + (c.expires ? HP.dateLong(c.expires) + ' (อีก ' + st.days + ' วัน)' : '')],
+        expiring: ['ใบรับรองแพทย์ใกล้หมดอายุ', 'หมดอายุ ' + (c.expires ? HP.dateLong(c.expires) + ' (อีก ' + st.days + ' วัน)' : '')],
+        expired:  ['ใบรับรองแพทย์หมดอายุแล้ว', 'หมดอายุเมื่อ ' + (c.expires ? HP.dateLong(c.expires) : '')],
+        none:     ['ใบรับรองแพทย์ฉบับนี้ไม่ระบุวันหมดอายุ', 'ใช้ประกอบการ' + c.purpose.replace(/^ประกอบการ/, '')]
+      }[st.key];
+      var bannerIcon = { valid: 'check_circle', expiring: 'schedule', expired: 'error', none: 'info' }[st.key];
+
+      var html =
+        '<div class="status-banner ' + st.banner + '"><span class="material-symbols-outlined">' + bannerIcon + '</span>' +
+        '<div class="status-banner-text"><p class="status-banner-title">' + bannerText[0] + '</p><p class="status-banner-subtitle">' + bannerText[1] + '</p></div></div>';
+
+      /* ─── Metadata ─── */
+      html += '<div class="hp-grid-2">' +
+        '<div class="card">' + HP.sectionTitle('รายละเอียดใบรับรองแพทย์') +
+          '<div class="details-list">' +
+            HP.detailsItem('ประเภทเอกสาร', e(c.type)) +
+            HP.detailsItem('วัตถุประสงค์', e(c.purpose)) +
+            HP.detailsItem('ชื่อผู้รับการตรวจ', e(u.fullName)) +
+            HP.detailsItem('เลขประจำตัวประชาชน', e(u.pidMasked)) +
+            HP.detailsItem('วันที่ตรวจ', HP.dateLong(c.examDate)) +
+            HP.detailsItem('ความเห็นแพทย์', e(c.result)) +
+            '<div class="details-item"><span class="details-label">ใช้ได้กับ</span><span class="details-value"><div class="tag-list">' +
+              c.usableFor.map(function (x) { return '<span class="tag">' + e(x) + '</span>'; }).join('') + '</div></span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="card">' + HP.sectionTitle('ข้อมูลเอกสาร (Metadata)', 'var(--info-40)') +
+          '<div class="details-list">' +
+            HP.detailsItem('เลขที่เอกสาร', e(c.id)) +
+            HP.detailsItem('สถานพยาบาลผู้ออก', e(c.hospital) + ' (รหัส ' + e(c.hcode) + ')') +
+            HP.detailsItem('แพทย์ผู้ออกใบรับรอง', e(c.doctor) + ' · ใบอนุญาต ' + e(c.license)) +
+            HP.detailsItem('วันที่ออกเอกสาร', HP.dateLong(c.issued)) +
+            HP.detailsItem('วันหมดอายุ', c.expires ? HP.dateLong(c.expires) : 'ไม่ระบุ', st.key === 'expired' ? 'details-value-warning' : '') +
+            HP.detailsItem('สถานะ', '<span class="tag ' + st.tag + ' tag--sm tag--dot">' + st.label + '</span>') +
+            HP.detailsItem('การลงนาม', e(c.signature)) +
+            HP.detailsItem('รูปแบบไฟล์', 'PDF · ' + e(c.fileSize)) +
+            HP.detailsItem('แหล่งข้อมูล', e(c.source)) +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+      /* ─── Document preview (ส่วนนี้คือสิ่งที่ถูกแปลงเป็น PDF) ─── */
+      html += '<div class="card">' + HP.sectionTitle('ตัวอย่างเอกสาร', 'var(--secondary-40-main)') +
+        '<div class="hp-doc-wrap"><div class="hp-doc" id="doc">' +
+          '<div class="hp-doc-head"><div><div class="hp-doc-hosp">' + e(c.hospital) + '</div><div style="font-size:12px;color:#555">รหัสสถานพยาบาล ' + e(c.hcode) + '</div></div>' +
+            '<div class="hp-doc-ref">เลขที่ ' + e(c.id) + '<br>ออกให้ ณ วันที่ ' + HP.dateLong(c.issued) + '</div></div>' +
+          '<div class="hp-doc-title">' + e(c.title) + '</div>' +
+          '<p>ข้าพเจ้า ' + e(c.doctor) + ' ผู้ประกอบวิชาชีพเวชกรรม ใบอนุญาตเลขที่ ' + e(c.license) + ' ได้ทำการตรวจร่างกาย</p>' +
+          '<p><strong>' + e(u.fullName) + '</strong> เลขประจำตัวประชาชน ' + e(u.pidMasked) + ' เมื่อวันที่ ' + HP.dateLong(c.examDate) + ' มีรายละเอียดดังนี้</p>' +
+          '<table class="hp-doc-table">' +
+            '<tr><td>น้ำหนัก / ส่วนสูง</td><td>' + c.vitals.weight + ' กก. / ' + c.vitals.height + ' ซม.</td></tr>' +
+            '<tr><td>ความดันโลหิต / ชีพจร</td><td>' + e(c.vitals.bp) + ' mmHg / ' + c.vitals.pulse + ' ครั้งต่อนาที</td></tr>' +
+            '<tr><td>ความเห็นของแพทย์</td><td>' + e(c.result) + '</td></tr>' +
+            '<tr><td>วัตถุประสงค์</td><td>' + e(c.purpose) + '</td></tr>' +
+            '<tr><td>ใบรับรองนี้ใช้ได้ถึง</td><td>' + (c.expires ? HP.dateLong(c.expires) : 'ไม่ระบุ') + '</td></tr>' +
+          '</table>' +
+          '<div class="hp-doc-sign">' +
+            '<div class="hp-doc-qr">QR<br>ตรวจสอบ<br>เอกสาร</div>' +
+            '<div class="hp-doc-signer"><div class="line">' + e(c.doctor) + '</div>(' + e(c.doctor) + ')<br>แพทย์ผู้ตรวจ</div>' +
+          '</div>' +
+          '<div class="hp-doc-foot">' + e(c.signature) + ' · ' + e(c.source) + '<br>ดาวน์โหลดจากแอปทางรัฐ — ตรวจสอบความถูกต้องได้โดยสแกน QR Code</div>' +
+        '</div></div>' +
+        '<div class="hp-cert-actions" style="margin-top:var(--spacing-xl)">' +
+          '<button class="btn btn-primary" id="btn-pdf"><span class="material-symbols-outlined">download</span>ดาวน์โหลด PDF</button>' +
+          '<button class="btn btn-tertiary-outline" id="btn-print"><span class="material-symbols-outlined">print</span>พิมพ์</button>' +
+        '</div>' +
+      '</div>';
+
+      html += '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
+        'ข้อมูลจาก' + e(c.source) + '<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+
+      root.innerHTML = html;
+
+      /* ─── Download PDF ─── */
+      var btn = document.getElementById('btn-pdf');
+      btn.addEventListener('click', function () {
+        var fileName = c.id + '.pdf';
+        if (typeof html2pdf === 'undefined') {
+          HP.toast('ไม่สามารถโหลดตัวสร้าง PDF ได้ — ใช้ "พิมพ์" แล้วเลือกบันทึกเป็น PDF', 'warning', 'warning');
+          return;
+        }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span>กำลังสร้าง PDF…';
+        // render สำเนาเอกสารที่ตำแหน่ง 0,0 ความกว้างคงที่ — กันภาพเลื่อน/ถูกตัดจาก scroll และ margin:auto
+        var stage = document.createElement('div');
+        stage.style.cssText = 'position:fixed;left:0;top:0;width:720px;z-index:-1;pointer-events:none;';
+        var clone = document.getElementById('doc').cloneNode(true);
+        clone.removeAttribute('id');
+        clone.style.cssText = 'margin:0;max-width:none;width:720px;border:none;border-radius:0;padding-bottom:64px;';
+        stage.appendChild(clone);
+        document.body.appendChild(stage);
+        html2pdf().set({
+          margin: [10, 10, 10, 10],
+          filename: fileName,
+          image: { type: 'jpeg', quality: 0.96 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(clone).save().then(function () {
+          HP.toast('ดาวน์โหลด ' + fileName + ' เรียบร้อยแล้ว', 'success', 'check_circle');
+        }).catch(function () {
+          HP.toast('สร้าง PDF ไม่สำเร็จ กรุณาลองใหม่', 'danger', 'error');
+        }).then(function () {
+          stage.remove();
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-symbols-outlined">download</span>ดาวน์โหลด PDF';
+        });
+      });
+
+      document.getElementById('btn-print').addEventListener('click', function () {
+        var w = window.open('', '_blank');
+        if (!w) return window.print();
+        w.document.write('<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>' + e(c.id) + '</title>' +
+          '<link rel="stylesheet" href="' + new URL('../../styles.css', location.href) + '"><link rel="stylesheet" href="' + new URL('health.css', location.href) + '">' +
+          '<style>body{background:#fff;margin:0;padding:24px}.hp-doc{border:none}</style></head><body>' +
+          document.getElementById('doc').outerHTML + '<script>window.onload=function(){setTimeout(function(){print()},400)}<\/script></body></html>');
+        w.document.close();
+      });
+      HP.mountWelcome('รายละเอียดใบรับรองแพทย์', c.title + ' · ' + c.hospital);
+    })();
+  </script>
+</body>
+</html>
