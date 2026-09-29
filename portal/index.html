@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ข้อมูลเฉพาะคุณ — ทางรัฐ</title>
-  <meta name="description" content="หน้ารวมข้อมูลเฉพาะคุณ — สภาพอากาศ เกร็ดความรู้ แจ้งเตือนที่ควรรู้ และสรุปข้อมูลสำคัญจาก Health, Crime, Document Wallet, Money และ Emergency Portal">
+  <meta name="description" content="หน้ารวมข้อมูลเฉพาะคุณ — สภาพอากาศ เกร็ดความรู้ บริการแนะนำ และสรุปข้อมูลสำคัญจาก Health, Crime, Document Wallet, Money และ Emergency Portal">
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
   <meta property="og:type" content="article">
   <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
@@ -87,19 +87,16 @@
           </div>
         </div>
 
-        <!-- แจ้งเตือนที่ควรรู้ (รวมจากทุก Portal) -->
+        <!-- บริการแนะนำ (รูปแบบ service-item เดียวกับหน้า "บริการอื่นๆ" ของแต่ละ Portal) -->
         <div class="card">
           <div class="ph-section-head">
             <div class="section-title-container card-section__title-container">
               <div class="section-bar card-section__bar--primary"></div>
-              <h3 class="section-title card-section__heading">แจ้งเตือนที่ควรรู้</h3>
+              <h3 class="section-title card-section__heading">บริการแนะนำสำหรับคุณ</h3>
             </div>
-            <span class="ph-count" id="notice-count" hidden></span>
           </div>
-          <p class="ph-section-note">รวมเรื่องที่ต้องดำเนินการจากทุกบริการ เรียงตามความเร่งด่วน</p>
-          <div class="ph-stats" id="stats"></div>
-          <div class="notice-list ph-notices" id="notices"></div>
-          <button type="button" class="btn btn-tertiary-outline ph-more" id="notice-more" hidden></button>
+          <p class="ph-section-note">บริการที่เกี่ยวข้องกับข้อมูลของคุณในตอนนี้</p>
+          <div class="ph-services" id="services"></div>
         </div>
 
         <!-- สรุปจากแต่ละ Portal -->
@@ -321,96 +318,33 @@
       showTip(0); timer = setInterval(nextTip, 15000);
 
       /* ============================================================
-         4. แจ้งเตือนที่ควรรู้ — รวมจากทุก Portal (danger → warning → info)
+         4. บริการแนะนำ — 6 บริการ เลือกตามสถานะข้อมูลของผู้ใช้
          ============================================================ */
-      var SRC = {
-        emergency: ['Emergency', 'crisis_alert'], crime: ['Crime', 'local_police'], money: ['Money', 'account_balance_wallet'],
-        wallet: ['กระเป๋าเอกสาร', 'wallet'], health: ['Health', 'health_and_safety']
-      };
-      var RANK = { danger: 0, warning: 1, info: 2 };
-      var notices = [];
-      function add(src, tone, icon, title, sub, href) { notices.push({ src: src, tone: tone, icon: icon, title: title, sub: sub, href: href }); }
-
-      // Emergency — แจ้งเตือนภัยที่ยังมีผลในพื้นที่ของคุณ
-      myAlerts.forEach(function (a) {
-        var sev = EP.severity(a.severity);
-        add('emergency', sev.tone, EP.category(a.category).icon, a.title, sev.label + ' · ' + a.agency + ' · ถึง ' + EP.dateShort(a.expiresAt) + ' ' + EP.time(a.expiresAt), 'emergency/alert.html?id=' + a.id);
-      });
-      // Crime — ใบสั่งค้างชำระ
-      CP.unpaidTickets().forEach(function (t) {
-        var st = CP.ticketStatus(t);
-        add('crime', st.key === 'overdue' ? 'danger' : 'warning', 'receipt_long',
-          (st.key === 'overdue' ? 'ใบสั่งเกินกำหนดชำระ' : 'ใบสั่งรอชำระ') + ' ' + baht(t.fine),
-          t.violation + ' · ' + (st.key === 'overdue' ? 'ครบกำหนด ' : 'ชำระภายใน ') + CP.dateShort(t.due), 'crime/tickets.html#' + t.id);
-      });
-      // Money — ค่าน้ำค่าไฟ / ภาษีที่ดิน / เครดิตบูโร
-      MP.unpaidBills().forEach(function (x) {
-        var st = MP.billStatus(x.bill), k = MP.kind(x.meter.kind);
-        if (st.key === 'overdue' || st.days <= 7)
-          add('money', st.key === 'overdue' ? 'danger' : 'warning', k.icon, k.label + ' ' + baht(x.bill.amount) + ' — ' + st.label,
-            MP.property(x.meter.property).name + ' · ' + x.meter.providerShort, 'money/utilities.html');
-      });
-      MP.landTaxDue().forEach(function (t) {
-        add('money', 'danger', 'real_estate_agent', 'ภาษีที่ดินค้างชำระ ' + baht(MP.landTaxTotal(t)),
-          MP.property(t.property).name + (t.noticeDue ? ' · ชำระภายใน ' + MP.dateShort(t.noticeDue) + ' ก่อนถูกเพิ่มเบี้ยปรับ' : ''), 'money/land-tax.html');
-      });
-      MONEY.credit.accounts.filter(function (a) { return a.status !== 'normal'; }).forEach(function (a) {
-        add('money', 'warning', 'credit_score', a.type + ' ' + a.lender + ' ค้างชำระเกิน 30 วัน', 'ส่งผลต่อประวัติเครดิต — ชำระเพื่อกลับสู่สถานะปกติ', 'money/index.html');
-      });
-      // Document Wallet — บัตร/เอกสารใกล้หมดอายุ
-      DW.cards().forEach(function (c) {
-        var st = DW.status(c);
-        if (st.key === 'expiring' || st.key === 'expired')
-          add('wallet', st.key === 'expired' || st.days <= 30 ? 'danger' : 'warning', 'badge',
-            c.name + (st.key === 'expired' ? 'หมดอายุแล้ว' : 'ใกล้หมดอายุ'),
-            (st.key === 'expired' ? 'หมดอายุ ' : 'เหลือ ' + st.days + ' วัน · ครบกำหนด ') + DW.dateShort(c.expires), 'wallet/card.html?id=' + c.id);
-      });
-      DW.docs().forEach(function (d) {
-        var st = DW.status(d);
-        if (st.key === 'expiring') add('wallet', 'warning', 'description', d.title + ' ใกล้หมดอายุ', 'ใช้ได้อีก ' + st.days + ' วัน · ยื่นให้หน่วยงานก่อน ' + DW.dateShort(d.expires), 'wallet/document.html?id=' + d.id);
-      });
-      DW.requests().filter(function (r) { return r.status === 'done'; }).forEach(function (r) {
-        add('wallet', 'info', 'task', 'ได้รับเอกสารแล้ว: ' + r.title, 'คำขอ ' + r.id + ' · เก็บเข้ากระเป๋าเรียบร้อย', 'wallet/document.html?id=' + r.docId);
-      });
-      // Health — ใบรับรองแพทย์ใกล้หมดอายุ
-      HEALTH.certificates.forEach(function (c) {
-        var st = HP.certStatus(c);
-        if (st.key === 'expiring') add('health', 'warning', 'medical_information', c.title + ' ใกล้หมดอายุ', 'เหลือ ' + st.days + ' วัน · ' + c.hospital, 'health/certificate.html?id=' + c.id);
-      });
-
-      notices.sort(function (a, b) { return RANK[a.tone] - RANK[b.tone]; });
-      var LIMIT = 5, expanded = false;
-      function renderNotices() {
-        var list = expanded ? notices : notices.slice(0, LIMIT);
-        document.getElementById('notices').innerHTML = list.length ? list.map(function (n) {
-          var s = SRC[n.src];
-          return '<a class="notice-item notice-item--' + n.tone + '" href="' + n.href + '">' +
-            '<div class="notice-item__icon-wrap"><span class="material-symbols-outlined">' + n.icon + '</span></div>' +
-            '<div class="notice-item__body"><span class="ph-notice-src"><span class="material-symbols-outlined">' + s[1] + '</span>' + s[0] + '</span>' +
-              '<p class="notice-item__title">' + e(n.title) + '</p><p class="notice-item__sub">' + e(n.sub) + '</p></div>' +
-            '<span class="material-symbols-outlined notice-item__chevron">chevron_right</span></a>';
-        }).join('') : '<div class="ph-empty"><span class="material-symbols-outlined">task_alt</span>ไม่มีเรื่องที่ต้องดำเนินการ</div>';
-        var more = document.getElementById('notice-more');
-        more.hidden = notices.length <= LIMIT;
-        more.textContent = expanded ? 'แสดงน้อยลง' : 'ดูอีก ' + (notices.length - LIMIT) + ' รายการ';
-        more.setAttribute('aria-expanded', expanded);
-      }
-      document.getElementById('notice-more').onclick = function () { expanded = !expanded; renderNotices(); };
-      renderNotices();
-      var urgent = notices.filter(function (n) { return n.tone === 'danger'; }).length;
-      if (urgent) { var nc = document.getElementById('notice-count'); nc.textContent = urgent; nc.hidden = false; nc.title = 'เรื่องเร่งด่วน ' + urgent + ' รายการ'; }
-
-      // ยอดที่ต้องชำระรวม (ใบสั่ง + ค่าน้ำไฟ + ภาษีที่ดิน)
       var tickets = CP.unpaidTickets(), bills = MP.unpaidBills(), land = MP.landTaxDue();
-      var totalDue = sum(tickets, function (t) { return t.fine; }) + sum(bills, function (x) { return x.bill.amount; }) + sum(land, MP.landTaxTotal);
-      function stat(cls, icon, label, value, unit) {
-        return '<div class="ph-stat ' + cls + '"><span class="ph-stat-label"><span class="material-symbols-outlined">' + icon + '</span>' + label + '</span>' +
-          '<span class="ph-stat-value">' + value + (unit ? '<small>' + unit + '</small>' : '') + '</span></div>';
-      }
-      document.getElementById('stats').innerHTML =
-        stat(urgent ? 'ph-stat--danger' : '', 'priority_high', 'เร่งด่วน', urgent, 'เรื่อง') +
-        stat(totalDue ? 'ph-stat--warning' : '', 'payments', 'ยอดรอชำระ', Math.round(totalDue).toLocaleString('th-TH'), 'บาท') +
-        stat(myAlerts.length ? 'ph-stat--danger' : '', 'crisis_alert', 'เตือนภัย', myAlerts.length, 'ประกาศ');
+      var SERVICES = [
+        { href: 'crime/tickets.html', icon: 'receipt_long', tone: 'secondary', cat: 'Crime Portal', name: 'ชำระค่าปรับใบสั่งจราจร',
+          desc: tickets.length ? 'คุณมีใบสั่งค้างชำระ ' + tickets.length + ' ใบ ชำระออนไลน์ได้ทันทีผ่านพร้อมเพย์' : 'ตรวจสอบและชำระค่าปรับใบสั่งออนไลน์ผ่านพร้อมเพย์' },
+        { href: 'money/utilities.html', icon: 'bolt', tone: 'warning', cat: 'Money Portal', name: 'ชำระค่าน้ำ ค่าไฟ',
+          desc: bills.length ? 'บิลรอชำระ ' + bills.length + ' รายการ ดูยอดและชำระได้ในที่เดียว' : 'ดูยอดค่าน้ำค่าไฟทุกมิเตอร์และชำระได้ในที่เดียว' },
+        { href: 'wallet/request.html?type=loan', icon: 'account_balance', tone: 'info', cat: 'กระเป๋าเอกสาร', name: 'ขอเอกสารประกอบการขอสินเชื่อ',
+          desc: 'รวมทะเบียนบ้าน ข้อมูลรายได้ และการยื่นภาษีเป็นชุดเดียว ได้ภายใน 5 นาที' },
+        { href: 'health/rights.html', icon: 'health_and_safety', tone: 'primary', cat: 'Health Portal', name: 'ตรวจสอบสิทธิการรักษาพยาบาล',
+          desc: 'ดูสิทธิที่คุณมี หน่วยบริการประจำ และบริการตรวจสุขภาพที่เหมาะกับวัยของคุณ' },
+        { href: 'crime/scam-check.html', icon: 'phishing', tone: 'danger', cat: 'Crime Portal', name: 'ตรวจสอบเบอร์และบัญชีมิจฉาชีพ',
+          desc: 'เช็กเลขบัญชีหรือเบอร์โทรก่อนโอนเงิน ลดความเสี่ยงถูกหลอกลวงออนไลน์' },
+        { href: 'money/donations.html', icon: 'volunteer_activism', tone: 'positive', cat: 'Money Portal', name: 'ลดหย่อนภาษีจากการบริจาค',
+          desc: 'ดูยอดบริจาคผ่าน e-Donation ที่นำไปลดหย่อนภาษีได้ในปีนี้' }
+      ];
+      document.getElementById('services').innerHTML = SERVICES.map(function (s) {
+        return '<a class="list-item" href="' + s.href + '">' +
+          '<div class="list-icon"><span class="ph-icon tone-' + s.tone + '"><span class="material-symbols-outlined">' + s.icon + '</span></span></div>' +
+          '<div class="list-body">' +
+            '<p class="service-item__title">' + e(s.name) + '</p>' +
+            '<p class="service-item__desc">' + e(s.desc) + '</p>' +
+            '<span class="service-item__category">' + e(s.cat) + '</span>' +
+          '</div>' +
+          '<span class="material-symbols-outlined chevron">chevron_right</span></a>';
+      }).join('');
 
       /* ============================================================
          5. ภาพรวมจากแต่ละ Portal

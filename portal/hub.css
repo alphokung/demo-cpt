@@ -10,7 +10,6 @@
 .ph-section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); margin-bottom: var(--spacing-xs); }
 .ph-section-head .section-title-container { margin-bottom: 0; }
 .ph-section-note { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); margin: 0 0 var(--spacing-lg); }
-.ph-count { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--radius-full); background: var(--foreground-negative-default); color: #fff; font-size: var(--font-size-label-m); font-weight: var(--font-weight-700); }
 
 /* ─── Greeting card extras ─── */
 .ph-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); }
@@ -27,26 +26,11 @@
 }
 .dyk-card__link { cursor: pointer; }
 
-/* ─── Summary stats ─── */
-.ph-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-lg); }
-.ph-stat { padding: var(--spacing-md) var(--spacing-lg); border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter); background: var(--canvas-white); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.ph-stat-label { font-size: var(--font-size-label-m); color: var(--foreground-neutral-lighter); display: flex; align-items: center; gap: var(--spacing-xxs); }
-.ph-stat-label .material-symbols-outlined { font-size: 16px; }
-.ph-stat-value { font-size: var(--font-size-title-l); font-weight: var(--font-weight-700); line-height: 1.25; color: var(--foreground-neutral-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ph-stat-value small { font-size: var(--font-size-label-m); font-weight: var(--font-weight-500); color: var(--foreground-neutral-light); margin-left: 2px; }
-.ph-stat--danger .ph-stat-value { color: var(--foreground-negative-default); }
-.ph-stat--warning .ph-stat-value { color: var(--foreground-warning-dark, var(--foreground-warning-default)); }
-@media (max-width: 480px) { .ph-stats { gap: var(--spacing-sm); } .ph-stat { padding: var(--spacing-sm) var(--spacing-md); } .ph-stat-value { font-size: var(--font-size-title-m); } }
-
-/* ─── Notices (dashboard .notice-item, as links) ─── */
-.ph-notices .notice-item { text-decoration: none; color: inherit; transition: background-color .15s ease; }
-.ph-notices .notice-item:hover { background: var(--canvas-default); }
-.ph-notices .notice-item__icon-wrap .material-symbols-outlined { font-size: 20px; }
-.ph-notice-src { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: var(--font-weight-600); color: var(--foreground-neutral-light); margin-bottom: 2px; }
-.ph-notice-src .material-symbols-outlined { font-size: 14px; }
-.ph-more { margin-top: var(--spacing-md); }
-.ph-empty { text-align: center; padding: var(--spacing-2xl) var(--spacing-lg); color: var(--foreground-neutral-lighter); }
-.ph-empty .material-symbols-outlined { font-size: 40px; display: block; margin: 0 auto var(--spacing-xs); color: var(--foreground-positive-default); }
+/* ─── Recommended services (dashboard .list-item + .service-item__*) ─── */
+.ph-services { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-md); }
+@media (min-width: 768px) { .ph-services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ph-services .list-item { margin: 0; text-decoration: none; color: inherit; }
+.ph-services .chevron { color: var(--foreground-neutral-lighter); }
 
 /* ─── Portal summary cards ─── */
 .ph-portals { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-lg); }
