@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>การแจ้งเตือนเหตุฉุกเฉิน — ทางรัฐ</title>
+  <meta name="description" content="Emergency Portal ประวัติการแจ้งเตือนเหตุฉุกเฉินทั้งหมด — ภัยพิบัติ เหตุต่างๆ และสภาพอากาศจากกรมอุตุนิยมวิทยา กรองตามพื้นที่และกลุ่มเป้าหมาย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:image" content="../../_media/og-image.png">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="emergency.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="../../dashboard-with-consent.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">crisis_alert</span>
+          </div>
+          <p class="top-nav-bar-title">Emergency Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app">
+
+        <div class="ctx-card hp-welcome">
+          <div class="ctx-card__deco ctx-card__deco--top"></div>
+          <div class="ctx-card__deco ctx-card__deco--bottom"></div>
+          <div class="ctx-card__greeting mb-0">
+            <p class="ctx-card__greeting-label">สวัสดี</p>
+            <p id="name" class="ctx-card__greeting-name"></p>
+            <div class="hp-welcome-sub">ประวัติการแจ้งเตือนเหตุฉุกเฉินทั้งหมด ทั้งภัยพิบัติ เหตุต่างๆ และสภาพอากาศ ดูย้อนหลังได้ทุกพื้นที่</div>
+          </div>
+        </div>
+
+        <!-- ตำแหน่งและโปรไฟล์ที่ใช้กรอง -->
+        <div class="card">
+          <div class="ep-where">
+            <span class="hp-icon hp-icon--lg tone-primary"><span class="material-symbols-outlined">my_location</span></span>
+            <div class="ep-where-body">
+              <span class="ep-where-label">พื้นที่ปัจจุบันของคุณ</span>
+              <span class="ep-where-value" id="where"></span>
+              <span class="ep-where-sub" id="who"></span>
+            </div>
+          </div>
+          <div class="hp-demo-switch ep-demo">
+            <span class="hp-demo-switch-label"><span class="material-symbols-outlined">science</span>จำลองผู้ใช้ (สำหรับสาธิต) — ระบบจริงใช้ตำแหน่งจากโทรศัพท์และข้อมูลทะเบียนราษฎร</span>
+            <div class="ep-demo-row">
+              <select class="cp-select" id="demo-location" aria-label="จำลองพื้นที่ปัจจุบัน"></select>
+              <select class="cp-select" id="demo-persona" aria-label="จำลองเพศและอายุ"></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- กำลังมีผลในพื้นที่ของคุณ -->
+        <div class="card" id="active-card" hidden>
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--danger-40);"></div>
+              <h3 class="section-title">กำลังมีผลในพื้นที่ของคุณ</h3>
+            </div>
+          </div>
+          <div class="hp-stack" id="active"></div>
+        </div>
+
+        <!-- สายด่วน -->
+        <div class="card">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--danger-40);"></div>
+              <h3 class="section-title">สายด่วนฉุกเฉิน</h3>
+            </div>
+          </div>
+          <div class="cp-hotlines" id="hotlines"></div>
+        </div>
+
+        <!-- ประวัติการแจ้งเตือน -->
+        <div class="card" id="history">
+          <div class="hp-section-head">
+            <div class="section-title-container">
+              <div class="section-bar" style="background-color: var(--primary-40);"></div>
+              <h3 class="section-title">ประวัติการแจ้งเตือน</h3>
+            </div>
+          </div>
+
+          <div class="ep-filters">
+            <div class="ep-filter-row">
+              <label class="ep-field">
+                <span class="ep-field-label">พื้นที่</span>
+                <select class="cp-select" id="f-area"></select>
+              </label>
+              <div class="toggle-item ep-toggle">
+                <div class="toggle-text">
+                  <div class="toggle-label">ตรงกับเพศและอายุของฉัน</div>
+                  <div class="toggle-desc" id="f-match-desc"></div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="f-match" aria-label="แสดงเฉพาะที่ตรงกับเพศและอายุของฉัน">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+            <label class="hp-search">
+              <span class="material-symbols-outlined">search</span>
+              <input type="search" id="f-q" placeholder="ค้นหา เช่น น้ำท่วม แผ่นดินไหว กรมอุตุนิยมวิทยา" aria-label="ค้นหาการแจ้งเตือน">
+            </label>
+            <div class="filter-row ep-chips" id="f-cat" role="group" aria-label="ประเภทการแจ้งเตือน"></div>
+            <div class="ep-applied">
+              <span class="hp-count" id="count" aria-live="polite"></span>
+              <button type="button" class="hp-link ep-reset" id="reset" hidden><span class="material-symbols-outlined">restart_alt</span>กลับไปค่าเริ่มต้น</button>
+            </div>
+          </div>
+
+          <div class="hp-stack" id="list"></div>
+        </div>
+
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">verified</span>
+            ข้อมูลจาก ระบบแจ้งเตือนภัยผ่านโทรศัพท์มือถือ (Cell Broadcast) · กรมป้องกันและบรรเทาสาธารณภัย · กรมอุตุนิยมวิทยา<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="emergency-data.js"></script>
+  <script src="emergency.js"></script>
+  <script>
+    (function () {
+      var E = EMERGENCY, e = EP.esc;
+      var $ = function (id) { return document.getElementById(id); };
+      var DEFAULTS = { area: 'current', match: true, cat: '', q: '' };
+      var user, state;
+
+      $('name').textContent = 'คุณ' + E.user.fullName.replace(/^(นางสาว|นาย|นาง)/, '');
+      $('hotlines').innerHTML = E.hotlines.map(EP.callBtn).join('');
+
+      /* ─── ตัวกรอง: อ่าน/เขียนผ่าน URL เพื่อให้กดย้อนกลับจากหน้ารายละเอียดแล้วค่ายังอยู่ ─── */
+      function readState() {
+        var p = new URLSearchParams(location.search);
+        return {
+          area: p.get('area') || DEFAULTS.area,
+          match: p.get('match') !== '0',
+          cat: p.get('cat') || '',
+          q: p.get('q') || ''
+        };
+      }
+      function writeState() {
+        var p = new URLSearchParams();
+        if (state.area !== DEFAULTS.area) p.set('area', state.area);
+        if (!state.match) p.set('match', '0');
+        if (state.cat) p.set('cat', state.cat);
+        if (state.q) p.set('q', state.q);
+        var s = p.toString();
+        try { history.replaceState(null, '', location.pathname + (s ? '?' + s : '') + location.hash); } catch (err) {}
+      }
+      function isDefault() {
+        return state.area === DEFAULTS.area && state.match === DEFAULTS.match && !state.cat && !state.q;
+      }
+
+      /* ─── จำลองผู้ใช้ ─── */
+      var demo = EP.demo();
+      $('demo-location').innerHTML = E.demoLocations.map(function (l, i) {
+        return '<option value="' + i + '">📍 ' + e(EP.locationLabel(l)) + '</option>';
+      }).join('');
+      $('demo-persona').innerHTML = E.demoPersonas.map(function (p) {
+        return '<option value="' + p.key + '">👤 ' + e(p.label) + '</option>';
+      }).join('');
+      function syncDemoSelects() {
+        var loc = user.location;
+        E.demoLocations.forEach(function (l, i) { if (l.province === loc.province && l.district === loc.district) $('demo-location').value = i; });
+        $('demo-persona').value = demo.persona || E.demoPersonas[0].key;
+      }
+      $('demo-location').onchange = function () { demo.location = E.demoLocations[this.value]; EP.saveDemo(demo); refreshUser(); };
+      $('demo-persona').onchange = function () { demo.persona = this.value; EP.saveDemo(demo); refreshUser(); };
+
+      function refreshUser() {
+        user = EP.user();
+        $('where').textContent = EP.locationLabel(user.location);
+        $('who').textContent = 'เพศ' + EP.genderLabel(user.gender) + ' · อายุ ' + EP.age(user) + ' ปี';
+        $('f-match-desc').textContent = 'เพศ' + EP.genderLabel(user.gender) + ' อายุ ' + EP.age(user) + ' ปี';
+        buildAreaOptions();
+        syncDemoSelects();
+        renderActive();
+        render();
+      }
+
+      /* ─── ตัวเลือกพื้นที่ ─── */
+      function buildAreaOptions() {
+        var provinces = [];
+        E.alerts.forEach(function (a) {
+          EP.provinces(a).forEach(function (p) { if (p !== '*' && provinces.indexOf(p) < 0) provinces.push(p); });
+        });
+        provinces.sort(function (a, b) { return a.localeCompare(b, 'th'); });
+        $('f-area').innerHTML =
+          '<option value="current">พื้นที่ปัจจุบัน (' + e(EP.locationLabel(user.location)) + ')</option>' +
+          '<option value="all">ทุกพื้นที่</option>' +
+          '<optgroup label="เลือกจังหวัด">' + provinces.map(function (p) { return '<option value="' + e(p) + '">' + e(p) + '</option>'; }).join('') + '</optgroup>';
+        $('f-area').value = state.area;
+        if ($('f-area').value !== state.area) { state.area = DEFAULTS.area; $('f-area').value = state.area; }
+      }
+
+      /* ─── กรอง ─── */
+      function passesBase(a) {
+        if (state.area === 'current' && !EP.inArea(a, user.location)) return false;
+        if (state.area !== 'current' && state.area !== 'all' && !EP.inProvince(a, state.area)) return false;
+        if (state.match && !EP.inAudience(a, user)) return false;
+        if (state.q) {
+          var hay = [a.title, a.description, a.agency, EP.category(a.category).label, EP.severity(a.severity).label]
+            .concat(a.areas.map(function (x) { return x.province === '*' ? 'ทั่วประเทศ' : x.province + (x.district || ''); })).join(' ');
+          if (EP.norm(hay).indexOf(EP.norm(state.q)) < 0) return false;
+        }
+        return true;
+      }
+
+      function renderChips(base) {
+        var chips = [{ key: '', label: 'ทั้งหมด' }].concat(E.categories);
+        $('f-cat').innerHTML = chips.map(function (c) {
+          var n = base.filter(function (a) { return !c.key || a.category === c.key; }).length;
+          return '<button type="button" class="filter-chip' + (state.cat === c.key ? ' active' : '') + '" data-cat="' + c.key + '" aria-pressed="' + (state.cat === c.key) + '">' +
+            (c.icon ? '<span class="material-symbols-outlined">' + c.icon + '</span>' : '') + c.label +
+            ' <span class="ep-chip-count">' + n + '</span></button>';
+        }).join('');
+      }
+
+      function render() {
+        var base = E.alerts.filter(passesBase);
+        var list = base.filter(function (a) { return !state.cat || a.category === state.cat; })
+          .sort(function (a, b) { return a.sentAt < b.sentAt ? 1 : -1; });
+        renderChips(base);
+
+        var areaText = state.area === 'current' ? 'พื้นที่ปัจจุบัน' : state.area === 'all' ? 'ทุกพื้นที่' : state.area;
+        $('count').textContent = 'พบ ' + list.length + ' รายการ · ' + areaText + (state.match ? ' · ตรงกับเพศและอายุของคุณ' : ' · ทุกกลุ่มเป้าหมาย');
+        $('reset').hidden = isDefault();
+
+        var html = '', lastDay = '';
+        list.forEach(function (a) {
+          var day = EP.dayLabel(a.sentAt);
+          if (day !== lastDay) { html += '<div class="ep-day">' + day + '</div>'; lastDay = day; }
+          html += EP.alertRow(a, user, { showDelivery: true, timeOnly: true });
+        });
+        $('list').innerHTML = html || '<div class="hp-empty"><span class="material-symbols-outlined">notifications_paused</span>' +
+          'ไม่มีการแจ้งเตือนตามตัวกรองนี้' + (isDefault() ? '' : '<br><button type="button" class="hp-link ep-reset" data-reset>กลับไปค่าเริ่มต้น</button>') + '</div>';
+        writeState();
+      }
+
+      function renderActive() {
+        var active = E.alerts.filter(function (a) { return EP.isActive(a) && EP.delivery(a, user).received; });
+        $('active-card').hidden = !active.length;
+        $('active').innerHTML = active.map(function (a) { return EP.alertRow(a, user); }).join('');
+      }
+
+      /* ─── events ─── */
+      $('f-area').onchange = function () { state.area = this.value; render(); };
+      $('f-match').onchange = function () { state.match = this.checked; render(); };
+      var t;
+      $('f-q').oninput = function () { var v = this.value.trim(); clearTimeout(t); t = setTimeout(function () { state.q = v; render(); }, 150); };
+      $('f-cat').onclick = function (ev) {
+        var b = ev.target.closest('.filter-chip'); if (!b) return;
+        state.cat = b.dataset.cat; render();
+      };
+      function reset() {
+        state = JSON.parse(JSON.stringify(DEFAULTS));
+        $('f-area').value = state.area; $('f-match').checked = state.match; $('f-q').value = '';
+        render();
+      }
+      $('reset').onclick = reset;
+      $('list').addEventListener('click', function (ev) { if (ev.target.closest('[data-reset]')) reset(); });
+
+      state = readState();
+      $('f-match').checked = state.match;
+      $('f-q').value = state.q;
+      refreshUser();
+    })();
+  </script>
+</body>
+</html>

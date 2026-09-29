@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดการแจ้งเตือน — ทางรัฐ</title>
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../dashboard-components.css">
+  <link rel="stylesheet" href="../health/health.css">
+  <link rel="stylesheet" href="../crime/crime.css">
+  <link rel="stylesheet" href="emergency.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="index.html" class="btn-back-circle" id="back" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">crisis_alert</span>
+          </div>
+          <p class="top-nav-bar-title">Emergency Portal</p>
+        </div>
+      </div>
+
+      <main class="hp-main" id="app"></main>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+          onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <script src="emergency-data.js"></script>
+  <script src="emergency.js"></script>
+  <script>
+    (function () {
+      var E = EMERGENCY, e = EP.esc, app = document.getElementById('app');
+
+      // กลับไปหน้ารายการพร้อมตัวกรองเดิม
+      if (/\/emergency\/(index\.html)?(\?|$)/.test(document.referrer)) {
+        document.getElementById('back').onclick = function (ev) { ev.preventDefault(); history.back(); };
+      }
+
+      var a = EP.alert(EP.qs('id'));
+      if (!a) {
+        app.innerHTML = '<div class="card"><div class="hp-empty"><span class="material-symbols-outlined">search_off</span>ไม่พบการแจ้งเตือนนี้' +
+          '<br><a class="hp-link" href="index.html">กลับไปหน้าประวัติการแจ้งเตือน</a></div></div>';
+        return;
+      }
+
+      var user = EP.user(), c = EP.category(a.category), s = EP.severity(a.severity), d = EP.delivery(a, user);
+      document.title = a.title + ' — ทางรัฐ';
+
+      function section(title, color, body) {
+        return '<div class="card"><div class="hp-section-head"><div class="section-title-container"><div class="section-bar" style="background-color:' + color +
+          '"></div><h3 class="section-title">' + title + '</h3></div></div>' + body + '</div>';
+      }
+
+      // สถานะการส่งถึงผู้ใช้
+      var deliveryHtml = d.received
+        ? '<div class="hp-notice"><span class="material-symbols-outlined">notifications_active</span><div><strong>ข้อความนี้ถูกส่งถึงคุณ</strong><br>' +
+            'คุณอยู่ในพื้นที่แจ้งเตือน (' + e(EP.locationLabel(user.location)) + ') และอยู่ในกลุ่มเป้าหมาย</div></div>'
+        : '<div class="hp-notice hp-notice--warning"><span class="material-symbols-outlined">notifications_off</span><div><strong>ข้อความนี้ไม่ได้ส่งถึงคุณ</strong><br>' +
+            d.reasons.map(e).join(' และ') + ' — แสดงไว้เพื่อให้คุณติดตามสถานการณ์ได้</div></div>';
+
+      if (a.resolved) {
+        deliveryHtml = '<div class="hp-notice" style="background:var(--background-positive-lighter)"><span class="material-symbols-outlined" style="color:var(--foreground-positive-default)">task_alt</span>' +
+          '<div><strong>สถานการณ์คลี่คลายแล้ว</strong><br>' + e(a.resolved) + '</div></div>' + deliveryHtml;
+      }
+
+      var areaTags = EP.isNationwide(a) ? '<span class="tag is-mine">ทั่วประเทศ</span>' : a.areas.map(function (x) {
+        var mine = x.province === user.location.province && (!x.district || x.district === user.location.district);
+        return '<span class="tag' + (mine ? ' is-mine' : '') + '">' + (mine ? '<span class="material-symbols-outlined">my_location</span>' : '') +
+          e(x.district ? x.district + ' ' + x.province : 'ทั้งจังหวัด' + x.province) + '</span>';
+      }).join('');
+
+      app.innerHTML =
+        '<div class="card">' +
+          '<div class="hp-row" style="gap:var(--spacing-xs);margin-bottom:var(--spacing-md)">' + EP.statusTag(a) + EP.severityTag(a) + EP.categoryTag(a) + '</div>' +
+          '<div class="ep-cbs-wrap">' +
+            '<div class="ep-cbs ep-cbs--' + s.tone + '" role="article" aria-label="ข้อความแจ้งเตือน">' +
+              '<div class="ep-cbs-head"><span class="material-symbols-outlined">' + c.icon + '</span>การแจ้งเตือนฉุกเฉิน: ' + e(s.label) + '</div>' +
+              '<div class="ep-cbs-body">' +
+                '<div class="ep-cbs-title">' + e(a.title) + '</div>' +
+                '<div class="ep-cbs-desc">' + e(a.description) + '</div>' +
+                '<div class="ep-cbs-from"><span>' + e(a.agency) + '</span><span>' + EP.dateTime(a.sentAt) + '</span></div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="hp-stack ep-delivery">' + deliveryHtml + '</div>' +
+
+        section('รายละเอียด', 'var(--primary-40)',
+          '<div class="details-list">' +
+            EP.detailsItem('หน่วยงานที่แจ้ง', e(a.agency)) +
+            EP.detailsItem('ประเภท', e(c.label)) +
+            EP.detailsItem('ระดับ', e(s.label)) +
+            EP.detailsItem('เวลาที่แจ้ง', EP.dateLong(a.sentAt) + ' ' + EP.time(a.sentAt)) +
+            EP.detailsItem('มีผลถึง', EP.dateLong(a.expiresAt) + ' ' + EP.time(a.expiresAt)) +
+            EP.detailsItem('รหัสการแจ้งเตือน', e(a.id)) +
+          '</div>') +
+
+        section('ผู้รับการแจ้งเตือน', 'var(--secondary-40-main)',
+          '<div class="hp-stack">' +
+            '<div><div class="hp-kv-label">พื้นที่แจ้งเตือน</div><div class="ep-area-list">' + areaTags + '</div></div>' +
+            '<div><div class="hp-kv-label">กลุ่มเป้าหมาย</div><div class="hp-kv-value">' + e(EP.audienceLabel(a.audience)) + '</div></div>' +
+          '</div>') +
+
+        section('สายด่วนฉุกเฉิน', 'var(--danger-40)', '<div class="cp-hotlines">' + E.hotlines.map(EP.callBtn).join('') + '</div>') +
+
+        '<div class="source-note"><p class="source-note-text"><span class="material-symbols-outlined source-note-icon">verified</span>' +
+          'ข้อมูลจาก ' + e(a.agency) + ' ผ่านระบบ Cell Broadcast<br>อัปเดตล่าสุด: <span class="source-note-time"></span></p></div>';
+    })();
+  </script>
+</body>
+</html>
