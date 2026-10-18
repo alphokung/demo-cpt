@@ -117,6 +117,28 @@
 .hp-kv-value { font-size: var(--font-size-body-m); color: var(--foreground-neutral-default); line-height: 1.65; white-space: pre-line; }
 .hp-group-grid { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); }
 
+/* ─── ประกันสังคม มาตรา 33 / 39 / 40 ─── */
+.hp-sso-sec { padding: var(--spacing-lg) 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--stroke-neutral-lighter); }
+.hp-sso-title { font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); margin-bottom: var(--spacing-md); }
+@media (min-width: 1024px) { .hp-kv--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.hp-rates { display: flex; flex-direction: column; border: 1px solid var(--stroke-neutral-lighter); border-radius: var(--radius-lg); overflow: hidden; }
+.hp-rate { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xxs); padding: var(--spacing-sm) var(--spacing-md); font-size: var(--font-size-body-s); line-height: 1.6; }
+.hp-rate + .hp-rate { border-top: 1px solid var(--stroke-neutral-lighter); }
+@media (min-width: 640px) { .hp-rate { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--spacing-md); } }
+.hp-rate-label { color: var(--foreground-neutral-light); font-weight: var(--font-weight-600); }
+.hp-rate-value { color: var(--foreground-neutral-default); }
+.hp-ref-list { display: flex; flex-direction: column; gap: var(--spacing-xs); margin-top: var(--spacing-md); }
+.hp-kv .hp-ref-list { margin-top: 0; }
+.hp-ref { display: inline-flex; align-items: flex-start; gap: var(--spacing-xs); font-size: var(--font-size-body-s); line-height: 1.5; color: var(--foreground-primary-default); text-decoration: none; overflow-wrap: anywhere; }
+.hp-ref .material-symbols-outlined { font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+.hp-ref:hover { text-decoration: underline; }
+.hp-ref em, .hp-refs em { color: var(--foreground-warning-default); font-style: normal; }
+.hp-refs { margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid var(--stroke-neutral-lighter); }
+.hp-refs summary { cursor: pointer; display: inline-flex; align-items: center; gap: var(--spacing-xs); font-weight: var(--font-weight-600); font-size: var(--font-size-body-m); color: var(--foreground-neutral-default); }
+.hp-refs summary .material-symbols-outlined { font-size: 20px; color: var(--foreground-primary-default); }
+.hp-refs ol { margin-top: var(--spacing-md); padding-left: var(--spacing-2xl); display: flex; flex-direction: column; gap: var(--spacing-xs); font-size: var(--font-size-body-s); line-height: 1.6; }
+.hp-refs a { color: var(--foreground-primary-default); overflow-wrap: anywhere; }
+
 /* ─── Health summary strip ─── */
 .hp-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); }
 @media (min-width: 1024px) { .hp-summary { grid-template-columns: repeat(4, 1fr); } }
