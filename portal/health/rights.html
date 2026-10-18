@@ -71,41 +71,9 @@
           <div class="accordion" id="bn-list"></div>
         </div>
 
-        <!-- สิทธิประโยชน์ประกันสังคม มาตรา 33 / 39 / 40 (จากเว็บไซต์ สปส.) -->
-        <div class="card" id="sso">
-          <div class="hp-section-head">
-            <div class="section-title-container card-section__title-container">
-              <div class="section-bar card-section__bar--primary"></div>
-              <h3 class="section-title card-section__heading">สิทธิประโยชน์ประกันสังคม มาตรา 33 · 39 · 40 (สปส.)</h3>
-            </div>
-            <a class="hp-link" href="https://www.sso.go.th/wpr/main/privilege" target="_blank" rel="noopener">
-              <span class="material-symbols-outlined">open_in_new</span>sso.go.th
-            </a>
-          </div>
-          <div class="hp-notice" style="margin-bottom: var(--spacing-lg);">
-            <span class="material-symbols-outlined">info</span>
-            <div id="sso-note"></div>
-          </div>
-
-          <div class="tab-bar" id="sso-tabs" role="tablist" aria-label="ประเภทผู้ประกันตน"></div>
-          <div class="hp-sso-sec" id="sso-sec"></div>
-
-          <div class="hp-toolbar">
-            <label class="hp-search">
-              <span class="material-symbols-outlined">search</span>
-              <input type="search" id="sso-search" placeholder="ค้นหาสิทธิประโยชน์ เช่น ทันตกรรม คลอดบุตร บำนาญ" aria-label="ค้นหาสิทธิประโยชน์ประกันสังคม">
-            </label>
-            <div class="filter-row" id="sso-filters"></div>
-            <p class="hp-count" id="sso-count"></p>
-          </div>
-
-          <div class="accordion" id="sso-list"></div>
-
-          <details class="hp-refs">
-            <summary><span class="material-symbols-outlined">menu_book</span>แหล่งอ้างอิง</summary>
-            <ol id="sso-refs"></ol>
-          </details>
-        </div>
+        <!-- สิทธิประโยชน์ประกันสังคม มาตรา 33 / 39 / 40 และสิทธิข้าราชการ — สร้างโดย benefit-catalogue.js -->
+        <div class="card" id="sso"></div>
+        <div class="card" id="csmbs"></div>
 
         <div class="source-note">
           <p class="source-note-text">
@@ -153,7 +121,9 @@
   <script src="health-data.js"></script>
   <script src="nhso-benefits.js"></script>
   <script src="sso-benefits.js"></script>
+  <script src="csmbs-benefits.js"></script>
   <script src="health.js"></script>
+  <script src="benefit-catalogue.js"></script>
   <script src="../portal-demo.js"></script>
   <script>
     (function () {
@@ -345,149 +315,16 @@
 
       document.getElementById('bn-search').addEventListener('input', function () { state.q = this.value; renderList(); });
 
-      /* ─── ประกันสังคม มาตรา 33 / 39 / 40 ─── */
-      var SSO = SSO_BENEFITS;
-      var SSO_CATS = [
-        { key: 'mine',    label: 'ตรวจสุขภาพที่เหมาะกับคุณ', icon: 'person_check' },
-        { key: 'all',     label: 'ทั้งหมด' },
-        { key: 'health',  label: 'ตรวจสุขภาพ / ป้องกันโรค' },
-        { key: 'medical', label: 'รักษาพยาบาล / ทันตกรรม' },
-        { key: 'cash',    label: 'เงินทดแทน (ป่วย / ทุพพลภาพ / ตาย)' },
-        { key: 'family',  label: 'คลอดบุตร / สงเคราะห์บุตร' },
-        { key: 'future',  label: 'ชราภาพ / ว่างงาน' }
+      /* ─── ประกันสังคม มาตรา 33 / 39 / 40 และสิทธิข้าราชการ ─── */
+      var catalogues = [
+        { key: 'sso',   view: HP.benefitCatalogue(document.getElementById('sso'), SSO_BENEFITS) },
+        { key: 'csmbs', view: HP.benefitCatalogue(document.getElementById('csmbs'), CSMBS_BENEFITS) }
       ];
-      var sso = { sec: schemes.sso.section, filter: 'all', q: '' };
-
-      function ssoEligible(i) {
-        if (i.cat !== 'health') return false;
-        if (i.sex && i.sex !== H.user.sex) return false;
-        if (i.bornBefore) return +H.user.birthDate.slice(0, 4) < i.bornBefore;
-        return !i.ages || i.ages.some(function (r) { return age >= r[0] && age <= r[1]; });
-      }
-      function ssoItems() {
-        return SSO.items.filter(function (i) { return i.sec.indexOf(sso.sec) >= 0; });
-      }
-      function refLinks(keys) {
-        return keys.map(function (k) {
-          var r = SSO.refs[k];
-          return '<a class="hp-ref" href="' + e(r.url) + '" target="_blank" rel="noopener">' +
-            '<span class="material-symbols-outlined">open_in_new</span><span>' + e(r.title) +
-            (r.official ? '' : ' <em>(สื่อข่าว — ไม่ใช่เว็บไซต์ สปส.)</em>') + '</span></a>';
-        }).join('');
+      function renderCatalogues() {
+        catalogues.forEach(function (c) { c.view.render(state.right === c.key ? schemes[c.key].section : null); });
       }
 
-      function renderSsoSection() {
-        var mySec = state.right === 'sso' ? schemes.sso.section : null;
-        document.getElementById('sso-note').innerHTML =
-          'รวบรวมจาก<strong>เว็บไซต์สำนักงานประกันสังคม (sso.go.th)</strong> ข้อมูล ณ ' + HP.dateLong(SSO.asOf) +
-          ' · ทุกรายการมีลิงก์อ้างอิง เงื่อนไขอาจเปลี่ยนตามประกาศล่าสุด สอบถามสายด่วน 1506';
-
-        document.getElementById('sso-tabs').innerHTML = Object.keys(SSO.sections).map(function (k) {
-          var s = SSO.sections[k];
-          return '<button type="button" class="tab-btn' + (k === sso.sec ? ' active' : '') + '" role="tab" aria-selected="' + (k === sso.sec) + '" data-sso-sec="' + k + '">' +
-            '<span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) +
-            (k === mySec ? ' <span class="tag tag--primary tag--sm">ของคุณ</span>' : '') + '</button>';
-        }).join('');
-        document.querySelectorAll('[data-sso-sec]').forEach(function (b) {
-          b.onclick = function () {
-            sso.sec = b.dataset.ssoSec;
-            if (sso.sec === '40' && sso.filter === 'mine') sso.filter = 'all';
-            renderSsoSection(); renderSsoFilters(); renderSsoList();
-          };
-        });
-
-        var s = SSO.sections[sso.sec];
-        document.getElementById('sso-sec').innerHTML =
-          '<p class="hp-sso-title">' + e(s.label) + ' — ' + e(s.title) + '</p>' +
-          '<div class="hp-kv hp-kv--3">' +
-            '<div><p class="hp-kv-label">คุณสมบัติ</p><p class="hp-kv-value">' + e(s.who) + '</p></div>' +
-            '<div><p class="hp-kv-label">เงินสมทบ</p><p class="hp-kv-value">' + e(s.pay) + '</p></div>' +
-            '<div><p class="hp-kv-label">ความคุ้มครอง</p><p class="hp-kv-value">' + e(s.cover) + '</p></div>' +
-          '</div>' +
-          '<div class="hp-notice hp-notice--warning" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">lightbulb</span><div>' + e(s.note) + '</div></div>' +
-          '<div class="hp-ref-list">' + refLinks(s.ref) + '</div>';
-      }
-
-      function renderSsoFilters() {
-        var list = ssoItems();
-        document.getElementById('sso-filters').innerHTML = SSO_CATS.filter(function (c) {
-          if (c.key === 'all') return true;
-          if (c.key === 'mine') return list.some(ssoEligible);
-          return list.some(function (i) { return i.cat === c.key; });
-        }).map(function (c) {
-          return '<button class="filter-chip' + (c.key === sso.filter ? ' active' : '') + '" data-sso-filter="' + c.key + '">' +
-            (c.icon ? '<span class="material-symbols-outlined" style="font-size:16px">' + c.icon + '</span>' : '') + c.label + '</button>';
-        }).join('');
-        document.querySelectorAll('[data-sso-filter]').forEach(function (b) {
-          b.onclick = function () { sso.filter = b.dataset.ssoFilter; renderSsoFilters(); renderSsoList(); };
-        });
-      }
-
-      function renderSsoList() {
-        var q = sso.q.trim().toLowerCase();
-        var list = ssoItems().filter(function (i) {
-          if (sso.filter === 'mine' && !ssoEligible(i)) return false;
-          if (sso.filter !== 'mine' && sso.filter !== 'all' && i.cat !== sso.filter) return false;
-          var text = i.title + i.detail + i.cond + (i.rates || []).map(function (r) { return r.label + r.value; }).join('');
-          if (q && text.toLowerCase().indexOf(q) < 0) return false;
-          return true;
-        });
-
-        document.getElementById('sso-count').textContent = 'พบ ' + list.length + ' รายการ' +
-          (sso.filter === 'mine' ? ' ที่เหมาะกับอายุ ' + age + ' ปี เพศ' + H.user.sex : '');
-
-        if (!list.length) {
-          document.getElementById('sso-list').innerHTML =
-            '<div class="hp-empty"><span class="material-symbols-outlined">search_off</span>ไม่พบสิทธิประโยชน์ที่ตรงกับเงื่อนไข</div>';
-          return;
-        }
-
-        document.getElementById('sso-list').innerHTML = list.map(function (i) {
-          var tags = '';
-          if (ssoEligible(i) && sso.filter !== 'mine') tags += '<span class="tag tag--primary tag--sm">เหมาะกับคุณ</span>';
-          if (i.opts) tags += i.opts.map(function (o) { return '<span class="tag tag--info tag--sm">ทางเลือก ' + o + '</span>'; }).join('');
-          else tags += i.sec.map(function (s) { return '<span class="tag tag--sm">ม.' + s + '</span>'; }).join('');
-          if (i.since && HP.daysUntil(i.since) > -365) tags += '<span class="tag tag--success tag--sm">ปรับปรุง ' + HP.dateShort(i.since) + '</span>';
-
-          var body =
-            '<div class="hp-kv">' +
-              '<div><p class="hp-kv-label">สิทธิที่ได้รับ</p><p class="hp-kv-value">' + e(i.detail) + '</p></div>' +
-              (i.rates ? '<div><p class="hp-kv-label">อัตรา / วงเงิน</p><div class="hp-rates">' + i.rates.map(function (r) {
-                return '<div class="hp-rate"><span class="hp-rate-label">' + e(r.label) + '</span><span class="hp-rate-value">' + e(r.value) + '</span></div>';
-              }).join('') + '</div></div>' : '') +
-              '<div><p class="hp-kv-label">เงื่อนไขการรับสิทธิ</p><p class="hp-kv-value">' + e(i.cond) + '</p></div>' +
-              (i.since ? '<div><p class="hp-kv-label">มีผลตั้งแต่</p><p class="hp-kv-value">' + HP.dateLong(i.since) + '</p></div>' : '') +
-              '<div><p class="hp-kv-label">อ้างอิง</p><div class="hp-ref-list">' + refLinks(i.ref) + '</div></div>' +
-            '</div>';
-
-          return '<div class="accordion-item">' +
-            '<div class="accordion-header" onclick="toggleAccordion(this)">' +
-              '<div class="hp-bn-head"><span class="accordion-title">' + e(i.title) + '</span>' +
-                '<div class="hp-bn-tags">' + tags + '</div></div>' +
-              '<span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>' +
-            '</div>' +
-            '<div class="accordion-body"><div class="accordion-body-inner">' + body + '</div></div>' +
-          '</div>';
-        }).join('');
-      }
-
-      function renderSsoRefs() {
-        document.getElementById('sso-refs').innerHTML = Object.keys(SSO.refs).map(function (k) {
-          var r = SSO.refs[k];
-          return '<li><a href="' + e(r.url) + '" target="_blank" rel="noopener">' + e(r.title) + '</a>' +
-            (r.official ? '' : ' <em>(สื่อข่าว — ไม่ใช่เว็บไซต์ สปส.)</em>') + '</li>';
-        }).join('');
-      }
-
-      document.getElementById('sso-search').addEventListener('input', function () { sso.q = this.value; renderSsoList(); });
-      renderSsoRefs();
-
-      function renderSso() {
-        if (state.right === 'sso') sso.sec = schemes.sso.section;
-        renderSsoSection(); renderSsoFilters(); renderSsoList();
-      }
-
-      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); renderSso(); }
+      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); renderCatalogues(); }
       renderAll();
       HP.mountWelcome('สิทธิการรักษาพยาบาล', 'สิทธิที่คุณมี และสิทธิประโยชน์ที่ได้รับ');
     })();

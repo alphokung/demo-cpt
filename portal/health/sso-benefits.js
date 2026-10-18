@@ -1,7 +1,8 @@
 /* ============================================================
    สิทธิประโยชน์ประกันสังคม (สปส.) — มาตรา 33 / 39 / 40
    รวบรวมจากเว็บไซต์สำนักงานประกันสังคม (www.sso.go.th) — ข้อมูล ณ ต.ค. 2569
-   ทุกรายการมี ref ชี้ไปยังแหล่งอ้างอิงใน refs (official = เว็บไซต์ สปส. โดยตรง)
+   ทุกรายการมี ref ชี้ไปยังแหล่งอ้างอิงใน refs (src: official = เว็บไซต์ สปส. โดยตรง, news = สื่อข่าว)
+   แสดงผลด้วย benefit-catalogue.js
    คอลัมน์:
      cat   = หมวด (health | medical | cash | family | future)
      sec   = มาตราที่ได้รับสิทธิ ('33' | '39' | '40')
@@ -16,11 +17,28 @@
   function priv(path) { return SSO + 'privilege/' + KT + path; }
 
   window.SSO_BENEFITS = {
-    asOf: '2026-10-18',
+    meta: {
+      title: 'สิทธิประโยชน์ประกันสังคม มาตรา 33 · 39 · 40 (สปส.)',
+      site: { label: 'sso.go.th', url: SSO + 'privilege' },
+      note: 'รวบรวมจาก<strong>เว็บไซต์สำนักงานประกันสังคม (sso.go.th)</strong> ข้อมูล ณ 18 ตุลาคม 2569 · ทุกรายการมีลิงก์อ้างอิง เงื่อนไขอาจเปลี่ยนตามประกาศล่าสุด สอบถามสายด่วน 1506',
+      tabsLabel: 'ประเภทผู้ประกันตน',
+      searchPlaceholder: 'ค้นหาสิทธิประโยชน์ เช่น ทันตกรรม คลอดบุตร บำนาญ',
+      labels: { who: 'คุณสมบัติ', pay: 'เงินสมทบ', cover: 'ความคุ้มครอง' },
+      cats: [
+        { key: 'mine',    label: 'ตรวจสุขภาพที่เหมาะกับคุณ', icon: 'person_check' },
+        { key: 'all',     label: 'ทั้งหมด' },
+        { key: 'health',  label: 'ตรวจสุขภาพ / ป้องกันโรค' },
+        { key: 'medical', label: 'รักษาพยาบาล / ทันตกรรม' },
+        { key: 'cash',    label: 'เงินทดแทน (ป่วย / ทุพพลภาพ / ตาย)' },
+        { key: 'family',  label: 'คลอดบุตร / สงเคราะห์บุตร' },
+        { key: 'future',  label: 'ชราภาพ / ว่างงาน' }
+      ]
+    },
 
     sections: {
       '33': {
         label: 'มาตรา 33',
+        short: 'ม.33',
         title: 'ลูกจ้างในสถานประกอบการ',
         icon: 'badge',
         who: 'ลูกจ้างอายุ 15–60 ปี ที่ทำงานในสถานประกอบการที่มีลูกจ้างตั้งแต่ 1 คนขึ้นไป',
@@ -31,6 +49,7 @@
       },
       '39': {
         label: 'มาตรา 39',
+        short: 'ม.39',
         title: 'ผู้ประกันตนโดยสมัครใจ',
         icon: 'person_add',
         who: 'เคยเป็นผู้ประกันตนมาตรา 33 และจ่ายเงินสมทบมาแล้วไม่น้อยกว่า 12 เดือน\nสมัครภายใน 6 เดือนนับจากวันที่ออกจากงาน (แบบ สปส. 1-20)',
@@ -41,6 +60,7 @@
       },
       '40': {
         label: 'มาตรา 40',
+        short: 'ม.40',
         title: 'แรงงานนอกระบบ / อาชีพอิสระ',
         icon: 'storefront',
         who: 'อายุ 15–65 ปี ประกอบอาชีพอิสระหรือแรงงานนอกระบบ และไม่เป็นผู้ประกันตนมาตรา 33 หรือ 39',
@@ -52,24 +72,24 @@
     },
 
     refs: {
-      contrib:   { title: 'สปส. — เงินสมทบและการชำระเงิน', url: SSO + 'general/' + encodeURIComponent('เงินสมทบและการชำระเงิน') + '_singleview_detail_1_193_0/438_438/', official: true },
-      ceiling:   { title: 'Thai PBS — ครม. เห็นชอบเพดานค่าจ้าง สปส. สูงสุด 17,500 บาท เริ่มปี 2569', url: 'https://www.thaipbs.or.th/news/content/359071', official: false },
-      sick:      { title: 'สปส. — สิทธิประโยชน์กรณีประสบอันตรายหรือเจ็บป่วย อันมิใช่เนื่องจากการทำงาน', url: svc('_detail_detail_1_125_690/605_605'), official: true },
-      maternity: { title: 'สปส. — กรณีคลอดบุตร', url: priv('_detail_detail_1_125_691/233_233'), official: true },
-      disabled:  { title: 'สปส. — กรณีทุพพลภาพ', url: svc('_detail_detail_1_125_692/15_15'), official: true },
-      death:     { title: 'สปส. — กรณีเสียชีวิต', url: svc('_detail_detail_1_125_693/231_231'), official: true },
-      child:     { title: 'สปส. — สิทธิกรณีสงเคราะห์บุตร', url: svc('_detail_detail_1_125_694/234_234'), official: true },
-      oldage:    { title: 'สปส. — หลักเกณฑ์และเงื่อนไข กรณีชราภาพ', url: svc('_detail_detail_1_125_695/235_235'), official: true },
-      unemploy:  { title: 'สปส. — หลักเกณฑ์และเงื่อนไข กรณีว่างงาน', url: priv('_detail_detail_1_125_696/236'), official: true },
-      s39:       { title: 'สปส. — ผู้ประกันตนโดยสมัครใจ (ม.39)', url: svc('_detail_detail_1_125_697/237_237'), official: true },
-      s40:       { title: 'สปส. — สิทธิประโยชน์และเงื่อนไขการเกิดสิทธิขอรับประโยชน์ทดแทนมาตรา 40', url: svc('_detail_detail_1_125_698/249_249'), official: true },
-      s40new:    { title: 'สปส. — แนวปฏิบัติการพิจารณาวินิจฉัยจ่ายประโยชน์ทดแทนของผู้ประกันตนตามมาตรา 40 (พ.ร.ฎ. ฉบับที่ 5 พ.ศ. 2568)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/abba089cf64c23f32b51fce57f94d33f.pdf', official: true },
-      s40reg:    { title: 'สปส. — การสมัครและขึ้นทะเบียนเป็นผู้ประกันตนตามมาตรา 40', url: SSO + 'service/5_detail_detail_1_125_698/247_247', official: true },
-      dental:    { title: 'สปส. — กรณีทันตกรรม (ถอนฟัน อุดฟัน ขูดหินปูน ผ่าตัดฟันคุด และใส่ฟันเทียม)', url: svc('_detail_detail_1_125_0/24_24'), official: true },
-      dental69:  { title: 'สปส. — สิทธิทันตกรรมฉบับปรับปรุง เริ่ม 1 พ.ค. 2569 (PDF)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/1d936c61bf5d6cc1f7a51ffdb2f9bd2c.pdf', official: true },
-      report67:  { title: 'สปส. — รายงานประจำปี 2567 (ตารางรายการตรวจสุขภาพ 14 รายการ)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/5b1aef4f7b48bbaf5960f91a6347515f.pdf', official: true },
-      hc14:      { title: 'สปส. — รายชื่อโรงพยาบาลที่ให้บริการตรวจสุขภาพ 14 รายการ สำหรับผู้ประกันตน', url: SSO + 'news/' + encodeURIComponent('ข่าวประชาสัมพันธ์') + '_detail_detail_1_16_0/32442_32442', official: true },
-      flu:       { title: 'สปส. — ประกาศคณะกรรมการการแพทย์ (วัคซีนไข้หวัดใหญ่ ขยายเป็น ม.ค.–ธ.ค. ตั้งแต่ปี 2569)', url: SSO + 'law/' + encodeURIComponent('ประกาศ') + '_sub_category_list-label_1_110_732', official: true }
+      contrib:   { title: 'สปส. — เงินสมทบและการชำระเงิน', url: SSO + 'general/' + encodeURIComponent('เงินสมทบและการชำระเงิน') + '_singleview_detail_1_193_0/438_438/', src: 'official' },
+      ceiling:   { title: 'Thai PBS — ครม. เห็นชอบเพดานค่าจ้าง สปส. สูงสุด 17,500 บาท เริ่มปี 2569', url: 'https://www.thaipbs.or.th/news/content/359071', src: 'news' },
+      sick:      { title: 'สปส. — สิทธิประโยชน์กรณีประสบอันตรายหรือเจ็บป่วย อันมิใช่เนื่องจากการทำงาน', url: svc('_detail_detail_1_125_690/605_605'), src: 'official' },
+      maternity: { title: 'สปส. — กรณีคลอดบุตร', url: priv('_detail_detail_1_125_691/233_233'), src: 'official' },
+      disabled:  { title: 'สปส. — กรณีทุพพลภาพ', url: svc('_detail_detail_1_125_692/15_15'), src: 'official' },
+      death:     { title: 'สปส. — กรณีเสียชีวิต', url: svc('_detail_detail_1_125_693/231_231'), src: 'official' },
+      child:     { title: 'สปส. — สิทธิกรณีสงเคราะห์บุตร', url: svc('_detail_detail_1_125_694/234_234'), src: 'official' },
+      oldage:    { title: 'สปส. — หลักเกณฑ์และเงื่อนไข กรณีชราภาพ', url: svc('_detail_detail_1_125_695/235_235'), src: 'official' },
+      unemploy:  { title: 'สปส. — หลักเกณฑ์และเงื่อนไข กรณีว่างงาน', url: priv('_detail_detail_1_125_696/236'), src: 'official' },
+      s39:       { title: 'สปส. — ผู้ประกันตนโดยสมัครใจ (ม.39)', url: svc('_detail_detail_1_125_697/237_237'), src: 'official' },
+      s40:       { title: 'สปส. — สิทธิประโยชน์และเงื่อนไขการเกิดสิทธิขอรับประโยชน์ทดแทนมาตรา 40', url: svc('_detail_detail_1_125_698/249_249'), src: 'official' },
+      s40new:    { title: 'สปส. — แนวปฏิบัติการพิจารณาวินิจฉัยจ่ายประโยชน์ทดแทนของผู้ประกันตนตามมาตรา 40 (พ.ร.ฎ. ฉบับที่ 5 พ.ศ. 2568)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/abba089cf64c23f32b51fce57f94d33f.pdf', src: 'official' },
+      s40reg:    { title: 'สปส. — การสมัครและขึ้นทะเบียนเป็นผู้ประกันตนตามมาตรา 40', url: SSO + 'service/5_detail_detail_1_125_698/247_247', src: 'official' },
+      dental:    { title: 'สปส. — กรณีทันตกรรม (ถอนฟัน อุดฟัน ขูดหินปูน ผ่าตัดฟันคุด และใส่ฟันเทียม)', url: svc('_detail_detail_1_125_0/24_24'), src: 'official' },
+      dental69:  { title: 'สปส. — สิทธิทันตกรรมฉบับปรับปรุง เริ่ม 1 พ.ค. 2569 (PDF)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/1d936c61bf5d6cc1f7a51ffdb2f9bd2c.pdf', src: 'official' },
+      report67:  { title: 'สปส. — รายงานประจำปี 2567 (ตารางรายการตรวจสุขภาพ 14 รายการ)', url: SSO.replace('main/', '') + 'assets/upload/files_storage/sso_th/5b1aef4f7b48bbaf5960f91a6347515f.pdf', src: 'official' },
+      hc14:      { title: 'สปส. — รายชื่อโรงพยาบาลที่ให้บริการตรวจสุขภาพ 14 รายการ สำหรับผู้ประกันตน', url: SSO + 'news/' + encodeURIComponent('ข่าวประชาสัมพันธ์') + '_detail_detail_1_16_0/32442_32442', src: 'official' },
+      flu:       { title: 'สปส. — ประกาศคณะกรรมการการแพทย์ (วัคซีนไข้หวัดใหญ่ ขยายเป็น ม.ค.–ธ.ค. ตั้งแต่ปี 2569)', url: SSO + 'law/' + encodeURIComponent('ประกาศ') + '_sub_category_list-label_1_110_732', src: 'official' }
     },
 
     items: [
