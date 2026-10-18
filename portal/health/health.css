@@ -117,9 +117,12 @@
 .hp-kv-value { font-size: var(--font-size-body-m); color: var(--foreground-neutral-default); line-height: 1.65; white-space: pre-line; }
 .hp-group-grid { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); }
 
+[hidden] { display: none !important; } /* .card / .dc-group กำหนด display เอง — ให้ hidden มีผลเสมอ */
+
 /* ─── Benefit catalogue (ประกันสังคม / ข้าราชการ) — benefit-catalogue.js ─── */
-.hp-cat-sec { padding: var(--spacing-lg) 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--stroke-neutral-lighter); }
-.hp-cat-title { font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); margin-bottom: var(--spacing-md); }
+.hp-cat-sec { padding: 0 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--stroke-neutral-lighter); }
+.hp-cat-title { display: flex; align-items: center; gap: var(--spacing-xs); font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); margin-bottom: var(--spacing-md); }
+.hp-cat-title .material-symbols-outlined { font-size: 22px; color: var(--foreground-primary-default); }
 @media (min-width: 1024px) { .hp-kv--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .hp-rates { display: flex; flex-direction: column; border: 1px solid var(--stroke-neutral-lighter); border-radius: var(--radius-lg); overflow: hidden; }
 .hp-rate { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xxs); padding: var(--spacing-sm) var(--spacing-md); font-size: var(--font-size-body-s); line-height: 1.6; }

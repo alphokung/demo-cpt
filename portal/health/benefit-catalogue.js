@@ -2,7 +2,7 @@
    Benefit catalogue — การ์ดรายการสิทธิประโยชน์แบบค้นหา/กรองได้ พร้อมอ้างอิง
    ใช้กับข้อมูลรูปแบบเดียวกันของ sso-benefits.js และ csmbs-benefits.js:
      D.meta     = หัวข้อการ์ด ลิงก์เว็บไซต์หน่วยงาน หมวด (cats) และป้ายกำกับ
-     D.sections = แท็บกลุ่มผู้มีสิทธิ (เช่น มาตรา 33/39/40)
+     D.sections = กลุ่มผู้มีสิทธิ (เช่น มาตรา 33/39/40) — การ์ดแสดงเฉพาะกลุ่มที่ส่งเข้ามาใน render()
      D.items    = รายการสิทธิ (cat, sec, title, detail, rates, cond, since, ref ...)
      D.refs     = แหล่งอ้างอิง (src: official | gov | news)
    ============================================================ */
@@ -16,7 +16,7 @@
   HP.benefitCatalogue = function (root, D) {
     var M = D.meta;
     var age = HP.age();
-    var st = { sec: Object.keys(D.sections)[0], filter: 'all', q: '', mine: null };
+    var st = { sec: Object.keys(D.sections)[0], filter: 'all', q: '' };
 
     root.innerHTML =
       '<div class="hp-section-head">' +
@@ -28,7 +28,6 @@
           '<span class="material-symbols-outlined">open_in_new</span>' + e(M.site.label) + '</a>' +
       '</div>' +
       '<div class="hp-notice" style="margin-bottom: var(--spacing-lg);"><span class="material-symbols-outlined">info</span><div>' + M.note + '</div></div>' +
-      '<div class="tab-bar" data-el="tabs" role="tablist" aria-label="' + e(M.tabsLabel) + '"></div>' +
       '<div class="hp-cat-sec" data-el="sec"></div>' +
       '<div class="hp-toolbar">' +
         '<label class="hp-search"><span class="material-symbols-outlined">search</span>' +
@@ -62,23 +61,9 @@
     }
 
     function renderSection() {
-      $('tabs').innerHTML = Object.keys(D.sections).map(function (k) {
-        var s = D.sections[k];
-        return '<button type="button" class="tab-btn' + (k === st.sec ? ' active' : '') + '" role="tab" aria-selected="' + (k === st.sec) + '" data-sec="' + k + '">' +
-          '<span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) +
-          (k === st.mine ? ' <span class="tag tag--primary tag--sm">ของคุณ</span>' : '') + '</button>';
-      }).join('');
-      root.querySelectorAll('[data-sec]').forEach(function (b) {
-        b.onclick = function () {
-          st.sec = b.dataset.sec;
-          if (st.filter !== 'all' && !sectionItems().some(function (i) { return st.filter === 'mine' ? eligible(i) : i.cat === st.filter; })) st.filter = 'all';
-          renderSection(); renderFilters(); renderList();
-        };
-      });
-
       var s = D.sections[st.sec], L = M.labels;
       $('sec').innerHTML =
-        '<p class="hp-cat-title">' + e(s.label) + ' — ' + e(s.title) + '</p>' +
+        '<p class="hp-cat-title"><span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) + ' — ' + e(s.title) + '</p>' +
         '<div class="hp-kv hp-kv--3">' +
           '<div><p class="hp-kv-label">' + e(L.who) + '</p><p class="hp-kv-value">' + e(s.who) + '</p></div>' +
           '<div><p class="hp-kv-label">' + e(L.pay) + '</p><p class="hp-kv-value">' + e(s.pay) + '</p></div>' +
@@ -125,7 +110,6 @@
         var tags = '';
         if (eligible(i) && st.filter !== 'mine') tags += '<span class="tag tag--primary tag--sm">เหมาะกับคุณ</span>';
         if (i.opts) tags += i.opts.map(function (o) { return '<span class="tag tag--info tag--sm">ทางเลือก ' + o + '</span>'; }).join('');
-        else tags += i.sec.map(function (s) { return '<span class="tag tag--sm">' + e(D.sections[s].short) + '</span>'; }).join('');
         if (i.since && HP.daysUntil(i.since) > -365) {
           tags += HP.daysUntil(i.since) > 0
             ? '<span class="tag tag--info tag--sm">มีผล ' + HP.dateShort(i.since) + '</span>'
@@ -161,10 +145,10 @@
     $('search').addEventListener('input', function () { st.q = this.value; renderList(); });
 
     return {
-      /** mySection = แท็บที่ตรงกับสิทธิของผู้ใช้ (null ถ้าไม่ได้ใช้สิทธินี้) */
-      render: function (mySection) {
-        st.mine = mySection;
-        if (mySection) st.sec = mySection;
+      /** section = กลุ่มผู้มีสิทธิที่จะแสดง (เช่น '33') */
+      render: function (section) {
+        st.sec = section;
+        if (st.filter !== 'all' && !sectionItems().some(function (i) { return st.filter === 'mine' ? eligible(i) : i.cat === st.filter; })) st.filter = 'all';
         renderSection(); renderFilters(); renderList();
       }
     };
