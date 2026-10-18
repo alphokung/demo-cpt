@@ -43,7 +43,7 @@
         <!-- สิทธิประโยชน์หลัก -->
         <div class="card" id="benefits"></div>
 
-        <!-- สิทธิประโยชน์ด้านส่งเสริมสุขภาพและป้องกันโรค (จาก Excel สปสช.) -->
+        <!-- สิทธิประโยชน์ด้านส่งเสริมสุขภาพและป้องกันโรค (จาก Excel สปสช.) — แสดงเฉพาะสิทธิบัตรทอง -->
         <div class="card" id="nhso">
           <div class="hp-section-head">
             <div class="section-title-container card-section__title-container">
@@ -70,6 +70,10 @@
 
           <div class="accordion" id="bn-list"></div>
         </div>
+
+        <!-- สิทธิประโยชน์ประกันสังคม และสิทธิข้าราชการ — สร้างโดย benefit-catalogue.js (แสดงเฉพาะสิทธิที่เลือก) -->
+        <div class="card" id="sso"></div>
+        <div class="card" id="csmbs"></div>
 
         <div class="source-note">
           <p class="source-note-text">
@@ -100,9 +104,13 @@
         </button>
       </div>
       <div class="dc-modal__body">
-        <div class="dc-group dc-group--last">
+        <div class="dc-group">
           <p class="dc-group-label">🩺 สิทธิการรักษา (เลือกดูหน้าตาของแต่ละสิทธิ)</p>
           <div class="dc-chips dc-chips--wrap" id="right-switch" role="group" aria-label="สิทธิการรักษา"></div>
+        </div>
+        <div class="dc-group dc-group--last" id="section-group">
+          <p class="dc-group-label">🗂️ ประเภทย่อยของสิทธิ</p>
+          <div class="dc-chips dc-chips--wrap" id="section-switch" role="group" aria-label="ประเภทย่อยของสิทธิ"></div>
         </div>
       </div>
     </div>
@@ -116,7 +124,10 @@
   <script src="../../alert.js"></script>
   <script src="health-data.js"></script>
   <script src="nhso-benefits.js"></script>
+  <script src="sso-benefits.js"></script>
+  <script src="csmbs-benefits.js"></script>
   <script src="health.js"></script>
+  <script src="benefit-catalogue.js"></script>
   <script src="../portal-demo.js"></script>
   <script>
     (function () {
@@ -175,7 +186,7 @@
         return true;
       }
 
-      /* ─── Render: switcher ─── */
+      /* ─── Render: switcher (สิทธิ + ประเภทย่อย เช่น มาตรา 33/39/40) ─── */
       function renderSwitch() {
         document.getElementById('right-switch').innerHTML = Object.keys(schemes).map(function (k) {
           var s = schemes[k];
@@ -185,11 +196,21 @@
         document.querySelectorAll('[data-right]').forEach(function (b) {
           b.onclick = function () { state.right = b.dataset.right; HP.setRightKey(state.right); renderAll(); };
         });
+
+        var variants = schemes[state.right].variants, sec = HP.sectionKey(state.right);
+        document.getElementById('section-group').hidden = !variants;
+        document.getElementById('section-switch').innerHTML = variants ? Object.keys(variants).map(function (k) {
+          return '<button type="button" class="dc-chip' + (k === sec ? ' active' : '') + '" data-section="' + k + '" aria-pressed="' + (k === sec) + '">' +
+            e(variants[k].label) + (state.right === H.rights.current && k === schemes[state.right].section ? ' · สิทธิของคุณ' : '') + '</button>';
+        }).join('') : '';
+        document.querySelectorAll('[data-section]').forEach(function (b) {
+          b.onclick = function () { HP.setSectionKey(state.right, b.dataset.section); renderAll(); };
+        });
       }
 
       /* ─── Render: right detail ─── */
       function renderRight() {
-        var s = schemes[state.right];
+        var s = HP.resolveRight(state.right);
         var isReal = state.right === H.rights.current;
         document.getElementById('hero').innerHTML =
           '<div class="hp-right-hero">' +
@@ -233,8 +254,7 @@
           }).join('') + '</div>';
 
         document.getElementById('nhso-note').innerHTML =
-          'บริการส่งเสริมสุขภาพและป้องกันโรคของ สปสช. ครอบคลุม<strong>คนไทยทุกคนทุกสิทธิ</strong> ' +
-          (state.right === 'ucs' ? '' : 'ยกเว้นรายการที่ระบุ "เฉพาะสิทธิบัตรทอง" ') +
+          'บริการส่งเสริมสุขภาพและป้องกันโรคของ สปสช. ' +
           '· "เหมาะกับคุณ" คัดจากอายุ ' + age + ' ปี เพศ' + e(H.user.sex) + ' และโรคประจำตัวของคุณ';
 
         document.getElementById('source-agency').textContent = 'ข้อมูลจาก ' + s.agency;
@@ -308,7 +328,21 @@
 
       document.getElementById('bn-search').addEventListener('input', function () { state.q = this.value; renderList(); });
 
-      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); }
+      /* ─── รายการสิทธิประโยชน์ — แสดงเฉพาะของสิทธิ (และประเภทย่อย) ที่เลือก ─── */
+      var catalogues = {
+        sso:   HP.benefitCatalogue(document.getElementById('sso'), SSO_BENEFITS),
+        csmbs: HP.benefitCatalogue(document.getElementById('csmbs'), CSMBS_BENEFITS)
+      };
+      function renderCatalogues() {
+        document.getElementById('nhso').hidden = state.right !== 'ucs';
+        Object.keys(catalogues).forEach(function (k) {
+          var on = state.right === k;
+          document.getElementById(k).hidden = !on;
+          if (on) catalogues[k].render(HP.sectionKey(k));
+        });
+      }
+
+      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); renderCatalogues(); }
       renderAll();
       HP.mountWelcome('สิทธิการรักษาพยาบาล', 'สิทธิที่คุณมี และสิทธิประโยชน์ที่ได้รับ');
     })();
