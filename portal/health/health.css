@@ -121,6 +121,7 @@
 
 /* ─── Benefit catalogue (ประกันสังคม / ข้าราชการ) — benefit-catalogue.js ─── */
 .hp-cat-sec { padding: 0 0 var(--spacing-xl); margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--stroke-neutral-lighter); }
+.hp-cat-group + .hp-cat-group { margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 1px dashed var(--stroke-neutral-lighter); }
 .hp-cat-title { display: flex; align-items: center; gap: var(--spacing-xs); font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); margin-bottom: var(--spacing-md); }
 .hp-cat-title .material-symbols-outlined { font-size: 22px; color: var(--foreground-primary-default); }
 @media (min-width: 1024px) { .hp-kv--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

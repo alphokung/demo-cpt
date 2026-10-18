@@ -3,6 +3,7 @@
    ใช้กับข้อมูลรูปแบบเดียวกันของ sso-benefits.js และ csmbs-benefits.js:
      D.meta     = หัวข้อการ์ด ลิงก์เว็บไซต์หน่วยงาน หมวด (cats) และป้ายกำกับ
      D.sections = กลุ่มผู้มีสิทธิ (เช่น มาตรา 33/39/40) — การ์ดแสดงเฉพาะกลุ่มที่ส่งเข้ามาใน render()
+                  หรือทุกกลุ่มพร้อมกัน (เช่น ข้าราชการ: ผู้มีสิทธิ + บุคคลในครอบครัว) โดยติดป้าย short ให้แต่ละรายการ
      D.items    = รายการสิทธิ (cat, sec, title, detail, rates, cond, since, ref ...)
      D.refs     = แหล่งอ้างอิง (src: official | gov | news)
    ============================================================ */
@@ -16,7 +17,7 @@
   HP.benefitCatalogue = function (root, D) {
     var M = D.meta;
     var age = HP.age();
-    var st = { sec: Object.keys(D.sections)[0], filter: 'all', q: '' };
+    var st = { secs: Object.keys(D.sections), filter: 'all', q: '' };
 
     root.innerHTML =
       '<div class="hp-section-head">' +
@@ -47,7 +48,7 @@
       return !i.ages || i.ages.some(function (r) { return age >= r[0] && age <= r[1]; });
     }
     function sectionItems() {
-      return D.items.filter(function (i) { return i.sec.indexOf(st.sec) >= 0; });
+      return D.items.filter(function (i) { return i.sec.some(function (s) { return st.secs.indexOf(s) >= 0; }); });
     }
     function srcNote(r) {
       return r.src === 'official' ? '' : ' <em>(' + SRC_NOTE[r.src] + ')</em>';
@@ -61,16 +62,20 @@
     }
 
     function renderSection() {
-      var s = D.sections[st.sec], L = M.labels;
-      $('sec').innerHTML =
-        '<p class="hp-cat-title"><span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) + ' — ' + e(s.title) + '</p>' +
-        '<div class="hp-kv hp-kv--3">' +
-          '<div><p class="hp-kv-label">' + e(L.who) + '</p><p class="hp-kv-value">' + e(s.who) + '</p></div>' +
-          '<div><p class="hp-kv-label">' + e(L.pay) + '</p><p class="hp-kv-value">' + e(s.pay) + '</p></div>' +
-          '<div><p class="hp-kv-label">' + e(L.cover) + '</p><p class="hp-kv-value">' + e(s.cover) + '</p></div>' +
-        '</div>' +
-        '<div class="hp-notice hp-notice--warning" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">lightbulb</span><div>' + e(s.note) + '</div></div>' +
-        '<div class="hp-ref-list">' + refLinks(s.ref) + '</div>';
+      var L = M.labels;
+      $('sec').innerHTML = st.secs.map(function (k) {
+        var s = D.sections[k];
+        return '<div class="hp-cat-group">' +
+          '<p class="hp-cat-title"><span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) + ' — ' + e(s.title) + '</p>' +
+          '<div class="hp-kv hp-kv--3">' +
+            '<div><p class="hp-kv-label">' + e(L.who) + '</p><p class="hp-kv-value">' + e(s.who) + '</p></div>' +
+            '<div><p class="hp-kv-label">' + e(L.pay) + '</p><p class="hp-kv-value">' + e(s.pay) + '</p></div>' +
+            '<div><p class="hp-kv-label">' + e(L.cover) + '</p><p class="hp-kv-value">' + e(s.cover) + '</p></div>' +
+          '</div>' +
+          '<div class="hp-notice hp-notice--warning" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">lightbulb</span><div>' + e(s.note) + '</div></div>' +
+          '<div class="hp-ref-list">' + refLinks(s.ref) + '</div>' +
+        '</div>';
+      }).join('');
     }
 
     function renderFilters() {
@@ -110,6 +115,7 @@
         var tags = '';
         if (eligible(i) && st.filter !== 'mine') tags += '<span class="tag tag--primary tag--sm">เหมาะกับคุณ</span>';
         if (i.opts) tags += i.opts.map(function (o) { return '<span class="tag tag--info tag--sm">ทางเลือก ' + o + '</span>'; }).join('');
+        if (st.secs.length > 1) tags += i.sec.map(function (s) { return '<span class="tag tag--sm">' + e(D.sections[s].short) + '</span>'; }).join('');
         if (i.since && HP.daysUntil(i.since) > -365) {
           tags += HP.daysUntil(i.since) > 0
             ? '<span class="tag tag--info tag--sm">มีผล ' + HP.dateShort(i.since) + '</span>'
@@ -145,9 +151,9 @@
     $('search').addEventListener('input', function () { st.q = this.value; renderList(); });
 
     return {
-      /** section = กลุ่มผู้มีสิทธิที่จะแสดง (เช่น '33') */
+      /** section = กลุ่มผู้มีสิทธิที่จะแสดง (เช่น '33') — ไม่ระบุ = แสดงทุกกลุ่ม */
       render: function (section) {
-        st.sec = section;
+        st.secs = section ? [section] : Object.keys(D.sections);
         if (st.filter !== 'all' && !sectionItems().some(function (i) { return st.filter === 'mine' ? eligible(i) : i.cat === st.filter; })) st.filter = 'all';
         renderSection(); renderFilters(); renderList();
       }
