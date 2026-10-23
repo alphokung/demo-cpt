@@ -115,15 +115,12 @@
     }
     .hero__logo {
       flex: none;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--ac-yellow);
-      color: var(--ac-navy);
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
     }
-    .hero__logo .material-symbols-outlined { font-size: 26px; font-variation-settings: "FILL" 1; }
     .hero__title {
       margin: 0;
       font-family: "Kanit", sans-serif;
@@ -297,7 +294,7 @@
     <!-- Header -->
     <header class="hero">
       <div class="hero__top">
-        <span class="hero__logo" aria-hidden="true"><span class="material-symbols-outlined">gavel</span></span>
+        <img class="hero__logo" src="_media/admin-court.png" alt="Admin Court ศาลปกครอง">
         <div>
           <h1 class="hero__title">ระบบขอคัดคำพิพากษา/คำสั่ง</h1>
           <p class="hero__org">ศาลปกครอง</p>
