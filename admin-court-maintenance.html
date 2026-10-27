@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปิดปรับปรุงบริการขอคัดคำพิพากษา/คำสั่งศาลปกครอง — ทางรัฐ</title>
+  <meta name="description" content="บริการขอคัดและขอรับรองสำเนาคำพิพากษา/คำสั่งศาลปกครอง ปิดให้บริการวันที่ 23 ตุลาคม 2569 เวลา 18.00 น. - 23.59 น. เพื่อพัฒนาและปรับปรุงประสิทธิภาพ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600&family=Sarabun:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..600,0..1,0">
+
+  <style>
+    /* ── Admin Court theme (ระบบขอคัดคำพิพากษา ศาลปกครอง)
+          layout การ์ดแจ้งเตือนเดียวกับ flood-relief-maintenance.html ── */
+    :root {
+      --ac-navy: #06206a;
+      --ac-bg: #d5dbe5;
+      --ac-bg-circle: #c8d0de;
+      --ac-card: #ffffff;
+      --ac-surface: #f2f4f8;
+      --ac-text: #3a3a3a;
+      --ac-text-muted: #5f6470;
+      --ac-text-subtle: #8a909c;
+      --ac-chip: #e8ecf4;
+      --ac-yellow: #ffd200;
+      --ac-green: #2e7d32;
+      --ac-green-bg: #e6f4e7;
+      --ac-red: #e01b1b;
+      --ac-red-bg: #fde8e8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Sarabun", sans-serif;
+      color: var(--ac-text);
+      background: var(--ac-bg);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* soft background circles */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      background: var(--ac-bg-circle);
+      z-index: 0;
+      pointer-events: none;
+    }
+    body::before { width: 520px; height: 520px; left: -220px; bottom: -120px; }
+    body::after  { width: 360px; height: 360px; right: -160px; top: -80px; opacity: .7; }
+
+    .material-symbols-outlined {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 100vh;
+    }
+
+    /* ── Notice card ── */
+    .notice {
+      margin: auto 0; /* จัดการ์ดไว้กลางจอ */
+      background: var(--ac-card);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 16px rgba(6, 32, 106, .08);
+      text-align: center;
+    }
+
+    .notice__icon {
+      width: 64px;
+      height: 64px;
+      margin: 4px auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ac-yellow);
+      color: var(--ac-navy);
+    }
+    .notice__icon .material-symbols-outlined { font-size: 34px; }
+
+    .notice__title {
+      margin: 0 0 8px;
+      font-family: "Kanit", sans-serif;
+      font-size: 1.375rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--ac-navy);
+    }
+    .notice__desc {
+      margin: 0 0 14px;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      color: var(--ac-text-muted);
+    }
+    .notice__desc strong { color: var(--ac-navy); font-weight: 600; }
+    .nowrap { white-space: nowrap; }
+
+    .date-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--ac-chip);
+      font-size: .9375rem;
+      font-weight: 600;
+      color: var(--ac-navy);
+    }
+    .date-chip .material-symbols-outlined { font-size: 18px; font-variation-settings: "FILL" 1; }
+
+    /* time window (เริ่มต้น | สิ้นสุด) */
+    .window {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      margin: 16px 0;
+      padding: 14px 8px;
+      background: var(--ac-surface);
+      border-radius: 18px;
+    }
+    .window__divider { height: 44px; background: #dde1ea; }
+    .window__label {
+      font-size: .9375rem;
+      color: var(--ac-text-subtle);
+    }
+    .window__value {
+      margin-top: 2px;
+      font-family: "Kanit", sans-serif;
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--ac-navy);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .status-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .status-box + .status-box { margin-top: 10px; }
+    .status-box .material-symbols-outlined {
+      font-size: 20px;
+      font-variation-settings: "FILL" 1;
+      margin-top: 1px;
+    }
+    .status-box--closed { background: var(--ac-red-bg); color: var(--ac-red); }
+    .status-box--open   { background: var(--ac-green-bg); color: var(--ac-green); }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #fff;
+      background: var(--ac-navy);
+      box-shadow: 0 4px 10px rgba(6, 32, 106, .3);
+    }
+    .btn:disabled {
+      background: #a9b1c6;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .notice { animation: fade-in-up .4s ease both; }
+    @media (prefers-reduced-motion: reduce) { .notice { animation: none; } }
+
+    @media (min-width: 600px) {
+      .page { padding-top: 40px; }
+      .notice { padding: 28px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Maintenance notice -->
+    <main class="notice">
+      <div class="notice__icon" aria-hidden="true">
+        <span class="material-symbols-outlined">construction</span>
+      </div>
+      <h2 class="notice__title">แจ้งปิดปรับปรุงระบบชั่วคราว</h2>
+      <p class="notice__desc">
+        บริการ <strong>“ขอคัดและขอรับรองสำเนา<wbr><span class="nowrap">คำพิพากษา/</span><wbr><span class="nowrap">คำสั่งศาลปกครอง”</span></strong>
+        จะปิดให้บริการชั่วคราว เพื่อพัฒนาและปรับปรุงประสิทธิภาพ ขออภัยในความไม่สะดวก
+      </p>
+
+      <span class="date-chip">
+        <span class="material-symbols-outlined">calendar_month</span>
+        วันศุกร์ที่ 23 ตุลาคม 2569
+      </span>
+
+      <div class="window" aria-label="ช่วงเวลาปิดปรับปรุง 18.00 น. ถึง 23.59 น.">
+        <div>
+          <div class="window__label">เริ่มปิดปรับปรุง</div>
+          <div class="window__value">18.00 น.</div>
+        </div>
+        <div class="window__divider" aria-hidden="true"></div>
+        <div>
+          <div class="window__label">สิ้นสุด</div>
+          <div class="window__value">23.59 น.</div>
+        </div>
+      </div>
+
+      <div class="status-box status-box--closed">
+        <span class="material-symbols-outlined">block</span>
+        <span>ระหว่างเวลาดังกล่าวจะไม่สามารถค้นหา ยื่นคำขอ หรือชำระค่าธรรมเนียมการขอคัดสำเนาได้</span>
+      </div>
+      <div class="status-box status-box--open">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่วันที่ 24 ตุลาคม 2569 <span class="nowrap">เวลา 00.00 น.</span> เป็นต้นไป</span>
+      </div>
+
+      <button class="btn" type="button" disabled>ค้นหาคำพิพากษา/คำสั่ง</button>
+    </main>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปิดปรับปรุงระบบลงทะเบียนเยียวยาน้ำท่วม ปี 2569 — ทางรัฐ</title>
+  <meta name="description" content="ปิดปรับปรุงระบบลงทะเบียนเยียวยาน้ำท่วม ปี 2569 เวลา 21.00 น. - 23.59 น. เพื่อปรับปรุงประสิทธิภาพในการให้บริการ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..600,0..1,0">
+
+  <style>
+    /* ── DDPM flood-relief theme (ระบบยื่นขอรับลงทะเบียนเยียวยาผู้ประสบภัย) ── */
+    :root {
+      --ddpm-navy: #1b2f8f;
+      --ddpm-blue: #1f5fc8;
+      --ddpm-blue-btn: #1a63c6;
+      --ddpm-bg: #dfe3f6;
+      --ddpm-bg-circle: #cfd5f0;
+      --ddpm-card: #f1f1f3;
+      --ddpm-surface: #ffffff;
+      --ddpm-text: #2b2b33;
+      --ddpm-text-muted: #6b6f7b;
+      --ddpm-text-subtle: #9a9ea8;
+      --ddpm-chip: #e2e2e6;
+      --ddpm-green: #1f7a3a;
+      --ddpm-green-bg: #e3f3e8;
+      --ddpm-orange: #c25a00;
+      --ddpm-orange-bg: #fff1e3;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Anuphan", sans-serif;
+      color: var(--ddpm-text);
+      background: var(--ddpm-bg);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* soft background circles like the app */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      background: var(--ddpm-bg-circle);
+      z-index: 0;
+      pointer-events: none;
+    }
+    body::before { width: 520px; height: 520px; left: -220px; bottom: -120px; }
+    body::after  { width: 360px; height: 360px; right: -160px; top: -80px; opacity: .7; }
+
+    .material-symbols-outlined {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 100vh;
+    }
+
+    /* ── Header card ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 22px 20px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--ddpm-blue) 0%, var(--ddpm-navy) 100%);
+      box-shadow: 0 10px 24px rgba(27, 47, 143, .18);
+    }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .08);
+    }
+    .hero::before { width: 180px; height: 180px; right: -50px; top: -60px; }
+    .hero::after  { width: 120px; height: 120px; left: -50px; bottom: -60px; }
+
+    .hero__top {
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .hero__logo {
+      flex: none;
+      width: 44px;
+      height: auto;
+      border-radius: 3px;
+    }
+    .hero__title {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .hero__org {
+      margin: 2px 0 0;
+      font-size: .875rem;
+      color: rgba(255, 255, 255, .8);
+    }
+
+    .hero__secure {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: .8125rem;
+      color: rgba(255, 255, 255, .9);
+    }
+    .hero__secure .material-symbols-outlined {
+      font-size: 18px;
+      font-variation-settings: "FILL" 1;
+      color: #8fc3ff;
+    }
+
+    /* ── Notice card ── */
+    .notice {
+      background: var(--ddpm-card);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 16px rgba(27, 47, 143, .06);
+    }
+
+
+    .notice__icon {
+      width: 64px;
+      height: 64px;
+      margin: 4px auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ddpm-orange-bg);
+      color: var(--ddpm-orange);
+    }
+    .notice__icon .material-symbols-outlined { font-size: 34px; }
+
+    .notice__title {
+      margin: 0 0 8px;
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--ddpm-navy);
+      text-align: center;
+    }
+    .notice__desc {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--ddpm-text-muted);
+      text-align: center;
+    }
+
+    .org-chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--ddpm-chip);
+      font-size: .875rem;
+      color: var(--ddpm-text);
+    }
+
+    /* time window (เริ่มต้น | สิ้นสุด) */
+    .window {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      margin: 20px 0 16px;
+      padding: 14px 8px;
+      background: var(--ddpm-surface);
+      border-radius: 18px;
+      text-align: center;
+    }
+    .window__divider { height: 44px; background: #e4e4ea; }
+    .window__label {
+      font-size: .875rem;
+      color: var(--ddpm-text-subtle);
+    }
+    .window__value {
+      margin-top: 2px;
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--ddpm-navy);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .back-online {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--ddpm-green-bg);
+      color: var(--ddpm-green);
+      font-size: .9375rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .back-online .material-symbols-outlined {
+      font-size: 20px;
+      font-variation-settings: "FILL" 1;
+      margin-top: 1px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--ddpm-blue-btn);
+      box-shadow: 0 4px 10px rgba(26, 99, 198, .3);
+    }
+    .btn:disabled {
+      background: #b9c0d4;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+
+    .footnote {
+      margin-top: auto;
+      text-align: center;
+      font-size: .75rem;
+      line-height: 1.6;
+      color: var(--ddpm-text-muted);
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero   { animation: fade-in-up .4s ease both; }
+    .notice { animation: fade-in-up .4s .08s ease both; }
+
+    @media (min-width: 600px) {
+      .page { padding-top: 40px; }
+      .hero { padding: 26px 26px 20px; }
+      .hero__title { font-size: 1.25rem; }
+      .notice { padding: 28px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="hero">
+      <div class="hero__top">
+        <img class="hero__logo" src="_media/ddpm.png" alt="กรมป้องกันและบรรเทาสาธารณภัย">
+        <div>
+          <h1 class="hero__title">ระบบยื่นขอรับลงทะเบียนเยียวยาผู้ประสบภัยตามมติคณะรัฐมนตรี</h1>
+          <p class="hero__org">กรมป้องกันและบรรเทาสาธารณภัย</p>
+        </div>
+      </div>
+      <div class="hero__secure">
+        <span class="material-symbols-outlined">verified_user</span>
+        ข้อมูลของท่านได้รับการเข้ารหัสและปกป้องตามมาตรฐานความปลอดภัย
+      </div>
+    </header>
+
+    <!-- Maintenance notice -->
+    <main class="notice">
+      <h2 class="notice__title">แจ้งปิดปรับปรุงระบบชั่วคราว</h2>
+      <p class="notice__desc">
+        เพื่อปรับปรุงประสิทธิภาพในการให้บริการให้ดียิ่งขึ้น ขออภัยในความไม่สะดวก
+      </p>
+
+      <div class="window" aria-label="ช่วงเวลาปิดปรับปรุง 21.00 น. ถึง 23.59 น.">
+        <div>
+          <div class="window__label">เริ่มปิดปรับปรุง</div>
+          <div class="window__value">21.00 น.</div>
+        </div>
+        <div class="window__divider" aria-hidden="true"></div>
+        <div>
+          <div class="window__label">สิ้นสุด</div>
+          <div class="window__value">23.59 น.</div>
+        </div>
+      </div>
+
+      <div class="back-online">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่เวลา 00.00 น. เป็นต้นไป</span>
+      </div>
+
+      <button class="btn" type="button" disabled>ลงทะเบียนขอรับความช่วยเหลือ</button>
+
+    </main>
+
+    <p class="footnote">
+      ระบบลงทะเบียนเยียวยาน้ำท่วม ปี 2569 · ผ่านแอปฯ ทางรัฐ<br>
+      ตรวจสอบล่าสุด: <span class="source-note-time"></span>
+    </p>
+
+  </div>
+
+  <script>
+    (function() {
+      var m=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+             'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d=new Date();
+      var s=d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+            ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+            String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
+  </script>
+</body>
+</html>

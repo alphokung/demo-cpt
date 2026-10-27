@@ -45,7 +45,20 @@
       return H.rights.current;
     },
     setRightKey: function (k) { try { localStorage.setItem('hp.rightDemo', k); } catch (e) {} },
-    currentRight: function () { return H.rights.schemes[HP.currentRightKey()]; },
+    /** ประเภทย่อยของสิทธิ (เช่น มาตรา 33/39/40) — ค่าเริ่มต้นคือ section ของสิทธิ เลือกดูตัวอย่างอื่นได้ */
+    sectionKey: function (rightKey) {
+      var s = H.rights.schemes[rightKey];
+      if (!s.variants) return null;
+      try { var k = localStorage.getItem('hp.sectionDemo.' + rightKey); if (k && s.variants[k]) return k; } catch (e) {}
+      return s.section;
+    },
+    setSectionKey: function (rightKey, k) { try { localStorage.setItem('hp.sectionDemo.' + rightKey, k); } catch (e) {} },
+    /** สิทธิพร้อมค่าของประเภทย่อยที่เลือกทับค่าหลัก */
+    resolveRight: function (rightKey) {
+      var s = H.rights.schemes[rightKey], sec = HP.sectionKey(rightKey);
+      return sec ? Object.assign({}, s, s.variants[sec], { section: sec }) : s;
+    },
+    currentRight: function () { return HP.resolveRight(HP.currentRightKey()); },
 
     /** สถานะใบรับรองแพทย์ → valid | expiring | expired | none */
     certStatus: function (c) {
