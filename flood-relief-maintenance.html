@@ -207,6 +207,13 @@
       font-size: .875rem;
       color: var(--ddpm-text-subtle);
     }
+    .window__date {
+      margin-top: 2px;
+      font-size: .8125rem;
+      line-height: 1.4;
+      color: var(--ddpm-text-muted);
+    }
+    .window__date:empty { display: none; }
     .window__value {
       margin-top: 2px;
       font-size: 1.375rem;
@@ -302,21 +309,23 @@
         เพื่อปรับปรุงประสิทธิภาพในการให้บริการให้ดียิ่งขึ้น ขออภัยในความไม่สะดวก
       </p>
 
-      <div class="window" aria-label="ช่วงเวลาปิดปรับปรุง 21.00 น. ถึง 23.59 น.">
+      <div class="window" id="window" aria-label="ช่วงเวลาปิดปรับปรุง 21.00 น. ถึง 23.59 น.">
         <div>
           <div class="window__label">เริ่มปิดปรับปรุง</div>
-          <div class="window__value">21.00 น.</div>
+          <div class="window__date" id="start-date"></div>
+          <div class="window__value" id="start-time">21.00 น.</div>
         </div>
         <div class="window__divider" aria-hidden="true"></div>
         <div>
           <div class="window__label">สิ้นสุด</div>
-          <div class="window__value">23.59 น.</div>
+          <div class="window__date" id="end-date"></div>
+          <div class="window__value" id="end-time">23.59 น.</div>
         </div>
       </div>
 
       <div class="back-online">
         <span class="material-symbols-outlined">check_circle</span>
-        <span>ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่เวลา 00.00 น. เป็นต้นไป</span>
+        <span id="back-online-text">ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่เวลา 00.00 น. เป็นต้นไป</span>
       </div>
 
       <button class="btn" type="button" disabled>ลงทะเบียนขอรับความช่วยเหลือ</button>
@@ -339,6 +348,41 @@
             ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
             String(d.getMinutes()).padStart(2,'0')+' น.';
       document.querySelectorAll('.source-note-time').forEach(function(e){e.textContent=s;});
+    })();
+
+    /* Maintenance window from query string (local time, YYYY-MM-DDTHH:mm, ค.ศ.):
+       ?start=2026-10-30T21:00&end=2026-10-31T01:00[&online=2026-10-31T01:01]
+       online defaults to end + 1 minute. Without params the static times stay. */
+    (function() {
+      var q=new URLSearchParams(location.search);
+      var days=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+      var mon=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.',
+               'ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+      function parse(v){
+        var m=/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})$/.exec(v||'');
+        if(!m) return null;
+        var d=new Date(+m[1],m[2]-1,+m[3],+m[4],+m[5]);
+        return isNaN(d) ? null : d;
+      }
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function date(d){
+        return 'วัน'+days[d.getDay()]+'ที่ '+d.getDate()+' '+mon[d.getMonth()]+' '+(d.getFullYear()+543);
+      }
+      function time(d){ return pad(d.getHours())+':'+pad(d.getMinutes())+' น.'; }
+      function full(d){ return date(d)+' '+time(d); }
+
+      var start=parse(q.get('start')), end=parse(q.get('end'));
+      if(!start || !end) return;
+      var online=parse(q.get('online')) || new Date(end.getTime()+60000);
+
+      document.getElementById('start-date').textContent=date(start);
+      document.getElementById('start-time').textContent=time(start);
+      document.getElementById('end-date').textContent=date(end);
+      document.getElementById('end-time').textContent=time(end);
+      document.getElementById('window').setAttribute('aria-label',
+        'ช่วงเวลาปิดปรับปรุง '+full(start)+' ถึง '+full(end));
+      document.getElementById('back-online-text').textContent=
+        'ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่'+full(online)+' เป็นต้นไป';
     })();
   </script>
 </body>
