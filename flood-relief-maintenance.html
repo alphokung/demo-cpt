@@ -375,14 +375,18 @@
       if(!start || !end) return;
       var online=parse(q.get('online')) || new Date(end.getTime()+60000);
 
-      document.getElementById('start-date').textContent=date(start);
+      /* same-day window: show times only */
+      var sameDay=date(start)===date(end);
+      var label=sameDay ? function(d){ return 'เวลา '+time(d); } : full;
+
+      document.getElementById('start-date').textContent=sameDay ? '' : date(start);
       document.getElementById('start-time').textContent=time(start);
-      document.getElementById('end-date').textContent=date(end);
+      document.getElementById('end-date').textContent=sameDay ? '' : date(end);
       document.getElementById('end-time').textContent=time(end);
       document.getElementById('window').setAttribute('aria-label',
-        'ช่วงเวลาปิดปรับปรุง '+full(start)+' ถึง '+full(end));
+        'ช่วงเวลาปิดปรับปรุง '+label(start)+' ถึง '+label(end));
       document.getElementById('back-online-text').textContent=
-        'ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่'+full(online)+' เป็นต้นไป';
+        'ท่านสามารถกลับมาใช้งานได้ตามปกติ ตั้งแต่'+label(online)+' เป็นต้นไป';
     })();
   </script>
 </body>
