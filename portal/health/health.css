@@ -76,6 +76,7 @@
 .hp-benefit { display: flex; gap: var(--spacing-md); padding: var(--spacing-lg); border-radius: var(--radius-xl); border: 1px solid var(--stroke-neutral-lighter); background: var(--canvas-white); }
 .hp-benefit-title { font-weight: var(--font-weight-600); font-size: var(--font-size-body-m); margin-bottom: var(--spacing-xxs); }
 .hp-benefit-desc { font-size: var(--font-size-body-s); color: var(--foreground-neutral-light); line-height: 1.55; }
+.hp-benefit-desc--pre { white-space: pre-line; }
 
 /* ─── Notice box — same look as the dashboard .notice-item (dashboard-components.css):
        white card, colour-coded left border, icon in a tinted circle ─── */
@@ -110,7 +111,7 @@
 .hp-search .material-symbols-outlined { color: var(--foreground-neutral-lighter); }
 .hp-count { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); }
 .hp-bn-head { display: flex; flex-direction: column; gap: var(--spacing-xxs); text-align: left; flex: 1; min-width: 0; }
-.hp-bn-sub { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); font-weight: var(--font-weight-400); }
+.hp-bn-sub { font-size: var(--font-size-body-s); color: var(--foreground-neutral-lighter); font-weight: var(--font-weight-400); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .hp-bn-tags { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); margin-top: var(--spacing-xs); }
 .hp-kv { display: grid; grid-template-columns: 1fr; gap: var(--spacing-md); }
 .hp-kv-label { font-size: var(--font-size-label-m); color: var(--foreground-neutral-lighter); margin-bottom: var(--spacing-xxs); }
@@ -124,7 +125,6 @@
 .hp-cat-group + .hp-cat-group { margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 1px dashed var(--stroke-neutral-lighter); }
 .hp-cat-title { display: flex; align-items: center; gap: var(--spacing-xs); font-weight: var(--font-weight-700); font-size: var(--font-size-title-m); margin-bottom: var(--spacing-md); }
 .hp-cat-title .material-symbols-outlined { font-size: 22px; color: var(--foreground-primary-default); }
-@media (min-width: 1024px) { .hp-kv--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .hp-rates { display: flex; flex-direction: column; border: 1px solid var(--stroke-neutral-lighter); border-radius: var(--radius-lg); overflow: hidden; }
 .hp-rate { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xxs); padding: var(--spacing-sm) var(--spacing-md); font-size: var(--font-size-body-s); line-height: 1.6; }
 .hp-rate + .hp-rate { border-top: 1px solid var(--stroke-neutral-lighter); }

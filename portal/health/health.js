@@ -39,20 +39,39 @@
 
     qs: function (name) { return new URLSearchParams(location.search).get(name); },
 
-    /** สิทธิที่แสดง — ใช้สิทธิจริงเป็นค่าเริ่มต้น แต่เลือกดูตัวอย่างสิทธิอื่นได้ (เก็บใน localStorage) */
+    /** สิทธิที่แสดง — ใช้สิทธิจริงเป็นค่าเริ่มต้น แต่เลือกดูตัวอย่างสิทธิอื่นได้
+        ลำดับ: query string (?right=ucs|sso|csmbs) → localStorage → สิทธิจริง */
     currentRightKey: function () {
+      var q = HP.qs('right');
+      if (q && H.rights.schemes[q]) return q;
       try { var k = localStorage.getItem('hp.rightDemo'); if (k && H.rights.schemes[k]) return k; } catch (e) {}
       return H.rights.current;
     },
-    setRightKey: function (k) { try { localStorage.setItem('hp.rightDemo', k); } catch (e) {} },
-    /** ประเภทย่อยของสิทธิ (เช่น มาตรา 33/39/40) — ค่าเริ่มต้นคือ section ของสิทธิ เลือกดูตัวอย่างอื่นได้ */
+    setRightKey: function (k) {
+      try { localStorage.setItem('hp.rightDemo', k); } catch (e) {}
+      HP.setQs({ right: k, section: null });
+    },
+    /** ประเภทย่อยของสิทธิ (เช่น มาตรา 33/39/40) — ค่าเริ่มต้นคือ section ของสิทธิ เลือกดูตัวอย่างอื่นได้
+        ลำดับ: query string (?section=33|39|40) → localStorage → section ของสิทธิ */
     sectionKey: function (rightKey) {
       var s = H.rights.schemes[rightKey];
       if (!s.variants) return null;
+      var q = HP.qs('section');
+      if (q && s.variants[q]) return q;
       try { var k = localStorage.getItem('hp.sectionDemo.' + rightKey); if (k && s.variants[k]) return k; } catch (e) {}
       return s.section;
     },
-    setSectionKey: function (rightKey, k) { try { localStorage.setItem('hp.sectionDemo.' + rightKey, k); } catch (e) {} },
+    setSectionKey: function (rightKey, k) {
+      try { localStorage.setItem('hp.sectionDemo.' + rightKey, k); } catch (e) {}
+      HP.setQs({ right: rightKey, section: k });
+    },
+    /** อัปเดต query string โดยไม่โหลดหน้าใหม่ (null = ลบ) — ให้ URL ตรงกับ demo ที่เลือก แชร์ลิงก์ได้ */
+    setQs: function (params) {
+      var q = new URLSearchParams(location.search);
+      Object.keys(params).forEach(function (k) { params[k] == null ? q.delete(k) : q.set(k, params[k]); });
+      var s = q.toString();
+      history.replaceState(null, '', location.pathname + (s ? '?' + s : '') + location.hash);
+    },
     /** สิทธิพร้อมค่าของประเภทย่อยที่เลือกทับค่าหลัก */
     resolveRight: function (rightKey) {
       var s = H.rights.schemes[rightKey], sec = HP.sectionKey(rightKey);
@@ -74,6 +93,17 @@
     sectionTitle: function (title) {
       return '<div class="section-title-container card-section__title-container"><div class="section-bar card-section__bar--primary"></div>' +
         '<h3 class="section-title card-section__heading">' + title + '</h3></div>';
+    },
+
+    /** หัวการ์ดสิทธิประโยชน์ (ใช้ร่วมทุกสิทธิ): title · sub · แท็กกลุ่มเป้าหมาย */
+    benefitHead: function (title, sub, tags) {
+      return '<div class="hp-bn-head"><span class="accordion-title">' + HP.esc(title) + '</span>' +
+        (sub ? '<span class="hp-bn-sub">' + HP.esc(sub) + '</span>' : '') +
+        (tags ? '<div class="hp-bn-tags">' + tags + '</div>' : '') + '</div>';
+    },
+    /** ข้อความหลายบรรทัดเป็นบรรทัดเดียว (รายการ "- " คั่นด้วย ·) — ใช้เป็น sub ของการ์ด (CSS ตัดที่ 2 บรรทัด) */
+    oneLine: function (text) {
+      return (text || '').replace(/^-\s*/, '').replace(/\n-\s*/g, ' · ').replace(/\n/g, ' ').trim();
     },
 
     detailsItem: function (label, value, cls) {

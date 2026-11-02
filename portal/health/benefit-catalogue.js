@@ -8,11 +8,19 @@
    ============================================================ */
 (function () {
   var H = window.HEALTH, e = HP.esc;
+  // การ์ดข้อมูลของกลุ่มผู้มีสิทธิ (ป้ายกำกับมาจาก D.meta.labels)
+  var INFO = [
+    { key: 'who',   icon: 'badge' },
+    { key: 'pay',   icon: 'payments' },
+    { key: 'cover', icon: 'health_and_safety' }
+  ];
 
   HP.benefitCatalogue = function (root, D) {
     var M = D.meta;
     var age = HP.age();
-    var st = { secs: Object.keys(D.sections), filter: 'all', q: '' };
+    var st = { secs: Object.keys(D.sections), filter: 'mine', q: '' };
+    var CAT_LABEL = {};
+    M.cats.forEach(function (c) { CAT_LABEL[c.key] = c.label; });
 
     root.innerHTML =
       '<div class="hp-section-head">' +
@@ -23,7 +31,6 @@
         '<a class="hp-link" href="' + e(M.site.url) + '" target="_blank" rel="noopener">' +
           '<span class="material-symbols-outlined">open_in_new</span>' + e(M.site.label) + '</a>' +
       '</div>' +
-      '<div class="hp-notice" style="margin-bottom: var(--spacing-lg);"><span class="material-symbols-outlined">info</span><div>' + M.note + '</div></div>' +
       '<div class="hp-cat-sec" data-el="sec"></div>' +
       '<div class="hp-toolbar">' +
         '<label class="hp-search"><span class="material-symbols-outlined">search</span>' +
@@ -51,12 +58,10 @@
         var s = D.sections[k];
         return '<div class="hp-cat-group">' +
           '<p class="hp-cat-title"><span class="material-symbols-outlined">' + s.icon + '</span>' + e(s.label) + ' — ' + e(s.title) + '</p>' +
-          '<div class="hp-kv hp-kv--3">' +
-            '<div><p class="hp-kv-label">' + e(L.who) + '</p><p class="hp-kv-value">' + e(s.who) + '</p></div>' +
-            '<div><p class="hp-kv-label">' + e(L.pay) + '</p><p class="hp-kv-value">' + e(s.pay) + '</p></div>' +
-            '<div><p class="hp-kv-label">' + e(L.cover) + '</p><p class="hp-kv-value">' + e(s.cover) + '</p></div>' +
-          '</div>' +
-          '<div class="hp-notice hp-notice--warning" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">lightbulb</span><div>' + e(s.note) + '</div></div>' +
+          '<div class="hp-benefits">' + INFO.map(function (f) {
+            return '<div class="hp-benefit"><span class="hp-icon hp-icon--sm tone-primary"><span class="material-symbols-outlined">' + f.icon + '</span></span>' +
+              '<div><p class="hp-benefit-title">' + e(L[f.key]) + '</p><p class="hp-benefit-desc hp-benefit-desc--pre">' + e(s[f.key]) + '</p></div></div>';
+          }).join('') + '</div>' +
         '</div>';
       }).join('');
     }
@@ -95,15 +100,12 @@
       }
 
       $('list').innerHTML = list.map(function (i) {
-        var tags = '';
-        if (eligible(i) && st.filter !== 'mine') tags += '<span class="tag tag--primary tag--sm">เหมาะกับคุณ</span>';
+        // กลุ่มเป้าหมาย: เหมาะกับคุณ → หมวด → ทางเลือก (ม.40) / ตัวเอง-ครอบครัว
+        var tags = (eligible(i) ? '<span class="tag tag--primary tag--sm">เหมาะกับคุณ</span>' : '') +
+          '<span class="tag tag--sm">' + e(CAT_LABEL[i.cat]) + '</span>';
         if (i.opts) tags += i.opts.map(function (o) { return '<span class="tag tag--info tag--sm">ทางเลือก ' + o + '</span>'; }).join('');
         if (st.secs.length > 1) tags += i.sec.map(function (s) { return '<span class="tag tag--sm">' + e(D.sections[s].short) + '</span>'; }).join('');
-        if (i.since && HP.daysUntil(i.since) > -365) {
-          tags += HP.daysUntil(i.since) > 0
-            ? '<span class="tag tag--info tag--sm">มีผล ' + HP.dateShort(i.since) + '</span>'
-            : '<span class="tag tag--success tag--sm">ปรับปรุง ' + HP.dateShort(i.since) + '</span>';
-        }
+        var sub = HP.oneLine(i.detail) !== i.title ? HP.oneLine(i.detail) : HP.oneLine(i.cond);
 
         var body =
           '<div class="hp-kv">' +
@@ -117,8 +119,7 @@
 
         return '<div class="accordion-item">' +
           '<div class="accordion-header" onclick="toggleAccordion(this)">' +
-            '<div class="hp-bn-head"><span class="accordion-title">' + e(i.title) + '</span>' +
-              '<div class="hp-bn-tags">' + tags + '</div></div>' +
+            HP.benefitHead(i.title, sub, tags) +
             '<span class="accordion-icon"><span class="material-symbols-outlined">expand_more</span></span>' +
           '</div>' +
           '<div class="accordion-body"><div class="accordion-body-inner">' + body + '</div></div>' +
@@ -132,7 +133,8 @@
       /** section = กลุ่มผู้มีสิทธิที่จะแสดง (เช่น '33') — ไม่ระบุ = แสดงทุกกลุ่ม */
       render: function (section) {
         st.secs = section ? [section] : Object.keys(D.sections);
-        if (st.filter !== 'all' && !sectionItems().some(function (i) { return st.filter === 'mine' ? eligible(i) : i.cat === st.filter; })) st.filter = 'all';
+        // เริ่มที่ "เหมาะกับคุณ" ทุกครั้งที่เปลี่ยนกลุ่ม — ถ้าไม่มีรายการที่เหมาะ (เช่น มาตรา 40) แสดงทั้งหมด
+        st.filter = sectionItems().some(eligible) ? 'mine' : 'all';
         renderSection(); renderFilters(); renderList();
       }
     };
