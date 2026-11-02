@@ -1,18 +1,13 @@
 /* ============================================================
-   Benefit catalogue — การ์ดรายการสิทธิประโยชน์แบบค้นหา/กรองได้ พร้อมอ้างอิง
+   Benefit catalogue — การ์ดรายการสิทธิประโยชน์แบบค้นหา/กรองได้
    ใช้กับข้อมูลรูปแบบเดียวกันของ sso-benefits.js และ csmbs-benefits.js:
      D.meta     = หัวข้อการ์ด ลิงก์เว็บไซต์หน่วยงาน หมวด (cats) และป้ายกำกับ
      D.sections = กลุ่มผู้มีสิทธิ (เช่น มาตรา 33/39/40) — การ์ดแสดงเฉพาะกลุ่มที่ส่งเข้ามาใน render()
                   หรือทุกกลุ่มพร้อมกัน (เช่น ข้าราชการ: ผู้มีสิทธิ + บุคคลในครอบครัว) โดยติดป้าย short ให้แต่ละรายการ
-     D.items    = รายการสิทธิ (cat, sec, title, detail, rates, cond, since, ref ...)
-     D.refs     = แหล่งอ้างอิง (src: official | gov | news)
+     D.items    = รายการสิทธิ (cat, sec, title, detail, rates, cond, since ...)
    ============================================================ */
 (function () {
   var H = window.HEALTH, e = HP.esc;
-  var SRC_NOTE = {
-    gov: 'หน่วยงานรัฐเผยแพร่ซ้ำ — ไม่ใช่เว็บไซต์หน่วยงานเจ้าของสิทธิโดยตรง',
-    news: 'สื่อข่าว — ไม่ใช่เว็บไซต์หน่วยงานเจ้าของสิทธิโดยตรง'
-  };
 
   HP.benefitCatalogue = function (root, D) {
     var M = D.meta;
@@ -36,8 +31,7 @@
         '<div class="filter-row" data-el="filters"></div>' +
         '<p class="hp-count" data-el="count"></p>' +
       '</div>' +
-      '<div class="accordion" data-el="list"></div>' +
-      '<details class="hp-refs"><summary><span class="material-symbols-outlined">menu_book</span>แหล่งอ้างอิง</summary><ol data-el="refs"></ol></details>';
+      '<div class="accordion" data-el="list"></div>';
 
     function $(name) { return root.querySelector('[data-el="' + name + '"]'); }
 
@@ -49,16 +43,6 @@
     }
     function sectionItems() {
       return D.items.filter(function (i) { return i.sec.some(function (s) { return st.secs.indexOf(s) >= 0; }); });
-    }
-    function srcNote(r) {
-      return r.src === 'official' ? '' : ' <em>(' + SRC_NOTE[r.src] + ')</em>';
-    }
-    function refLinks(keys) {
-      return keys.map(function (k) {
-        var r = D.refs[k];
-        return '<a class="hp-ref" href="' + e(r.url) + '" target="_blank" rel="noopener">' +
-          '<span class="material-symbols-outlined">open_in_new</span><span>' + e(r.title) + srcNote(r) + '</span></a>';
-      }).join('');
     }
 
     function renderSection() {
@@ -73,7 +57,6 @@
             '<div><p class="hp-kv-label">' + e(L.cover) + '</p><p class="hp-kv-value">' + e(s.cover) + '</p></div>' +
           '</div>' +
           '<div class="hp-notice hp-notice--warning" style="margin-top:var(--spacing-lg)"><span class="material-symbols-outlined">lightbulb</span><div>' + e(s.note) + '</div></div>' +
-          '<div class="hp-ref-list">' + refLinks(s.ref) + '</div>' +
         '</div>';
       }).join('');
     }
@@ -130,7 +113,6 @@
             }).join('') + '</div></div>' : '') +
             '<div><p class="hp-kv-label">เงื่อนไขการรับสิทธิ</p><p class="hp-kv-value">' + e(i.cond) + '</p></div>' +
             (i.since ? '<div><p class="hp-kv-label">มีผลตั้งแต่</p><p class="hp-kv-value">' + HP.dateLong(i.since) + '</p></div>' : '') +
-            '<div><p class="hp-kv-label">อ้างอิง</p><div class="hp-ref-list">' + refLinks(i.ref) + '</div></div>' +
           '</div>';
 
         return '<div class="accordion-item">' +
@@ -144,10 +126,6 @@
       }).join('');
     }
 
-    $('refs').innerHTML = Object.keys(D.refs).map(function (k) {
-      var r = D.refs[k];
-      return '<li><a href="' + e(r.url) + '" target="_blank" rel="noopener">' + e(r.title) + '</a>' + srcNote(r) + '</li>';
-    }).join('');
     $('search').addEventListener('input', function () { st.q = this.value; renderList(); });
 
     return {
