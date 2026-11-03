@@ -126,8 +126,12 @@
   // Only the location comes from here — the weather chip's own icon, colour
   // and text are owned by renderContextBars(), which reads the
   // demo-configurable WEATHER_TYPES variant.
+  // Also published as CONTEXT_LOCATION for pages that render the card with
+  // TodayContextCard (dashboard-today-card.js) instead of #weather-location.
   function applyWeather(d) {
-    document.getElementById('weather-location').textContent = d.location;
+    window.CONTEXT_LOCATION = d.location;
+    var el = document.getElementById('weather-location');
+    if (el) el.textContent = d.location;
   }
 
   // Geolocation disabled — use mock data directly

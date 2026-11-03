@@ -248,30 +248,32 @@ function renderContextBars() {
     pmChipEl.style.color = pmData.textColor;
   }
 
-  // Weather / air-quality advice (a severe PM2.5 warning takes priority)
   if (focusIcon && focusText) {
-    if (wData.noData && pmData.noData) {
-      focusIcon.textContent = 'help';
-      focusText.textContent = 'ยังไม่พบข้อมูลสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ ลองใหม่อีกครั้งภายหลัง';
-    } else if (wData.noData) {
-      focusIcon.textContent = 'help';
-      focusText.textContent = 'ยังไม่พบข้อมูลสภาพอากาศในพื้นที่ของคุณ · PM 2.5 ' + pmData.label;
-    } else if (pmData.noData) {
-      focusIcon.textContent = 'help';
-      focusText.textContent = wData.label + ' · ยังไม่พบข้อมูล PM 2.5 ในพื้นที่ของคุณ';
-    } else if (pmData.tip) {
-      focusIcon.textContent = 'masks';
-      focusText.textContent = pmData.tip;
-    } else if (wData.rainy) {
-      focusIcon.textContent = 'umbrella';
-      focusText.textContent = 'เย็นนี้มีโอกาสฝนตกถึง 65% อย่าลืมพกร่มออกจากบ้านด้วย';
-    } else {
-      focusIcon.textContent = 'info';
-      focusText.textContent = wData.label + ' และ PM 2.5 ' + pmData.label + ' แนะนำสวมหน้ากากเมื่ออยู่กลางแจ้งนานๆ';
-    }
+    var advice = contextAdvice(wData, pmData);
+    focusIcon.textContent = advice.icon;
+    focusText.textContent = advice.text;
   }
 
   applyNoticeOverrides();
+}
+
+// Weather / air-quality advice line for a weather and a PM2.5 variant
+// (a severe PM2.5 warning takes priority).
+function contextAdvice(wData, pmData) {
+  if (wData.noData && pmData.noData) {
+    return { icon: 'help', text: 'ยังไม่พบข้อมูลสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ ลองใหม่อีกครั้งภายหลัง' };
+  }
+  if (wData.noData) {
+    return { icon: 'help', text: 'ยังไม่พบข้อมูลสภาพอากาศในพื้นที่ของคุณ · PM 2.5 ' + pmData.label };
+  }
+  if (pmData.noData) {
+    return { icon: 'help', text: wData.label + ' · ยังไม่พบข้อมูล PM 2.5 ในพื้นที่ของคุณ' };
+  }
+  if (pmData.tip) return { icon: 'masks', text: pmData.tip };
+  if (wData.rainy) {
+    return { icon: 'umbrella', text: 'เย็นนี้มีโอกาสฝนตกถึง 65% อย่าลืมพกร่มออกจากบ้านด้วย' };
+  }
+  return { icon: 'info', text: wData.label + ' และ PM 2.5 ' + pmData.label + ' แนะนำสวมหน้ากากเมื่ออยู่กลางแจ้งนานๆ' };
 }
 
 // Applies the demo's per-notice show/hide overrides. 'auto' leaves whatever
