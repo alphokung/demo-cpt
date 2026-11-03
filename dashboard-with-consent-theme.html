@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalize Dashboard (Theme)</title>
+  <meta name="description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description"
+    content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard-components.css">
+  <link rel="stylesheet" href="consent.css">
+  <link rel="stylesheet" href="demo-tools.css">
+  <link rel="stylesheet" href="dashboard-theme.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <p class="top-nav-bar-title">ข้อมูลเฉพาะคุณ</p>
+          <button id="top-nav-consent-btn" class="top-nav-consent-btn" onclick="openPermissionsModal()"
+            title="จัดการความยินยอมข้อมูล (ยกเลิกได้ที่นี่)" style="display:none;">
+            <span class="material-symbols-outlined">shield_person</span>
+            <span class="top-nav-consent-btn__label">จัดการความยินยอม</span>
+          </button>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- Page Header -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- วันสำคัญ — public, always visible (guest included) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div class="loading-wrapper">
+          <div id="daily-notice-list" class="notice-list" style="display:none;">
+            <!-- วันพระ -->
+            <div id="wan-phra-bar" class="notice-item notice-item--info mb-0" style="display:none;">
+              <div id="wan-phra-icon" class="notice-item__icon-wrap">✨</div>
+              <div class="notice-item__body">
+                <p id="wan-phra-text" class="notice-item__text">วันนี้วันพระ</p>
+              </div>
+            </div>
+
+            <!-- วันสำคัญอื่นๆ -->
+            <div id="special-day-bar" class="notice-item notice-item--info" style="display:none;">
+              <div class="notice-item__icon-wrap">✨</div>
+              <div class="notice-item__body">
+                <p id="special-day-text" class="notice-item__text">—</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Tier 1 consent gate — hidden entirely for the guest/not-logged-in persona -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="tier1-locked-panel" class="tier1-locked-panel" style="display:none;">
+          <div class="tier1-locked-panel__icon">
+            <span class="material-symbols-outlined">lock</span>
+          </div>
+          <p class="tier1-locked-panel__title">เปิดใช้งานเพื่อดูข้อมูลของคุณ</p>
+          <p class="tier1-locked-panel__desc">
+            อนุญาตให้เข้าถึงตำแหน่ง, ข้อมูลส่วนบุคคลพื้นฐาน เพื่อแสดงข้อมูลสภาพอากาศ, สิ่งที่คุณควรรู้, เอกสารราชการ, ทรัพย์สินของคุณ และบริการที่คุณน่าจะสนใจ
+          </p>
+          <button class="btn btn-primary" onclick="openTier1ConsentModal()">
+            <span class="material-symbols-outlined">verified_user</span> ตั้งค่าเปิดใช้งาน
+          </button>
+        </div>
+
+        <div id="tier1-content">
+
+          <!-- ═══════════════════════════════════════════ -->
+          <!-- MERGED: Welcome + Weather + PM2.5 + Focus -->
+          <!-- ═══════════════════════════════════════════ -->
+          <div class="loading-wrapper">
+
+            <!-- Skeleton state -->
+            <div class="skeleton-item ctx-card__skeleton">
+              <span class="skeleton-loading ctx-card__skel-text--sm"></span>
+              <span class="skeleton-loading ctx-card__skel-text--lg"></span>
+              <div class="ctx-card__skel-row">
+                <span class="skeleton-loading ctx-card__skel-chip"></span>
+                <span class="skeleton-loading ctx-card__skel-chip"></span>
+              </div>
+              <span class="skeleton-loading ctx-card__skel-summary"></span>
+            </div>
+
+            <!-- Loaded state -->
+            <div id="today-context-card" class="loaded-item ctx-card" style="display: none;">
+              <!-- Sky scene — phase (morning/noon/evening/night) set by dashboard-sky.js -->
+              <div class="ctx-sky" aria-hidden="true">
+                <div id="ctx-sky-stars" class="ctx-sky__stars"></div>
+                <img class="ctx-sky__sun" src="_media/ctx-bg/sun.svg" alt="">
+                <img class="ctx-sky__moon" src="_media/ctx-bg/sun.svg" alt="">
+                <img class="ctx-sky__cloud ctx-sky__cloud--1" src="_media/ctx-bg/cloud-1.svg" alt="">
+                <img class="ctx-sky__cloud ctx-sky__cloud--2" src="_media/ctx-bg/cloud-2.svg" alt="">
+                <div class="ctx-sky__land"></div>
+              </div>
+
+              <!-- Greeting + name row -->
+              <div class="ctx-card__greeting">
+                <p id="welcome-greeting" class="ctx-card__greeting-label">สวัสดี</p>
+                <p id="greeting-name" class="ctx-card__greeting-name">คุณสมชาย ใจดี</p>
+                <div class="ctx-card__location-row">
+                  <span class="material-symbols-outlined ctx-card__location-icon">location_on</span>
+                  <span id="weather-location" class="ctx-card__location-text">กำลังระบุตำแหน่ง…</span>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div class="ctx-card__divider"></div>
+
+              <!-- Weather chip + PM2.5 chip, then the combined advice bar -->
+              <div class="ctx-card__weather-pm">
+
+                <div class="ctx-chip ctx-chip--weather">
+                  <img id="weather-icon" class="ctx-chip__icon" src="_media/weather/w2-partly-cloudy.svg" alt="">
+                  <div class="ctx-chip__text">
+                    <p id="weather-desc" class="ctx-chip__title">กำลังโหลด…</p>
+                    <p id="weather-temp" class="ctx-chip__value">อุณหภูมิ —</p>
+                    <p id="weather-detail" class="ctx-chip__note">—</p>
+                  </div>
+                </div>
+
+                <div id="pm25-chip" class="ctx-chip ctx-chip--pm">
+                  <img class="ctx-chip__icon ctx-chip__icon--pm" src="_media/pm/orange.svg" alt="">
+                  <div class="ctx-chip__text">
+                    <p id="pm25-label" class="ctx-chip__title">—</p>
+                    <p id="pm25-value" class="ctx-chip__value">PM 2.5: — μg/m³</p>
+                    <p id="pm25-station" class="ctx-chip__note">—</p>
+                  </div>
+                </div>
+
+                <!-- Weather + air-quality advice -->
+                <div id="weather-focus" class="ctx-summary">
+                  <span id="focus-icon" class="material-symbols-outlined ctx-summary__icon">info</span>
+                  <p id="focus-text" class="ctx-summary__text">กำลังโหลดคำแนะนำ…</p>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div class="ctx-card__divider--bottom"></div>
+
+            </div><!-- /loaded-item -->
+          </div><!-- /loading-wrapper -->
+
+          <!-- ═══════════════════════════════════════════ -->
+          <!-- รู้หรือไม่ -->
+          <!-- ═══════════════════════════════════════════ -->
+          <div class="loading-wrapper">
+
+            <!-- Skeleton state -->
+            <div class="skeleton-item dyk-card">
+              <div class="dyk-card__header">
+                <span class="skeleton-loading dyk-card__skel-emoji"></span>
+                <div class="dyk-card__skel-lines">
+                  <span class="skeleton-loading dyk-card__skel-line dyk-card__skel-line--long"></span>
+                  <span class="skeleton-loading dyk-card__skel-line dyk-card__skel-line--mid"></span>
+                  <span class="skeleton-loading dyk-card__skel-line dyk-card__skel-line--short"></span>
+                </div>
+              </div>
+              <div class="dyk-card__footer">
+                <span class="skeleton-loading dyk-card__skel-dots"></span>
+                <span class="skeleton-loading dyk-card__skel-hint"></span>
+              </div>
+            </div>
+
+            <!-- Loaded state -->
+            <div id="did-you-know" onclick="dykNext()" class="loaded-item dyk-card" style="display:none;">
+              <div class="dyk-card__deco"></div>
+
+              <div class="dyk-card__header">
+                <span class="dyk-card__emoji">💡</span>
+                <p id="dyk-text" class="dyk-card__text">
+                  <a id="dyk-link" onclick="event.stopPropagation()" class="dyk-card__link"></a>
+                </p>
+              </div>
+
+              <div class="dyk-card__footer">
+                <div class="dyk-card__dots" id="dyk-dots"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ═══════════════════════════════════════════ -->
+          <!-- สิ่งที่คุณควรรู้ — proactive notices -->
+          <!-- ═══════════════════════════════════════════ -->
+          <div class="list-section">
+            <p class="list-section-title">สิ่งที่คุณควรรู้</p>
+            <p class="list-section-note">การแจ้งเตือนและข้อมูลสำคัญประจำวันของคุณ</p>
+
+            <div class="notice-list">
+              <!-- วันเกิด -->
+              <div id="birthday-bar" class="notice-item notice-item--positive notice-item--birthday"
+                style="display:none;">
+                <div class="notice-item__icon-wrap">🎂</div>
+                <div class="notice-item__body">
+                  <p id="birthday-text" class="notice-item__text">สุขสันต์วันเกิด!</p>
+                </div>
+              </div>
+
+              <!-- หนังสือเดินทางใกล้หมดอายุ -->
+              <div id="notice-passport-expiring" class="notice-item notice-item--danger"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                <div class="notice-item__icon-wrap">⚠️</div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">หนังสือเดินทางใกล้หมดอายุ</p>
+                  <p class="notice-item__sub">เหลือ 23 วัน · ครบกำหนด 27 มิ.ย. 2569</p>
+                </div>
+              </div>
+
+              <!-- ภาษีรถใกล้ถึงกำหนด -->
+              <div id="notice-tax-due" class="notice-item notice-item--warning"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <div class="notice-item__icon-wrap">⏱️</div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">ภาษีรถจักรยานยนต์ใกล้ถึงกำหนด</p>
+                  <p class="notice-item__sub">Yamaha Grand Filano · ครบกำหนด 30 พ.ย. 2569</p>
+                </div>
+              </div>
+
+              <!-- เบี้ยความพิการ: เฉพาะบุคคลที่มีบัตรคนพิการ และเปิดสิทธิ Tier 2 (disability) แล้ว -->
+              <div id="notice-disability-allowance" class="notice-item notice-item--positive" style="display:none;">
+                <div class="notice-item__icon-wrap">💶</div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">เบี้ยความพิการเดือนนี้โอนแล้ว</p>
+                  <p class="notice-item__sub">โอนเงินเบี้ยความพิการประจำเดือน มิ.ย. 2569 จำนวน 800.00 บาท
+                    เข้าบัญชีสำเร็จ</p>
+                </div>
+              </div>
+
+              <!-- ใบสั่ง: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (ticket) แล้ว -->
+              <div id="notice-ticket-reminder" class="notice-item notice-item--danger" style="display:none;"
+                onclick="window.czpSdk && window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                <div class="notice-item__icon-wrap">🧾</div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">แจ้งเตือนใบสั่ง</p>
+                  <p class="notice-item__sub">รถทะเบียน กข 1234 กทม. กรุณาชำระภายในอีก 15 วัน</p>
+                </div>
+              </div>
+
+              <!-- กรมธรรม์ใกล้หมดอายุ: แสดงเฉพาะเมื่อเปิดสิทธิ Tier 2 (insurance) แล้ว -->
+              <div id="notice-insurance-expiring" class="notice-item notice-item--warning" style="display:none;"
+                onclick="alert('เปิด miniapp คปภ.')">
+                <div class="notice-item__icon-wrap">📋</div>
+                <div class="notice-item__body">
+                  <p class="notice-item__title">กรมธรรม์ประกันภัยใกล้ถึงกำหนดต่ออายุ</p>
+                  <p class="notice-item__sub">ประกันยานพาหนะภาคบังคับและภาคสมัครใจ รถ Honda Civic กข 1234 กทม. ·
+                    ครบกำหนด 20 เม.ย. 2570</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="list-section mb-0">
+            <p class="list-section-title">เอกสารราชการ และทรัพย์สินของคุณ</p>
+            <p class="list-section-note">รวมเอกสารเอกสารราชการ และทรัพย์สินของคุณ </p>
+            <div class="card card__inner">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">เอกสารราชการ</h3>
+              </div>
+              <p class="list-section-note">เอกสารประจำตัวพลเมืองที่เชื่อมโยงในระบบ</p>
+
+              <div class="cert-list">
+                <!-- Driving License -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">directions_car</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบอนุญาตขับรถยนต์ส่วนบุคคล 5 ปี</p>
+                      <p class="list-item-hero">ใบอนุญาตเลขที่: 12345678</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 5 พ.ค. 2572</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Motorcycle Driving License -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('e82f601e-ce10-4d45-a297-51d59722d86a')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">two_wheeler</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบอนุญาตขับรถจักรยานยนต์ส่วนบุคคล 5 ปี</p>
+                      <p class="list-item-hero">ใบอนุญาตเลขที่: 12345999</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 5 พ.ค. 2572</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Passport -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">book_2</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                      <p class="list-item-hero">เลขหนังสือเดินทาง: A1234567</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 27 มิ.ย. 2569</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Passport (เล่มที่สอง) -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('7a1965f1-27e3-43c5-9b14-4627039a28d2')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้หมดอายุ</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">book_2</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">หนังสือเดินทาง (Passport)</p>
+                      <p class="list-item-hero">เลขหนังสือเดินทาง: A1234569</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 27 มิ.ย. 2569</span>
+                        </div>
+
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- บัตรประจำตัวคนพิการ (Tier 2 — explicit consent, realtime; shown only if the -->
+                <!-- current citizen actually holds one and has consented to view it) -->
+                <div class="tier2-gate" data-tier2-key="disability">
+
+                  <!-- Loading state -->
+                  <div class="tier2-loading" data-state="loading" style="display:none;">
+                    <span class="tier2-loading__spinner"></span>
+                    <p class="tier2-loading__text">กำลังเชื่อมต่อ พก. เพื่อตรวจสอบข้อมูลบัตรคนพิการแบบเรียลไทม์…</p>
+                  </div>
+
+                  <!-- Loaded state -->
+                  <a href="javascript:void(0)" class="list-item" data-state="loaded" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('f0010311-2a34-49fd-b9b9-f727a3425706')">
+                    <span class="list-badge valid list-badge--corner">ใช้งานได้</span>
+                    <div class="list-icon list-icon--disability">
+                      <span class="material-symbols-outlined">accessible</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">บัตรประจำตัวคนพิการ</p>
+                      <p class="list-item-hero">บัตรประจำตัวคนพิการ</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุ: 14 ก.พ. 2571</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ เมื่อครู่นี้ (เรียลไทม์)</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card card__inner mt-xl">
+              <div class="section-title-container card-section__title-container">
+                <div class="section-bar card-section__bar--primary"></div>
+                <h3 class="section-title card-section__heading">ทรัพย์สินของคุณ</h3>
+              </div>
+              <p class="list-section-note">ข้อมูลทรัพย์สินของคุณในระบบ</p>
+
+              <div class="cert-list">
+                <!-- Honda Civic -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge valid list-badge--corner">ชำระภาษีแล้ว</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">directions_car</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">รถยนต์</p>
+                      <p class="list-item-hero">ทะเบียน กข 1234 กทม.</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          <span>รุ่นรถ: Honda Civic</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุภาษี: 15 ก.ค. 2569</span>
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+                <!-- Yamaha Grand Filano -->
+                <div class="loading-wrapper">
+                  <div class="list-item skeleton-item">
+                    <span class="list-badge skeleton-loading list-badge--corner skeleton-badge-sm"></span>
+                    <div class="skeleton-loading skeleton-icon-md"></div>
+                    <div class="list-body skeleton-body-gap">
+                      <div class="skeleton-loading skeleton-text medium skeleton-text--no-mb"></div>
+                      <div class="skeleton-loading skeleton-text short skeleton-text--xs-h"></div>
+                    </div>
+                    <div class="skeleton-loading skeleton-circle skeleton-dot-sm"></div>
+                  </div>
+                  <a href="javascript:void(0)" class="list-item loaded-item" style="display: none;"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ใกล้ถึงเวลาชำระภาษี</span>
+                    <div class="list-icon list-icon--doc">
+                      <span class="material-symbols-outlined">two_wheeler</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">รถจักรยานยนต์</p>
+                      <p class="list-item-hero">ทะเบียน 1กข 5678 ชม.</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">two_wheeler</span>
+                          <span>รุ่นรถ: Yamaha Grand Filano</span>
+                        </div>
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          <span>หมดอายุภาษี: 30 พ.ย. 2569</span>
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          <span>ข้อมูล ณ 29 พ.ค. 2569</span>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div><!-- /tier1-content -->
+
+        <!-- 3. Rights and Welfare (Tier 2 — explicit per-dataset consent, realtime) -->
+        <!-- Hidden entirely until Tier 1 is granted: Tier 2 data belongs to the -->
+        <!-- same citizen record as Tier 1, so it has no meaning before that. -->
+        <div id="tier2-section" class="list-section" style="display:none;">
+          <p class="list-section-title">สิทธิ และสวัสดิการ</p>
+          <p class="list-section-note">ข้อมูลสิทธิการรักษาพยาบาลและสวัสดิการภาครัฐที่เกี่ยวข้องของคุณ</p>
+
+          <!-- Hidden until at least one Tier 2 dataset has been granted — before that, -->
+          <!-- the "give additional consent" card further below is the only entry point. -->
+          <div id="tier2-gate-list" class="cert-list cert-list--single" style="display:none;">
+            <!-- Card 1: Medical Benefits (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="health">
+
+              <!-- Loading state (fetching realtime) -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อ สปสช. เพื่อตรวจสอบสิทธิการรักษาพยาบาลแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิหลักประกันสุขภาพแห่งชาติ</h3>
+                </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--primary">สิทธิหลักประกันสุขภาพแห่งชาติ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิหลักประกันสุขภาพ (บัตรทอง 30 บาท)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่เข้ารับการรักษาเบื้องต้น:</span>
+                    <span class="details-value">คลินิกชุมชนอบอุ่นลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประจำ:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลที่รับการส่งต่อ:</span>
+                    <span class="details-value">โรงพยาบาลรามาธิบดี</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="window.czpSdk.openMiniApp('3332774b-8a0f-4907-b3aa-29dbc8779d12')">
+                  <span class="material-symbols-outlined">verified_user</span> ดูรายละเอียดสิทธิการรักษาพยาบาล
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: สิทธิประกันสังคม -->
+            <div class="loading-wrapper loading-wrapper--hidden">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title--wide"></div>
+                <div class="details-list">
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิประกันสังคม</h3>
+                </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--info">สิทธิประกันสังคม</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกองทุนประกันสังคม (ผู้ประกันตน)</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สถานพยาบาลประกันสังคม:</span>
+                    <span class="details-value">โรงพยาบาลลาดพร้าว</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="alert('เปิด miniapp ประกันสังคม')">
+                  <span class="material-symbols-outlined">shield_person</span> ดูรายละเอียดสิทธิประกันสังคม
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3: สิทธิข้าราชการ (กบข.) -->
+            <div class="loading-wrapper loading-wrapper--hidden">
+              <!-- Skeleton State -->
+              <div class="card skeleton-item card__inner--no-interact">
+                <div class="skeleton-loading skeleton-title card__skel-title"></div>
+                <div class="details-list">
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                  <div class="details-item card__skel-item-gap--last">
+                    <div class="skeleton-loading skeleton-text short card__skel-text-sm"></div>
+                    <div class="skeleton-loading skeleton-text medium card__skel-text-md"></div>
+                  </div>
+                </div>
+                <div class="skeleton-loading skeleton-button card__skel-btn"></div>
+              </div>
+
+              <!-- Loaded State -->
+              <div class="card loaded-item card__inner" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">คุณมีสิทธิข้าราชการ</h3>
+                </div>
+                <p class="list-section-note">สิทธิการรักษาพยาบาล</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">สิทธิที่ใช้เบิก:</span>
+                    <span class="details-value card-section__value--warning">สิทธิข้าราชการ / สิทธิหน่วยงานรัฐ</span>
+                  </div>
+                  <div class="details-item">
+                    <span class="details-label">สิทธิย่อย:</span>
+                    <span class="details-value">สิทธิเบิกกรมบัญชีกลาง (ผู้รับเบี้ยหวัดบำนาญ)</span>
+                  </div>
+                </div>
+                <button class="btn btn-tertiary-outline flex-center card__btn-full"
+                  onclick="alert('เปิด miniapp กบข.')">
+                  <span class="material-symbols-outlined">account_balance</span> ดูรายละเอียดสิทธิข้าราชการ
+                </button>
+              </div>
+            </div>
+
+            <!-- Card: สิทธิสวัสดิการแห่งรัฐ (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="welfare">
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อกรมบัญชีกลางเพื่อตรวจสอบสิทธิสวัสดิการแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Empty state (consented, but no record found for this citizen) -->
+              <div class="tier2-empty" data-state="empty" style="display:none;">
+                <div class="tier2-empty__icon"><span class="material-symbols-outlined">info</span></div>
+                <p class="tier2-empty__title">ไม่พบข้อมูลสวัสดิการแห่งรัฐ</p>
+                <p class="tier2-empty__hint">ไม่พบบัตรสวัสดิการแห่งรัฐ เงินอุดหนุนบุตร
+                  หรือเบี้ยยังชีพที่ผูกกับคุณในระบบกรมบัญชีกลาง หากคุณคิดว่าควรมีสิทธิ์นี้
+                  สามารถลงทะเบียนได้ที่เว็บไซต์บัตรสวัสดิการแห่งรัฐ</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">สวัสดิการที่เกี่ยวข้องกับคุณ</h3>
+                </div>
+                <p class="list-section-note">บัตรสวัสดิการแห่งรัฐและเงินอุดหนุนที่คุณได้รับสิทธิ์ในระบบ</p>
+                <div class="details-list">
+                  <div class="details-item">
+                    <span class="details-label">บัตรสวัสดิการแห่งรัฐ:</span>
+                    <span class="details-value details-value--granted">ได้รับสิทธิ์
+                      (สถานะใช้งาน)</span>
+                    <span class="details-subvalue">วงเงินส่วนลดซื้อสินค้าอุปโภคบริโภคคงเหลือเดือนนี้: 300.00 บาท</span>
+                  </div>
+                  <div class="details-item details-item--divided">
+                    <span class="details-label">เงินอุดหนุนเพื่อการเลี้ยงดูเด็กแรกเกิด:</span>
+                    <span class="details-value details-value--granted">ได้รับสิทธิ์
+                      (โอนเงินสำเร็จ)</span>
+                    <span class="details-subvalue">โอนเงินช่วยเหลือประจำเดือน พ.ค. 2569 จำนวน 600.00 บาทสำเร็จ</span>
+                  </div>
+                  <div class="details-item details-item--divided">
+                    <span class="details-label">เบี้ยยังชีพผู้สูงอายุ:</span>
+                    <span class="details-value details-value--none">ยังไม่มีสิทธิ์</span>
+                    <span class="details-subvalue">อายุปัจจุบันของคุณไม่ถึงเกณฑ์สวัสดิการผู้สูงอายุ (60
+                      ปีบริบูรณ์)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: ข้อมูลกรมธรรม์ประกันภัย (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="insurance">
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อ คปภ. เพื่อตรวจสอบข้อมูลกรมธรรม์แบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">ข้อมูลกรมธรรม์ประกันภัย</h3>
+                </div>
+                <p class="list-section-note">กรมธรรม์ประกันภัยที่คุณถือครองในระบบ</p>
+                <div class="cert-list">
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันชีวิต แบบคุ้มครองชีวิตตลอดชีพ</p>
+                      <p class="list-item-hero">เอไอเอ ตลอดชีพ พลัส ชำระเบี้ยประกันภัย 20 ปี (ไม่มีเงินปันผล)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: T23XXXX300
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 14 ธ.ค. 2629
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันอุบัติเหตุ</p>
+                      <p class="list-item-hero">PA PACKAGE - WSMMLB3</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: P25XXXX058
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 11 ก.พ. 2602
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/1008.png" alt="AIA"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันชีวิต แบบสะสมทรัพย์</p>
+                      <p class="list-item-hero">เอไอเอ สะสมทรัพย์ 25 ปี ชำระเบี้ยประกันภัย 15 ปี พิเศษ (มีเงินปันผล)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: T16XXXX223
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 26 ก.ค. 2579
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/2010.png" alt="วิริยะประกันภัย"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันยานพาหนะภาคบังคับ</p>
+                      <p class="list-item-hero">ประกันภัยยานยนต์ภาคบังคับ (พ.ร.บ.)</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: 126XXXXXXX423
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 20 เม.ย. 2570
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="alert('เปิด miniapp คปภ.')">
+                    <div class="list-icon work">
+                      <img src="https://oicconnect.oic.or.th/OIC_Front/image/logo/2010.png" alt="วิริยะประกันภัย"
+                        class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ประกันยานพาหนะภาคสมัครใจ</p>
+                      <p class="list-item-hero">ประกันภัยยานยนต์ภาคสมัครใจ PHYD</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">badge</span>
+                          เลขที่กรมธรรม์: 126XXXXXX637
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          วันหมดอายุ: 20 เม.ย. 2570
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- เรื่องเงินของคุณ (Tier 2 — explicit per-dataset consent, realtime) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="money-section" class="list-section" style="display:none;">
+          <p class="list-section-title">รายรับรายจ่าย ที่เกี่ยวกับคุณ</p>
+          <p class="list-section-note">รวมเรื่องเงินๆทองๆ ที่คุณอาจจะสนใจ</p>
+
+          <div id="money-gate-list" class="cert-list cert-list--single" style="display:none;">
+            <!-- Card: ค่าน้ำ ค่าไฟ (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="utility">
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อการไฟฟ้า/ประปาเพื่อตรวจสอบค่าน้ำค่าไฟแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">ค่าน้ำ ค่าไฟ</h3>
+                </div>
+                <p class="list-section-note">รวมรายการค่าน้ำค่าไฟที่ต้องชำระ</p>
+
+                <div class="cert-list">
+                  <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon">
+                      <img src="_media/mea.png" alt="MEA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ค่าไฟฟ้า การไฟฟ้านครหลวง (MEA)</p>
+                      <p class="list-item-hero">ยอดที่ต้องชำระ: 1,245.80 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">tag</span>
+                          มิเตอร์ไฟ: 020012345678
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon">
+                      <img src="_media/mwa.svg" alt="MWA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ค่าน้ำประปา การประปานครหลวง (MWA)</p>
+                      <p class="list-item-hero">ยอดที่ต้องชำระ: 320.50 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">tag</span>
+                          มิเตอร์น้ำ: 102548976
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a')">
+                    <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                    <div class="list-icon">
+                      <img src="_media/pea.png" alt="PEA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ค่าไฟฟ้า การไฟฟ้าส่วนภูมิภาค (PEA)</p>
+                      <p class="list-item-hero">ยอดที่ต้องชำระ: 0.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">tag</span>
+                          มิเตอร์ไฟ: 020087654321
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item" onclick="window.czpSdk.openMiniApp('7a267a33-1657-477a-8710-d49bef97dabe')">
+                    <span class="list-badge valid list-badge--corner">ชำระแล้ว</span>
+                    <div class="list-icon">
+                      <img src="_media/pwa.png" alt="PWA Logo" class="img-helper-frame circle size-sm">
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ค่าน้ำประปา การประปาส่วนภูมิภาค (PWA)</p>
+                      <p class="list-item-hero">ยอดที่ต้องชำระ: 0.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">tag</span>
+                          มิเตอร์น้ำ: 552109876
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: ใบสั่งที่ต้องชำระ (Tier 2 — explicit consent, realtime) -->
+            <div class="tier2-gate" data-tier2-key="ticket">
+
+              <!-- Loading state -->
+              <div class="tier2-loading" data-state="loading" style="display:none;">
+                <span class="tier2-loading__spinner"></span>
+                <p class="tier2-loading__text">กำลังเชื่อมต่อสำนักงานตำรวจแห่งชาติเพื่อตรวจสอบใบสั่งแบบเรียลไทม์…</p>
+              </div>
+
+              <!-- Loaded state -->
+              <div class="card card__inner" data-state="loaded" style="display: none;">
+                <div class="section-title-container card-section__title-container">
+                  <div class="section-bar card-section__bar--primary"></div>
+                  <h3 class="section-title card-section__heading">ใบสั่งที่ต้องชำระ</h3>
+                </div>
+                <p class="list-section-note">รวมรายการค่าใบสั่งที่ต้องชำระ</p>
+
+                <div class="cert-list">
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903001234</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 15 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903001512</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 17 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903002122</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 25 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+
+                  <a href="javascript:void(0)" class="list-item"
+                    onclick="window.czpSdk.openMiniApp('fbc474d8-fde8-4f48-8063-f04d83fabf13')">
+                    <span class="list-badge expiring list-badge--corner">ยังไม่ชำระ</span>
+                    <div class="list-icon danger">
+                      <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div class="list-body">
+                      <p class="list-item-label">ใบสั่งเลขที่: TP6903002345</p>
+                      <p class="list-item-hero">ค่าปรับ: 500.00 บาท</p>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">directions_car</span>
+                          รถทะเบียน กข 1234 กทม.
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">calendar_today</span>
+                          กรุณาชำระภายใน 30 มิ.ย. 2569
+                        </div>
+                      </div>
+                      <div class="list-meta">
+                        <div class="list-meta-item">
+                          <span class="material-symbols-outlined list-meta-icon">update</span>
+                          ข้อมูล ณ 29 พ.ค. 2569
+                        </div>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Single tap to grant every Tier 2 dataset not yet consented. Sits -->
+        <!-- directly above บริการที่คุณน่าจะสนใจ so it reads as one clear entry -->
+        <!-- point rather than being buried inside สิทธิ และสวัสดิการ. -->
+        <!-- ═══════════════════════════════════════════ -->
+        <div id="tier2-consent-more" class="tier2-locked" style="display:none;"
+          onclick="requestTier2ConsentRemaining()">
+          <div class="tier2-locked__icon">
+            <span class="material-symbols-outlined">verified_user</span>
+          </div>
+          <p class="tier2-locked__title">ให้ความยินยอมเพิ่มเติม</p>
+          <p id="tier2-consent-more-hint" class="tier2-locked__hint">เพื่อดูสวัสดิการต่างๆ เช่น สิทธิการรักษาพยาบาล
+            ข้อมูลบัตรคนพิการ และสวัสดิการแห่งรัฐ ในครั้งเดียว</p>
+          <button class="btn btn-primary flex-center tier2-locked__btn"
+            onclick="event.stopPropagation(); requestTier2ConsentRemaining();">
+            <span class="material-symbols-outlined">lock_open</span> ให้ความยินยอมเพื่อดูข้อมูล
+          </button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- บริการที่คุณน่าจะสนใจ (public — ไม่ต้อง consent) -->
+        <!-- อ้างอิงบริการยอดนิยมจาก thangrath.go.th (ยกเว้น เตือนD และ ดีเด่น Ask AI) -->
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Rendered from SERVICE_CATALOG + PERSONA_SERVICES by renderServices() -->
+        <div id="services-section" class="list-section" style="display:none;">
+          <p class="list-section-title">บริการที่คุณน่าจะสนใจ</p>
+          <p class="list-section-note">บริการภาครัฐยอดนิยมที่คุณอาจใช้บ่อย</p>
+          <div class="card card__inner">
+            <div class="section-title-container card-section__title-container">
+              <div class="section-bar card-section__bar--primary"></div>
+              <h3 class="section-title card-section__heading">บริการแนะนำสำหรับคุณ</h3>
+            </div>
+            <p class="list-section-note">คัดสรรตามข้อมูลและสิทธิ์ของคุณ</p>
+            <div id="services-list" class="cert-list"></div>
+          </div>
+        </div>
+
+        <div class="footer-timestamp">
+          ข้อมูล ณ วันที่ 2 มกราคม 2569 เวลา 11.40 น. <br>
+          All rights reserved 2023. Digital Government Development Agency (Public Organization) (DGA)
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Permissions Management -->
+  <div id="modal-permissions" class="modal-overlay" onclick="closeModal('modal-permissions')">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">การจัดการความยินยอม</p>
+          <p class="modal__header-sub">บริการที่มีการเข้าถึงข้อมูล</p>
+        </div>
+        <button onclick="closeModal('modal-permissions')" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="modal__body">
+
+        <!-- One flat list of everything currently reaching the user's data —
+             Tier 1 and Tier 2 together, built by renderPermissionsModal(). -->
+        <p class="modal__header-title perm-list__heading">ข้อมูลที่ขอเข้าถึง</p>
+        <div class="perm-list" id="perm-list"></div>
+
+        <div class="consent-modal__disclaimer consent-modal__disclaimer--center">
+          หากคุณยกเลิกความยินยอม ระบบจะลบข้อมูลของคุณทั้งหมด และจะหยุดแสดงข้อมูลที่เกี่ยวข้องในระบบนี้ทันที
+        </div>
+
+        <button class="btn btn-destructive flex-center perm-revoke-btn" onclick="revokeAllConsent()">
+          <span class="material-symbols-outlined">block</span> ยกเลิกความยินยอมทั้งหมด
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tier 1 Consent -->
+  <div id="modal-consent-tier1" class="modal-overlay">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">การเข้าถึงข้อมูลพื้นฐาน</p>
+          <p class="modal__header-sub">ใช้เพื่อแสดงเอกสารราชการและข้อมูลทั่วไปของคุณ</p>
+        </div>
+        <button onclick="closeModal('modal-consent-tier1')" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="modal__header-title">ข้อมูลที่ขอเข้าถึง</div>
+        
+
+        <div class="consent-modal__perm-list">
+          <div class="consent-modal__perm-item">
+            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">location_on</span></div>
+            <div>
+              <p class="consent-modal__perm-title">ตำแหน่งที่ตั้ง (Lat/Lng)</p>
+              <p class="consent-modal__perm-sub">แสดงสภาพอากาศและ PM 2.5 ในพื้นที่ของคุณ</p>
+            </div>
+          </div>
+          <div class="consent-modal__perm-item">
+            <div class="consent-modal__perm-icon"><span class="material-symbols-outlined">badge</span></div>
+            <div>
+              <p class="consent-modal__perm-title">ข้อมูลส่วนบุคคลพื้นฐาน</p>
+              <p class="consent-modal__perm-sub">เลขบัตรประชาชน, ชื่อ‑นามสกุล, วันเกิด — เพื่อยืนยันตัวตน และเข้าถึงข้อมูลต่างๆ ซึ่งประกอบด้วย <br>
+              <ul class="consent-modal__perm-sub">
+                <li>ข้อมูลสิทธิ/สวัสดิการของคุณ</li>
+                <li>ข้อมูลกรมธรรม์ประกันภัยของคุณ</li>
+                <li>ค่าน้ำ ค่าไฟ และใบสั่งที่ต้องชำระของคุณ</li>
+              </ul>
+              </p>
+            </div>
+          </div>          
+        </div>
+
+        <div class="consent-modal__disclaimer">
+ข้อมูลเหล่านี้ใช้เพื่อแสดงเท่านั้น ไม่ถูกใช้เพื่อวัตถุประสงค์อื่น
+ข้อมูลนี้อาจถูก <strong>แคชเพื่อความรวดเร็ว</strong> โดยหลังจากยินยอมแล้ว  คุณสามารถยกเลิกได้ทุกเมื่อจากเมนู <strong>จัดการความยินยอม</strong>
+        </div>
+
+        <div class="consent-modal__actions">
+          <button class="btn btn-primary"
+            onclick="confirmTier1Consent()">ตกลงและเข้าใช้งาน</button>
+          <button class="btn btn-outline"
+            onclick="closeModal('modal-consent-tier1')">ภายหลัง</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tier 2 Consent (multi-select — grant one or more datasets at once) -->
+  <div id="modal-consent-tier2" class="modal-overlay">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+      <div class="modal__header">
+        <div>
+          <p class="modal__header-title">ให้ความยินยอมเข้าถึงข้อมูลเพิ่มเติม</p>
+          <p class="modal__header-sub">เลือกรายการข้อมูลที่ต้องการให้ความยินยอม</p>
+        </div>
+        <button onclick="cancelTier2Consent()" class="modal__close-btn">
+          <span class="material-symbols-outlined modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="modal__header-title">ข้อมูลที่ขอเข้าถึง</div>
+
+        <div id="tier2-modal-list" class="consent-modal__perm-list"></div>
+
+        <div class="consent-modal__disclaimer">
+          ข้อมูลเหล่านี้ใช้เพื่อแสดงเท่านั้น ไม่ถูกใช้เพื่อวัตถุประสงค์อื่น
+          ข้อมูลนี้อาจถูก <strong>แคชเพื่อความรวดเร็ว</strong> โดยหลังจากยินยอมแล้ว
+          คุณสามารถยกเลิกได้ทุกเมื่อจากเมนู <strong>จัดการความยินยอม</strong>
+        </div>
+
+        <div class="consent-modal__actions">
+          <button class="btn btn-primary"
+            onclick="confirmTier2Consent()">ยินยอมและเข้าใช้งาน</button>
+          <button class="btn btn-outline" onclick="cancelTier2Consent()">ภายหลัง</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Demo Config -->
+  <div id="modal-demo-config" class="modal-overlay" onclick="closeModal('modal-demo-config')">
+    <div class="modal-content modal__content--flex-col" onclick="event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองสถานการณ์สำหรับ demo</p>
+        </div>
+        <button onclick="closeModal('modal-demo-config')" class="dc-modal__close-btn">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="dc-modal__body">
+
+        <!-- ตัวตนผู้ใช้ (persona) -->
+        <div class="dc-group">
+          <p class="dc-group-label">👤 ตัวตนผู้ใช้ (เปลี่ยนแล้วรีเซ็ตความยินยอมทั้งหมด)</p>
+          <div class="dc-chips dc-chips--wrap">
+            <button class="dc-chip" id="chip-persona-somchai" onclick="setPersona('somchai')">คุณสมชาย · ทั่วไป
+              (วันเกิด)</button>
+            <button class="dc-chip" id="chip-persona-somsri" onclick="setPersona('somsri')">คุณสมศรี ·
+              บัตรคนพิการ</button>
+            <button class="dc-chip" id="chip-persona-somying" onclick="setPersona('somying')">คุณสมหญิง ·
+              บัตรสวัสดิการฯ + บัตรคนพิการ</button>
+            <button class="dc-chip" id="chip-persona-guest" onclick="setPersona('guest')">ผู้เยี่ยมชม ·
+              ไม่เข้าสู่ระบบ</button>
+          </div>
+        </div>
+
+        <!-- อากาศ (Weather chip variants) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🌤️ อากาศ (Weather Chip)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-weather-chips"></div>
+        </div>
+
+        <!-- PM 2.5 -->
+        <div class="dc-group">
+          <p class="dc-group-label">💨 PM 2.5 (PM2.5 Chip)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-pm25-chips"></div>
+        </div>
+
+        <!-- วันสำคัญ (event bar) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🎉 วันสำคัญ (daily-notice-list)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-special-chips"></div>
+        </div>
+
+        <!-- สิ่งที่คุณควรรู้ (alert cards) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🔔 สิ่งที่คุณควรรู้ (notice-list) — แตะเพื่อสลับ อัตโนมัติ / แสดง / ซ่อน</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-notice-chips"></div>
+        </div>
+
+        <!-- รู้หรือไม่ (tips) -->
+        <div class="dc-group">
+          <p class="dc-group-label">💡 รู้หรือไม่ (did-you-know) — สุ่ม 5 จาก 15 รายการ</p>
+          <div class="dc-chips">
+            <button class="dc-chip" onclick="dykReshuffle()">🎲 สุ่มชุดใหม่</button>
+          </div>
+        </div>
+
+        <!-- ช่วงเวลา (sky phase of the today-context card) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🌅 ช่วงเวลา (Sky)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-sky-chips"></div>
+        </div>
+
+        <!-- ความยินยอม (consent) -->
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">🔐 ความยินยอม (Consent)</p>
+          <div class="dc-chips">
+            <button class="dc-chip" onclick="clearAllConsentDemo()">ล้างสถานะความยินยอมทั้งหมด</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal: Bill Payment -->
+
+
+
+  <script src="dashboard-consent.js"></script>
+  <script src="dashboard-demo.js"></script>
+
+  <script src="https://cpt.superapps-th.cloud/cportal/sdk/iu/v5/sdk.js"></script>
+
+  <!-- วันสำคัญ / วันพระ / birthday copy + mock weather location -->
+  <script src="dashboard-context.js"></script>
+
+  <!-- รู้หรือไม่ rotating tips -->
+  <script src="dashboard-tips.js"></script>
+
+  <!-- Floating demo config button -->
+  <button onclick="openModal('modal-demo-config')" class="demo-fab">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>
+    Demo การแสดงผล
+  </button>
+
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+  <!-- Modal/greeting/back-to-top chrome — loaded last, after the buttons above -->
+  <script src="dashboard-ui.js"></script>
+
+  <!-- Time-of-day sky on the today-context card (after dashboard-ui.js so it can retitle the greeting) -->
+  <script src="dashboard-sky.js"></script>
+
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "xfz376pwa2");
+  </script>
+</body>
+
+</html>
