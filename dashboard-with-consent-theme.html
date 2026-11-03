@@ -122,7 +122,10 @@
                 <img class="ctx-sky__moon" src="_media/ctx-bg/sun.svg" alt="">
                 <img class="ctx-sky__cloud ctx-sky__cloud--1" src="_media/ctx-bg/cloud-1.svg" alt="">
                 <img class="ctx-sky__cloud ctx-sky__cloud--2" src="_media/ctx-bg/cloud-2.svg" alt="">
+                <div class="ctx-sky__gloom"></div>
                 <div id="ctx-sky-land" class="ctx-sky__land"></div>
+                <div id="ctx-sky-rain" class="ctx-sky__rain"></div>
+                <div class="ctx-sky__flash"></div>
               </div>
 
               <!-- Greeting + name row -->
@@ -1429,6 +1432,12 @@
         <div class="dc-group">
           <p class="dc-group-label">🌅 ช่วงเวลา (Sky)</p>
           <div class="dc-chips dc-chips--wrap" id="dc-sky-chips"></div>
+        </div>
+
+        <!-- ฝน (rain on the today-context card — shortcuts onto the weather chip) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🌧️ ฝน (Rain) — เปลี่ยน Weather Chip ไปด้วย</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-rain-chips"></div>
         </div>
 
         <!-- ภาพพื้นหลัง (landscape art of the today-context card) -->

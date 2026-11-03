@@ -298,11 +298,107 @@
   to { transform: translateX(-14px); }
 }
 
+/* ── rain (data-rain, set by dashboard-sky.js from the weather chip) ──
+ * gloom greys the sky behind the land, the rain layer tints everything a
+ * little and carries the drops, and flash lights up the card in a storm. */
+.ctx-sky__gloom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #4a5868 0%, #6e7d8d 55%, #95a3b1 100%);
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
+.ctx-sky__rain {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 55, 75, var(--rain-tint, 0));
+  transition: background 0.8s;
+}
+
+.ctx-sky__drop {
+  position: absolute;
+  top: -24px;
+  width: 1.5px;
+  height: 16px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, rgba(230, 242, 255, 0), rgba(230, 242, 255, 0.85));
+  animation: ctx-rain-fall 1s linear infinite;
+}
+
+.ctx-sky__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+}
+
+.ctx-card[data-rain="light"] { --rain-tint: 0.06; }
+.ctx-card[data-rain="medium"] { --rain-tint: 0.1; }
+.ctx-card[data-rain="heavy"] { --rain-tint: 0.16; }
+.ctx-card[data-rain="storm"] { --rain-tint: 0.2; }
+
+.ctx-card[data-rain="light"] .ctx-sky__gloom { opacity: 0.45; }
+.ctx-card[data-rain="medium"] .ctx-sky__gloom { opacity: 0.7; }
+.ctx-card[data-rain="heavy"] .ctx-sky__gloom { opacity: 0.85; }
+.ctx-card[data-rain="storm"] .ctx-sky__gloom { opacity: 0.95; }
+
+/* no stars through rain clouds; sun and moon only peek through light rain */
+.ctx-card[data-rain]:not([data-rain="off"]) .ctx-sky__stars {
+  opacity: 0;
+}
+
+.ctx-card[data-rain="medium"] .ctx-sky__sun,
+.ctx-card[data-rain="medium"] .ctx-sky__moon,
+.ctx-card[data-rain="heavy"] .ctx-sky__sun,
+.ctx-card[data-rain="heavy"] .ctx-sky__moon,
+.ctx-card[data-rain="storm"] .ctx-sky__sun,
+.ctx-card[data-rain="storm"] .ctx-sky__moon {
+  visibility: hidden;
+}
+
+/* the grey sky needs the light text set from medium rain up */
+.ctx-card[data-rain="medium"],
+.ctx-card[data-rain="heavy"],
+.ctx-card[data-rain="storm"] {
+  --ctx-ink: #f1f5fa;
+  --ctx-accent: #b8f5d4;
+  --ctx-muted: #dde5ee;
+  border-color: #8796a6;
+}
+
+/* light rain keeps a pale sky, so white drops would vanish into it by day */
+.ctx-card[data-rain="light"]:not([data-sky="night"]) .ctx-sky__drop {
+  background: linear-gradient(180deg, rgba(60, 85, 115, 0), rgba(60, 85, 115, 0.6));
+}
+
+.ctx-card[data-rain="storm"] .ctx-sky__flash {
+  animation: ctx-flash 7s linear infinite;
+}
+
+@keyframes ctx-rain-fall {
+  from { transform: translate(0, 0) rotate(12deg); }
+  to { transform: translate(-68px, 320px) rotate(12deg); }
+}
+
+@keyframes ctx-flash {
+  0%, 88%, 100% { opacity: 0; }
+  89% { opacity: 0.55; }
+  90% { opacity: 0.1; }
+  91.5% { opacity: 0.45; }
+  93% { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ctx-sky *,
   .ctx-card--sky-anim .ctx-sky__sun,
   .ctx-card--sky-anim .ctx-sky__moon {
     animation: none !important;
     transition: none !important;
+  }
+
+  /* static streaks would just look like scratches */
+  .ctx-sky__drop {
+    display: none;
   }
 }
