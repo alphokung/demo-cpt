@@ -122,7 +122,7 @@
                 <img class="ctx-sky__moon" src="_media/ctx-bg/sun.svg" alt="">
                 <img class="ctx-sky__cloud ctx-sky__cloud--1" src="_media/ctx-bg/cloud-1.svg" alt="">
                 <img class="ctx-sky__cloud ctx-sky__cloud--2" src="_media/ctx-bg/cloud-2.svg" alt="">
-                <div class="ctx-sky__land"></div>
+                <div id="ctx-sky-land" class="ctx-sky__land"></div>
               </div>
 
               <!-- Greeting + name row -->
@@ -1429,6 +1429,12 @@
         <div class="dc-group">
           <p class="dc-group-label">🌅 ช่วงเวลา (Sky)</p>
           <div class="dc-chips dc-chips--wrap" id="dc-sky-chips"></div>
+        </div>
+
+        <!-- ภาพพื้นหลัง (landscape art of the today-context card) -->
+        <div class="dc-group">
+          <p class="dc-group-label">🏞️ ภาพพื้นหลัง (BG)</p>
+          <div class="dc-chips dc-chips--wrap" id="dc-bg-chips"></div>
         </div>
 
         <!-- ความยินยอม (consent) -->

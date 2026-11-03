@@ -116,13 +116,11 @@
   pointer-events: none;
 }
 
+/* bg.svg is drawn at card proportions (1407×980), so it covers the card as-is */
 .ctx-sky__land {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -22px;
-  aspect-ratio: 1407 / 980;
-  background: url("_media/ctx-bg/bg.svg") no-repeat center / 100% 100%;
+  inset: 0;
+  background: url("_media/ctx-bg/bg.svg") no-repeat center / cover;
   transition: filter 0.6s;
 }
 
