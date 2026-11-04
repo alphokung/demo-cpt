@@ -54,8 +54,9 @@
           <div class="accordion" id="bn-list"></div>
         </div>
 
-        <!-- สิทธิประโยชน์ประกันสังคม และสิทธิข้าราชการ — สร้างโดย benefit-catalogue.js (แสดงเฉพาะสิทธิที่เลือก) -->
-        <div class="card" id="sso"></div>
+        <!-- สิทธิประกันสังคม — สรุปสิทธิ · ค้นหาสิทธิตามอายุ/เพศ/ทุพพลภาพ · วิธียื่นขอรับสิทธิ (sso-rights.js) -->
+        <div class="hp-sso" id="sso"></div>
+        <!-- สิทธิข้าราชการ — สร้างโดย benefit-catalogue.js -->
         <div class="card" id="csmbs"></div>
 
         <div class="source-note">
@@ -111,6 +112,7 @@
   <script src="csmbs-benefits.js"></script>
   <script src="health.js"></script>
   <script src="benefit-catalogue.js"></script>
+  <script src="sso-rights.js"></script>
   <script src="../portal-demo.js"></script>
   <script>
     (function () {
@@ -222,7 +224,7 @@
             HP.detailsItem('สายด่วน', e(s.hotline)) +
           '</div>' +
           '<a class="btn btn-secondary" style="margin-top:var(--spacing-lg)" href="tel:' + s.hotline.replace(/[^0-9]/g, '') + '">' +
-            '<span class="material-symbols-outlined">call</span>โทร ' + e(s.hotline) + '</a>';
+            '<span class="material-symbols-outlined">call</span>' + e(s.hotlineLabel || 'โทร ' + s.hotline) + '</a>';
 
         document.getElementById('benefits').innerHTML = HP.sectionTitle('สิทธิประโยชน์ที่คุณได้รับ') +
           '<p class="hp-muted" style="margin-bottom:var(--spacing-lg)">ความคุ้มครองหลักของ' + e(s.name) + '</p>' +
@@ -292,15 +294,17 @@
 
       /* ─── รายการสิทธิประโยชน์ — แสดงเฉพาะของสิทธิ (และประเภทย่อย) ที่เลือก ─── */
       var catalogues = {
-        sso:   HP.benefitCatalogue(document.getElementById('sso'), SSO_BENEFITS),
+        sso:   HP.ssoRights(document.getElementById('sso'), SSO_DATA),
         csmbs: HP.benefitCatalogue(document.getElementById('csmbs'), CSMBS_BENEFITS)
       };
       function renderCatalogues() {
         document.getElementById('nhso').hidden = state.right !== 'ucs';
+        // ประกันสังคม: การ์ดสรุปของ sso-rights.js แสดงกรณีที่คุ้มครองแทนการ์ด "สิทธิประโยชน์ที่คุณได้รับ"
+        document.getElementById('benefits').hidden = state.right === 'sso';
         Object.keys(catalogues).forEach(function (k) {
           var on = state.right === k;
           document.getElementById(k).hidden = !on;
-          if (on) catalogues[k].render(HP.sectionKey(k));
+          if (on) catalogues[k].render(HP.sectionKey(k), HP.resolveRight(k).option);
         });
       }
 
