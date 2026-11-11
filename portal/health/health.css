@@ -322,8 +322,6 @@ a.hp-stat:hover { background-color: var(--canvas-default); border-color: var(--s
 
 /* ข้อมูลที่ใช้คัดสิทธิ */
 .hp-sso-profile { padding: var(--spacing-lg); border-radius: var(--radius-xl); background: var(--canvas-white); border: 1px solid var(--stroke-neutral-lighter); gap: var(--spacing-md); }
-.hp-sso-profile .toggle-item { padding-top: var(--spacing-md); border-top: 1px solid var(--stroke-neutral-lighter); }
-.hp-sso-profile .toggle-label { font-size: var(--font-size-body-m); }
 .hp-sso-more { margin-top: 0; padding-top: var(--spacing-md); }
 .hp-sso-more .hp-sso-list { margin-top: var(--spacing-sm); }
 
@@ -338,8 +336,6 @@ a.hp-stat:hover { background-color: var(--canvas-default); border-color: var(--s
 .hp-sso-group { display: flex; flex-direction: column; gap: var(--spacing-md); }
 .hp-sso-group-head { display: flex; align-items: center; gap: var(--spacing-md); }
 .hp-sso-group-title { font-size: var(--font-size-title-m); font-weight: var(--font-weight-700); line-height: 1.35; }
-.hp-sso-item--off { background: var(--background-neutral-light); }
-.hp-sso-item--off .accordion-title { color: var(--foreground-neutral-light); }
 .hp-sso .accordion-header:focus-visible { outline: 2px solid var(--stroke-primary-default); outline-offset: -2px; }
 
 /* รายละเอียดในรายการ */

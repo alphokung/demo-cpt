@@ -51,12 +51,13 @@
       try { localStorage.setItem('hp.rightDemo', k); } catch (e) {}
       HP.setQs({ right: k, section: null });
     },
-    /** ประเภทย่อยของสิทธิ (เช่น มาตรา 33/39/40) — ค่าเริ่มต้นคือ section ของสิทธิ เลือกดูตัวอย่างอื่นได้
-        ลำดับ: query string (?section=33|39|40) → localStorage → section ของสิทธิ */
+    /** ประเภทย่อยของสิทธิ (เช่น มาตรา 33 / 39 / 40 แผน 1–3) — ค่าเริ่มต้นคือ section ของสิทธิ เลือกดูตัวอย่างอื่นได้
+        ลำดับ: query string (?section=33|39|40_1|40_2|40_3) → localStorage → section ของสิทธิ */
     sectionKey: function (rightKey) {
       var s = H.rights.schemes[rightKey];
       if (!s.variants) return null;
       var q = HP.qs('section');
+      if (q === '40' && !s.variants[q] && s.variants['40_3']) q = '40_3'; // ลิงก์เดิม ?section=40 → แผน 3
       if (q && s.variants[q]) return q;
       try { var k = localStorage.getItem('hp.sectionDemo.' + rightKey); if (k && s.variants[k]) return k; } catch (e) {}
       return s.section;

@@ -92,9 +92,22 @@
           <p class="dc-group-label">🩺 สิทธิการรักษา (เลือกดูหน้าตาของแต่ละสิทธิ)</p>
           <div class="dc-chips dc-chips--wrap" id="right-switch" role="group" aria-label="สิทธิการรักษา"></div>
         </div>
-        <div class="dc-group dc-group--last" id="section-group">
+        <div class="dc-group" id="section-group">
           <p class="dc-group-label">🗂️ ประเภทย่อยของสิทธิ</p>
           <div class="dc-chips dc-chips--wrap" id="section-switch" role="group" aria-label="ประเภทย่อยของสิทธิ"></div>
+        </div>
+        <div class="dc-group dc-group--last" id="dis-group">
+          <p class="dc-group-label">♿ สถานะผู้ประกันตน (ประกันสังคม)</p>
+          <div class="toggle-item">
+            <div class="toggle-text">
+              <p class="toggle-label" id="dis-label">ฉันเป็นผู้ทุพพลภาพ</p>
+              <p class="toggle-desc">ตามเกณฑ์ประกันสังคม คือสูญเสียสมรรถภาพการทำงานตั้งแต่ 35% ขึ้นไป ตามการประเมินของแพทย์ — ไม่ได้หมายถึงการมีบัตรคนพิการเท่านั้น</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="dis-toggle" aria-labelledby="dis-label">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -308,7 +321,15 @@
         });
       }
 
-      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); renderCatalogues(); }
+      /* สถานะทุพพลภาพ (เฉพาะสิทธิประกันสังคม) — ตั้งที่นี่ แล้วรายการสิทธิในหน้าคัดตามสถานะ */
+      var disToggle = document.getElementById('dis-toggle');
+      disToggle.addEventListener('change', function () { catalogues.sso.setDisabled(this.checked); });
+      function renderDisability() {
+        document.getElementById('dis-group').hidden = state.right !== 'sso';
+        disToggle.checked = catalogues.sso.isDisabled();
+      }
+
+      function renderAll() { renderSwitch(); renderRight(); renderFilters(); renderList(); renderCatalogues(); renderDisability(); }
       renderAll();
       HP.mountWelcome('สิทธิการรักษาพยาบาล', 'สิทธิที่คุณมี และสิทธิประโยชน์ที่ได้รับ');
     })();

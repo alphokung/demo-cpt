@@ -25,13 +25,6 @@
   function fmt(n) { return typeof n === 'number' ? n.toLocaleString('th-TH') : n; }
   function ms(name) { return '<span class="material-symbols-outlined" aria-hidden="true">' + name + '</span>'; }
   function ul(arr) { return '<ul class="hp-sso-list">' + arr.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>'; }
-  function toggle(id, label, desc, on) {
-    return '<div class="toggle-item">' +
-      '<div class="toggle-text"><p class="toggle-label" id="' + id + '-l">' + e(label) + '</p>' + (desc ? '<p class="toggle-desc">' + e(desc) + '</p>' : '') + '</div>' +
-      '<label class="toggle-switch"><input type="checkbox" data-el="' + id + '" aria-labelledby="' + id + '-l"' + (on ? ' checked' : '') + '><span class="toggle-track"></span></label>' +
-    '</div>';
-  }
-
   HP.ssoRights = function (root, D) {
     var cats = D.dictionaries.categories.slice().sort(function (a, b) { return a.order - b.order; });
     var CAT = {}, BY_ID = {}, LIFE = {};
@@ -40,9 +33,9 @@
     D.dictionaries.life_events.forEach(function (l) { LIFE[l.id] = l.label_th; });
 
     var me = { age: HP.age(), gender: H.user.sex === 'หญิง' ? 'female' : 'male' };
-    var st = { sec: '33', mine: '33', dis: false, showAll: false, q: '', cat: 'all' };
-    try { var saved = JSON.parse(localStorage.getItem(STORE) || 'null'); if (saved) { st.dis = !!saved.dis; st.showAll = !!saved.showAll; } } catch (x) {}
-    function save() { try { localStorage.setItem(STORE, JSON.stringify({ dis: st.dis, showAll: st.showAll })); } catch (x) {} }
+    var st = { sec: '33', mine: '33', dis: false, q: '', cat: 'all' };
+    try { var saved = JSON.parse(localStorage.getItem(STORE) || 'null'); if (saved) st.dis = !!saved.dis; } catch (x) {}
+    function save() { try { localStorage.setItem(STORE, JSON.stringify({ dis: st.dis })); } catch (x) {} }
 
     root.innerHTML =
       '<div class="card" data-el="summary"></div>' +
@@ -64,15 +57,15 @@
     function is40() { return st.sec.indexOf('40') === 0; }
     function S() { return D.sections[is40() ? '40' : st.sec]; }
 
-    /* ─── คัดสิทธิ: null = ไม่ใช่สิทธิของมาตรานี้ · {ok, why[]} = ได้รับ / ยังไม่เข้าเงื่อนไขเพราะอะไร ─── */
+    /* ─── คัดสิทธิ: null = ไม่ใช่สิทธิของมาตรานี้ · {ok} = ผู้ใช้เข้าเงื่อนไข (แสดงเฉพาะรายการที่ ok) ─── */
     function evaluate(b) {
       if (b.benefit_type === 'กลุ่มสิทธิ' || b.applicable_sections.indexOf(st.sec) < 0) return null;
-      var el = b.eligibility, why = [];
-      if (el.gender !== 'all' && el.gender !== me.gender) why.push(el.gender === 'female' ? 'เฉพาะผู้ประกันตนหญิง' : 'เฉพาะผู้ประกันตนชาย');
-      if (el.age_min != null && me.age < el.age_min) why.push('ใช้สิทธิได้เมื่ออายุครบ ' + el.age_min + ' ปี');
-      if (el.age_max != null && me.age > el.age_max) why.push('สำหรับอายุไม่เกิน ' + el.age_max + ' ปี');
-      if (el.disability === 'required' && !st.dis) why.push('เฉพาะผู้ทุพพลภาพ');
-      return { ok: !why.length, why: why };
+      var el = b.eligibility;
+      if (el.gender !== 'all' && el.gender !== me.gender) return { ok: false };
+      if (el.age_min != null && me.age < el.age_min) return { ok: false };
+      if (el.age_max != null && me.age > el.age_max) return { ok: false };
+      if (el.disability === 'required' && !st.dis) return { ok: false };
+      return { ok: true };
     }
     function matches(b) {
       if (!st.q) return true;
@@ -151,7 +144,6 @@
       if (el.life_event) tags.push('<span class="tag tag--sm">' + ms('event') + 'เมื่อ' + e(LIFE[el.life_event]) + '</span>');
       if (b.beneficiary && b.beneficiary !== 'ผู้ประกันตน') tags.push('<span class="tag tag--sm">' + ms('group') + 'ผู้รับ: ' + e(b.beneficiary) + '</span>');
       if (el.gender === 'female' && ev.ok) tags.push('<span class="tag tag--info tag--sm">' + ms('female') + 'เฉพาะหญิง</span>');
-      ev.why.forEach(function (w) { tags.push('<span class="tag tag--warning tag--sm">' + ms('info') + e(w) + '</span>'); });
 
       var det = [], rates = ratesHtml(a);
       if (rates) det.push('<div><p class="hp-kv-label">อัตราที่ได้รับ</p>' + rates + '</div>');
@@ -164,7 +156,7 @@
       }).join('') + '</div>');
       det.push('<p class="hp-sso-note">' + ms('menu_book') + '<span>' + manualLink(b.source_pages) + '</span></p>');
 
-      return '<div class="accordion-item' + (ev.ok ? '' : ' hp-sso-item--off') + '">' +
+      return '<div class="accordion-item">' +
         '<div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)">' +
           HP.benefitHead(b.name_th, b.summary_th, tags.join('')) +
           '<span class="accordion-icon">' + ms('expand_more') + '</span>' +
@@ -235,16 +227,13 @@
           '<div class="hp-bn-tags">' +
             '<span class="tag tag--primary tag--sm">' + ms('cake') + 'อายุ ' + me.age + ' ปี · ช่วง ' + e(ageGroup()) + '</span>' +
             '<span class="tag tag--primary tag--sm">' + ms(me.gender) + 'เพศ' + e(H.user.sex) + '</span>' +
+            (st.dis ? '<span class="tag tag--primary tag--sm">' + ms('accessible') + 'ทุพพลภาพ</span>' : '') +
           '</div>' +
-          toggle('dis', 'ฉันเป็นผู้ทุพพลภาพ', 'ตามเกณฑ์ประกันสังคม คือสูญเสียสมรรถภาพการทำงานตั้งแต่ 35% ขึ้นไป ตามการประเมินของแพทย์ — ไม่ได้หมายถึงการมีบัตรคนพิการเท่านั้น', st.dis) +
-          toggle('all', 'แสดงสิทธิที่ยังไม่เข้าเงื่อนไขด้วย', 'เช่น ยังอายุไม่ถึง หรือเป็นสิทธิเฉพาะอีกเพศ', st.showAll) +
         '</div>' +
 
         (elig.length ? '<details class="hp-refs hp-sso-more"><summary>' + ms('fact_check') + 'คุณสมบัติผู้ประกันตน' + e(SEC_LABEL[st.sec].replace(/ ทางเลือกที่ \d/, '')) + '</summary>' +
           ul(elig) + (notElig.length ? '<p class="hp-kv-label hp-sso-after">ไม่มีสิทธิสมัคร</p>' + ul(notElig) : '') + '</details>' : '');
 
-      $('dis').onchange = function () { st.dis = this.checked; save(); renderResults(); };
-      $('all').onchange = function () { st.showAll = this.checked; save(); renderResults(); };
       root.querySelectorAll('[data-opt]').forEach(function (btn) {
         btn.onclick = function () { st.sec = btn.dataset.opt; renderAll(); };
       });
@@ -253,8 +242,8 @@
     /* ─── รายการสิทธิ แยกตามหมวด ─── */
     function renderResults() {
       var rows = D.benefits.map(function (b) { return { b: b, ev: evaluate(b) }; }).filter(function (r) { return r.ev && matches(r.b); });
-      var visible = rows.filter(function (r) { return r.ev.ok || st.showAll; });
-      var okN = rows.filter(function (r) { return r.ev.ok; }).length, offN = rows.length - okN;
+      var visible = rows.filter(function (r) { return r.ev.ok; });
+      var okN = visible.length;
       var cnt = {};
       visible.forEach(function (r) { cnt[r.b.category] = (cnt[r.b.category] || 0) + 1; });
       if (st.cat !== 'all' && !cnt[st.cat]) st.cat = 'all';
@@ -269,8 +258,7 @@
         btn.onclick = function () { st.cat = btn.dataset.cat; renderResults(); };
       });
 
-      $('count').innerHTML = 'คุณได้รับ <b>' + okN + '</b> สิทธิ' + (st.q ? ' ที่ตรงกับ “' + e(st.q) + '”' : '') +
-        (offN ? ' · ' + offN + ' สิทธิยังไม่เข้าเงื่อนไข' + (st.showAll ? ' (แสดงด้วยพื้นสีเทา)' : '') : '');
+      $('count').innerHTML = 'คุณได้รับ <b>' + okN + '</b> สิทธิ' + (st.q ? ' ที่ตรงกับ “' + e(st.q) + '”' : '');
 
       var shown = visible.filter(function (r) { return st.cat === 'all' || r.b.category === st.cat; });
       if (!shown.length) {
@@ -280,12 +268,10 @@
       $('results').innerHTML = cats.map(function (c) {
         var list = shown.filter(function (r) { return r.b.category === c.id; });
         if (!list.length) return '';
-        list.sort(function (x, y) { return y.ev.ok - x.ev.ok; });
-        var ok = list.filter(function (r) { return r.ev.ok; }).length;
         return '<section class="hp-sso-group" aria-label="' + e(c.label_th) + '">' +
           '<div class="hp-sso-group-head"><span class="hp-icon hp-icon--sm tone-primary">' + ms(CAT_ICON[c.id]) + '</span>' +
             '<div><h4 class="hp-sso-group-title">' + e(c.label_th) + '</h4>' +
-            '<p class="hp-muted">' + ok + ' สิทธิที่ได้รับ' + (list.length > ok ? ' · ' + (list.length - ok) + ' ยังไม่เข้าเงื่อนไข' : '') + '</p></div></div>' +
+            '<p class="hp-muted">' + list.length + ' สิทธิที่ได้รับ</p></div></div>' +
           '<div class="accordion">' + list.map(function (r) { return itemHtml(r.b, r.ev); }).join('') + '</div>' +
         '</section>';
       }).join('');
@@ -393,12 +379,15 @@
     });
 
     return {
-      /** section = '33' | '39' | '40' · option = ทางเลือกของ ม.40 ('40_1' | '40_2' | '40_3') */
+      /** section = '33' | '39' | '40_1' | '40_2' | '40_3' (แผนของมาตรา 40) — '40' + option ก็ใช้ได้ */
       render: function (section, option) {
         st.mine = st.sec = section === '40' ? (option || '40_3') : section;
         st.cat = 'all';
         renderAll();
-      }
+      },
+      /** สถานะทุพพลภาพ — ตั้งจาก Demo การแสดงผล (rights.html) */
+      isDisabled: function () { return st.dis; },
+      setDisabled: function (v) { st.dis = !!v; save(); renderAll(); }
     };
   };
 })();
