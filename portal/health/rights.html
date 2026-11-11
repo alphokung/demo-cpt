@@ -164,22 +164,52 @@
       });
 
       /* ─── ตรวจว่าผู้ใช้เข้าเงื่อนไขหรือไม่ (อายุ / เพศ / โรคประจำตัว / สิทธิ) ─── */
+      var birthYearBE = +H.user.birthDate.slice(0, 4) + 543;
+      var inBangkok = H.user.province === 'กรุงเทพมหานคร';
+      var FERTILE_AGE = { min: 15, max: 49 }; // "วัยเจริญพันธุ์" ไม่มีตัวเลขในไฟล์ — ใช้ช่วง 15–49 ปีตามนิยามของ WHO
+
       function ageGroup() { return age < 25 ? 'young' : age < 50 ? 'adult' : 'senior'; }
-      function ageRanges(cond) {
-        var out = [], m, re = /(\d+)\s*-\s*(\d+)\s*ปี|(\d+)\s*ปี\s*ขึ้นไป/g;
-        while ((m = re.exec(cond))) out.push(m[3] ? [+m[3], 200] : [+m[1], +m[2]]);
+      // ช่วงอายุที่เขียนไว้ในข้อความ อ่านทีละบรรทัด เพื่อรู้ว่าช่วงไหนเฉพาะเพศหญิง หรือเฉพาะ กทม.
+      function parseRanges(text) {
+        var out = [], bkkOnly = false;
+        text.split('\n').forEach(function (line) {
+          if (/ทั่วประเทศ/.test(line)) bkkOnly = false;
+          if (/กรุงเทพมหานครเท่านั้น/.test(line)) bkkOnly = true;
+          var m, re = /(\d+)\s*เดือน\s*-\s*(\d+)\s*ปี|แรกเกิด\s*-\s*(\d+)\s*ปี|(\d+)\s*-\s*(\d+)\s*ปี|(\d+)\s*ปี\s*ขึ้นไป/g;
+          while ((m = re.exec(line))) {
+            var r = m[2] ? { min: 0, max: +m[2] } : m[3] ? { min: 0, max: +m[3] } :
+                    m[5] ? { min: +m[4], max: +m[5] } : { min: +m[6], max: 200 };
+            r.female = /เฉพาะเพศหญิง/.test(line);
+            r.bkkOnly = bkkOnly;
+            out.push(r);
+          }
+        });
         return out;
+      }
+      // ลำดับ: ช่วงอายุในเงื่อนไข → ในชื่อบริการ (เช่น HPV DNA "อายุ 60 ปีขึ้นไป") → วัยเจริญพันธุ์
+      function ageRanges(i) {
+        var r = parseRanges(i.cond);
+        if (!r.length) r = parseRanges(i.main);
+        if (!r.length && /วัยเจริญพันธ/.test(i.cond)) r = [FERTILE_AGE];
+        return r;
       }
       function eligible(i) {
         if (i.ucsOnly && state.right !== 'ucs') return false;
         if (i.disease) return false;
-        if (isMale && /เพศหญิง|สตรี/.test(i.cond + i.main) && !/เพศชาย/.test(i.cond)) return false;
+        // เพศ — ไม่นับ "(เฉพาะเพศหญิง)" ที่ระบุไว้แค่บางช่วงอายุ เช่น ตรวจภาวะซีด 13–24 ปี
+        var sexCond = i.cond.replace(/\(เฉพาะเพศหญิง\)/g, '');
+        if (isMale && ((/เพศหญิง/.test(sexCond) && !/เพศชาย/.test(sexCond)) || /สตรี/.test(i.main))) return false;
         if (isMale && i.groups.length === 1 && i.g.women) return false;
-        var inGroup = i.g[ageGroup()] || (i.g.other && !i.g.young && !i.g.adult && !i.g.senior && !i.g.women);
-        if (!inGroup) return false;
-        var ranges = ageRanges(i.cond);
-        if (ranges.length && !ranges.some(function (r) { return age >= r[0] && age <= r[1]; })) return false;
-        return true;
+        // ปีเกิด — เช่น ไวรัสตับอักเสบ "เกิดก่อนปี 2535" (ผู้เกิดหลังจากนั้นต้องเป็นกลุ่มเสี่ยง ซึ่งระบบไม่ทราบ)
+        var born = /เกิดก่อนปี\s*(?:พ\.ศ\.\s*)?(\d{4})/.exec(i.cond);
+        if (born && birthYearBE >= +born[1]) return false;
+        // มีช่วงอายุระบุไว้ → ยึดตามข้อความ เพราะช่อง Y/N ตามช่วงวัยบางแถวขัดกับเงื่อนไข (เช่น Cholesterol 45–70 ปี)
+        var ranges = ageRanges(i);
+        if (ranges.length) return ranges.some(function (r) {
+          return age >= r.min && age <= r.max && !(r.female && isMale) && !(r.bkkOnly && !inBangkok);
+        });
+        // ไม่มีช่วงอายุ → ใช้ช่อง Y/N ตามช่วงวัยจากไฟล์ Excel
+        return !!(i.g[ageGroup()] || (i.g.other && !i.g.young && !i.g.adult && !i.g.senior && !i.g.women));
       }
 
       /* ─── Render: switcher (สิทธิ + ประเภทย่อย เช่น มาตรา 33/39/40) ─── */

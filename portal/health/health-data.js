@@ -13,6 +13,7 @@ window.HEALTH = {
     pidMasked: '1-1002-XXXXX-XX-8',
     birthDate: '1981-03-14',
     sex: 'ชาย',
+    province: 'กรุงเทพมหานคร', // ใช้กับสิทธิที่จำกัดพื้นที่ เช่น ตรวจ Cholesterol อายุ 35–44 ปี และ 71 ปีขึ้นไป
     bloodGroup: 'O Rh+',
     conditions: ['hypertension', 'dyslipidemia'] // ใช้คัดเลือกข่าวสุขภาพที่เกี่ยวข้อง
   },
