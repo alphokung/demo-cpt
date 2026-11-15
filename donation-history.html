@@ -1168,7 +1168,7 @@
         // footer: source line + ทางรัฐ mark
         x.beginPath(); x.moveTo(88, 1236); x.lineTo(W - 88, 1236); x.stroke();
         var src = 'ข้อมูลจากระบบ e-Donation กรมสรรพากร ผ่านแอปทางรัฐ · ' + dateTH(TODAY);
-        x.fillStyle = '#62676c'; fitFont(src, 400, 26, W - 176); x.fillText(src, 88, 1300);
+        x.fillStyle = '#62676c'; fitFont(src, 400, 26, W - 176); x.textAlign = 'center'; x.fillText(src, W / 2, 1300); x.textAlign = 'left';
         var L = 88; x.drawImage(logo, W - 52 - L, 48, L, L);   // ทางรัฐ mark, top-right corner
 
         return new Promise(function (ok) { c.toBlob(ok, 'image/png'); });
