@@ -47,6 +47,17 @@
     .dh-eyebrow .material-symbols-outlined { font-size: 16px; }
     .dh-stage-name { font-size: 26px; line-height: 1.25; font-weight: 700; color: var(--dh-ink); margin: 4px 0 2px; }
     .dh-stage-meta { font-size: 14px; color: var(--dh-muted); }
+    button.dh-level { font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    button.dh-level .material-symbols-outlined { font-size: 15px; }
+    button.dh-level:hover { background: var(--neutral-100); border-color: rgba(0,102,67,.35); }
+    .dh-how { all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 6px; width: 100%; margin-top: 10px; padding: 9px 12px;
+      border-radius: 12px; background: rgba(255,255,255,.65); border: 1px solid rgba(0,102,67,.14); font-size: 13px; font-weight: 600; color: var(--primary-20); cursor: pointer; }
+    .dh-how:hover { background: var(--neutral-100); }
+    .dh-how .material-symbols-outlined { font-size: 18px; }
+    .dh-how .material-symbols-outlined:last-child { margin-left: auto; color: var(--neutral-60); }
+    .dh-how:focus-visible, button.dh-level:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
+    .dh-growth .modal-content { max-width: 480px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
+    .dh-growth-body { padding: 16px 20px 20px; overflow-y: auto; }
     .dh-level { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--primary-20); padding: 5px 10px; border-radius: 999px;
       background: rgba(255,255,255,.65); border: 1px solid rgba(0,102,67,.18); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
@@ -103,9 +114,15 @@
     .dh-share-btn .material-symbols-outlined { font-size: 18px; }
     .dh-share-text span { display: block; font-size: 12px; color: var(--dh-muted); margin-top: 2px; }
     /* save-image popup */
-    .dh-save .modal-content { max-width: 420px; }
-    .dh-save-body { padding: 16px 20px 4px; display: grid; gap: 14px; }
-    .dh-save-preview { position: relative; aspect-ratio: 4 / 5; max-height: 52vh; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden;
+    /* fit the whole popup in the viewport: the preview takes whatever height is left
+       after the header, toggle and buttons (~290px), and keeps its 4:5 shape */
+    .dh-save .modal-content { max-width: 420px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
+    .dh-save-body { padding: 16px 20px 4px; display: grid; gap: 14px; justify-items: center; }
+    .dh-save-opt { width: 100%; box-sizing: border-box; }
+    .dh-save-preview { position: relative; aspect-ratio: 4 / 5; margin: 0 auto; border-radius: 14px; overflow: hidden;
+      height: min(calc(100vh - 32px - 290px), calc((min(90vw, 420px) - 40px) * 1.25));
+      height: min(calc(100dvh - 32px - 290px), calc((min(90vw, 420px) - 40px) * 1.25));
+      min-height: 160px; width: auto; max-width: 100%;
       background: linear-gradient(#e9f0e8, #f0ece2); border: 1px solid var(--dh-line); }
     .dh-save-preview img { display: block; width: 100%; height: 100%; object-fit: contain; transition: opacity .2s; }
     .dh-save-preview.is-busy img { opacity: .35; }
@@ -158,16 +175,29 @@
 
     /* ── milestones ──────────────────────── */
     .dh-badges { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .dh-badge { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; padding: 12px 14px 14px; border-radius: 14px; border: 1px solid var(--dh-line); }
-    .dh-medal { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center;
-      background: var(--primary-95); color: var(--primary-20); box-shadow: inset 0 0 0 1px rgba(0,102,67,.18); }
-    .dh-medal .material-symbols-outlined { font-size: 19px; }
-    .dh-badge-title { display: block; font-size: 14px; font-weight: 600; color: var(--dh-ink); line-height: 1.35; }
-    .dh-badge-sub { display: block; font-size: 12px; color: var(--dh-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
-    .dh-badge.is-locked .dh-medal { background: var(--neutral-96); color: var(--neutral-70); box-shadow: inset 0 0 0 1px var(--neutral-90); }
+    .dh-badge { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 18px 12px 14px; border-radius: 16px;
+      border: 1px solid #efe4c6; background: linear-gradient(180deg, #fffdf6, #fff); }
+    .dh-medal { position: relative; width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; padding: 3px; box-sizing: border-box;
+      background: conic-gradient(from 210deg, #e8c46a, #b4862c, #f1d98f, #b4862c, #e8c46a); box-shadow: 0 3px 8px rgba(154,91,19,.22); }
+    .dh-medal::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 1px dashed rgba(154,91,19,.35); }
+    .dh-medal-face { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #fffaf0, #fbefd2); color: var(--dh-gold-ink); }
+    .dh-medal .material-symbols-outlined { font-size: 28px; font-variation-settings: 'FILL' 1; }
+    .dh-medal-check { position: absolute; right: -3px; bottom: -3px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--primary-30-base); color: #fff; border: 2px solid #fff; }
+    .dh-medal-check .material-symbols-outlined { font-size: 13px; font-variation-settings: 'wght' 700; }
+    .dh-badge-title { text-wrap: balance; display: block; font-size: 14px; font-weight: 700; color: var(--dh-ink); line-height: 1.35; }
+    .dh-badge-desc { display: block; font-size: 12px; color: var(--dh-muted); line-height: 1.45; margin-top: 3px; }
+    .dh-badge-sub { display: block; font-size: 12px; font-weight: 600; color: var(--primary-20); margin-top: 8px; font-variant-numeric: tabular-nums; }
+    .dh-badge.is-locked { border-color: var(--dh-line); background: var(--neutral-98); }
+    .dh-badge.is-locked .dh-medal { background: conic-gradient(from 210deg, #d3d6d8, #b4b8bb, #e4e6e8, #b4b8bb, #d3d6d8); box-shadow: none; }
+    .dh-badge.is-locked .dh-medal::before { border-color: rgba(98,103,108,.3); }
+    .dh-badge.is-locked .dh-medal-face { background: var(--neutral-96); color: var(--neutral-70); }
+    .dh-badge.is-locked .dh-medal .material-symbols-outlined { font-variation-settings: 'FILL' 0; }
+    .dh-badge.is-locked .dh-medal-check { background: var(--neutral-70); }
     .dh-badge.is-locked .dh-badge-title { color: var(--dh-text); }
-    .dh-badge .dh-bar { height: 4px; margin: 6px 0 0; }
-    .dh-badge .dh-bar > span { background: var(--neutral-70); }
+    .dh-badge.is-locked .dh-badge-sub { color: var(--dh-muted); font-weight: 500; }
+    .dh-badge .dh-bar { height: 4px; margin: 6px 0 0; width: 100%; }
+    .dh-badge .dh-bar > span { background: var(--dh-gold); }
     @media (min-width: 900px) { .dh-badges { grid-template-columns: repeat(3, 1fr); } }
 
     /* ── yearly summary (e-Donation) ─────── */
@@ -271,7 +301,7 @@
             <h1 class="dh-stage-name" id="stage-name">—</h1>
             <div class="dh-stage-meta" id="stage-meta"></div>
           </div>
-          <span class="dh-level" id="stage-level"></span>
+          <button type="button" class="dh-level" data-growth-open aria-haspopup="dialog"><span id="stage-level"></span><span class="material-symbols-outlined" aria-hidden="true">info</span></button>
         </div>
 
         <div class="dh-tree-wrap">
@@ -290,6 +320,7 @@
           </div>
           <div class="dh-bar" role="progressbar" aria-label="ความคืบหน้าสู่เลเวลผลิดอก" aria-valuemin="0" aria-valuemax="100" id="stage-bar"><span></span></div>
           <div class="dh-hint" id="hint"></div>
+          <button type="button" class="dh-how" data-growth-open aria-haspopup="dialog"><span class="material-symbols-outlined" aria-hidden="true">help</span>เก็บคะแนนอย่างไร ต้นไม้จะโตแบบไหน<span class="material-symbols-outlined" aria-hidden="true">chevron_right</span></button>
         </div>
 
         <div class="dh-replay">
@@ -304,8 +335,7 @@
 
         <div class="dh-share">
           <div class="dh-share-text">
-            <b>ชวนคนรอบตัวมาร่วมให้</b>
-            <span>ดูตัวอย่างและเลือกได้ว่าจะแสดงยอดเงินหรือไม่</span>
+            <strong>ชวนคนรอบตัวมาร่วมให้</strong>
           </div>
           <button type="button" class="dh-share-btn" id="save-img" aria-haspopup="dialog">
             <span class="material-symbols-outlined" aria-hidden="true">download</span><span class="dh-share-label">บันทึกภาพ</span>
@@ -313,31 +343,6 @@
         </div>
       </section>
 
-      <section class="dh-card" aria-labelledby="stages-title">
-        <div class="dh-section-head">
-          <h2 class="dh-h2" id="stages-title">เลเวลการเติบโต</h2>
-          <small>ราชพฤกษ์ · ต้นไม้ประจำชาติ</small>
-        </div>
-        <div class="dh-stages" id="stages"></div>
-        <div class="dh-rules">
-          <div class="dh-rule">
-            <div class="dh-rule-top"><span class="material-symbols-outlined">event_repeat</span><b>+20</b></div>
-            <p>ทุกครั้งที่บริจาค ต้นไม้แตกใบใหม่ 1 กลุ่ม</p>
-          </div>
-          <div class="dh-rule">
-            <div class="dh-rule-top"><span class="material-symbols-outlined">payments</span><b>+1</b></div>
-            <p>ทุก ฿100 ที่บริจาค ลำต้นและกิ่งแข็งแรงขึ้น</p>
-          </div>
-        </div>
-        <p class="dh-fine"><span class="material-symbols-outlined">info</span>
-          การเติบโตสะสมตลอดไป ไม่ลดลงเมื่อหยุดบริจาค และไม่มีผลต่อสิทธิลดหย่อนภาษี</p>
-        <div class="dh-season" id="season" hidden>
-          <div class="dh-season-head"><span class="material-symbols-outlined" aria-hidden="true">local_florist</span>
-            <b>ฤดูออกดอกรายปี</b><small>หลังเติบโตเต็มที่</small></div>
-          <p>ดอกจะสะพรั่งตามคะแนนที่ให้ในแต่ละปีภาษี และเริ่มฤดูใหม่ทุกปี</p>
-          <ol class="dh-season-steps" id="season-steps"></ol>
-        </div>
-      </section>
     </div>
 
     <!-- ── right: records ── -->
@@ -382,12 +387,47 @@
   </main>
 
   <!-- demo-only scenario switcher (not product UI) -->
+  <div id="modal-growth" class="modal-overlay dh-growth">
+    <div class="modal-content" style="padding:0;gap:0" role="dialog" aria-modal="true" aria-labelledby="growth-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="growth-title">ต้นไม้โตอย่างไร</p>
+          <p class="dc-modal__sub">ราชพฤกษ์ · ต้นไม้ประจำชาติ</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-growth-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dh-growth-body">
+        <div class="dh-stages" id="stages"></div>
+        <div class="dh-rules">
+          <div class="dh-rule">
+            <div class="dh-rule-top"><span class="material-symbols-outlined">event_repeat</span><b>+20</b></div>
+            <p>ทุกครั้งที่บริจาค ต้นไม้แตกใบใหม่ 1 กลุ่ม</p>
+          </div>
+          <div class="dh-rule">
+            <div class="dh-rule-top"><span class="material-symbols-outlined">payments</span><b>+1</b></div>
+            <p>ทุก ฿100 ที่บริจาค ลำต้นและกิ่งแข็งแรงขึ้น</p>
+          </div>
+        </div>
+        <p class="dh-fine"><span class="material-symbols-outlined">info</span>
+          การเติบโตสะสมตลอดไป ไม่ลดลงเมื่อหยุดบริจาค และไม่มีผลต่อสิทธิลดหย่อนภาษี</p>
+        <div class="dh-season" id="season" hidden>
+          <div class="dh-season-head"><span class="material-symbols-outlined" aria-hidden="true">local_florist</span>
+            <b>ฤดูออกดอกรายปี</b><small>หลังเติบโตเต็มที่</small></div>
+          <p>ดอกจะสะพรั่งตามคะแนนที่ให้ในแต่ละปีภาษี และเริ่มฤดูใหม่ทุกปี</p>
+          <ol class="dh-season-steps" id="season-steps"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="modal-save" class="modal-overlay dh-save">
     <div class="modal-content" style="padding:0;gap:0" role="dialog" aria-modal="true" aria-labelledby="save-title">
       <div class="dc-modal__header">
         <div>
           <p class="dc-modal__title" id="save-title">บันทึกภาพต้นไม้ของฉัน</p>
-          <p class="dc-modal__sub">ภาพขนาด 1080 × 1350 พร้อมแชร์</p>
+          <p class="dc-modal__sub">บันทึกภาพต้นไม้แห่งการให้ของคุณ</p>
         </div>
         <button type="button" class="dc-modal__close-btn" data-save-close aria-label="ปิด">
           <span class="material-symbols-outlined dc-modal__close-icon">close</span>
@@ -499,10 +539,10 @@
       sprout:   { group: 'grow',  label: 'ต้นกล้า · 50',           who: 'บริจาคครั้งแรก ฿3,000 ปลายปีเพื่อลดหย่อน', rows: [['2026-10-30','H',3000]] },
       young:    { group: 'grow',  label: 'ไม้หนุ่ม · 128',          who: 'ทำบุญวันสำคัญทางศาสนา 5 ครั้งในปีนี้ รวม ฿2,800',
                   rows: [['2026-03-03','W',500], ['2026-05-31','W',300], ['2026-07-29','P',500], ['2026-08-12','H',1000], ['2026-10-20','R',500]] },
-      mature:   { group: 'grow',  label: 'ไม้ยืนต้น · 230',         who: 'ให้สม่ำเสมอ 2 ปี ปีละ 4 ครั้ง',
+      mature:   { group: 'grow',  label: 'ยืนต้น · 230',         who: 'ให้สม่ำเสมอ 2 ปี ปีละ 4 ครั้ง',
                   rows: [['2025-02-12','W',500], ['2025-05-11','P',1000], ['2025-09-20','H',1000], ['2025-12-10','R',500],
                          ['2026-03-03','W',1000], ['2026-05-31','P',1000], ['2026-08-12','H',1500], ['2026-10-20','F',500]] },
-      current:  { group: 'grow',  label: 'ไม้ร่มใหญ่ · 525',        who: 'ข้อมูลตัวอย่างจากหน้าจอจริง 14 ครั้งใน 3 ปี', rows: null },
+      current:  { group: 'grow',  label: 'ร่มไม้ใหญ่ · 525',        who: 'ข้อมูลตัวอย่างจากหน้าจอจริง 14 ครั้งใน 3 ปี', rows: null },
       dormant:  { group: 'bloom', label: 'พักตัว',                 who: 'เติบโตเต็มที่แล้ว (620) ยังไม่ได้ให้ในปีภาษีนี้', rows: PAST_FULL },
       first:    { group: 'bloom', label: 'ดอกแรกแย้ม · 30',        who: 'เติบโตเต็มที่ ปีนี้ให้ 1 ครั้งวันสงกรานต์', rows: PAST_FULL.concat([['2026-04-13','W',1000]]) },
       flourish: { group: 'bloom', label: 'ออกดอกสะพรั่ง · 160',     who: 'เติบโตเต็มที่ ปีนี้ให้ 4 ครั้ง รวม ฿8,000',
@@ -524,9 +564,9 @@
       { min: 0,   name: 'เมล็ดพันธุ์' },
       { min: 30,  name: 'ต้นกล้า' },
       { min: 100, name: 'ไม้หนุ่ม' },
-      { min: 200, name: 'ไม้ยืนต้น' },
-      { min: 350, name: 'ไม้ร่มใหญ่' },
-      { min: 600, name: 'ราชพฤกษ์ผลิดอก' }
+      { min: 200, name: 'ยืนต้น' },
+      { min: 350, name: 'ร่มไม้ใหญ่' },
+      { min: 600, name: 'ผลิดอก' }
     ];
     var FULL = STAGES[STAGES.length - 1].min;
     // once fully grown, this tax year's points set how richly the tree flowers;
@@ -965,28 +1005,40 @@
         if (!years[y]) { years[y] = 1; run = prevY === y - 1 ? run + 1 : 1; prevY = y; if (run === 3 && !streakDate) streakDate = d.date; }
       });
       var catN = Object.keys(cats).length;
-      var bloomDate = null, topBloomDate = null, yearPts = {};
+      var topBloomDate = null, yearPts = {}, yearCount = {}, tenInYearDate = null, bestYearCount = 0, twoFoldDate = null;
       DONATIONS.forEach(function (d, i) {
         var y = d.date.slice(0, 4); yearPts[y] = (yearPts[y] || 0) + pts(d);
+        yearCount[y] = (yearCount[y] || 0) + 1; bestYearCount = Math.max(bestYearCount, yearCount[y]);
+        if (!tenInYearDate && yearCount[y] >= 10) tenInYearDate = d.date;
+        if (!twoFoldDate && d.deduct === 2) twoFoldDate = d.date;
         if (!topBloomDate && CUM[i + 1] >= FULL && yearPts[y] >= BLOOMS[BLOOMS.length - 1].min) topBloomDate = d.date;
       });
-      for (var bi = 0; bi < N; bi++) if (CUM[bi + 1] >= FULL) { bloomDate = DONATIONS[bi].date; break; }
       var list = [
-        { icon: 'spa',           t: 'ก้าวแรกแห่งการให้',      done: N >= 1 && dateNth(1) },
-        { icon: 'event_repeat',  t: 'ให้ต่อเนื่อง 3 ปีภาษี',   done: streakDate, prog: [Math.min(run, 3), 3, 'ปี'] },
-        { icon: 'diversity_1',   t: 'ครบทั้ง 4 ด้าน',          done: catDate, prog: [catN, 4, 'ด้าน'], sub: 'สุขภาพ การศึกษา ศาสนา สาธารณกุศล' },
-        { icon: 'wb_sunny',      t: 'เหลืองอร่าม',      done: topBloomDate, prog: [Math.max.apply(null, [0].concat(Object.keys(yearPts).map(function (y) { return yearPts[y]; }))), BLOOMS[BLOOMS.length - 1].min, 'คะแนนในปีเดียว'] },
-        { icon: 'forest',        t: 'บริจาคครบ 20 ครั้ง',      done: N >= 20 && dateNth(20), prog: [N, 20, 'ครั้ง'] },
-        { icon: 'local_florist', t: 'ราชพฤกษ์ผลิดอก',          done: bloomDate, prog: [CUM[N], FULL, 'คะแนน'] }
+        { rank: 1, icon: 'spa',           t: 'ก้าวแรกแห่งการให้',      desc: 'บริจาคผ่านระบบ e-Donation เป็นครั้งแรก',
+          done: N >= 1 && dateNth(1), sub: 'บริจาคครั้งแรกเพื่อรับหมุดหมายนี้' },
+        { rank: 5, icon: 'event_repeat',  t: 'ให้ต่อเนื่อง 3 ปีภาษี',   desc: 'บริจาคติดต่อกัน 3 ปีภาษีโดยไม่ขาดปี',
+          done: streakDate, prog: [Math.min(run, 3), 3, 'ปี'] },
+        { rank: 3, icon: 'diversity_1',   t: 'บริจาคครบ 4 หมวด\u2060หมู่',    desc: 'เคยบริจาคครบทั้งสุขภาพ การศึกษา ศาสนา และสาธารณกุศล',
+          done: catDate, prog: [catN, 4, 'หมวดหมู่'] },
+        { rank: 6, icon: 'wb_sunny',      t: 'เหลืองอร่าม',             desc: 'หลังต้นไม้โตเต็มที่ สะสมคะแนนในปีภาษีเดียวให้ถึง ' + BLOOMS[BLOOMS.length - 1].min,
+          done: topBloomDate, prog: [Math.max.apply(null, [0].concat(Object.keys(yearPts).map(function (y) { return yearPts[y]; }))), BLOOMS[BLOOMS.length - 1].min, 'คะแนน'] },
+        { rank: 4, icon: 'forest',        t: 'บริจาคครบ 10 ครั้งภายในปีเดียวกัน', desc: 'บริจาคให้ครบ 10 ครั้งในปีภาษีเดียว ไม่จำกัดจำนวนเงิน',
+          done: tenInYearDate, prog: [bestYearCount, 10, 'ครั้ง'] },
+        { rank: 2, icon: 'volunteer_activism', t: 'ลดหย่อน 2 เท่าครั้งแรก', desc: 'บริจาคให้โรงพยาบาลหรือโรงเรียนที่ลดหย่อนภาษีได้ 2 เท่า',
+          done: twoFoldDate, sub: 'ยังไม่เคยบริจาคให้หน่วยที่ลดหย่อน 2 เท่า' }
       ];
+      // earned first, then locked; within each group, easiest to hardest
+      list.sort(function (a, b) { return (!a.done - !b.done) || (a.rank - b.rank); });
       var got = list.filter(function (b) { return b.done; }).length;
       $('badges-count').textContent = 'ได้รับ ' + got + ' จาก ' + list.length;
       $('badges').innerHTML = list.map(function (b) {
         var sub = b.done ? 'ได้รับเมื่อ ' + dateTH(b.done)
           : b.prog ? num(b.prog[0]) + ' / ' + num(b.prog[1]) + ' ' + b.prog[2] : (b.sub || '');
-        return '<div class="dh-badge' + (b.done ? '' : ' is-locked') + '">' +
-          '<span class="dh-medal"><span class="material-symbols-outlined">' + b.icon + '</span></span>' +
+        return '<div class="dh-badge' + (b.done ? '' : ' is-locked') + '" role="group" aria-label="' + esc(b.t + (b.done ? ' ได้รับแล้ว' : ' ยังไม่ได้รับ')) + '">' +
+          '<span class="dh-medal" aria-hidden="true"><span class="dh-medal-face"><span class="material-symbols-outlined">' + b.icon + '</span></span>' +
+            '<span class="dh-medal-check"><span class="material-symbols-outlined">' + (b.done ? 'check' : 'lock') + '</span></span></span>' +
           '<div style="min-width:0;width:100%"><span class="dh-badge-title">' + esc(b.t) + '</span>' +
+          '<span class="dh-badge-desc">' + esc(b.desc) + '</span>' +
           '<span class="dh-badge-sub">' + esc(sub) + '</span>' +
           (!b.done && b.prog ? '<div class="dh-bar" aria-hidden="true"><span style="width:' + clamp(b.prog[0] / b.prog[1]) * 100 + '%"></span></div>' : '') +
           '</div></div>';
@@ -1097,7 +1149,7 @@
         // stats — amounts only when the user turns them on
         var stats = [[num(N), 'ครั้งที่ให้']];
         if (opts.money) stats.push([money(DONATIONS.reduce(function (t, d) { return t + d.amount; }, 0)), 'ยอดบริจาครวม']);
-        stats.push([String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'ด้านที่สนับสนุน']);
+        stats.push([String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'หมวดหมู่ที่สนับสนุน']);
         stats.push([String(longestYearRun()), 'ปีต่อเนื่อง']);
         var top = 1088, colW = (W - 176) / stats.length;
         function fitFont(text, weight, size, maxW) {
@@ -1199,6 +1251,18 @@
       document.querySelector('.dh-replay').style.display = 'none';
       document.querySelector('.dh-share').style.display = 'none';
     }
+
+    /* ════════ growth popup: how points work, the six levels, yearly bloom ════════ */
+    (function () {
+      var modal = $('modal-growth'), opener = null;
+      function close() { modal.classList.remove('active'); if (opener) opener.focus(); }
+      document.addEventListener('click', function (e) {
+        var o = e.target.closest('[data-growth-open]');
+        if (o) { opener = o; modal.classList.add('active'); setTimeout(function () { modal.querySelector('[data-growth-close]').focus(); }, 50); return; }
+        if (e.target === modal || e.target.closest('[data-growth-close]')) close();
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('active')) close(); });
+    })();
 
     /* ════════ demo switcher ════════ */
     (function () {
