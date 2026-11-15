@@ -551,6 +551,10 @@
     for (var wd = new Date(Date.UTC(2026, 0, 3)), wi = 0; wd.toISOString().slice(0, 10) <= '2026-11-14'; wd.setUTCDate(wd.getUTCDate() + 7), wi++) {
       WANPRA.push([wd.toISOString().slice(0, 10), wi % 2 ? 'P' : 'W', 100]);
     }
+    var DAILY = []; // test: ฿20 every day for 365 days, ending today
+    for (var dd = new Date(Date.UTC(2025, 10, 16)); dd.toISOString().slice(0, 10) <= TODAY; dd.setUTCDate(dd.getUTCDate() + 1)) {
+      DAILY.push([dd.toISOString().slice(0, 10), 'R', 20]);
+    }
     var SCEN = {
       empty:    { group: 'grow',  label: 'ยังไม่เคยบริจาค',        who: 'ยังไม่มีรายการในระบบ e-Donation', rows: [] },
       sprout:   { group: 'grow',  label: 'ต้นกล้า · 50',           who: 'บริจาคครั้งแรก ฿3,000 ปลายปีเพื่อลดหย่อน', rows: [['2026-10-30','H',3000]] },
@@ -567,7 +571,8 @@
       bloom:    { group: 'bloom', label: 'บานเต็มต้น · 315',        who: 'ข้อมูลจริง + อีก 2 ครั้ง (ถึง 600 พอดี)', rows: REAL_EXTRA.concat([['2026-11-01','H',2000], ['2026-11-12','W',1500]]) },
       grand:    { group: 'bloom', label: 'เหลืองอร่าม · 700',  who: 'ผู้ให้รายใหญ่ ปีนี้รวม ฿50,000',
                   rows: REAL_EXTRA.concat([['2026-11-01','H',20000], ['2026-11-05','S',10000], ['2026-11-08','W',5000], ['2026-11-12','R',3000]]) },
-      wanpra:   { group: 'test',  label: 'ทำบุญทุกสัปดาห์ ฿100',     who: 'ทดสอบสูตรคะแนน: 46 ครั้ง รวมแค่ ฿4,600 แต่ได้ 966 คะแนน', rows: WANPRA }
+      wanpra:   { group: 'test',  label: 'ทำบุญทุกสัปดาห์ ฿100',     who: 'ทดสอบสูตรคะแนน: 46 ครั้ง รวมแค่ ฿4,600 แต่ได้ 966 คะแนน', rows: WANPRA },
+      daily:    { group: 'test',  label: 'บริจาคทุกวัน ฿20',          who: 'ทดสอบสูตรคะแนน: 365 วันติดต่อกัน วันละ ฿20 รวม ฿7,300 แต่ได้ 7,373 คะแนน', rows: DAILY }
     };
     var SCENARIO = (location.search.match(/(?:^|[?&])demo=([a-z]+)(?:&|$)/) || [])[1];
     if (!SCEN[SCENARIO]) SCENARIO = 'current';
