@@ -115,13 +115,13 @@
     .dh-share-text span { display: block; font-size: 12px; color: var(--dh-muted); margin-top: 2px; }
     /* save-image popup */
     /* fit the whole popup in the viewport: the preview takes whatever height is left
-       after the header, toggle and buttons (~290px), and keeps its 4:5 shape */
+       after the header, range picker, toggle and buttons (~370px), and keeps its 4:5 shape */
     .dh-save .modal-content { max-width: 420px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); }
     .dh-save-body { padding: 16px 20px 4px; display: grid; gap: 14px; justify-items: center; }
     .dh-save-opt { width: 100%; box-sizing: border-box; }
     .dh-save-preview { position: relative; aspect-ratio: 4 / 5; margin: 0 auto; border-radius: 14px; overflow: hidden;
-      height: min(calc(100vh - 32px - 290px), calc((min(90vw, 420px) - 40px) * 1.25));
-      height: min(calc(100dvh - 32px - 290px), calc((min(90vw, 420px) - 40px) * 1.25));
+      height: min(calc(100vh - 32px - 370px), calc((min(90vw, 420px) - 40px) * 1.25));
+      height: min(calc(100dvh - 32px - 370px), calc((min(90vw, 420px) - 40px) * 1.25));
       min-height: 160px; width: auto; max-width: 100%;
       background: linear-gradient(#e9f0e8, #f0ece2); border: 1px solid var(--dh-line); }
     .dh-save-preview img { display: block; width: 100%; height: 100%; object-fit: contain; transition: opacity .2s; }
@@ -132,6 +132,16 @@
     .dh-save-opt b { display: block; font-size: 14px; font-weight: 600; color: var(--dh-ink); }
     .dh-save-opt small { display: block; font-size: 12px; color: var(--dh-muted); }
     .dh-save-opt .dh-switch { margin: 0; }
+    .dh-save-range { width: 100%; display: grid; gap: 8px; }
+    .dh-save-range > b { font-size: 14px; font-weight: 600; color: var(--dh-ink); }
+    .dh-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; background: var(--neutral-96); }
+    .dh-seg label { position: relative; cursor: pointer; }
+    .dh-seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .dh-seg span { display: block; text-align: center; padding: 8px 6px; border-radius: 9px; font-size: 13px; line-height: 1.3; color: var(--dh-text); transition: background .15s, color .15s; }
+    .dh-seg span small { display: block; font-size: 11px; color: var(--dh-muted); }
+    .dh-seg input:checked + span { background: var(--neutral-100); color: var(--primary-20); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .dh-seg input:focus-visible + span { outline: 2px solid var(--primary-30-base); outline-offset: 1px; }
+    @media (prefers-reduced-motion: reduce) { .dh-seg span { transition: none; } }
     .dh-save-foot { display: flex; gap: 10px; padding: 14px 20px 18px; }
     .dh-save-foot .btn { flex: 1; }
     .dh-save-status { min-height: 18px; margin: 0; text-align: center; font-size: 12px; color: var(--dh-muted); }
@@ -437,6 +447,13 @@
         <div class="dh-save-preview is-busy" id="save-preview">
           <img id="save-img-preview" alt="ตัวอย่างภาพต้นไม้แห่งการให้">
           <div class="dh-save-spin" aria-hidden="true">กำลังสร้างตัวอย่าง…</div>
+        </div>
+        <div class="dh-save-range" role="radiogroup" aria-labelledby="save-range-title">
+          <b id="save-range-title">ช่วงข้อมูลในภาพ</b>
+          <div class="dh-seg">
+            <label><input type="radio" name="save-range" value="year" checked><span>ปีนี้<small id="save-range-year"></small></span></label>
+            <label><input type="radio" name="save-range" value="all"><span>ตั้งแต่ครั้งแรก<small id="save-range-all"></small></span></label>
+          </div>
         </div>
         <div class="dh-save-opt">
           <div><b>แสดงยอดเงินในภาพ</b><small id="save-money-note">ภาพนี้ไม่แสดงยอดเงิน</small></div>
@@ -1100,7 +1117,7 @@
     });
     $('list').addEventListener('mouseleave', function () { state._hover = null; renderTree(); });
 
-    /* ════════ share card: 1080×1350 PNG, no money shown, ทางรัฐ mark bottom-right ════════ */
+    /* ════════ share card: 1080×1350 PNG, this year or since first gift, money only when toggled ════════ */
     function loadImg(src) {
       return new Promise(function (ok, fail) { var im = new Image(); im.onload = function () { ok(im); }; im.onerror = fail; im.src = src; });
     }
@@ -1112,6 +1129,7 @@
     }
     function buildShareImage(opts) {
       opts = opts || {};
+      var yearOnly = opts.range !== 'all';
       var W = 1080, H = 1350, FONT = '"Anuphan", sans-serif';
       var score = CUM[N], si = stageOf(score), g = clamp(score / FULL), full = si === STAGES.length - 1, bi = bloomOf(yearScoreAt(N));
       var treeSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" width="1080" height="900">' +
@@ -1139,18 +1157,19 @@
 
         x.textBaseline = 'alphabetic';
         x.fillStyle = '#006643'; x.font = '600 36px ' + FONT;
-        x.fillText('ต้นไม้แห่งการให้ของฉัน', 88, 150);
+        x.fillText('ต้นไม้แห่งการให้ของฉัน · ' + (yearOnly ? 'ปี ' + be(THIS_YEAR) : 'ตั้งแต่ปี ' + be(parts(DONATIONS[0].date).y)), 88, 150);
         x.fillStyle = '#1d1f21'; x.font = '700 88px ' + FONT;
         x.fillText(STAGES[si].name, 84, 250);
         x.fillStyle = '#62676c'; x.font = '400 34px ' + FONT;
         x.fillText(full ? 'ฤดูออกดอกปี ' + be(THIS_YEAR) + ' · ' + BLOOMS[bi].name
                         : 'เลเวล ' + (si + 1) + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
 
-        // stats — amounts only when the user turns them on
-        var stats = [[num(N), 'ครั้งที่ให้']];
-        if (opts.money) stats.push([money(DONATIONS.reduce(function (t, d) { return t + d.amount; }, 0)), 'ยอดบริจาครวม']);
-        stats.push([String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'หมวดหมู่ที่สนับสนุน']);
-        stats.push([String(longestYearRun()), 'ปีต่อเนื่อง']);
+        // stats — for this tax year or since the first gift; amounts only when the user turns them on
+        var rows = yearOnly ? DONATIONS.filter(function (d) { return parts(d.date).y === THIS_YEAR; }) : DONATIONS;
+        var stats = [[num(rows.length), yearOnly ? 'ครั้งที่ให้ปีนี้' : 'ครั้งที่ให้']];
+        if (opts.money) stats.push([money(rows.reduce(function (t, d) { return t + d.amount; }, 0)), yearOnly ? 'ยอดบริจาคปีนี้' : 'ยอดบริจาครวม']);
+        stats.push([String(Object.keys(rows.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'หมวดหมู่ที่สนับสนุน']);
+        stats.push(yearOnly ? [num(yearScoreAt(N)), 'คะแนนปีนี้'] : [String(longestYearRun()), 'ปีต่อเนื่อง']);
         var top = 1088, colW = (W - 176) / stats.length;
         function fitFont(text, weight, size, maxW) {
           do { x.font = weight + ' ' + size + 'px ' + FONT; } while (x.measureText(text).width > maxW && --size > 20);
@@ -1180,11 +1199,16 @@
       var modal = $('modal-save'), toggle = $('share-money'), preview = $('save-preview'), img = $('save-img-preview'),
           confirmBtn = $('save-confirm'), status = $('save-status'), opener = $('save-img');
       var cache = {}, shownUrl = null, req = 0;
+      var radios = document.querySelectorAll('input[name="save-range"]');
+      function range() { return document.querySelector('input[name="save-range"]:checked').value; }
+      function key() { return range() + (toggle.checked ? '-money' : '-plain'); }
+      $('save-range-year').textContent = 'ปีภาษี ' + be(THIS_YEAR);
+      $('save-range-all').textContent = N ? 'ตั้งแต่ ' + monthTH(DONATIONS[0].date) : '';
 
       function current() {
-        var key = toggle.checked ? 'money' : 'plain';
-        if (!cache[key]) cache[key] = buildShareImage({ money: toggle.checked });
-        return cache[key];
+        var k = key();
+        if (!cache[k]) cache[k] = buildShareImage({ money: toggle.checked, range: range() });
+        return cache[k];
       }
       function refresh() {
         var my = ++req;
@@ -1197,12 +1221,13 @@
           preview.classList.remove('is-busy'); confirmBtn.disabled = false;
         }, function () {
           if (my !== req) return;
-          delete cache[toggle.checked ? 'money' : 'plain'];
+          delete cache[key()];
           preview.classList.remove('is-busy'); status.textContent = 'สร้างภาพไม่สำเร็จ ลองเปิดใหม่อีกครั้ง';
         });
       }
       function open() {
         cache = {};   // tree or data may have changed since last time
+        document.querySelector('input[name="save-range"][value="year"]').checked = true;   // default: this year
         modal.classList.add('active');
         refresh();
         setTimeout(function () { toggle.focus(); }, 50);
@@ -1214,6 +1239,7 @@
 
       opener.addEventListener('click', open);
       toggle.addEventListener('change', refresh);
+      Array.prototype.forEach.call(radios, function (r) { r.addEventListener('change', refresh); });
       modal.addEventListener('click', function (e) {
         if (e.target === modal || e.target.closest('[data-save-close]')) close();
       });
