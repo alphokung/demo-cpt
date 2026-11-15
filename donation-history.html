@@ -1167,10 +1167,9 @@
 
         // footer: source line + ทางรัฐ mark
         x.beginPath(); x.moveTo(88, 1236); x.lineTo(W - 88, 1236); x.stroke();
-        x.fillStyle = '#62676c'; x.font = '400 26px ' + FONT;
-        x.fillText('ข้อมูลจากระบบ e-Donation กรมสรรพากร', 88, 1288);
-        x.fillText('ผ่านแอปทางรัฐ · ' + dateTH(TODAY), 88, 1324);
-        var L = 84; x.drawImage(logo, W - 88 - L, 92, L, L);   // ทางรัฐ mark, top-right
+        var src = 'ข้อมูลจากระบบ e-Donation กรมสรรพากร ผ่านแอปทางรัฐ · ' + dateTH(TODAY);
+        x.fillStyle = '#62676c'; fitFont(src, 400, 26, W - 176); x.fillText(src, 88, 1300);
+        var L = 88; x.drawImage(logo, W - 52 - L, 48, L, L);   // ทางรัฐ mark, top-right corner
 
         return new Promise(function (ok) { c.toBlob(ok, 'image/png'); });
       });
