@@ -317,7 +317,7 @@
         </div>
         <p class="dh-fine"><span class="material-symbols-outlined">info</span>
           การเติบโตสะสมตลอดไป ไม่ลดลงเมื่อหยุดบริจาค และไม่มีผลต่อสิทธิลดหย่อนภาษี</p>
-        <div class="dh-season">
+        <div class="dh-season" id="season" hidden>
           <div class="dh-season-head"><span class="material-symbols-outlined" aria-hidden="true">local_florist</span>
             <b>ฤดูดอกรายปี</b><small>หลังเติบโตเต็มที่</small></div>
           <p>ดอกจะสะพรั่งตามคะแนนที่ให้ในแต่ละปีภาษี และเริ่มฤดูใหม่ทุกปี</p>
@@ -459,7 +459,7 @@
       flourish: { group: 'bloom', label: 'ออกดอกสะพรั่ง · 160',     who: 'เติบโตเต็มที่ ปีนี้ให้ 4 ครั้ง รวม ฿8,000',
                   rows: PAST_FULL.concat([['2026-03-03','W',1000], ['2026-04-13','P',2000], ['2026-07-29','H',3000], ['2026-10-20','S',2000]]) },
       bloom:    { group: 'bloom', label: 'บานเต็มต้น · 315',        who: 'ข้อมูลจริง + อีก 2 ครั้ง (ถึง 600 พอดี)', rows: REAL_EXTRA.concat([['2026-11-01','H',2000], ['2026-11-12','W',1500]]) },
-      grand:    { group: 'bloom', label: 'เหลืองอร่ามทั้งต้น · 700',  who: 'ผู้ให้รายใหญ่ ปีนี้รวม ฿50,000',
+      grand:    { group: 'bloom', label: 'เหลืองอร่าม · 700',  who: 'ผู้ให้รายใหญ่ ปีนี้รวม ฿50,000',
                   rows: REAL_EXTRA.concat([['2026-11-01','H',20000], ['2026-11-05','S',10000], ['2026-11-08','W',5000], ['2026-11-12','R',3000]]) },
       wanpra:   { group: 'test',  label: 'ทำบุญทุกสัปดาห์ ฿100',     who: 'ทดสอบสูตรคะแนน: 46 ครั้ง รวมแค่ ฿4,600 แต่ได้ 966 คะแนน', rows: WANPRA }
     };
@@ -487,7 +487,7 @@
       { min: 1,   name: 'ดอกแรกแย้ม',         density: .25, len: 3, flush: 0 },
       { min: 150, name: 'ออกดอกสะพรั่ง',       density: .5,  len: 5, flush: 1 },
       { min: 300, name: 'บานเต็มต้น',          density: .78, len: 6, flush: 2 },
-      { min: 500, name: 'เหลืองอร่ามทั้งต้น',   density: 1,   len: 8, flush: 3 }
+      { min: 500, name: 'เหลืองอร่าม',   density: 1,   len: 8, flush: 3 }
     ];
     function bloomOf(yearPts) { var i = 0; while (i + 1 < BLOOMS.length && yearPts >= BLOOMS[i + 1].min) i++; return i; }
     var THIS_YEAR = +TODAY.slice(0, 4);
@@ -790,7 +790,7 @@
         bar.setAttribute('aria-valuenow', Math.round(bpct));
         $('next-label').innerHTML = '<strong>' + esc(BLOOMS[bi].name) + '</strong>';
         $('hint').innerHTML = !nb
-          ? 'ปีนี้ต้นราชพฤกษ์ของคุณเหลืองอร่ามทั้งต้น ขอบคุณที่ให้อย่างเต็มที่'
+          ? 'ปีนี้ต้นราชพฤกษ์ของคุณเหลืองอร่าม ขอบคุณที่ให้อย่างเต็มที่'
           : bi === 0
           ? 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · ให้ครั้งแรกของปีนี้ ดอกแรกจะเริ่มแย้ม'
           : 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · อีก <b>' + num(nb.min - yearPts) + ' คะแนน</b>ในปีนี้ ต้นไม้จะ' + esc(nb.name);
@@ -897,6 +897,7 @@
 
     (function () {
       var fullNow = stageOf(CUM[N]) === STAGES.length - 1, cur = bloomOf(yearScoreAt(N));
+      $('season').hidden = !fullNow;   // yearly blooms only matter once the tree is fully grown
       $('season-steps').innerHTML = BLOOMS.slice(1).map(function (b, i) {
         var lvl = i + 1, bars = '';
         for (var q = 0; q < 4; q++) bars += '<span style="height:' + (q < lvl ? 6 + q * 3 : 3) + 'px;opacity:' + (q < lvl ? 1 : .3) + '"></span>';
@@ -925,7 +926,7 @@
         { icon: 'spa',           t: 'ก้าวแรกแห่งการให้',      done: N >= 1 && dateNth(1) },
         { icon: 'event_repeat',  t: 'ให้ต่อเนื่อง 3 ปีภาษี',   done: streakDate, prog: [Math.min(run, 3), 3, 'ปี'] },
         { icon: 'diversity_1',   t: 'ครบทั้ง 4 ด้าน',          done: catDate, prog: [catN, 4, 'ด้าน'], sub: 'สุขภาพ การศึกษา ศาสนา สาธารณกุศล' },
-        { icon: 'wb_sunny',      t: 'เหลืองอร่ามทั้งต้น',      done: topBloomDate, prog: [Math.max.apply(null, [0].concat(Object.keys(yearPts).map(function (y) { return yearPts[y]; }))), BLOOMS[BLOOMS.length - 1].min, 'คะแนนในปีเดียว'] },
+        { icon: 'wb_sunny',      t: 'เหลืองอร่าม',      done: topBloomDate, prog: [Math.max.apply(null, [0].concat(Object.keys(yearPts).map(function (y) { return yearPts[y]; }))), BLOOMS[BLOOMS.length - 1].min, 'คะแนนในปีเดียว'] },
         { icon: 'forest',        t: 'บริจาคครบ 20 ครั้ง',      done: N >= 20 && dateNth(20), prog: [N, 20, 'ครั้ง'] },
         { icon: 'local_florist', t: 'ราชพฤกษ์ผลิดอก',          done: bloomDate, prog: [CUM[N], FULL, 'คะแนน'] }
       ];
