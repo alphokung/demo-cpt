@@ -150,6 +150,16 @@
     .dh-tag { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--neutral-94); color: var(--neutral-50); white-space: nowrap; }
     .dh-tag.is-double { background: var(--dh-gold-soft); color: var(--dh-gold-ink); }
 
+    .dh-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--neutral-100); border: 1px solid var(--dh-line);
+      border-radius: 16px; text-decoration: none; color: inherit; transition: background .15s, border-color .15s; }
+    .dh-link:hover { background: var(--primary-99); border-color: var(--primary-80); }
+    .dh-link:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
+    .dh-link-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center; background: var(--primary-95); color: var(--primary-20); }
+    .dh-link-icon .material-symbols-outlined { font-size: 22px; }
+    .dh-link-body { flex: 1; min-width: 0; display: block; }
+    .dh-link-title { display: block; font-size: 16px; font-weight: 600; color: var(--dh-ink); line-height: 1.4; }
+    .dh-link-sub { display: block; font-size: 13px; color: var(--dh-muted); line-height: 1.45; margin-top: 2px; }
+    .dh-link-go { font-size: 20px; color: var(--neutral-60); flex-shrink: 0; }
     .dh-notice { display: flex; gap: 10px; align-items: flex-start; background: var(--neutral-100); border: 1px solid var(--dh-line); border-radius: 16px; padding: 14px 16px;
       font-size: 13px; color: var(--dh-muted); line-height: 1.55; }
     .dh-notice .material-symbols-outlined { font-size: 20px; color: var(--neutral-60); }
@@ -264,6 +274,16 @@
 
       <h2 class="dh-section-label" id="list-title">รายการบริจาค</h2>
       <section class="dh-card dh-list" id="list" aria-labelledby="list-title" style="padding:0"></section>
+
+      <a class="dh-link" href="https://epayapp.rd.go.th/rd-edonation/tax-payer/check-donation/unit" target="_blank" rel="noopener noreferrer">
+        <span class="dh-link-icon"><span class="material-symbols-outlined">fact_check</span></span>
+        <span class="dh-link-body">
+          <span class="dh-link-title">รายชื่อผู้รับบริจาคตามกฎหมาย</span>
+          <span class="dh-link-sub">ตรวจสอบหน่วยรับบริจาคที่ใช้ลดหย่อนภาษีได้ ที่เว็บไซต์กรมสรรพากร</span>
+        </span>
+        <span class="material-symbols-outlined dh-link-go" aria-hidden="true">open_in_new</span>
+        <span class="dh-sr">(เปิดในหน้าต่างใหม่)</span>
+      </a>
 
       <section class="dh-card" aria-labelledby="badges-title">
         <div class="dh-section-head">
