@@ -1170,7 +1170,7 @@
         x.fillStyle = '#62676c'; x.font = '400 26px ' + FONT;
         x.fillText('ข้อมูลจากระบบ e-Donation กรมสรรพากร', 88, 1288);
         x.fillText('ผ่านแอปทางรัฐ · ' + dateTH(TODAY), 88, 1324);
-        var L = 84; x.drawImage(logo, W - 88 - L, 1252, L, L);
+        var L = 84; x.drawImage(logo, W - 88 - L, 92, L, L);   // ทางรัฐ mark, top-right
 
         return new Promise(function (ok) { c.toBlob(ok, 'image/png'); });
       });
