@@ -55,6 +55,9 @@
     .dh-tree-svg .dh-cluster { transition: opacity .25s ease; cursor: pointer; }
     .dh-tree-svg.is-focus .dh-cluster, .dh-tree-svg.is-focus .dh-amb { opacity: .3; }
     .dh-tree-svg.is-focus .dh-cluster.is-on { opacity: 1 !important; }
+    .dh-goldglow { animation: dh-breathe 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes dh-breathe { 0%, 100% { opacity: .85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
+    @media (prefers-reduced-motion: reduce) { .dh-goldglow { animation: none; } }
     .dh-ring { fill: none; stroke: var(--primary-20); stroke-width: 1.4; pointer-events: none; }
     .dh-ring-halo { fill: rgba(255,255,255,.78); pointer-events: none; }
 
@@ -195,6 +198,9 @@
     .dh-link-title { display: block; font-size: 16px; font-weight: 600; color: var(--dh-ink); line-height: 1.4; }
     .dh-link-sub { display: block; font-size: 13px; color: var(--dh-muted); line-height: 1.45; margin-top: 2px; }
     .dh-link-go { font-size: 20px; color: var(--neutral-60); flex-shrink: 0; }
+    .dh-list-empty { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 28px 24px; text-align: center; font-size: 15px; font-weight: 600; color: var(--dh-ink); }
+    .dh-list-empty .material-symbols-outlined { font-size: 32px; color: var(--primary-30-base); margin-bottom: 4px; }
+    .dh-list-empty small { font-size: 13px; font-weight: 400; color: var(--dh-muted); line-height: 1.5; max-width: 300px; }
     .dh-notice { display: flex; gap: 10px; align-items: flex-start; background: var(--neutral-100); border: 1px solid var(--dh-line); border-radius: 16px; padding: 14px 16px;
       font-size: 13px; color: var(--dh-muted); line-height: 1.55; }
     .dh-notice .material-symbols-outlined { font-size: 20px; color: var(--neutral-60); }
@@ -215,6 +221,11 @@
         <stop offset=".5" stop-color="#8a8470" stop-opacity=".45"/>
         <stop offset="1" stop-color="#8a8470" stop-opacity="0"/>
       </linearGradient>
+      <radialGradient id="dh-goldglow" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#f6cf5a" stop-opacity=".55"/>
+        <stop offset=".55" stop-color="#f3c34a" stop-opacity=".22"/>
+        <stop offset="1" stop-color="#f3c34a" stop-opacity="0"/>
+      </radialGradient>
       <radialGradient id="dh-glow" cx=".5" cy=".5" r=".5">
         <stop offset="0" stop-color="#fff" stop-opacity=".85"/>
         <stop offset="1" stop-color="#fff" stop-opacity="0"/>
@@ -369,13 +380,18 @@
         </button>
       </div>
       <div class="dc-modal__body">
+        <div class="dc-group">
+          <p class="dc-group-label">🌱 ระยะการเติบโต (คะแนนสะสม)</p>
+          <div class="dc-chips dc-chips--wrap" data-group="grow"></div>
+        </div>
+        <div class="dc-group">
+          <p class="dc-group-label">🌼 ฤดูดอกรายปี (เติบโตเต็มที่แล้ว · คะแนนปีนี้)</p>
+          <div class="dc-chips dc-chips--wrap" data-group="bloom"></div>
+        </div>
         <div class="dc-group dc-group--last">
-          <p class="dc-group-label">🌳 ระดับต้นไม้</p>
-          <div class="dc-chips dc-chips--wrap">
-            <button type="button" class="dc-chip" data-demo="current">ปัจจุบัน · 525 คะแนน</button>
-            <button type="button" class="dc-chip" data-demo="bloom">ถึงเป้าพอดี · 600</button>
-            <button type="button" class="dc-chip" data-demo="grand">ผู้ให้รายใหญ่ · เหลืองอร่าม</button>
-          </div>
+          <p class="dc-group-label">🧪 ทดสอบสูตรคะแนน</p>
+          <div class="dc-chips dc-chips--wrap" data-group="test"></div>
+          <p class="dc-modal__sub" id="dc-who" style="margin-top:12px"></p>
         </div>
       </div>
     </div>
@@ -390,7 +406,7 @@
 
     /* ════════ data (mock e-Donation records, ค.ศ. dates) ════════ */
     var TODAY = '2026-11-15';
-    var DONATIONS = [
+    var REAL = [
       { id: 'd01', date: '2024-03-14', to: 'สภากาชาดไทย',                     cat: 'charity',  amount: 1000, deduct: 1 },
       { id: 'd02', date: '2024-08-09', to: 'วัดป่าสันติธรรม',                   cat: 'religion', amount: 1500, deduct: 1 },
       { id: 'd03', date: '2024-12-03', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 2000, deduct: 2 },
@@ -406,21 +422,50 @@
       { id: 'd13', date: '2026-08-15', to: 'มูลนิธิเพื่อการศึกษาเด็กชนบท',       cat: 'edu',      amount: 1500, deduct: 1 },
       { id: 'd14', date: '2026-10-28', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 2000, deduct: 2 }
     ];
-    // demo scenarios (?demo=…), layered on top of the real records above
-    //   bloom: fewest extra records that land exactly on full growth
-    //          (525 + 2×20 + ฿3,500/100 = 600 คะแนน)
-    //   grand: a very generous year — this-year points reach the top bloom level
-    var SCENARIO = (location.search.match(/(?:^|[?&])demo=(bloom|grand)(?:&|$)/) || [])[1] || 'current';
-    if (SCENARIO === 'bloom') DONATIONS = DONATIONS.concat([
-      { id: 'd15', date: '2026-11-01', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 2000,  deduct: 2 },
-      { id: 'd16', date: '2026-11-12', to: 'วัดศรีสว่าง',                        cat: 'religion', amount: 1500,  deduct: 1 }
-    ]);
-    if (SCENARIO === 'grand') DONATIONS = DONATIONS.concat([
-      { id: 'd15', date: '2026-11-01', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 20000, deduct: 2 },
-      { id: 'd16', date: '2026-11-05', to: 'โรงเรียนบ้านหนองบัว',                cat: 'edu',      amount: 10000, deduct: 2 },
-      { id: 'd17', date: '2026-11-08', to: 'วัดศรีสว่าง',                        cat: 'religion', amount: 5000,  deduct: 1 },
-      { id: 'd18', date: '2026-11-12', to: 'สภากาชาดไทย',                     cat: 'charity',  amount: 3000,  deduct: 1 }
-    ]);
+    /* demo scenarios (?demo=…) — one per tree state, modelled on typical Thai giving:
+       a few gifts a year to temples on Buddhist holy days, plus a hospital or school
+       gift near year end for the 2× deduction. Points: +20 per gift, +1 per ฿100. */
+    var ORGS = {
+      H: ['โรงพยาบาลชุมชนบ้านนา', 'health', 2],   S: ['โรงเรียนบ้านหนองบัว', 'edu', 2],
+      F: ['มูลนิธิเพื่อการศึกษาเด็กชนบท', 'edu', 1], W: ['วัดศรีสว่าง', 'religion', 1],
+      P: ['วัดป่าสันติธรรม', 'religion', 1],       R: ['สภากาชาดไทย', 'charity', 1]
+    };
+    function mk(rows) {
+      return rows.map(function (r, i) { var o = ORGS[r[1]]; return { id: 'x' + (i + 1), date: r[0], to: o[0], cat: o[1], amount: r[2], deduct: o[2] }; });
+    }
+    // two earlier years that already reach full growth (210 + 410 = 620), none this year yet
+    var PAST_FULL = [
+      ['2024-02-24','W',1000], ['2024-04-13','P',1500], ['2024-07-20','H',2000], ['2024-09-14','R',1000], ['2024-11-15','S',2000], ['2024-12-20','F',1500],
+      ['2025-01-12','W',1000], ['2025-02-12','P',2000], ['2025-04-13','H',3000], ['2025-05-11','R',1000], ['2025-06-20','S',3000],
+      ['2025-07-10','F',2000], ['2025-08-12','W',1500], ['2025-09-25','H',3000], ['2025-10-17','P',2000], ['2025-12-05','R',2500]
+    ];
+    var REAL_EXTRA = REAL.map(function (d) { return [d.date, { 'สภากาชาดไทย': 'R', 'วัดป่าสันติธรรม': 'P', 'โรงพยาบาลชุมชนบ้านนา': 'H',
+      'มูลนิธิเพื่อการศึกษาเด็กชนบท': 'F', 'วัดศรีสว่าง': 'W', 'โรงเรียนบ้านหนองบัว': 'S' }[d.to], d.amount]; });
+    var WANPRA = []; // test: ฿100 every 7 days since 3 ม.ค. 2569 (temples must use e-Donation from 2569)
+    for (var wd = new Date(Date.UTC(2026, 0, 3)), wi = 0; wd.toISOString().slice(0, 10) <= '2026-11-14'; wd.setUTCDate(wd.getUTCDate() + 7), wi++) {
+      WANPRA.push([wd.toISOString().slice(0, 10), wi % 2 ? 'P' : 'W', 100]);
+    }
+    var SCEN = {
+      empty:    { group: 'grow',  label: 'ยังไม่เคยบริจาค',        who: 'ยังไม่มีรายการในระบบ e-Donation', rows: [] },
+      sprout:   { group: 'grow',  label: 'ต้นกล้า · 50',           who: 'บริจาคครั้งแรก ฿3,000 ปลายปีเพื่อลดหย่อน', rows: [['2026-10-30','H',3000]] },
+      young:    { group: 'grow',  label: 'ไม้หนุ่ม · 128',          who: 'ทำบุญวันสำคัญทางศาสนา 5 ครั้งในปีนี้ รวม ฿2,800',
+                  rows: [['2026-03-03','W',500], ['2026-05-31','W',300], ['2026-07-29','P',500], ['2026-08-12','H',1000], ['2026-10-20','R',500]] },
+      mature:   { group: 'grow',  label: 'ไม้ยืนต้น · 230',         who: 'ให้สม่ำเสมอ 2 ปี ปีละ 4 ครั้ง',
+                  rows: [['2025-02-12','W',500], ['2025-05-11','P',1000], ['2025-09-20','H',1000], ['2025-12-10','R',500],
+                         ['2026-03-03','W',1000], ['2026-05-31','P',1000], ['2026-08-12','H',1500], ['2026-10-20','F',500]] },
+      current:  { group: 'grow',  label: 'ไม้ร่มใหญ่ · 525',        who: 'ข้อมูลตัวอย่างจากหน้าจอจริง 14 ครั้งใน 3 ปี', rows: null },
+      dormant:  { group: 'bloom', label: 'พักตัว',                 who: 'เติบโตเต็มที่แล้ว (620) ยังไม่ได้ให้ในปีภาษีนี้', rows: PAST_FULL },
+      first:    { group: 'bloom', label: 'ดอกแรกแย้ม · 30',        who: 'เติบโตเต็มที่ ปีนี้ให้ 1 ครั้งวันสงกรานต์', rows: PAST_FULL.concat([['2026-04-13','W',1000]]) },
+      flourish: { group: 'bloom', label: 'ออกดอกสะพรั่ง · 160',     who: 'เติบโตเต็มที่ ปีนี้ให้ 4 ครั้ง รวม ฿8,000',
+                  rows: PAST_FULL.concat([['2026-03-03','W',1000], ['2026-04-13','P',2000], ['2026-07-29','H',3000], ['2026-10-20','S',2000]]) },
+      bloom:    { group: 'bloom', label: 'บานเต็มต้น · 315',        who: 'ข้อมูลจริง + อีก 2 ครั้ง (ถึง 600 พอดี)', rows: REAL_EXTRA.concat([['2026-11-01','H',2000], ['2026-11-12','W',1500]]) },
+      grand:    { group: 'bloom', label: 'เหลืองอร่ามทั้งต้น · 700',  who: 'ผู้ให้รายใหญ่ ปีนี้รวม ฿50,000',
+                  rows: REAL_EXTRA.concat([['2026-11-01','H',20000], ['2026-11-05','S',10000], ['2026-11-08','W',5000], ['2026-11-12','R',3000]]) },
+      wanpra:   { group: 'test',  label: 'ทำบุญทุกสัปดาห์ ฿100',     who: 'ทดสอบสูตรคะแนน: 46 ครั้ง รวมแค่ ฿4,600 แต่ได้ 966 คะแนน', rows: WANPRA }
+    };
+    var SCENARIO = (location.search.match(/(?:^|[?&])demo=([a-z]+)(?:&|$)/) || [])[1];
+    if (!SCEN[SCENARIO]) SCENARIO = 'current';
+    var DONATIONS = SCEN[SCENARIO].rows ? mk(SCEN[SCENARIO].rows) : REAL;
     var CATS = { health: 'สุขภาพ', edu: 'การศึกษา', religion: 'ศาสนา', charity: 'สาธารณกุศล' };
 
     /* growth model — frequency and amount both count, so small regular donors grow too */
@@ -544,6 +589,7 @@
       var used = {}, out = [];
       for (var i = 0; i < N; i++) {
         var idx = Math.floor(((i * .6180339887 + .37) % 1) * pool.length);
+        if (Object.keys(used).length >= pool.length) used = {};   // more gifts than boughs: share them
         while (used[idx]) idx = (idx + 1) % pool.length;
         used[idx] = 1; out.push(pool[idx]);
       }
@@ -582,6 +628,14 @@
         out.push('<ellipse cx="' + ROOT_X + '" cy="' + (GROUND - 3) + '" rx="7" ry="4.6" transform="rotate(-18 ' + ROOT_X + ' ' + (GROUND - 3) + ')" fill="' + 'var(--dh-bark, #5b4a3d)' + '"/>');
         out.push('<path d="M' + (ROOT_X - 1) + ' ' + (GROUND - 7) + 'q2 -6 6 -8" stroke="#4a805f" stroke-width="1.6" fill="none" stroke-linecap="round"/>');
         return out.join('');
+      }
+
+      // top bloom: a warm golden halo behind the crown
+      if (opts.flowers && opts.bloom >= BLOOMS.length - 1 && L.tips.length) {
+        var gx0 = 1e9, gx1 = -1e9, gy0 = 1e9, gy1 = -1e9;
+        L.tips.forEach(function (t) { gx0 = Math.min(gx0, t.x); gx1 = Math.max(gx1, t.x); gy0 = Math.min(gy0, t.y); gy1 = Math.max(gy1, t.y); });
+        out.push('<ellipse class="dh-goldglow" cx="' + f((gx0 + gx1) / 2) + '" cy="' + f((gy0 + gy1) / 2 + 6) + '" rx="' + f((gx1 - gx0) / 2 + 42) +
+          '" ry="' + f((gy1 - gy0) / 2 + 46) + '" fill="url(#dh-goldglow)"/>');
       }
 
       // wood
@@ -704,7 +758,8 @@
       $('stage-name').textContent = st.name;
       $('stage-level').textContent = full ? 'ฤดูดอก ' + be(THIS_YEAR) : 'ระยะ ' + (si + 1) + ' / ' + STAGES.length;
       $('stage-meta').textContent = shown
-        ? 'เติบโตจากการบริจาค ' + shown + ' ครั้ง ตั้งแต่ ' + monthTH(DONATIONS[0].date)
+        ? 'เติบโตจากการบริจาค ' + shown + ' ครั้ง รวม ' + money(DONATIONS.slice(0, shown).reduce(function (t, d) { return t + d.amount; }, 0)) +
+          ' ตั้งแต่ ' + monthTH(DONATIONS[0].date)
         : 'รอการบริจาคครั้งแรกเพื่อเริ่มงอก';
       $('score').textContent = num(score);
       $('tree-desc').textContent = 'ต้นราชพฤกษ์ระยะ' + st.name + (full ? ' ' + BLOOMS[bi].name : '') + ' มีใบ ' + shown + ' กลุ่ม แทนการบริจาค ' + shown + ' ครั้ง';
@@ -721,7 +776,9 @@
         var avg = CUM[N] / N;
         var times = Math.max(1, Math.ceil(gap / avg));
         var avgAmt = DONATIONS.reduce(function (s, d) { return s + d.amount; }, 0) / N;
-        $('hint').innerHTML = state.k >= N
+        $('hint').innerHTML = !N
+          ? 'บริจาคผ่านระบบ e-Donation ครั้งแรก ต้นไม้จะงอกเป็น<b>ต้นกล้า</b> (ทุกครั้งที่ให้ +20 คะแนน)'
+          : state.k >= N
           ? 'อีก <b>' + num(gap) + ' คะแนน</b> — ด้วยยอดเฉลี่ยของคุณ ' + money(Math.round(avgAmt / 50) * 50) + ' ต่อครั้ง ราว ' + times + ' ครั้งต้นไม้จะเข้าสู่ระยะ' + esc(next.name)
           : 'อีก ' + num(gap) + ' คะแนนสู่ระยะ' + esc(next.name);
       } else {
@@ -732,9 +789,11 @@
         bar.firstElementChild.style.width = bpct + '%';
         bar.setAttribute('aria-valuenow', Math.round(bpct));
         $('next-label').innerHTML = '<strong>' + esc(BLOOMS[bi].name) + '</strong>';
-        $('hint').innerHTML = nb
-          ? 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · อีก <b>' + num(nb.min - yearPts) + ' คะแนน</b>ในปีนี้ ดอกจะ' + esc(nb.name)
-          : 'ปีนี้ต้นราชพฤกษ์ของคุณเหลืองอร่ามทั้งต้น ขอบคุณที่ให้อย่างเต็มที่';
+        $('hint').innerHTML = !nb
+          ? 'ปีนี้ต้นราชพฤกษ์ของคุณเหลืองอร่ามทั้งต้น ขอบคุณที่ให้อย่างเต็มที่'
+          : bi === 0
+          ? 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · ให้ครั้งแรกของปีนี้ ดอกแรกจะเริ่มแย้ม'
+          : 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · อีก <b>' + num(nb.min - yearPts) + ' คะแนน</b>ในปีนี้ ต้นไม้จะ' + esc(nb.name);
         $('hint').innerHTML += '<span class="dh-hint-sub">ฤดูดอกเริ่มใหม่ทุกปีภาษี ต้นไม้ไม่เล็กลง</span>';
       }
 
@@ -866,7 +925,7 @@
         { icon: 'spa',           t: 'ก้าวแรกแห่งการให้',      done: N >= 1 && dateNth(1) },
         { icon: 'event_repeat',  t: 'ให้ต่อเนื่อง 3 ปีภาษี',   done: streakDate, prog: [Math.min(run, 3), 3, 'ปี'] },
         { icon: 'diversity_1',   t: 'ครบทั้ง 4 ด้าน',          done: catDate, prog: [catN, 4, 'ด้าน'], sub: 'สุขภาพ การศึกษา ศาสนา สาธารณกุศล' },
-        { icon: 'wb_sunny',      t: 'เหลืองอร่ามทั้งต้น',      done: topBloomDate, prog: [Math.max.apply(null, Object.keys(yearPts).map(function (y) { return yearPts[y]; })), BLOOMS[BLOOMS.length - 1].min, 'คะแนนในปีเดียว'] },
+        { icon: 'wb_sunny',      t: 'เหลืองอร่ามทั้งต้น',      done: topBloomDate, prog: [Math.max.apply(null, [0].concat(Object.keys(yearPts).map(function (y) { return yearPts[y]; }))), BLOOMS[BLOOMS.length - 1].min, 'คะแนนในปีเดียว'] },
         { icon: 'forest',        t: 'บริจาคครบ 20 ครั้ง',      done: N >= 20 && dateNth(20), prog: [N, 20, 'ครั้ง'] },
         { icon: 'local_florist', t: 'ราชพฤกษ์ผลิดอก',          done: bloomDate, prog: [CUM[N], FULL, 'คะแนน'] }
       ];
@@ -885,7 +944,7 @@
     })();
 
     /* ════════ yearly summary + list ════════ */
-    var YEARS = DONATIONS.map(function (d) { return parts(d.date).y; })
+    var YEARS = DONATIONS.map(function (d) { return parts(d.date).y; }).concat([THIS_YEAR])   // this tax year always has a tab
       .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort(function (a, b) { return b - a; });
     var year = YEARS[0];
 
@@ -920,7 +979,9 @@
           '<span class="dh-row-end"><span class="dh-row-amt">' + money(d.amount) + '</span>' +
             '<span class="dh-tag' + (two ? ' is-double' : '') + '">ลดหย่อน ' + d.deduct + ' เท่า</span></span>' +
         '</button>';
-      }).join('');
+      }).join('') || '<div class="dh-list-empty"><span class="material-symbols-outlined" aria-hidden="true">volunteer_activism</span>' +
+        (N ? 'ไม่มีรายการบริจาคในปี ' + be(year) : 'ยังไม่มีรายการบริจาคในระบบ e-Donation') +
+        '<small>บริจาคผ่านหน่วยรับบริจาคที่อยู่ในระบบ แล้วแจ้งเลขประจำตัวประชาชน รายการจะขึ้นที่นี่และต้นไม้จะเริ่มงอก</small></div>';
     }
     $('years').addEventListener('click', function (e) {
       var b = e.target.closest('[data-year]'); if (!b) return;
@@ -1039,13 +1100,21 @@
       });
     });
 
+    if (!N) {
+      document.querySelector('.dh-replay').style.display = 'none';
+      document.querySelector('.dh-share').style.display = 'none';
+    }
+
     /* ════════ demo switcher ════════ */
     (function () {
       var modal = $('modal-demo-config');
-      Array.prototype.forEach.call(modal.querySelectorAll('[data-demo]'), function (c) {
-        var on = c.dataset.demo === SCENARIO;
-        c.classList.toggle('active', on); c.setAttribute('aria-pressed', on);
+      Object.keys(SCEN).forEach(function (key) {
+        var sc = SCEN[key], b = document.createElement('button');
+        b.type = 'button'; b.className = 'dc-chip' + (key === SCENARIO ? ' active' : ''); b.dataset.demo = key;
+        b.textContent = sc.label; b.title = sc.who; b.setAttribute('aria-pressed', key === SCENARIO);
+        modal.querySelector('[data-group="' + sc.group + '"]').appendChild(b);
       });
+      $('dc-who').textContent = 'กำลังแสดง: ' + SCEN[SCENARIO].who;
       $('demo-fab').addEventListener('click', function () { modal.classList.add('active'); });
       modal.addEventListener('click', function (e) {
         if (e.target === modal || e.target.closest('[data-dc-close]')) { modal.classList.remove('active'); return; }
