@@ -101,6 +101,24 @@
     .dh-share-btn:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
     .dh-share-btn[disabled] { opacity: .7; cursor: progress; }
     .dh-share-btn .material-symbols-outlined { font-size: 18px; }
+    .dh-share-text span { display: block; font-size: 12px; color: var(--dh-muted); margin-top: 2px; }
+    /* save-image popup */
+    .dh-save .modal-content { max-width: 420px; }
+    .dh-save-body { padding: 16px 20px 4px; display: grid; gap: 14px; }
+    .dh-save-preview { position: relative; aspect-ratio: 4 / 5; max-height: 52vh; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden;
+      background: linear-gradient(#e9f0e8, #f0ece2); border: 1px solid var(--dh-line); }
+    .dh-save-preview img { display: block; width: 100%; height: 100%; object-fit: contain; transition: opacity .2s; }
+    .dh-save-preview.is-busy img { opacity: .35; }
+    .dh-save-spin { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; font-size: 13px; color: var(--dh-muted); }
+    .dh-save-preview.is-busy .dh-save-spin { display: flex; }
+    .dh-save-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--neutral-96); }
+    .dh-save-opt b { display: block; font-size: 14px; font-weight: 600; color: var(--dh-ink); }
+    .dh-save-opt small { display: block; font-size: 12px; color: var(--dh-muted); }
+    .dh-save-opt .dh-switch { margin: 0; }
+    .dh-save-foot { display: flex; gap: 10px; padding: 14px 20px 18px; }
+    .dh-save-foot .btn { flex: 1; }
+    .dh-save-status { min-height: 18px; margin: 0; text-align: center; font-size: 12px; color: var(--dh-muted); }
+    @media (prefers-reduced-motion: reduce) { .dh-save-preview img { transition: none; } }
     .dh-replay-body { flex: 1; min-width: 0; }
     .dh-replay-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--dh-muted); }
     .dh-replay-top b { color: var(--dh-ink); font-weight: 600; }
@@ -287,13 +305,9 @@
         <div class="dh-share">
           <div class="dh-share-text">
             <b>ชวนคนรอบตัวมาร่วมให้</b>
-            <label class="dh-switch">
-              <input type="checkbox" id="share-money" role="switch">
-              <span class="dh-switch-track" aria-hidden="true"></span>
-              <span>แสดงยอดเงินในภาพ</span>
-            </label>
+            <span>ดูตัวอย่างและเลือกได้ว่าจะแสดงยอดเงินหรือไม่</span>
           </div>
-          <button type="button" class="dh-share-btn" id="save-img">
+          <button type="button" class="dh-share-btn" id="save-img" aria-haspopup="dialog">
             <span class="material-symbols-outlined" aria-hidden="true">download</span><span class="dh-share-label">บันทึกภาพ</span>
           </button>
         </div>
@@ -368,6 +382,41 @@
   </main>
 
   <!-- demo-only scenario switcher (not product UI) -->
+  <div id="modal-save" class="modal-overlay dh-save">
+    <div class="modal-content" style="padding:0;gap:0" role="dialog" aria-modal="true" aria-labelledby="save-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="save-title">บันทึกภาพต้นไม้ของฉัน</p>
+          <p class="dc-modal__sub">ภาพขนาด 1080 × 1350 พร้อมแชร์</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-save-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dh-save-body">
+        <div class="dh-save-preview is-busy" id="save-preview">
+          <img id="save-img-preview" alt="ตัวอย่างภาพต้นไม้แห่งการให้">
+          <div class="dh-save-spin" aria-hidden="true">กำลังสร้างตัวอย่าง…</div>
+        </div>
+        <div class="dh-save-opt">
+          <div><b>แสดงยอดเงินในภาพ</b><small id="save-money-note">ภาพนี้ไม่แสดงยอดเงิน</small></div>
+          <label class="dh-switch">
+            <input type="checkbox" id="share-money" role="switch" aria-describedby="save-money-note">
+            <span class="dh-switch-track" aria-hidden="true"></span>
+            <span class="dh-sr">แสดงยอดเงินในภาพ</span>
+          </label>
+        </div>
+      </div>
+      <p class="dh-save-status" id="save-status" aria-live="polite"></p>
+      <div class="dh-save-foot">
+        <button type="button" class="btn btn-secondary" data-save-close>ยกเลิก</button>
+        <button type="button" class="btn btn-primary" id="save-confirm">
+          <span class="material-symbols-outlined" aria-hidden="true">download</span><span>บันทึกภาพ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="modal-demo-config" class="modal-overlay">
     <div class="modal-content" style="padding:0;gap:0" role="dialog" aria-modal="true" aria-labelledby="dc-title">
       <div class="dc-modal__header">
@@ -1075,31 +1124,76 @@
       });
     }
 
-    $('save-img').addEventListener('click', function () {
-      var btn = this, label = btn.querySelector('.dh-share-label');
-      btn.disabled = true; label.textContent = 'กำลังสร้าง…';
-      buildShareImage({ money: $('share-money').checked }).then(function (blob) {
-        var name = 'thangrath-giving-tree.png';
-        var file = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
-        var touch = window.matchMedia('(pointer: coarse)').matches;
-        if (touch && file && navigator.canShare && navigator.canShare({ files: [file] })) {
-          // phones: system share sheet, which also offers "Save image"
-          return navigator.share({ files: [file], title: 'ต้นไม้แห่งการให้ของฉัน', text: 'ต้นไม้แห่งการให้ของฉัน จากแอปทางรัฐ' })
-            .then(function () { return 'แชร์แล้ว'; }, function (err) { return err && err.name === 'AbortError' ? null : Promise.reject(err); });
-        }
-        var url = URL.createObjectURL(blob), a = document.createElement('a');
-        a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-        return 'บันทึกแล้ว';
-      }).then(function (msg) {
-        label.textContent = msg || 'บันทึกภาพ';
-      }, function () {
-        label.textContent = 'ลองอีกครั้ง';
-      }).then(function () {
-        btn.disabled = false;
-        setTimeout(function () { label.textContent = 'บันทึกภาพ'; }, 2200);
+    /* ════════ save-image popup: live preview, money toggle, then save/share ════════ */
+    (function () {
+      var modal = $('modal-save'), toggle = $('share-money'), preview = $('save-preview'), img = $('save-img-preview'),
+          confirmBtn = $('save-confirm'), status = $('save-status'), opener = $('save-img');
+      var cache = {}, shownUrl = null, req = 0;
+
+      function current() {
+        var key = toggle.checked ? 'money' : 'plain';
+        if (!cache[key]) cache[key] = buildShareImage({ money: toggle.checked });
+        return cache[key];
+      }
+      function refresh() {
+        var my = ++req;
+        $('save-money-note').textContent = toggle.checked ? 'แสดงยอดบริจาครวมในภาพ' : 'ภาพนี้ไม่แสดงยอดเงิน';
+        preview.classList.add('is-busy'); confirmBtn.disabled = true; status.textContent = '';
+        current().then(function (blob) {
+          if (my !== req) return;
+          if (shownUrl) URL.revokeObjectURL(shownUrl);
+          shownUrl = URL.createObjectURL(blob); img.src = shownUrl;
+          preview.classList.remove('is-busy'); confirmBtn.disabled = false;
+        }, function () {
+          if (my !== req) return;
+          delete cache[toggle.checked ? 'money' : 'plain'];
+          preview.classList.remove('is-busy'); status.textContent = 'สร้างภาพไม่สำเร็จ ลองเปิดใหม่อีกครั้ง';
+        });
+      }
+      function open() {
+        cache = {};   // tree or data may have changed since last time
+        modal.classList.add('active');
+        refresh();
+        setTimeout(function () { toggle.focus(); }, 50);
+      }
+      function close() {
+        modal.classList.remove('active');
+        opener.focus();
+      }
+
+      opener.addEventListener('click', open);
+      toggle.addEventListener('change', refresh);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal || e.target.closest('[data-save-close]')) close();
       });
-    });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) close();
+      });
+
+      confirmBtn.addEventListener('click', function () {
+        confirmBtn.disabled = true;
+        current().then(function (blob) {
+          var name = 'thangrath-giving-tree.png';
+          var file = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
+          var touch = window.matchMedia('(pointer: coarse)').matches;
+          if (touch && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+            // phones: system share sheet, which also offers "Save image"
+            return navigator.share({ files: [file], title: 'ต้นไม้แห่งการให้ของฉัน', text: 'ต้นไม้แห่งการให้ของฉัน จากแอปทางรัฐ' })
+              .then(function () { return 'แชร์แล้ว'; }, function (err) { return err && err.name === 'AbortError' ? null : Promise.reject(err); });
+          }
+          var url = URL.createObjectURL(blob), a = document.createElement('a');
+          a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+          return 'บันทึกภาพแล้ว';
+        }).then(function (msg) {
+          confirmBtn.disabled = false;
+          if (msg) { status.textContent = msg; setTimeout(close, 900); }
+        }, function () {
+          confirmBtn.disabled = false;
+          status.textContent = 'บันทึกไม่สำเร็จ ลองอีกครั้ง';
+        });
+      });
+    })();
 
     if (!N) {
       document.querySelector('.dh-replay').style.display = 'none';
