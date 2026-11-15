@@ -270,7 +270,7 @@
             <span><b id="score">0</b> คะแนนเติบโต</span>
             <span id="next-label"></span>
           </div>
-          <div class="dh-bar" role="progressbar" aria-label="ความคืบหน้าสู่ระยะผลิดอก" aria-valuemin="0" aria-valuemax="100" id="stage-bar"><span></span></div>
+          <div class="dh-bar" role="progressbar" aria-label="ความคืบหน้าสู่เลเวลผลิดอก" aria-valuemin="0" aria-valuemax="100" id="stage-bar"><span></span></div>
           <div class="dh-hint" id="hint"></div>
         </div>
 
@@ -301,7 +301,7 @@
 
       <section class="dh-card" aria-labelledby="stages-title">
         <div class="dh-section-head">
-          <h2 class="dh-h2" id="stages-title">ระยะการเติบโต</h2>
+          <h2 class="dh-h2" id="stages-title">เลเวลการเติบโต</h2>
           <small>ราชพฤกษ์ · ต้นไม้ประจำชาติ</small>
         </div>
         <div class="dh-stages" id="stages"></div>
@@ -381,7 +381,7 @@
       </div>
       <div class="dc-modal__body">
         <div class="dc-group">
-          <p class="dc-group-label">🌱 ระยะการเติบโต (คะแนนสะสม)</p>
+          <p class="dc-group-label">🌱 เลเวลการเติบโต (คะแนนสะสม)</p>
           <div class="dc-chips dc-chips--wrap" data-group="grow"></div>
         </div>
         <div class="dc-group">
@@ -743,7 +743,7 @@
         var t = document.createElement('i'); t.style.left = (v * 100) + '%'; t.setAttribute('aria-hidden', 'true');
         bar.appendChild(t);
       });
-      bar.setAttribute('aria-label', mode === 'grow' ? 'ความคืบหน้าสู่ระยะผลิดอก' : 'ความสะพรั่งของดอกในปีภาษีนี้');
+      bar.setAttribute('aria-label', mode === 'grow' ? 'ความคืบหน้าสู่เลเวลผลิดอก' : 'ความสะพรั่งของดอกในปีภาษีนี้');
     }
     var BLOOM_TOP = BLOOMS[BLOOMS.length - 1].min * 1.2;   // bar end sits a little past the top level
 
@@ -756,13 +756,13 @@
       var shown = Math.min(N, Math.ceil(state.k - 1e-6));
       var st = STAGES[si], next = STAGES[si + 1];
       $('stage-name').textContent = st.name;
-      $('stage-level').textContent = full ? 'ฤดูออกดอก ' + be(THIS_YEAR) : 'ระยะ ' + (si + 1) + ' / ' + STAGES.length;
+      $('stage-level').textContent = full ? 'ฤดูออกดอก ' + be(THIS_YEAR) : 'เลเวล ' + (si + 1);
       $('stage-meta').textContent = shown
         ? 'เติบโตจากการบริจาค ' + shown + ' ครั้ง รวม ' + money(DONATIONS.slice(0, shown).reduce(function (t, d) { return t + d.amount; }, 0)) +
           ' ตั้งแต่ ' + monthTH(DONATIONS[0].date)
         : 'รอการบริจาคครั้งแรกเพื่อเริ่มงอก';
       $('score').textContent = num(score);
-      $('tree-desc').textContent = 'ต้นราชพฤกษ์ระยะ' + st.name + (full ? ' ' + BLOOMS[bi].name : '') + ' มีใบ ' + shown + ' กลุ่ม แทนการบริจาค ' + shown + ' ครั้ง';
+      $('tree-desc').textContent = 'ต้นราชพฤกษ์เลเวล ' + (si + 1) + ' ' + st.name + (full ? ' ' + BLOOMS[bi].name : '') + ' มีใบ ' + shown + ' กลุ่ม แทนการบริจาค ' + shown + ' ครั้ง';
 
       var bar = $('stage-bar');
       setTicks(next ? 'grow' : 'bloom');
@@ -779,8 +779,8 @@
         $('hint').innerHTML = !N
           ? 'บริจาคผ่านระบบ e-Donation ครั้งแรก ต้นไม้จะงอกเป็น<b>ต้นกล้า</b> (ทุกครั้งที่ให้ +20 คะแนน)'
           : state.k >= N
-          ? 'อีก <b>' + num(gap) + ' คะแนน</b> — ด้วยยอดเฉลี่ยของคุณ ' + money(Math.round(avgAmt / 50) * 50) + ' ต่อครั้ง ราว ' + times + ' ครั้งต้นไม้จะเข้าสู่ระยะ' + esc(next.name)
-          : 'อีก ' + num(gap) + ' คะแนนสู่ระยะ' + esc(next.name);
+          ? 'อีก <b>' + num(gap) + ' คะแนน</b> — ด้วยยอดเฉลี่ยของคุณ ' + money(Math.round(avgAmt / 50) * 50) + ' ต่อครั้ง ราว ' + times + ' ครั้งต้นไม้จะเข้าสู่เลเวล ' + (si + 2) + ' ' + esc(next.name)
+          : 'อีก ' + num(gap) + ' คะแนนสู่เลเวล ' + (si + 2) + ' ' + esc(next.name);
       } else {
         // fully grown: the bar now tracks this tax year's flowering, which restarts every year
         var bpct = clamp(yearPts / BLOOM_TOP) * 100, nb = BLOOMS[bi + 1];
@@ -1043,7 +1043,7 @@
         x.fillText(STAGES[si].name, 84, 250);
         x.fillStyle = '#62676c'; x.font = '400 34px ' + FONT;
         x.fillText(full ? 'ฤดูออกดอกปี ' + be(THIS_YEAR) + ' · ' + BLOOMS[bi].name
-                        : 'ระยะ ' + (si + 1) + ' จาก ' + STAGES.length + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
+                        : 'เลเวล ' + (si + 1) + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
 
         // stats — amounts only when the user turns them on
         var stats = [[num(N), 'ครั้งที่ให้']];
