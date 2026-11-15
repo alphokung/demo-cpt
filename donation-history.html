@@ -8,6 +8,7 @@
   <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="demo-tools.css">
   <style>
     :root {
       --dh-ink: var(--neutral-15);
@@ -82,8 +83,15 @@
     .dh-share { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px 16px; border-top: 1px solid rgba(40,48,40,.07); background: rgba(255,255,255,.7); }
     .dh-share-text { min-width: 0; line-height: 1.4; }
     .dh-share-text b { display: block; font-size: 14px; font-weight: 600; color: var(--dh-ink); }
-    .dh-share-text span { display: block; font-size: 12px; color: var(--dh-muted); }
-    .dh-share-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600;
+    .dh-switch { white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 13px; color: var(--dh-text); cursor: pointer; user-select: none; }
+    .dh-switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .dh-switch-track { position: relative; width: 34px; height: 20px; flex-shrink: 0; border-radius: 999px; background: var(--neutral-80); transition: background .15s; }
+    .dh-switch-track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--neutral-100);
+      box-shadow: 0 1px 2px rgba(0,0,0,.2); transition: transform .15s; }
+    .dh-switch input:checked + .dh-switch-track { background: var(--primary-30-base); }
+    .dh-switch input:checked + .dh-switch-track::after { transform: translateX(14px); }
+    .dh-switch input:focus-visible + .dh-switch-track { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
+    .dh-share-btn { flex-shrink: 0; min-width: 128px; justify-content: center; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600;
       padding: 9px 16px; border-radius: 999px; border: 0; background: var(--primary-20); color: var(--neutral-100); cursor: pointer; transition: background .15s; }
     .dh-share-btn:hover { background: var(--primary-10); }
     .dh-share-btn:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
@@ -253,7 +261,11 @@
         <div class="dh-share">
           <div class="dh-share-text">
             <b>ชวนคนรอบตัวมาร่วมให้</b>
-            <span>ภาพนี้ไม่แสดงยอดเงิน</span>
+            <label class="dh-switch">
+              <input type="checkbox" id="share-money" role="switch">
+              <span class="dh-switch-track" aria-hidden="true"></span>
+              <span>แสดงยอดเงินในภาพ</span>
+            </label>
           </div>
           <button type="button" class="dh-share-btn" id="save-img">
             <span class="material-symbols-outlined" aria-hidden="true">download</span><span class="dh-share-label">บันทึกภาพ</span>
@@ -323,6 +335,33 @@
     </div>
   </main>
 
+  <!-- demo-only scenario switcher (not product UI) -->
+  <div id="modal-demo-config" class="modal-overlay">
+    <div class="modal-content" style="padding:0;gap:0" role="dialog" aria-modal="true" aria-labelledby="dc-title">
+      <div class="dc-modal__header">
+        <div>
+          <p class="dc-modal__title" id="dc-title">ตั้งค่าการแสดงผล</p>
+          <p class="dc-modal__sub">จำลองข้อมูลการบริจาคสำหรับ demo</p>
+        </div>
+        <button type="button" class="dc-modal__close-btn" data-dc-close aria-label="ปิด">
+          <span class="material-symbols-outlined dc-modal__close-icon">close</span>
+        </button>
+      </div>
+      <div class="dc-modal__body">
+        <div class="dc-group dc-group--last">
+          <p class="dc-group-label">🌳 ระดับต้นไม้</p>
+          <div class="dc-chips dc-chips--wrap">
+            <button type="button" class="dc-chip" data-demo="current">ปัจจุบัน · ไม้ร่มใหญ่ (525)</button>
+            <button type="button" class="dc-chip" data-demo="bloom">ผลิดอก · ขั้นต่ำ (800)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="demo-fab" id="demo-fab">
+    <span class="material-symbols-outlined demo-fab__icon">tune</span>Demo
+  </button>
+
   <script>
   (function () {
     'use strict';
@@ -345,6 +384,14 @@
       { id: 'd13', date: '2026-08-15', to: 'มูลนิธิเพื่อการศึกษาเด็กชนบท',       cat: 'edu',      amount: 1500, deduct: 1 },
       { id: 'd14', date: '2026-10-28', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 2000, deduct: 2 }
     ];
+    // demo: ?demo=bloom adds the fewest extra records that land exactly on the
+    // ราชพฤกษ์ผลิดอก threshold (525 + 3×20 + ฿21,500/100 = 800 คะแนน)
+    var SCENARIO = /(?:^|[?&])demo=bloom(?:&|$)/.test(location.search) ? 'bloom' : 'current';
+    if (SCENARIO === 'bloom') DONATIONS = DONATIONS.concat([
+      { id: 'd15', date: '2026-11-01', to: 'โรงพยาบาลชุมชนบ้านนา',              cat: 'health',   amount: 10000, deduct: 2 },
+      { id: 'd16', date: '2026-11-08', to: 'วัดศรีสว่าง',                        cat: 'religion', amount: 5000,  deduct: 1 },
+      { id: 'd17', date: '2026-11-12', to: 'มูลนิธิเพื่อการศึกษาเด็กชนบท',       cat: 'edu',      amount: 6500,  deduct: 1 }
+    ]);
     var CATS = { health: 'สุขภาพ', edu: 'การศึกษา', religion: 'ศาสนา', charity: 'สาธารณกุศล' };
 
     /* growth model — frequency and amount both count, so small regular donors grow too */
@@ -721,13 +768,15 @@
         DONATIONS.forEach(function (d) { if (parts(d.date).y === +y) { sum += d.amount; if (sum >= 10000 && !bigYear) bigYear = d.date; } });
       });
       var catN = Object.keys(cats).length;
+      var bloomDate = null;
+      for (var bi = 0; bi < N; bi++) if (CUM[bi + 1] >= FULL) { bloomDate = DONATIONS[bi].date; break; }
       var list = [
         { icon: 'spa',           t: 'ก้าวแรกแห่งการให้',      done: N >= 1 && dateNth(1) },
         { icon: 'event_repeat',  t: 'ให้ต่อเนื่อง 3 ปีภาษี',   done: streakDate, prog: [Math.min(run, 3), 3, 'ปี'] },
         { icon: 'diversity_1',   t: 'ครบทั้ง 4 ด้าน',          done: catDate, prog: [catN, 4, 'ด้าน'], sub: 'สุขภาพ การศึกษา ศาสนา สาธารณกุศล' },
         { icon: 'nature_people', t: 'ร่มเงาแห่งปี',            done: bigYear, sub: 'ยอดบริจาคถึง ฿10,000 ในปีเดียว' },
         { icon: 'forest',        t: 'บริจาคครบ 20 ครั้ง',      done: N >= 20 && dateNth(20), prog: [N, 20, 'ครั้ง'] },
-        { icon: 'local_florist', t: 'ราชพฤกษ์ผลิดอก',          done: CUM[N] >= FULL && null, prog: [CUM[N], FULL, 'คะแนน'] }
+        { icon: 'local_florist', t: 'ราชพฤกษ์ผลิดอก',          done: bloomDate, prog: [CUM[N], FULL, 'คะแนน'] }
       ];
       var got = list.filter(function (b) { return b.done; }).length;
       $('badges-count').textContent = 'ได้รับ ' + got + ' จาก ' + list.length;
@@ -807,7 +856,8 @@
       ys.forEach(function (y, i) { run = i && y === ys[i - 1] + 1 ? run + 1 : 1; best = Math.max(best, run); });
       return best;
     }
-    function buildShareImage() {
+    function buildShareImage(opts) {
+      opts = opts || {};
       var W = 1080, H = 1350, FONT = '"Anuphan", sans-serif';
       var score = CUM[N], si = stageOf(score), g = clamp(score / FULL);
       var treeSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" width="1080" height="900">' +
@@ -831,7 +881,7 @@
         bg.addColorStop(0, '#e9f0e8'); bg.addColorStop(.6, '#f6f5ef'); bg.addColorStop(1, '#f0ece2');
         x.fillStyle = bg; x.fillRect(0, 0, W, H);
 
-        x.drawImage(tree, 0, 214, 1080, 900);
+        x.drawImage(tree, 60, 322, 960, 800);   // full-bloom crown clears the subtitle and the edges
 
         x.textBaseline = 'alphabetic';
         x.fillStyle = '#006643'; x.font = '600 36px ' + FONT;
@@ -841,20 +891,24 @@
         x.fillStyle = '#62676c'; x.font = '400 34px ' + FONT;
         x.fillText('ระยะ ' + (si + 1) + ' จาก ' + STAGES.length + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
 
-        // stats — counts only, never amounts
-        var stats = [
-          [num(N), 'ครั้งที่ให้'],
-          [String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'ด้านที่สนับสนุน'],
-          [String(longestYearRun()), 'ปีต่อเนื่อง']
-        ];
-        var top = 1088, colW = (W - 176) / 3;
+        // stats — amounts only when the user turns them on
+        var stats = [[num(N), 'ครั้งที่ให้']];
+        if (opts.money) stats.push([money(DONATIONS.reduce(function (t, d) { return t + d.amount; }, 0)), 'ยอดบริจาครวม']);
+        stats.push([String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'ด้านที่สนับสนุน']);
+        stats.push([String(longestYearRun()), 'ปีต่อเนื่อง']);
+        var top = 1088, colW = (W - 176) / stats.length;
+        function fitFont(text, weight, size, maxW) {
+          do { x.font = weight + ' ' + size + 'px ' + FONT; } while (x.measureText(text).width > maxW && --size > 20);
+        }
         x.strokeStyle = 'rgba(40,48,40,.12)'; x.lineWidth = 2;
+        x.textAlign = 'center';
         stats.forEach(function (s, i) {
-          var cx = 88 + colW * i;
-          if (i) { x.beginPath(); x.moveTo(cx - 24, top + 4); x.lineTo(cx - 24, top + 100); x.stroke(); }
-          x.fillStyle = '#1d1f21'; x.font = '700 64px ' + FONT; x.fillText(s[0], cx, top + 62);
-          x.fillStyle = '#62676c'; x.font = '400 30px ' + FONT; x.fillText(s[1], cx, top + 104);
+          var left = 88 + colW * i, cx = left + colW / 2;
+          if (i) { x.beginPath(); x.moveTo(left, top + 6); x.lineTo(left, top + 102); x.stroke(); }
+          x.fillStyle = '#1d1f21'; fitFont(s[0], 700, 64, colW - 24); x.fillText(s[0], cx, top + 62);
+          x.fillStyle = '#62676c'; fitFont(s[1], 400, 30, colW - 16); x.fillText(s[1], cx, top + 104);
         });
+        x.textAlign = 'left';
 
         // footer: source line + ทางรัฐ mark
         x.beginPath(); x.moveTo(88, 1236); x.lineTo(W - 88, 1236); x.stroke();
@@ -869,8 +923,8 @@
 
     $('save-img').addEventListener('click', function () {
       var btn = this, label = btn.querySelector('.dh-share-label');
-      btn.disabled = true; label.textContent = 'กำลังสร้างภาพ…';
-      buildShareImage().then(function (blob) {
+      btn.disabled = true; label.textContent = 'กำลังสร้าง…';
+      buildShareImage({ money: $('share-money').checked }).then(function (blob) {
         var name = 'thangrath-giving-tree.png';
         var file = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
         var touch = window.matchMedia('(pointer: coarse)').matches;
@@ -892,6 +946,22 @@
         setTimeout(function () { label.textContent = 'บันทึกภาพ'; }, 2200);
       });
     });
+
+    /* ════════ demo switcher ════════ */
+    (function () {
+      var modal = $('modal-demo-config');
+      Array.prototype.forEach.call(modal.querySelectorAll('[data-demo]'), function (c) {
+        var on = c.dataset.demo === SCENARIO;
+        c.classList.toggle('active', on); c.setAttribute('aria-pressed', on);
+      });
+      $('demo-fab').addEventListener('click', function () { modal.classList.add('active'); });
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal || e.target.closest('[data-dc-close]')) { modal.classList.remove('active'); return; }
+        var c = e.target.closest('[data-demo]'); if (!c || c.dataset.demo === SCENARIO) return;
+        location.search = c.dataset.demo === 'bloom' ? '?demo=bloom' : '';
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') modal.classList.remove('active'); });
+    })();
 
     /* ════════ boot ════════ */
     renderYear();
