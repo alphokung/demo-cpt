@@ -68,6 +68,8 @@
     .dh-progress-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--dh-muted); }
     .dh-progress-row b { font-size: 16px; color: var(--dh-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
     .dh-bar { height: 6px; border-radius: 999px; background: rgba(40,48,40,.08); margin: 8px 0; overflow: hidden; }
+    .dh-bar { position: relative; }
+    .dh-bar > i { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255,255,255,.95); }
     .dh-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary-20), var(--primary-30-base)); transition: width .3s ease; }
     .dh-hint { font-size: 13px; color: var(--dh-text); line-height: 1.5; }
 
@@ -77,6 +79,16 @@
     .dh-play:hover { background: var(--primary-95); }
     .dh-play:focus-visible, .dh-row:focus-visible, .dh-chip:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
     .dh-play .material-symbols-outlined { font-size: 22px; font-variation-settings: 'FILL' 1; }
+    .dh-share { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px 16px; border-top: 1px solid rgba(40,48,40,.07); background: rgba(255,255,255,.7); }
+    .dh-share-text { min-width: 0; line-height: 1.4; }
+    .dh-share-text b { display: block; font-size: 14px; font-weight: 600; color: var(--dh-ink); }
+    .dh-share-text span { display: block; font-size: 12px; color: var(--dh-muted); }
+    .dh-share-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 14px; font-weight: 600;
+      padding: 9px 16px; border-radius: 999px; border: 0; background: var(--primary-20); color: var(--neutral-100); cursor: pointer; transition: background .15s; }
+    .dh-share-btn:hover { background: var(--primary-10); }
+    .dh-share-btn:focus-visible { outline: 2px solid var(--primary-30-base); outline-offset: 2px; }
+    .dh-share-btn[disabled] { opacity: .7; cursor: progress; }
+    .dh-share-btn .material-symbols-outlined { font-size: 18px; }
     .dh-replay-body { flex: 1; min-width: 0; }
     .dh-replay-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--dh-muted); }
     .dh-replay-top b { color: var(--dh-ink); font-weight: 600; }
@@ -224,7 +236,7 @@
             <span><b id="score">0</b> คะแนนเติบโต</span>
             <span id="next-label"></span>
           </div>
-          <div class="dh-bar" role="progressbar" aria-label="ความคืบหน้าสู่ระยะถัดไป" aria-valuemin="0" aria-valuemax="100" id="stage-bar"><span></span></div>
+          <div class="dh-bar" role="progressbar" aria-label="ความคืบหน้าสู่ระยะผลิดอก" aria-valuemin="0" aria-valuemax="100" id="stage-bar"><span></span></div>
           <div class="dh-hint" id="hint"></div>
         </div>
 
@@ -236,6 +248,16 @@
             <div class="dh-replay-top"><span>ย้อนดูการเติบโต</span><b id="replay-at"></b></div>
             <input type="range" class="dh-range" id="range" min="0" step="1" aria-label="เลื่อนดูต้นไม้ตามลำดับการบริจาค">
           </div>
+        </div>
+
+        <div class="dh-share">
+          <div class="dh-share-text">
+            <b>ชวนคนรอบตัวมาร่วมให้</b>
+            <span>ภาพนี้ไม่แสดงยอดเงิน</span>
+          </div>
+          <button type="button" class="dh-share-btn" id="save-img">
+            <span class="material-symbols-outlined" aria-hidden="true">download</span><span class="dh-share-label">บันทึกภาพ</span>
+          </button>
         </div>
       </section>
 
@@ -546,6 +568,10 @@
     var state = { k: N, focus: null, playing: false, raf: 0 };
     var svg = $('tree'), scene = $('scene'), range = $('range');
     range.max = N; range.value = N;
+    STAGES.slice(1, -1).forEach(function (s) {
+      var t = document.createElement('i'); t.style.left = (s.min / FULL * 100) + '%'; t.setAttribute('aria-hidden', 'true');
+      $('stage-bar').appendChild(t);
+    });
 
     function renderTree() {
       var score = scoreAt(state.k), g = clamp(score / FULL), si = stageOf(score);
@@ -564,7 +590,7 @@
 
       var bar = $('stage-bar');
       if (next) {
-        var pct = clamp((score - st.min) / (next.min - st.min)) * 100;
+        var pct = clamp(score / FULL) * 100;      // overall progress to full bloom; stage ticks mark the steps
         bar.firstElementChild.style.width = pct + '%';
         bar.setAttribute('aria-valuenow', Math.round(pct));
         $('next-label').innerHTML = 'สู่ <strong>' + esc(next.name) + '</strong> ' + num(next.min) + '';
@@ -770,6 +796,102 @@
       if (id && id !== state._hover) { state._hover = id; var keep = state.focus; state.focus = id; renderTree(); state.focus = keep; }
     });
     $('list').addEventListener('mouseleave', function () { state._hover = null; renderTree(); });
+
+    /* ════════ share card: 1080×1350 PNG, no money shown, ทางรัฐ mark bottom-right ════════ */
+    function loadImg(src) {
+      return new Promise(function (ok, fail) { var im = new Image(); im.onload = function () { ok(im); }; im.onerror = fail; im.src = src; });
+    }
+    function longestYearRun() {
+      var ys = DONATIONS.map(function (d) { return parts(d.date).y; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+      var best = 0, run = 0;
+      ys.forEach(function (y, i) { run = i && y === ys[i - 1] + 1 ? run + 1 : 1; best = Math.max(best, run); });
+      return best;
+    }
+    function buildShareImage() {
+      var W = 1080, H = 1350, FONT = '"Anuphan", sans-serif';
+      var score = CUM[N], si = stageOf(score), g = clamp(score / FULL);
+      var treeSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" width="1080" height="900">' +
+        document.querySelector('svg defs').outerHTML +
+        '<ellipse cx="180" cy="150" rx="170" ry="130" fill="url(#dh-glow)"/>' +
+        drawTree(g, { k: N, flowers: si === STAGES.length - 1 }) + '</svg>';
+      renderTree();   // drawTree re-ran layout; restore the on-screen state
+      var treeUrl = URL.createObjectURL(new Blob([treeSvg], { type: 'image/svg+xml' }));
+
+      return Promise.all([
+        loadImg(treeUrl),
+        loadImg('favicon/android-chrome-512x512.png'),
+        document.fonts ? Promise.all(['400', '600', '700'].map(function (w) { return document.fonts.load(w + ' 40px Anuphan', 'ต้นไม้'); })) : null
+      ]).then(function (r) {
+        URL.revokeObjectURL(treeUrl);
+        var tree = r[0], logo = r[1];
+        var c = document.createElement('canvas'); c.width = W; c.height = H;
+        var x = c.getContext('2d');
+
+        var bg = x.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, '#e9f0e8'); bg.addColorStop(.6, '#f6f5ef'); bg.addColorStop(1, '#f0ece2');
+        x.fillStyle = bg; x.fillRect(0, 0, W, H);
+
+        x.drawImage(tree, 0, 214, 1080, 900);
+
+        x.textBaseline = 'alphabetic';
+        x.fillStyle = '#006643'; x.font = '600 36px ' + FONT;
+        x.fillText('ต้นไม้แห่งการให้ของฉัน', 88, 150);
+        x.fillStyle = '#1d1f21'; x.font = '700 88px ' + FONT;
+        x.fillText(STAGES[si].name, 84, 250);
+        x.fillStyle = '#62676c'; x.font = '400 34px ' + FONT;
+        x.fillText('ระยะ ' + (si + 1) + ' จาก ' + STAGES.length + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
+
+        // stats — counts only, never amounts
+        var stats = [
+          [num(N), 'ครั้งที่ให้'],
+          [String(Object.keys(DONATIONS.reduce(function (o, d) { o[d.cat] = 1; return o; }, {})).length), 'ด้านที่สนับสนุน'],
+          [String(longestYearRun()), 'ปีต่อเนื่อง']
+        ];
+        var top = 1088, colW = (W - 176) / 3;
+        x.strokeStyle = 'rgba(40,48,40,.12)'; x.lineWidth = 2;
+        stats.forEach(function (s, i) {
+          var cx = 88 + colW * i;
+          if (i) { x.beginPath(); x.moveTo(cx - 24, top + 4); x.lineTo(cx - 24, top + 100); x.stroke(); }
+          x.fillStyle = '#1d1f21'; x.font = '700 64px ' + FONT; x.fillText(s[0], cx, top + 62);
+          x.fillStyle = '#62676c'; x.font = '400 30px ' + FONT; x.fillText(s[1], cx, top + 104);
+        });
+
+        // footer: source line + ทางรัฐ mark
+        x.beginPath(); x.moveTo(88, 1236); x.lineTo(W - 88, 1236); x.stroke();
+        x.fillStyle = '#62676c'; x.font = '400 26px ' + FONT;
+        x.fillText('ข้อมูลจากระบบ e-Donation กรมสรรพากร', 88, 1288);
+        x.fillText('ผ่านแอปทางรัฐ · ' + dateTH(TODAY), 88, 1324);
+        var L = 84; x.drawImage(logo, W - 88 - L, 1252, L, L);
+
+        return new Promise(function (ok) { c.toBlob(ok, 'image/png'); });
+      });
+    }
+
+    $('save-img').addEventListener('click', function () {
+      var btn = this, label = btn.querySelector('.dh-share-label');
+      btn.disabled = true; label.textContent = 'กำลังสร้างภาพ…';
+      buildShareImage().then(function (blob) {
+        var name = 'thangrath-giving-tree.png';
+        var file = typeof File === 'function' ? new File([blob], name, { type: 'image/png' }) : null;
+        var touch = window.matchMedia('(pointer: coarse)').matches;
+        if (touch && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+          // phones: system share sheet, which also offers "Save image"
+          return navigator.share({ files: [file], title: 'ต้นไม้แห่งการให้ของฉัน', text: 'ต้นไม้แห่งการให้ของฉัน จากแอปทางรัฐ' })
+            .then(function () { return 'แชร์แล้ว'; }, function (err) { return err && err.name === 'AbortError' ? null : Promise.reject(err); });
+        }
+        var url = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        return 'บันทึกแล้ว';
+      }).then(function (msg) {
+        label.textContent = msg || 'บันทึกภาพ';
+      }, function () {
+        label.textContent = 'ลองอีกครั้ง';
+      }).then(function () {
+        btn.disabled = false;
+        setTimeout(function () { label.textContent = 'บันทึกภาพ'; }, 2200);
+      });
+    });
 
     /* ════════ boot ════════ */
     renderYear();
