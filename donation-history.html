@@ -319,7 +319,7 @@
           การเติบโตสะสมตลอดไป ไม่ลดลงเมื่อหยุดบริจาค และไม่มีผลต่อสิทธิลดหย่อนภาษี</p>
         <div class="dh-season" id="season" hidden>
           <div class="dh-season-head"><span class="material-symbols-outlined" aria-hidden="true">local_florist</span>
-            <b>ฤดูดอกรายปี</b><small>หลังเติบโตเต็มที่</small></div>
+            <b>ฤดูออกดอกรายปี</b><small>หลังเติบโตเต็มที่</small></div>
           <p>ดอกจะสะพรั่งตามคะแนนที่ให้ในแต่ละปีภาษี และเริ่มฤดูใหม่ทุกปี</p>
           <ol class="dh-season-steps" id="season-steps"></ol>
         </div>
@@ -385,7 +385,7 @@
           <div class="dc-chips dc-chips--wrap" data-group="grow"></div>
         </div>
         <div class="dc-group">
-          <p class="dc-group-label">🌼 ฤดูดอกรายปี (เติบโตเต็มที่แล้ว · คะแนนปีนี้)</p>
+          <p class="dc-group-label">🌼 ฤดูออกดอกรายปี (เติบโตเต็มที่แล้ว · คะแนนปีนี้)</p>
           <div class="dc-chips dc-chips--wrap" data-group="bloom"></div>
         </div>
         <div class="dc-group dc-group--last">
@@ -483,7 +483,7 @@
     // once fully grown, this tax year's points set how richly the tree flowers;
     // the season starts again every tax year, the tree itself never shrinks
     var BLOOMS = [
-      { min: 0,   name: 'พักตัว รอฤดูดอก',     density: .08, len: 2, flush: 0 },
+      { min: 0,   name: 'พักตัว รอฤดูออกดอก',     density: .08, len: 2, flush: 0 },
       { min: 1,   name: 'ดอกแรกแย้ม',         density: .25, len: 3, flush: 0 },
       { min: 150, name: 'ออกดอกสะพรั่ง',       density: .5,  len: 5, flush: 1 },
       { min: 300, name: 'บานเต็มต้น',          density: .78, len: 6, flush: 2 },
@@ -756,7 +756,7 @@
       var shown = Math.min(N, Math.ceil(state.k - 1e-6));
       var st = STAGES[si], next = STAGES[si + 1];
       $('stage-name').textContent = st.name;
-      $('stage-level').textContent = full ? 'ฤดูดอก ' + be(THIS_YEAR) : 'ระยะ ' + (si + 1) + ' / ' + STAGES.length;
+      $('stage-level').textContent = full ? 'ฤดูออกดอก ' + be(THIS_YEAR) : 'ระยะ ' + (si + 1) + ' / ' + STAGES.length;
       $('stage-meta').textContent = shown
         ? 'เติบโตจากการบริจาค ' + shown + ' ครั้ง รวม ' + money(DONATIONS.slice(0, shown).reduce(function (t, d) { return t + d.amount; }, 0)) +
           ' ตั้งแต่ ' + monthTH(DONATIONS[0].date)
@@ -794,7 +794,7 @@
           : bi === 0
           ? 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · ให้ครั้งแรกของปีนี้ ดอกแรกจะเริ่มแย้ม'
           : 'ต้นไม้เติบโตเต็มที่แล้ว (สะสม ' + num(score) + ' คะแนน) · อีก <b>' + num(nb.min - yearPts) + ' คะแนน</b>ในปีนี้ ต้นไม้จะ' + esc(nb.name);
-        $('hint').innerHTML += '<span class="dh-hint-sub">ฤดูดอกเริ่มใหม่ทุกปีภาษี ต้นไม้ไม่เล็กลง</span>';
+        $('hint').innerHTML += '<span class="dh-hint-sub">ฤดูออกดอกเริ่มใหม่ทุกปีภาษี ต้นไม้ไม่เล็กลง</span>';
       }
 
       $('replay-at').textContent = state.k >= N ? 'วันนี้ · ' + dateTH(TODAY)
@@ -1042,7 +1042,7 @@
         x.fillStyle = '#1d1f21'; x.font = '700 88px ' + FONT;
         x.fillText(STAGES[si].name, 84, 250);
         x.fillStyle = '#62676c'; x.font = '400 34px ' + FONT;
-        x.fillText(full ? 'ฤดูดอกปี ' + be(THIS_YEAR) + ' · ' + BLOOMS[bi].name
+        x.fillText(full ? 'ฤดูออกดอกปี ' + be(THIS_YEAR) + ' · ' + BLOOMS[bi].name
                         : 'ระยะ ' + (si + 1) + ' จาก ' + STAGES.length + ' · ราชพฤกษ์ ต้นไม้ประจำชาติ', 88, 308);
 
         // stats — amounts only when the user turns them on
