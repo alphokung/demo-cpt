@@ -557,7 +557,7 @@
     }
     var SCEN = {
       empty:    { group: 'grow',  label: 'ยังไม่เคยบริจาค',        who: 'ยังไม่มีรายการในระบบ e-Donation', rows: [] },
-      sprout:   { group: 'grow',  label: 'ต้นกล้า · 50',           who: 'บริจาคครั้งแรก ฿3,000 ปลายปีเพื่อลดหย่อน', rows: [['2026-10-30','H',3000]] },
+      sprout:   { group: 'grow',  label: 'แตกกิ่งใบ · 50',           who: 'บริจาคครั้งแรก ฿3,000 ปลายปีเพื่อลดหย่อน', rows: [['2026-10-30','H',3000]] },
       young:    { group: 'grow',  label: 'ไม้หนุ่ม · 128',          who: 'ทำบุญวันสำคัญทางศาสนา 5 ครั้งในปีนี้ รวม ฿2,800',
                   rows: [['2026-03-03','W',500], ['2026-05-31','W',300], ['2026-07-29','P',500], ['2026-08-12','H',1000], ['2026-10-20','R',500]] },
       mature:   { group: 'grow',  label: 'ยืนต้น · 230',         who: 'ให้สม่ำเสมอ 2 ปี ปีละ 4 ครั้ง',
@@ -583,14 +583,17 @@
     var PER_GIFT = 20, PER_100 = 1;
     // lifetime structure — never shrinks. Full growth ≈ 16 average gifts (was 21).
     var STAGES = [
-      { min: 0,   name: 'เมล็ดพันธุ์' },
-      { min: 30,  name: 'ต้นกล้า' },
+      { min: 0,   name: 'ต้นไม้น้อย' },
+      { min: 30,  name: 'แตกกิ่งใบ' },
       { min: 100, name: 'ไม้หนุ่ม' },
       { min: 200, name: 'ยืนต้น' },
       { min: 350, name: 'ร่มไม้ใหญ่' },
       { min: 600, name: 'ผลิดอก' }
     ];
     var FULL = STAGES[STAGES.length - 1].min;
+    // everyone starts with a young tree, never a bare seed: growth g ∈ [0,1] is drawn from G0 upward
+    var G0 = .25;
+    function grown(g) { return G0 + (1 - G0) * g; }
     // once fully grown, this tax year's points set how richly the tree flowers;
     // the season starts again every tax year, the tree itself never shrinks
     var BLOOMS = [
@@ -730,6 +733,7 @@
     /* opts: { k: donations shown (float), focus: id, flowers: bool, bloom: BLOOMS index, mini: bool } */
     function drawTree(g, opts) {
       opts = opts || {};
+      g = grown(g);
       var L = layout(g), out = [];
 
       // ground
@@ -871,7 +875,7 @@
       $('stage-meta').textContent = shown
         ? 'เติบโตจากการบริจาค ' + shown + ' ครั้ง รวม ' + money(DONATIONS.slice(0, shown).reduce(function (t, d) { return t + d.amount; }, 0)) +
           ' ตั้งแต่ ' + monthTH(DONATIONS[0].date)
-        : 'รอการบริจาคครั้งแรกเพื่อเริ่มงอก';
+        : 'ต้นไม้ของคุณพร้อมเติบโต รอการบริจาคครั้งแรก';
       $('score').textContent = num(score);
       $('tree-desc').textContent = 'ต้นราชพฤกษ์เลเวล ' + (si + 1) + ' ' + st.name + (full ? ' ' + BLOOMS[bi].name : '') + ' มีใบ ' + shown + ' กลุ่ม แทนการบริจาค ' + shown + ' ครั้ง';
 
@@ -888,7 +892,7 @@
         var times = Math.max(1, Math.ceil(gap / avg));
         var avgAmt = DONATIONS.reduce(function (s, d) { return s + d.amount; }, 0) / N;
         $('hint').innerHTML = !N
-          ? 'บริจาคผ่านระบบ e-Donation ครั้งแรก ต้นไม้จะงอกเป็น<b>ต้นกล้า</b> (ทุกครั้งที่ให้ +20 คะแนน)'
+          ? 'บริจาคผ่านระบบ e-Donation ครั้งแรก ต้นไม้จะ<b>แตกกิ่งใบ</b> (ทุกครั้งที่ให้ +20 คะแนน)'
           : state.k >= N
           ? 'อีก <b>' + num(gap) + ' คะแนน</b> — ด้วยยอดเฉลี่ยของคุณ ' + money(Math.round(avgAmt / 50) * 50) + ' ต่อครั้ง ราว ' + times + ' ครั้งต้นไม้จะเข้าสู่เลเวล ' + (si + 2) + ' ' + esc(next.name)
           : 'อีก ' + num(gap) + ' คะแนนสู่เลเวล ' + (si + 2) + ' ' + esc(next.name);
@@ -994,7 +998,7 @@
     // square viewBox hugging the tree at growth g, so early stages stay legible
     function miniBox(g) {
       var minY = GROUND - 14, half = 10;
-      layout(g).branches.forEach(function (b) { minY = Math.min(minY, b.ey); half = Math.max(half, Math.abs(b.ex - ROOT_X)); });
+      layout(grown(g)).branches.forEach(function (b) { minY = Math.min(minY, b.ey); half = Math.max(half, Math.abs(b.ex - ROOT_X)); });
       var pad = 6 + 16 * g, size = Math.max(GROUND - minY + pad * 1.6, (half + pad) * 2, 44);
       return f(ROOT_X - size / 2) + ' ' + f(GROUND + 6 - size) + ' ' + f(size) + ' ' + f(size);
     }
@@ -1105,7 +1109,7 @@
         '</button>';
       }).join('') || '<div class="dh-list-empty"><span class="material-symbols-outlined" aria-hidden="true">volunteer_activism</span>' +
         (N ? 'ไม่มีรายการบริจาคในปี ' + be(year) : 'ยังไม่มีรายการบริจาคในระบบ e-Donation') +
-        '<small>บริจาคผ่านหน่วยรับบริจาคที่อยู่ในระบบ แล้วแจ้งเลขประจำตัวประชาชน รายการจะขึ้นที่นี่และต้นไม้จะเริ่มงอก</small></div>';
+        '<small>บริจาคผ่านหน่วยรับบริจาคที่อยู่ในระบบ แล้วแจ้งเลขประจำตัวประชาชน รายการจะขึ้นที่นี่และต้นไม้จะเริ่มเติบโต</small></div>';
     }
     $('years').addEventListener('click', function (e) {
       var b = e.target.closest('[data-year]'); if (!b) return;
