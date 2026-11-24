@@ -96,12 +96,12 @@
     '.fw-fab-count.show{display:inline-block;}' +
 
     /* greeting */
-    '.fw-greeting{position:fixed;left:50%;top:22%;transform:translate(-50%,0) scale(.8);z-index:9999;pointer-events:none;' +
+    '.fw-greeting{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);z-index:9999;pointer-events:none;' +
       'padding:var(--spacing-lg) var(--spacing-3xl);border-radius:var(--radius-full);' +
       'background:rgba(0,61,40,.82);color:var(--neutral-100);backdrop-filter:blur(6px);' +
       'font-size:var(--font-size-headline-s);line-height:32px;font-weight:var(--font-weight-700);' +
       'white-space:nowrap;box-shadow:var(--shadow-custom-xl);opacity:0;transition:opacity .4s ease,transform .4s cubic-bezier(.2,1.4,.4,1);}' +
-    '.fw-greeting.show{opacity:1;transform:translate(-50%,0) scale(1);}' +
+    '.fw-greeting.show{opacity:1;transform:translate(-50%,-50%) scale(1);}' +
 
     '@keyframes fw-twinkle{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(12deg) scale(1.12);}}' +
     '@media (max-width:479px){.fw-fab-text{display:none;}.fw-fab{width:48px;padding:0;justify-content:center;}' +
