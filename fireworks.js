@@ -115,28 +115,53 @@
 
   function init() {
     /* ── Haptics ──
-       Android/Chrome: Vibration API.
-       iOS 18+ Safari has no Vibration API; toggling a hidden <input switch>
-       gives a system haptic tick, but only inside a user gesture (the tap). */
-    var iosSwitch = null;
-    if (HAPTIC && !navigator.vibrate) {
-      iosSwitch = document.createElement('label');
-      iosSwitch.setAttribute('aria-hidden', 'true');
-      iosSwitch.style.cssText = 'position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9999px;';
-      iosSwitch.innerHTML = '<input type="checkbox" switch tabindex="-1">';
-      document.body.appendChild(iosSwitch);
+       Android (Chrome, Samsung, Firefox): Vibration API.
+       iOS (Safari AND Chrome/Edge/Firefox — all WebKit): no Vibration API, but on
+       iOS 18+ toggling an <input type="checkbox" switch> plays the system haptic.
+       We create a hidden switch, click its label, then remove it (same approach as
+       the ios-haptics library). Works in Safari, Chrome on iOS and home-screen apps.
+       Needs iOS 18+, and "System Haptics" turned on in Settings → Sounds & Haptics. */
+    var canVibrate = typeof navigator.vibrate === 'function';
+    var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   /* iPadOS reports as Mac */
+
+    function iosTick() {
+      var label = document.createElement('label');
+      label.setAttribute('aria-hidden', 'true');
+      label.style.display = 'none';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.setAttribute('switch', '');
+      input.tabIndex = -1;
+      label.appendChild(input);
+      document.head.appendChild(label);
+      label.click();
+      document.head.removeChild(label);
     }
+
+    /* pattern: ms number or [on, off, on, ...] like navigator.vibrate */
+    function iosPattern(pattern) {
+      if (typeof pattern === 'number') { iosTick(); return; }
+      var at = 0;
+      for (var i = 0; i < pattern.length; i++) {
+        if (i % 2 === 0) {
+          if (at === 0) iosTick(); else setTimeout(iosTick, at);
+        }
+        at += pattern[i];
+      }
+    }
+
     var lastBuzz = 0;
     function haptic(pattern, fromGesture) {
       if (!HAPTIC) return;
       var t = performance.now();
-      if (!fromGesture && t - lastBuzz < 90) return;   /* don't stack overlapping bursts */
+      /* don't stack overlapping bursts (iOS ticks are stronger, so space them more) */
+      if (!fromGesture && t - lastBuzz < (canVibrate ? 90 : 140)) return;
       lastBuzz = t;
-      if (navigator.vibrate) {
-        try { navigator.vibrate(pattern); } catch (e) {}
-      } else if (iosSwitch && fromGesture) {
-        iosSwitch.click();
-      }
+      try {
+        if (canVibrate) navigator.vibrate(pattern);
+        else if (isIOS) iosPattern(pattern);
+      } catch (e) {}
     }
 
     /* ── Canvases: fireworks keep light trails, lanterns are redrawn cleanly ── */
