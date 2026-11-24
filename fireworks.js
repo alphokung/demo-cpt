@@ -14,6 +14,7 @@
  *   data-mode="lantern"                default choice: "firework" (default) | "lantern"
  *   data-modes="lantern"               limit the choices (comma-separated); one value hides the switch
  *   data-autoplay="true"               release one round on page load
+ *   data-haptic="false"                turn off vibration feedback
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
@@ -30,6 +31,7 @@
   var now = new Date();
   var LABEL = ds.label || 'สวัสดีปีใหม่ ' + (now.getFullYear() + 543 + (now.getMonth() >= 10 ? 1 : 0));
   var AUTOPLAY = ds.autoplay === 'true';
+  var HAPTIC = ds.haptic !== 'false';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var LANTERN_SVG =
@@ -58,6 +60,7 @@
   var css = '' +
     '.fw-canvas{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9998;}' +
     '.fw-dock{position:fixed;right:var(--spacing-xl);bottom:var(--spacing-2xl);z-index:9999;' +
+      'touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;' +
       'display:flex;flex-direction:column;align-items:flex-end;gap:var(--spacing-md);transition:bottom .25s ease;}' +
     '.fw-dock.fw-raised{bottom:calc(var(--spacing-2xl) + 60px);}' +
 
@@ -68,6 +71,7 @@
       'border:none;border-radius:var(--radius-full);background:transparent;cursor:pointer;font-family:inherit;' +
       'font-size:var(--font-size-label-m);line-height:var(--line-height-label-m);font-weight:var(--font-weight-500);' +
       'color:var(--foreground-neutral-light);transition:background .15s ease,color .15s ease;-webkit-tap-highlight-color:transparent;}' +
+    '.fw-mode,.fw-fab{touch-action:manipulation;}' +
     '.fw-mode .material-symbols-outlined{font-size:18px;}' +
     '.fw-mode svg{width:18px;height:18px;}' +
     '.fw-mode:hover{background:var(--background-neutral-medium);}' +
@@ -110,6 +114,31 @@
   document.head.appendChild(style);
 
   function init() {
+    /* ── Haptics ──
+       Android/Chrome: Vibration API.
+       iOS 18+ Safari has no Vibration API; toggling a hidden <input switch>
+       gives a system haptic tick, but only inside a user gesture (the tap). */
+    var iosSwitch = null;
+    if (HAPTIC && !navigator.vibrate) {
+      iosSwitch = document.createElement('label');
+      iosSwitch.setAttribute('aria-hidden', 'true');
+      iosSwitch.style.cssText = 'position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9999px;';
+      iosSwitch.innerHTML = '<input type="checkbox" switch tabindex="-1">';
+      document.body.appendChild(iosSwitch);
+    }
+    var lastBuzz = 0;
+    function haptic(pattern, fromGesture) {
+      if (!HAPTIC) return;
+      var t = performance.now();
+      if (!fromGesture && t - lastBuzz < 90) return;   /* don't stack overlapping bursts */
+      lastBuzz = t;
+      if (navigator.vibrate) {
+        try { navigator.vibrate(pattern); } catch (e) {}
+      } else if (iosSwitch && fromGesture) {
+        iosSwitch.click();
+      }
+    }
+
     /* ── Canvases: fireworks keep light trails, lanterns are redrawn cleanly ── */
     function makeCanvas() {
       var c = document.createElement('canvas');
@@ -140,7 +169,7 @@
         b.dataset.mode = m;
         b.setAttribute('role', 'radio');
         b.innerHTML = MODES[m].icon + '<span>' + MODES[m].label + '</span>';
-        b.addEventListener('click', function () { setMode(m); });
+        b.addEventListener('click', function () { haptic(8, true); setMode(m); });
         modesEl.appendChild(b);
       });
       dock.appendChild(modesEl);
@@ -241,6 +270,7 @@
         });
       }
       sparks.push({ x: r.x, y: r.y, vx: 0, vy: 0, life: 1, decay: 0.08, drag: 1, size: 26, color: '#ffffff', flash: true });
+      haptic(shape === 'ring' ? [18, 30, 12] : 28);   /* boom */
     }
 
     function stepFireworks(dt) {
@@ -429,7 +459,15 @@
       greetTimer = setTimeout(function () { greeting.classList.remove('show'); }, 2600);
     }
 
-    fab.addEventListener('click', function () { fire(); });
+    fab.addEventListener('click', function () { haptic(12, true); fire(); });
+    /* belt-and-braces: stop double-tap zoom on browsers that ignore touch-action */
+    dock.addEventListener('dblclick', function (e) { e.preventDefault(); });
+    var lastTouch = 0;
+    dock.addEventListener('touchend', function (e) {
+      var t = Date.now();
+      if (t - lastTouch < 350) { e.preventDefault(); e.target.closest('button') && e.target.closest('button').click(); }
+      lastTouch = t;
+    }, { passive: false });
     window.thFireworks = { fire: fire, setMode: setMode, getMode: function () { return mode; } };
     if (AUTOPLAY) setTimeout(fire, 600);
   }
