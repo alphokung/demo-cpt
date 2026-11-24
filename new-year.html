@@ -50,7 +50,7 @@
         <div class="card welcome-card welcome-card--green mb-xl">
           <h2>สวัสดีปีใหม่ 2570</h2>
           <p>ทางรัฐ ขอให้ทุกท่านมีความสุขตลอดปี</p>
-          <p>กดปุ่ม “จุดพลุ” มุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
+          <p>เลือก “พลุ” หรือ “โคมลอย” แล้วกดปุ่มมุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
         </div>
 
         <!-- ── How to use ── -->
@@ -70,12 +70,20 @@
               <span class="details-value"><code>data-label="สวัสดีปีใหม่ 2570"</code></span>
             </div>
             <div class="details-item">
-              <span class="details-label">3. จุดพลุอัตโนมัติเมื่อเปิดหน้า (ไม่บังคับ)</span>
+              <span class="details-label">3. ตั้งค่าเริ่มต้นเป็นโคมลอย (ไม่บังคับ)</span>
+              <span class="details-value"><code>data-mode="lantern"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">4. ให้มีแค่ตัวเลือกเดียว — ซ่อนตัวเลือก (ไม่บังคับ)</span>
+              <span class="details-value"><code>data-modes="lantern"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">5. ปล่อยอัตโนมัติเมื่อเปิดหน้า (ไม่บังคับ)</span>
               <span class="details-value"><code>data-autoplay="true"</code></span>
             </div>
             <div class="details-item">
               <span class="details-label">เรียกจาก JavaScript</span>
-              <span class="details-value"><code>thFireworks.fire()</code></span>
+              <span class="details-value"><code>thFireworks.fire()</code> · <code>thFireworks.fire('lantern')</code></span>
             </div>
           </div>
         </div>
@@ -88,6 +96,10 @@
           </div>
           <div class="details-list">
             <div class="details-item">
+              <span class="details-label">เลือกสิ่งที่จะปล่อย</span>
+              <span class="details-value">มีตัวเลือก “พลุ” และ “โคมลอย” อยู่เหนือปุ่ม ระบบจำตัวเลือกล่าสุดของผู้ใช้ไว้</span>
+            </div>
+            <div class="details-item">
               <span class="details-label">ไม่บังหน้าจอ</span>
               <span class="details-value">พลุแสดงบนเลเยอร์โปร่งใส ผู้ใช้ยังกด/เลื่อนหน้าได้ตามปกติ</span>
             </div>
@@ -97,7 +109,7 @@
             </div>
             <div class="details-item">
               <span class="details-label">ลดการเคลื่อนไหว</span>
-              <span class="details-value">เคารพการตั้งค่า prefers-reduced-motion — แสดงพลุน้อยลง</span>
+              <span class="details-value">เคารพการตั้งค่า prefers-reduced-motion — แสดงพลุ/โคมน้อยลง</span>
             </div>
           </div>
         </div>
