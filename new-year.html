@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ฉลองปีใหม่ — ทางรัฐ</title>
+  <meta name="description" content="ตัวอย่างปุ่มจุดพลุฉลองปีใหม่ — ทางรัฐ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">celebration</span>
+          </div>
+          <p class="top-nav-bar-title">ฉลองปีใหม่</p>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- ── Welcome Card ── -->
+        <div class="card welcome-card welcome-card--green mb-xl">
+          <h2>สวัสดีปีใหม่ 2570</h2>
+          <p>ทางรัฐ ขอให้ทุกท่านมีความสุขตลอดปี</p>
+          <p>กดปุ่ม “จุดพลุ” มุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
+        </div>
+
+        <!-- ── How to use ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">วิธีเพิ่มลูกเล่นนี้ในหน้าอื่น</h3>
+          </div>
+
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">1. เพิ่มสคริปต์ 1 บรรทัดก่อน &lt;/body&gt;</span>
+              <span class="details-value"><code>&lt;script src="fireworks.js" defer&gt;&lt;/script&gt;</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">2. ปรับข้อความทักทาย (ไม่บังคับ)</span>
+              <span class="details-value"><code>data-label="สวัสดีปีใหม่ 2570"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">3. จุดพลุอัตโนมัติเมื่อเปิดหน้า (ไม่บังคับ)</span>
+              <span class="details-value"><code>data-autoplay="true"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เรียกจาก JavaScript</span>
+              <span class="details-value"><code>thFireworks.fire()</code></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Behaviour notes ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+            <h3 class="section-title">พฤติกรรม</h3>
+          </div>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">ไม่บังหน้าจอ</span>
+              <span class="details-value">พลุแสดงบนเลเยอร์โปร่งใส ผู้ใช้ยังกด/เลื่อนหน้าได้ตามปกติ</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ปุ่มกลับขึ้นด้านบน</span>
+              <span class="details-value">ปุ่มจุดพลุจะขยับขึ้นอัตโนมัติเมื่อปุ่ม “กลับขึ้นด้านบน” แสดง</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ลดการเคลื่อนไหว</span>
+              <span class="details-value">เคารพการตั้งค่า prefers-reduced-motion — แสดงพลุน้อยลง</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 60vh;"></div>
+
+        <!-- Source Note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">design_services</span>
+            ตัวอย่างลูกเล่นฉลองปีใหม่<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Back to top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- Dynamic Thai date for source-note-time -->
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+               'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+              ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+              String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+    })();
+  </script>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
+
+  <!-- New Year fireworks gimmick -->
+  <script src="fireworks.js" data-label="สวัสดีปีใหม่ 2570" defer></script>
+</body>
+</html>

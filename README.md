@@ -29,6 +29,7 @@ A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digita
 | `mea-detail.html` | MEA electricity meter detail |
 | `ncb.html` | Credit bureau summary (NCB) |
 | `edge-cases.html` | System-state edge cases — maintenance, high-traffic |
+| `new-year.html` | New Year fireworks demo — floating button; add to any page with `<script src="fireworks.js" defer></script>` |
 
 ### Component Library
 
