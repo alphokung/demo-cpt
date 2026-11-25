@@ -1042,32 +1042,6 @@
       c.restore();
     }
 
-    /* level medal (top-left of the card) */
-    function drawMedal(c, L, lvNo, x, y, FONT) {
-      c.save();
-      c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 18; c.shadowOffsetY = 6;
-      /* ribbon tails */
-      c.fillStyle = L.ac[1];
-      c.beginPath(); c.moveTo(x - 46, y + 50); c.lineTo(x - 70, y + 150); c.lineTo(x - 40, y + 132); c.lineTo(x - 22, y + 160); c.lineTo(x - 6, y + 70); c.closePath(); c.fill();
-      c.beginPath(); c.moveTo(x + 46, y + 50); c.lineTo(x + 70, y + 150); c.lineTo(x + 40, y + 132); c.lineTo(x + 22, y + 160); c.lineTo(x + 6, y + 70); c.closePath(); c.fill();
-      var ring = c.createLinearGradient(x - 95, y - 95, x + 95, y + 95);
-      ring.addColorStop(0, '#ffffff'); ring.addColorStop(.35, L.ac[0]); ring.addColorStop(1, L.ac[1]);
-      c.fillStyle = ring; c.beginPath(); c.arc(x, y, 92, 0, Math.PI * 2); c.fill();
-      c.shadowColor = 'transparent';
-      var face = c.createLinearGradient(x, y - 76, x, y + 76);
-      face.addColorStop(0, L.bg[1]); face.addColorStop(1, L.bg[0]);
-      c.fillStyle = face; c.beginPath(); c.arc(x, y, 76, 0, Math.PI * 2); c.fill();
-      c.textAlign = 'center'; c.textBaseline = 'middle';
-      c.font = '78px ' + FONT; c.fillText(L.emoji, x, y - 8);
-      /* LV pill */
-      c.font = '800 30px ' + FONT;
-      var t = 'LV.' + lvNo, tw = c.measureText(t).width + 36;
-      c.fillStyle = L.ac[0]; c.beginPath();
-      if (c.roundRect) c.roundRect(x - tw / 2, y + 48, tw, 42, 21); else c.rect(x - tw / 2, y + 48, tw, 42);
-      c.fill();
-      c.fillStyle = L.bg[0]; c.fillText(t, x, y + 70);
-      c.restore();
-    }
     var mascotImg = null;
     function loadMascot() {
       if (mascotImg) return Promise.resolve(mascotImg);
@@ -1133,10 +1107,8 @@
         text(top === 'heart' ? LABEL_HEART : LABEL, 120, 56, 700, '#ffffff');
         if (img) {
           var mw = 500, mh = mw * img.height / img.width;
-          c.drawImage(img, (Wc - mw) / 2 + 60, 160, mw, mh);
+          c.drawImage(img, (Wc - mw) / 2, 160, mw, mh);
         }
-        drawMedal(c, LV, li + 1, 200, 330, FONT);
-        c.shadowColor = 'rgba(0,0,0,.25)'; c.shadowBlur = 16; c.shadowOffsetY = 4;
         text('ฉันกดฉลองไปแล้ว', 700, 52, 600, 'rgba(255,255,255,.95)');
         /* big number with gold gradient */
         c.font = '800 220px ' + FONT;
