@@ -178,7 +178,7 @@
     '.fw-s-avatar{position:relative;flex:none;width:44px;height:44px;border-radius:var(--radius-full);' +
       'display:flex;align-items:center;justify-content:center;background:var(--background-primary-lighter);}' +
     '.fw-s-ico{display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:26px;line-height:1;}' +
-    '.fw-s-ico img{width:100%;height:100%;object-fit:contain;}' +
+    '.fw-s-ico img{flex:none;width:44px;height:44px;max-width:none;object-fit:contain;}' +   /* icon art fills the avatar circle */
     '.fw-s-ico.pop{animation:fw-s-pop .6s cubic-bezier(.2,1.6,.4,1);}' +
     '@keyframes fw-s-pop{0%{transform:scale(.3) rotate(-25deg);}60%{transform:scale(1.25) rotate(8deg);}100%{transform:none;}}' +
     '.fw-s-lv{position:absolute;left:-8px;bottom:-6px;height:18px;padding:0 5px;border-radius:var(--radius-full);' +
@@ -218,7 +218,7 @@
       'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));box-shadow:0 8px 24px rgba(220,104,3,.45);}' +
     '.fw-lvl-icon{flex:none;width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;' +
       'font-size:22px;line-height:1;background:var(--neutral-100);}' +
-    '.fw-lvl-icon img{width:26px;height:26px;object-fit:contain;}' +
+    '.fw-lvl-icon img{width:36px;height:36px;object-fit:contain;}' +
     '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:rgba(255,255,255,.9);}' +
     '.fw-lvl.show{animation:fw-lvl 2.4s ease forwards;}' +
 
@@ -939,6 +939,7 @@
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
+         mascot: 'path.png' — big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma mascot/lvN, 500×405)
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
                               mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
@@ -959,7 +960,7 @@
           at: typeof l.at === 'number' ? l.at : d.at,
           emoji: l.emoji || d.emoji, title: l.title || d.title,
           bg: col.bg || d.bg, ac: col.accent || d.ac, pattern: l.pattern || d.pattern,
-          icon: themePath(l.icon), card: themePath(l.card)
+          icon: themePath(l.icon), card: themePath(l.card), mascot: themePath(l.mascot)
         };
       }).sort(function (a, b) { return a.at - b.at; });
       LEVELS[0].at = 0;
@@ -1264,7 +1265,9 @@
         ? Promise.all(['800 200px Anuphan', '700 48px Anuphan', '500 32px Anuphan'].map(function (f) { return document.fonts.load(f).catch(function () {}); }))
         : Promise.resolve();
       var li = levelOf(stats.total), LV = LEVELS[li];
-      return Promise.all([fonts, loadImg(MASCOT_FULL), loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
+      /* per-level big mascot (theme levels[].mascot) — falls back to the built-in น้องดีเด่น */
+      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { return m || loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
+                          loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
         var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
         cv.width = Wc; cv.height = Hc;

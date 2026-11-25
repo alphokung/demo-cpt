@@ -10,6 +10,8 @@
       "at": 0,
       "title": "มือใหม่หัดกด",
       "emoji": "🐣",
+      "icon": "icons/lv1.webp",
+      "mascot": "mascots/lv1.webp",
       "card": "cards/lv1.webp",
       "colors": {"bg": ["#9d174d", "#ec4899"], "accent": ["#fde68a", "#f59e0b"]}
     },
@@ -17,6 +19,8 @@
       "at": 50,
       "title": "สายฉลองฝึกหัด",
       "emoji": "✨",
+      "icon": "icons/lv2.webp",
+      "mascot": "mascots/lv2.webp",
       "card": "cards/lv2.webp",
       "colors": {"bg": ["#0b4a5e", "#1aa3b5"], "accent": ["#b9f3ff", "#38bdf8"]}
     },
@@ -24,6 +28,8 @@
       "at": 100,
       "title": "นักฉลองตัวยง",
       "emoji": "🎇",
+      "icon": "icons/lv3.webp",
+      "mascot": "mascots/lv3.webp",
       "card": "cards/lv3.webp",
       "colors": {"bg": ["#003d28", "#00704a"], "accent": ["#fdb022", "#f79009"]}
     },
@@ -31,6 +37,8 @@
       "at": 200,
       "title": "มือทองแห่งทางรัฐ",
       "emoji": "🏅",
+      "icon": "icons/lv4.webp",
+      "mascot": "mascots/lv4.webp",
       "card": "cards/lv4.webp",
       "colors": {"bg": ["#14245c", "#3555b5"], "accent": ["#ffd36b", "#e0a800"]}
     },
@@ -38,6 +46,8 @@
       "at": 400,
       "title": "เซียนนิ้วไว",
       "emoji": "🔥",
+      "icon": "icons/lv5.webp",
+      "mascot": "mascots/lv5.webp",
       "card": "cards/lv5.webp",
       "colors": {"bg": ["#5c0d04", "#d9480f"], "accent": ["#ffd166", "#ff7a00"]}
     },
@@ -45,6 +55,8 @@
       "at": 800,
       "title": "ราชาแห่งความสุข",
       "emoji": "👑",
+      "icon": "icons/lv6.webp",
+      "mascot": "mascots/lv6.webp",
       "card": "cards/lv6.webp",
       "colors": {"bg": ["#2d0748", "#7b2cbf"], "accent": ["#ffd700", "#d4a017"]}
     },
@@ -52,6 +64,8 @@
       "at": 1600,
       "title": "ตำนานดีเด่น",
       "emoji": "🌟",
+      "icon": "icons/lv7.webp",
+      "mascot": "mascots/lv7.webp",
       "card": "cards/lv7.webp",
       "colors": {"bg": ["#070b2b", "#262c78"], "accent": ["#fff3b0", "#ffcf33"]}
     },
@@ -59,6 +73,8 @@
       "at": 3200,
       "title": "เทพเจ้าแห่งการกด",
       "emoji": "🚀",
+      "icon": "icons/lv8.webp",
+      "mascot": "mascots/lv8.webp",
       "card": "cards/lv8.webp",
       "colors": {"bg": ["#04010d", "#3a0a5e"], "accent": ["#7df9ff", "#c084fc"]}
     }
