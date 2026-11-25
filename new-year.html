@@ -55,7 +55,7 @@
         <div class="card welcome-card welcome-card--green mb-xl">
           <h2>สวัสดีปีใหม่ 2570</h2>
           <p>ทางรัฐ ขอให้ทุกท่านมีความสุขตลอดปี</p>
-          <p>เลือก “พลุ” หรือ “โคมลอย” แล้วกดปุ่มมุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
+          <p>กดปุ่ม “จุดพลุ” มุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
         </div>
 
         <!-- ── How to use ── -->
@@ -106,15 +106,15 @@
           <div class="details-list">
             <div class="details-item">
               <span class="details-label">เลือกสิ่งที่จะปล่อย</span>
-              <span class="details-value">มีตัวเลือก “พลุ” “โคมลอย” และ “หัวใจ” อยู่เหนือปุ่ม ระบบจำตัวเลือกล่าสุดของผู้ใช้ไว้ · ใช้ <code>data-modes</code> เลือกว่าหน้าไหนมีตัวเลือกอะไร</span>
+              <span class="details-value">หน้านี้มีแค่พลุ (<code>data-modes="firework"</code>) จึงไม่แสดงตัวเลือก · ถ้าอยากให้เลือกพลุ / โคมลอย / หัวใจได้ ให้ไม่ใส่ <code>data-modes</code></span>
             </div>
             <div class="details-item">
               <span class="details-label">นับคะแนน &amp; แข่งกัน</span>
-              <span class="details-value">นับจำนวนครั้งที่กด (รีเซ็ตเมื่อรีเฟรช) มีเลเวล 8 ขั้น คอมโบเมื่อกดรัว และปุ่มแชร์ที่สร้างการ์ดคะแนนเป็นรูปภาพ แชร์ไป Facebook / X / LINE ได้</span>
+              <span class="details-value">นับจำนวนครั้งที่กด (รีเซ็ตเมื่อรีเฟรช) มีเลเวล 8 ขั้น คอมโบเมื่อกดรัว และปุ่มแชร์ที่สร้างการ์ดคะแนนเป็นรูปภาพให้ดาวน์โหลดไปโพสต์ต่อ</span>
             </div>
             <div class="details-item">
-              <span class="details-label">ปิดตัวนับคะแนน / เปลี่ยนลิงก์ที่แชร์ (ไม่บังคับ)</span>
-              <span class="details-value"><code>data-score="false"</code> · <code>data-share-url="https://..."</code></span>
+              <span class="details-label">ปิดตัวนับคะแนน (ไม่บังคับ)</span>
+              <span class="details-value"><code>data-score="false"</code></span>
             </div>
             <div class="details-item">
               <span class="details-label">ไม่บังหน้าจอ</span>
@@ -176,6 +176,6 @@
   </script>
 
   <!-- New Year fireworks gimmick -->
-  <script src="fireworks.js" data-label="สวัสดีปีใหม่ 2570" defer></script>
+  <script src="fireworks.js" data-modes="firework" data-label="สวัสดีปีใหม่ 2570" defer></script>
 </body>
 </html>
