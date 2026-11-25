@@ -24,6 +24,9 @@
  *   data-haptic="false"                turn off vibration feedback
  *   data-score="false"                 hide the score board / sharing
  *   data-greeting="false"              hide the greeting card in the middle of the screen
+ *   data-sound="false"                 no sound effects (users can also mute with the speaker button)
+ *
+ * Sound: synthesised live with the Web Audio API — no audio files are downloaded.
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
@@ -49,6 +52,7 @@
   var HAPTIC = ds.haptic !== 'false';
   var SCORE = ds.score !== 'false';
   var GREETING = ds.greeting !== 'false';
+  var SOUND = ds.sound !== 'false';
 
   /* น้องดีเด่น mascot — embedded so this stays a single drop-in file and the share
      card can be drawn on a canvas on any page (source files: _media/deeden-*.png) */
@@ -113,6 +117,15 @@
     '.fw-fab:hover{box-shadow:var(--shadow-custom-xl);transform:translateY(-2px);}' +
     '.fw-fab:active{transform:scale(.94);}' +
     '.fw-fab:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
+    '.fw-row{display:flex;align-items:center;gap:var(--spacing-md);}' +
+    '.fw-snd{flex:none;width:40px;height:40px;padding:0;border-radius:var(--radius-full);cursor:pointer;' +
+      'display:flex;align-items:center;justify-content:center;background:var(--neutral-100);color:var(--foreground-neutral-light);' +
+      'border:1px solid var(--stroke-neutral-lighter);box-shadow:var(--shadow-custom-lg);touch-action:manipulation;' +
+      '-webkit-tap-highlight-color:transparent;transition:transform .15s ease,color .15s ease;}' +
+    '.fw-snd:active{transform:scale(.92);}' +
+    '.fw-snd:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
+    '.fw-snd .material-symbols-outlined{font-size:20px;}' +
+    '.fw-snd[aria-pressed="true"]{color:var(--foreground-primary-default);}' +
     '.fw-fab-icon{display:flex;color:var(--warning-60);animation:fw-twinkle 1.6s ease-in-out infinite;}' +
     '.fw-fab-icon .material-symbols-outlined{font-size:22px;font-variation-settings:"FILL" 1;}' +
     '.fw-mascot{display:block;width:22px;height:22px;object-fit:contain;}' +
@@ -305,6 +318,102 @@
       } catch (e) {}
     }
 
+    /* ── Sound ──
+       Everything is synthesised with the Web Audio API (noise + oscillators),
+       so there are no audio files to download. The AudioContext is created on
+       the first tap (browsers only allow sound after a user gesture).
+       Note: on iPhone, Web Audio is silent while the ring/silent switch is on. */
+    var SND_KEY = 'thFireworksSound';
+    var soundOn = SOUND && !!(window.AudioContext || window.webkitAudioContext);
+    try { if (localStorage.getItem(SND_KEY) === 'off') soundOn = false; } catch (e) {}
+    var actx = null, master = null, noiseBuf = null, lastBoom = 0;
+
+    function audio() {
+      if (!soundOn) return null;
+      if (!actx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        try { actx = new AC(); } catch (e) { return null; }
+        var comp = actx.createDynamicsCompressor();          /* keeps many booms from clipping */
+        comp.threshold.value = -18; comp.ratio.value = 6;
+        master = actx.createGain(); master.gain.value = .55;
+        master.connect(comp); comp.connect(actx.destination);
+        var len = actx.sampleRate * 1.5 | 0;
+        noiseBuf = actx.createBuffer(1, len, actx.sampleRate);
+        var d = noiseBuf.getChannelData(0);
+        for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      }
+      if (actx.state === 'suspended') actx.resume();
+      return actx;
+    }
+    function env(g, t, peak, attack, dur) {
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(peak, t + attack);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    }
+    function noise(t, dur, type, f0, f1, peak, q) {
+      var src = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
+      src.buffer = noiseBuf;
+      f.type = type; f.Q.value = q || 1;
+      f.frequency.setValueAtTime(f0, t);
+      f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      env(g, t, peak, .006, dur);
+      src.connect(f); f.connect(g); g.connect(master);
+      src.start(t, Math.random() * .5); src.stop(t + dur + .05);
+    }
+    function tone(t, type, f0, f1, dur, peak, attack) {
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      env(g, t, peak, attack || .005, dur);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + dur + .05);
+    }
+    var sfx = {
+      launch: function () {                         /* rocket whoosh */
+        if (!audio()) return;
+        var t = actx.currentTime;
+        noise(t, rand(.45, .7), 'bandpass', rand(300, 500), rand(1800, 2800), .13, 2.5);
+        if (Math.random() < .35) tone(t, 'sine', rand(700, 900), rand(1500, 2100), .6, .025, .05);   /* occasional whistle */
+      },
+      boom: function (shape, soft) {                /* explosion + crackle */
+        if (!audio()) return;
+        var t = actx.currentTime;
+        if (t - lastBoom < .04) return;             /* don't stack identical frames */
+        lastBoom = t;
+        var k = soft ? .55 : 1;
+        noise(t, rand(.9, 1.3), 'lowpass', rand(1600, 2400), 90, .9 * k, .7);
+        tone(t, 'sine', rand(75, 95), 38, .45, .7 * k, .004);
+        if (shape !== 'ring') {                     /* glittery crackles as the sparks fall */
+          var n = shape === 'willow' ? 26 : 14;
+          for (var i = 0; i < n; i++) noise(t + rand(.25, 1.3), rand(.015, .04), 'highpass', 3500, 2500, rand(.05, .14) * k, .7);
+        }
+      },
+      sparkle: function () {                        /* heart burst: soft chime on top of the boom */
+        if (!audio()) return;
+        var t = actx.currentTime, base = pick([880, 988, 1047, 1175]);
+        [1, 1.25, 1.5].forEach(function (m, i) { tone(t + i * .07, 'sine', base * m, base * m, .5, .05, .01); });
+      },
+      chime: function () {                          /* lantern: gentle bell */
+        if (!audio()) return;
+        var t = actx.currentTime, f = pick([523, 587, 659, 784, 880]);
+        tone(t, 'sine', f, f, 1.6, .07, .02);
+        tone(t, 'sine', f * 2.01, f * 2.01, .9, .02, .02);
+      },
+      pop: function () {                            /* floating hearts */
+        if (!audio()) return;
+        var t = actx.currentTime;
+        for (var i = 0; i < 3; i++) tone(t + i * .06, 'sine', rand(700, 900), rand(320, 420), .12, .08, .003);
+      }
+    };
+
+    /* stop sounds when the tab is hidden */
+    document.addEventListener('visibilitychange', function () {
+      if (!actx) return;
+      if (document.hidden) actx.suspend(); else if (soundOn) actx.resume();
+    });
+
     /* ── Canvases: fireworks keep light trails, lanterns are redrawn cleanly ── */
     function makeCanvas() {
       var c = document.createElement('canvas');
@@ -347,7 +456,35 @@
     fab.innerHTML =
       '<span class="fw-fab-icon"></span>' +
       '<span class="fw-fab-text"></span>';
-    dock.appendChild(fab);
+    var fabRow = document.createElement('div');
+    fabRow.className = 'fw-row';
+    var sndBtn = null;
+    if (SOUND && (window.AudioContext || window.webkitAudioContext)) {
+      sndBtn = document.createElement('button');
+      sndBtn.type = 'button';
+      sndBtn.className = 'fw-snd';
+      fabRow.appendChild(sndBtn);
+    }
+    fabRow.appendChild(fab);
+    dock.appendChild(fabRow);
+
+    function renderSnd() {
+      if (!sndBtn) return;
+      sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+      sndBtn.setAttribute('aria-label', soundOn ? 'ปิดเสียง' : 'เปิดเสียง');
+      sndBtn.innerHTML = '<span class="material-symbols-outlined">' + (soundOn ? 'volume_up' : 'volume_off') + '</span>';
+    }
+    if (sndBtn) {
+      renderSnd();
+      sndBtn.addEventListener('click', function () {
+        soundOn = !soundOn;
+        try { localStorage.setItem(SND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
+        if (!soundOn && actx) actx.suspend();
+        renderSnd();
+        haptic(8, true);
+      });
+    }
+
     document.body.appendChild(dock);
 
     var greeting = document.createElement('div');
@@ -475,6 +612,7 @@
       setTimeout(function () {
         var x = rand(W * 0.15, W * 0.85);
         rockets.push({ x: x, y: H + 10, tx: x + rand(-60, 60), ty: rand(H * 0.12, H * 0.45), color: pick(palette) });
+        sfx.launch();
         start();
       }, delay || 0);
     }
@@ -483,6 +621,7 @@
       setTimeout(function () {
         var x = rand(W * 0.2, W * 0.8);
         rockets.push({ x: x, y: H + 10, tx: x + rand(-40, 40), ty: rand(H * 0.15, H * 0.42), color: pick(heartPalette), heart: true });
+        sfx.launch();
         start();
       }, delay || 0);
     }
@@ -513,6 +652,7 @@
       }
       sparks.push({ x: r.x, y: r.y, vx: 0, vy: 0, life: 1, decay: 0.08, drag: 1, size: 22, color: '#ffd1e3', flash: true });
       haptic([20, 90, 30]);   /* heartbeat: ba-dum */
+      sfx.boom('ring', true); sfx.sparkle();
     }
 
     function explode(r) {
@@ -533,6 +673,7 @@
       }
       sparks.push({ x: r.x, y: r.y, vx: 0, vy: 0, life: 1, decay: 0.08, drag: 1, size: 26, color: '#ffffff', flash: true });
       haptic(shape === 'ring' ? [18, 30, 12] : 28);   /* boom */
+      sfx.boom(shape);
     }
 
     function stepFireworks(dt) {
@@ -575,6 +716,7 @@
     function launchLantern(delay) {
       setTimeout(function () {
         if (lanterns.length >= MAX_LANTERNS) return;
+        sfx.chime();
         var depth = Math.random();                     /* 0 = far, 1 = near */
         var size = 14 + depth * 20;                    /* body width in px */
         lanterns.push({
@@ -667,6 +809,7 @@
     var MAX_HEARTS = 160;
 
     function launchHearts(n) {
+      sfx.pop();
       for (var i = 0; i < n; i++) {
         (function (d) {
           setTimeout(function () {
@@ -1214,7 +1357,7 @@
       });
     }
 
-    fab.addEventListener('click', function () { haptic(12, true); var k = mode; fire(k); score(k); });
+    fab.addEventListener('click', function () { haptic(12, true); audio(); var k = mode; fire(k); score(k); });
     /* belt-and-braces: stop double-tap zoom on browsers that ignore touch-action */
     dock.addEventListener('dblclick', function (e) { e.preventDefault(); });
     var lastTouch = 0;
