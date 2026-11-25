@@ -939,7 +939,8 @@
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
-         mascot: 'path.png' — big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma mascot/lvN, 500×405)
+         mascot: 'path.webp' — big น้องดีเด่น for this level (Figma mascot/lvN exported at 1x). Drawn at its natural size,
+                              centred in the card's mascot slot, so each level's mascot may have its own size
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
                               mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
@@ -1266,7 +1267,9 @@
         : Promise.resolve();
       var li = levelOf(stats.total), LV = LEVELS[li];
       /* per-level big mascot (theme levels[].mascot) — falls back to the built-in น้องดีเด่น */
-      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { return m || loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
+      /* a designer mascot is exported 1:1 from Figma, so it is drawn at its natural size (sizes may differ per level) */
+      var mascotNatural = false;
+      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { if (m) { mascotNatural = true; return m; } return loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
                           loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
         var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
@@ -1280,8 +1283,9 @@
         if (designed) {
           c.drawImage(designed, 0, 0, Wc, Hc);
           if (img) {
-            var dmh = CARD_SLOTS.mascot.w * img.height / img.width;
-            c.drawImage(img, CARD_SLOTS.mascot.x, CARD_SLOTS.mascot.y + (CARD_SLOTS.mascot.h - dmh) / 2, CARD_SLOTS.mascot.w, dmh);
+            var MS = CARD_SLOTS.mascot;
+            var dmw = mascotNatural ? img.width : MS.w, dmh = mascotNatural ? img.height : MS.w * img.height / img.width;
+            c.drawImage(img, MS.x + (MS.w - dmw) / 2, MS.y + (MS.h - dmh) / 2, dmw, dmh);
           }
           drawScore(c, LV, FONT, Wc);
           drawCombo(c, FONT);

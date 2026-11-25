@@ -10,7 +10,7 @@ celebrations/
     cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8)
     …
     cards/lv8.webp
-    mascots/lv1.webp  ← big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma component mascot/lvN, 500×405)
+    mascots/lv1.webp  ← big น้องดีเด่น for this level (Figma component mascot/lvN, export PNG @1x). Drawn at its natural size, centred in the mascot slot
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
