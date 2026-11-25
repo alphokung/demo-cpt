@@ -25,6 +25,19 @@
  *   data-score="false"                 hide the score board / sharing
  *   data-greeting="false"              hide the greeting card in the middle of the screen
  *   data-sound="false"                 no sound effects
+ *   data-theme="celebrations/newyear-2570/theme.json"
+ *                                      load a festival theme pack (texts, modes, levels, designer cards …).
+ *                                      Any data-* attribute above still wins over the theme.
+ *
+ * Theme pack (one folder per festival — see celebrations/README.md):
+ *   { "id", "label", "labelHeart", "sub" (string or {firework,lantern,heart}), "modes": [...], "mode",
+ *     "greeting"|"score"|"sound"|"haptic"|"autoplay": true/false,
+ *     "active": { "from": "YYYY-MM-DD", "to": "YYYY-MM-DD" }   (outside → nothing shows; add ?fw-preview to the URL to test)
+ *     "particles": ["#hex", ...], "heartParticles": [...],
+ *     "levels": [{ "at", "title", "emoji", "icon": "icons/lv1.svg", "card": "cards/lv1.webp",
+ *                  "colors": { "bg": [dark, light], "accent": [light, dark] }, "pattern" }, ...],
+ *     "cardSlots": { "mascot": {x,y,w,h}, "score": {x,y,w,h,baseline,size}, "combo": {x,y,w,h,size} } }
+ *   Paths are relative to theme.json. Files must be same-origin (or CORS-enabled) for the score card to save.
  *
  * Sound: synthesised live with the Web Audio API — no audio files are downloaded.
  * There is no mute button: it follows the device (volume, and the silent switch on iPhone).
@@ -85,6 +98,37 @@
   try { saved = localStorage.getItem(STORE_KEY); } catch (e) {}
   /* the user's last choice wins over the page default */
   var mode = [saved, ds.mode, allowed[0]].filter(function (m) { return m && allowed.indexOf(m) > -1; })[0];
+
+  /* ── Theme pack (data-theme) ── values from theme.json fill in whatever the data-* attributes didn't set */
+  var THEME = null, THEME_URL = null;
+  function themePath(p) {
+    if (!p) return p;
+    if (/^data:/.test(p)) return p;
+    try { return new URL(p, THEME_URL || document.baseURI).href; } catch (e) { return p; }
+  }
+  function themeActive(t) {
+    if (!t.active || /[?&]fw-preview\b/.test(location.search)) return true;
+    var today = new Date().toISOString().slice(0, 10);
+    return (!t.active.from || today >= t.active.from) && (!t.active.to || today <= t.active.to);
+  }
+  function applyTheme(t) {
+    THEME = t;
+    if (!ds.label && t.label) LABEL = t.label;
+    if (!ds.labelHeart && t.labelHeart) LABEL_HEART = t.labelHeart;
+    if (t.sub != null) {
+      var sb = typeof t.sub === 'string' ? { firework: t.sub, lantern: t.sub } : t.sub;
+      if (ds.sub == null) { if (sb.firework != null) SUB.firework = sb.firework; if (sb.lantern != null) SUB.lantern = sb.lantern; }
+      if (ds.subHeart == null && sb.heart != null) SUB.heart = sb.heart;
+    }
+    if (!ds.modes && Array.isArray(t.modes)) {
+      var m = t.modes.filter(function (k) { return MODES[k]; });
+      if (m.length) allowed = m;
+    }
+    mode = [saved, ds.mode || t.mode, allowed[0]].filter(function (k) { return k && allowed.indexOf(k) > -1; })[0];
+    function flag(name, cur) { return ds[name] == null && typeof t[name] === 'boolean' ? t[name] : cur; }
+    GREETING = flag('greeting', GREETING); SCORE = flag('score', SCORE); SOUND = flag('sound', SOUND);
+    HAPTIC = flag('haptic', HAPTIC); AUTOPLAY = flag('autoplay', AUTOPLAY);
+  }
 
   /* ── Styles (design tokens only) ── */
   var css = '' +
@@ -538,9 +582,11 @@
       .map(function (v) { return token(v, ''); })
       .filter(Boolean);
     if (!palette.length) palette = ['#fdb022', '#fedf89', '#f97066', '#5ed49a', '#5f88d3', '#36bffa'];
+    if (THEME && Array.isArray(THEME.particles) && THEME.particles.length) palette = THEME.particles.slice();
     /* Valentine palette: brand reds + pinks/purples (no pink scale in the design tokens) */
     var heartPalette = [token('--danger-40', '#d92d20'), token('--danger-60', '#f97066'),
       '#ff4d8d', '#ff7eb6', '#ffb3d1', '#c084fc', '#a855f7', token('--warning-60', '#fdb022')];
+    if (THEME && Array.isArray(THEME.heartParticles) && THEME.heartParticles.length) heartPalette = THEME.heartParticles.slice();
     var WARM_DARK = token('--warning-40', '#dc6803');
     var WARM_MID = token('--warning-60', '#fdb022');
     var WARM_LIGHT = token('--warning-80', '#fedf89');
@@ -905,6 +951,19 @@
       { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
       { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
     ];
+    if (THEME && Array.isArray(THEME.levels) && THEME.levels.length) {
+      var BASE_LEVELS = LEVELS;
+      LEVELS = THEME.levels.map(function (l, k) {
+        var d = BASE_LEVELS[Math.min(k, BASE_LEVELS.length - 1)], col = l.colors || {};
+        return {
+          at: typeof l.at === 'number' ? l.at : d.at,
+          emoji: l.emoji || d.emoji, title: l.title || d.title,
+          bg: col.bg || d.bg, ac: col.accent || d.ac, pattern: l.pattern || d.pattern,
+          icon: themePath(l.icon), card: themePath(l.card)
+        };
+      }).sort(function (a, b) { return a.at - b.at; });
+      LEVELS[0].at = 0;
+    }
     /* level icon: a designer SVG/PNG when LEVELS[i].icon is set, otherwise the emoji */
     function levelIcon(L) {
       return L.icon ? '<img src="' + esc(L.icon) + '" alt="">' : L.emoji;
@@ -1151,6 +1210,7 @@
         var im = new Image();
         im.onload = function () { imgCache[src] = im; res(im); };
         im.onerror = function () { res(null); };
+        try { if (!/^data:/.test(src) && new URL(src, location.href).origin !== location.origin) im.crossOrigin = 'anonymous'; } catch (e) {}
         im.src = src;
       });
     }
@@ -1166,6 +1226,11 @@
       score:  { x: 60, y: 745, w: 960, h: 190, baseline: 920, size: 220 },
       combo:  { x: 60, y: 1122, w: 960, h: 50, size: 34 }      /* "🔥 คอมโบสูงสุด xN" — the player's best combo */
     };
+    if (THEME && THEME.cardSlots) {
+      Object.keys(THEME.cardSlots).forEach(function (k) {
+        if (CARD_SLOTS[k]) Object.keys(THEME.cardSlots[k]).forEach(function (q) { CARD_SLOTS[k][q] = THEME.cardSlots[k][q]; });
+      });
+    }
     function drawCombo(c, FONT) {
       var S = CARD_SLOTS.combo, t = '🔥 คอมโบสูงสุด x' + Math.max(1, stats.bestCombo).toLocaleString('th-TH'), size = S.size;
       c.save();
@@ -1375,11 +1440,23 @@
     window.thFireworks = {
       fire: fire, setMode: setMode, getMode: function () { return mode; },
       getScore: function () { return { total: stats.total, firework: stats.firework, lantern: stats.lantern, heart: stats.heart, bestCombo: stats.bestCombo }; },
-      share: openShare   /* opens the download sheet */
+      share: openShare,  /* opens the download sheet */
+      theme: function () { return THEME ? (THEME.id || THEME_URL) : null; }
     };
     if (AUTOPLAY) setTimeout(fire, 600);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  function boot() {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  }
+  if (ds.theme && window.fetch) {
+    try { THEME_URL = new URL(ds.theme, document.baseURI).href; } catch (e) { THEME_URL = ds.theme; }
+    fetch(THEME_URL)
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (t) { if (!themeActive(t)) return; applyTheme(t); boot(); })
+      .catch(function (e) { if (window.console) console.warn('[fireworks] theme not loaded, using defaults:', e); THEME_URL = null; boot(); });
+  } else {
+    boot();
+  }
 })();

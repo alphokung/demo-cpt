@@ -1,0 +1,66 @@
+# Celebration themes (`fireworks.js`)
+
+One folder per festival. The engine (`fireworks.js`) never changes for a new festival —
+you copy a folder, swap the artwork and edit `theme.json`.
+
+```
+celebrations/
+  newyear-2570/
+    theme.json        ← texts, modes, levels, colours, card slots
+    cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8)
+    …
+    cards/lv8.webp
+    icons/lv1.svg     ← (optional) level icon for the score bar / level-up badge
+```
+
+Use it on a page:
+
+```html
+<script src="fireworks.js" data-theme="celebrations/newyear-2570/theme.json" defer></script>
+```
+
+`data-*` attributes on the script tag still win over the theme (e.g. `data-sound="false"`).
+If the theme can't be loaded the script falls back to its built-in defaults.
+
+## Who edits what
+
+| Designer (Figma → files) | Content / dev (`theme.json`) | Dev (`fireworks.js`) |
+|---|---|---|
+| `cards/lvN.webp` — whole card: background, all text, rank badge, ทางรัฐ icon | greeting texts, modes, level titles & thresholds, colours | effects, layout of the floating UI, scoring |
+| `icons/lvN.svg` — level icon (optional) | `cardSlots` if the red slots in Figma move | new effect modes (e.g. Songkran water) |
+
+Code draws only three things on top of a designer card, inside the red **CODE SLOTS** in Figma:
+the น้องดีเด่น mascot, the score number, and the player's best combo.
+
+Figma template: “ทางรัฐ Celebration — Safe zone template” → page *Score cards — full design (8 levels)*.
+
+## Exporting cards from Figma
+
+1. Hide nothing — export the frame `card/lvN` itself (the red slots sit outside it).
+2. Export PNG 1080×1350, then convert to WebP quality ~85 (≈ 30–200 KB each), e.g.
+   `cwebp -q 85 lv1.png -o lv1.webp`
+3. Save as `cards/lv1.webp` … `cards/lv8.webp`.
+
+## `theme.json` fields
+
+| Field | Example | Notes |
+|---|---|---|
+| `id`, `name` | `"newyear-2570"`, `"ปีใหม่ 2570"` | for humans / `thFireworks.theme()` |
+| `label`, `labelHeart` | `"สวัสดีปีใหม่ 2570"` | greeting + procedural card title |
+| `sub` | `"…"` or `{ "firework": "…", "lantern": "…", "heart": "…" }` | second line of the greeting |
+| `modes`, `mode` | `["firework"]`, `"firework"` | which effects the page offers |
+| `greeting`, `score`, `sound`, `haptic`, `autoplay` | `false` | same as the `data-*` switches |
+| `active` | `{ "from": "2026-12-20", "to": "2027-01-10" }` | outside the window nothing shows; add `?fw-preview` to the URL to test |
+| `particles`, `heartParticles` | `["#fdb022", "#5ed49a"]` | firework / heart colours |
+| `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.svg", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
+| `cardSlots` | `{ "score": { "x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220 } }` | must match the red slots in Figma |
+
+Paths are relative to `theme.json`. Files must be served from the same origin as the page
+(or with CORS) — otherwise the browser won't let the score card be saved as an image.
+
+## New festival in 4 steps
+
+1. Duplicate `newyear-2570/` → e.g. `songkran-2570/`.
+2. Designer duplicates the 8 cards in Figma, redesigns them, exports to `cards/`.
+3. Edit `theme.json` (texts, modes, titles, colours, optional `active` window).
+4. Point the page at it: `data-theme="celebrations/songkran-2570/theme.json"`.
