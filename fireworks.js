@@ -125,7 +125,13 @@
       'transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .3s ease;touch-action:manipulation;}' +
     '.fw-score.on{opacity:1;transform:translate(-50%,0);pointer-events:auto;}' +
     '.fw-s-avatar{position:relative;flex:none;width:44px;height:44px;border-radius:var(--radius-full);' +
-      'display:flex;align-items:center;justify-content:center;background:var(--background-primary-lighter);}' +
+      'display:flex;align-items:center;justify-content:center;' +
+      'background:linear-gradient(135deg,var(--lv-a,#0b6b45),var(--lv-b,#22b07d));box-shadow:0 0 0 2px var(--lv-c,#fedf89);' +
+      'transition:background .4s ease,box-shadow .4s ease;}' +
+    '.fw-s-lv{position:absolute;left:-8px;bottom:-6px;height:18px;padding:0 5px;border-radius:var(--radius-full);' +
+      'border:2px solid var(--neutral-100);background:var(--lv-c,#fedf89);color:var(--lv-a,#0b6b45);' +
+      'font-size:10px;line-height:14px;font-weight:800;white-space:nowrap;}' +
+    '.fw-s-lv.pop{animation:fw-s-bump .5s ease 2;}' +
     '.fw-s-avatar img{width:40px;height:40px;object-fit:contain;}' +
     '.fw-s-combo{position:absolute;top:-10px;right:-14px;padding:0 var(--spacing-sm);height:20px;border-radius:var(--radius-full);' +
       'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));color:var(--neutral-100);' +
@@ -143,7 +149,7 @@
     '.fw-s-bar{width:128px;max-width:100%;height:4px;margin-top:var(--spacing-xs);border-radius:var(--radius-full);' +
       'background:var(--neutral-94);overflow:hidden;}' +
     '.fw-s-bar i{display:block;height:100%;width:0;border-radius:inherit;' +
-      'background:linear-gradient(90deg,var(--warning-60),var(--danger-60));transition:width .25s ease;}' +
+      'background:linear-gradient(90deg,var(--lv-b,#22b07d),var(--lv-d,#f79009));transition:width .25s ease;}' +
     '.fw-s-share{flex:none;display:flex;align-items:center;gap:var(--spacing-xs);height:40px;padding:0 var(--spacing-lg);' +
       'border:none;border-radius:var(--radius-full);cursor:pointer;font-family:inherit;font-size:var(--font-size-label-m);' +
       'font-weight:var(--font-weight-600);color:var(--neutral-100);background:var(--primary-30-base);' +
@@ -155,9 +161,13 @@
       'color:var(--warning-40);text-shadow:0 1px 0 #fff,0 0 8px rgba(255,255,255,.9);animation:fw-plus .8s ease-out forwards;}' +
     '.fw-plus.big{font-size:22px;color:var(--danger-40);}' +
     '.fw-lvl{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 136px);z-index:9998;pointer-events:none;white-space:nowrap;' +
-      'padding:var(--spacing-md) var(--spacing-xl);border-radius:var(--radius-full);color:var(--neutral-100);' +
+      'display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm) var(--spacing-xl) var(--spacing-sm) var(--spacing-sm);' +
+      'border-radius:var(--radius-full);border:2px solid var(--lv-c,#fedf89);color:var(--neutral-100);' +
       'font-size:var(--font-size-title-s);font-weight:var(--font-weight-700);opacity:0;transform:translate(-50%,0);' +
-      'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));box-shadow:0 8px 24px rgba(220,104,3,.45);}' +
+      'background:linear-gradient(135deg,var(--lv-a,#0b6b45),var(--lv-b,#22b07d));box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 18px var(--lv-c,#fedf89);}' +
+    '.fw-lvl-icon{flex:none;width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;' +
+      'font-size:20px;background:var(--lv-c,#fedf89);box-shadow:inset 0 -2px 0 var(--lv-d,#f79009);}' +
+    '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:var(--lv-c,#fedf89);}' +
     '.fw-lvl.show{animation:fw-lvl 2.4s ease forwards;}' +
 
     /* share sheet */
@@ -776,16 +786,23 @@
     }
 
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
+    /* each level has its own colours (bg dark → light, accent, accent dark) and card background */
     var LEVELS = [
-      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด' },
-      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด' },
-      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง' },
-      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ' },
-      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว' },
-      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข' },
-      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น' },
-      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด' }
+      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#0b6b45', '#22b07d'], ac: ['#fedf89', '#f79009'], pattern: 'confetti' },
+      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
+      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
+      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
+      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว',        bg: ['#5c0d04', '#d9480f'], ac: ['#ffd166', '#ff7a00'], pattern: 'flames' },
+      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข',   bg: ['#2d0748', '#7b2cbf'], ac: ['#ffd700', '#d4a017'], pattern: 'royal' },
+      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
+      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
     ];
+    function applyLevelVars(el, L) {
+      el.style.setProperty('--lv-a', L.bg[0]);
+      el.style.setProperty('--lv-b', L.bg[1]);
+      el.style.setProperty('--lv-c', L.ac[0]);
+      el.style.setProperty('--lv-d', L.ac[1]);
+    }
     var stats = { total: 0, firework: 0, lantern: 0, heart: 0, combo: 0, bestCombo: 0, lastTap: 0 };
     function levelOf(n) { var i = 0; while (i + 1 < LEVELS.length && n >= LEVELS[i + 1].at) i++; return i; }
 
@@ -804,7 +821,8 @@
       board.setAttribute('role', 'group');
       board.setAttribute('aria-label', 'คะแนนของคุณ');
       board.innerHTML =
-        '<span class="fw-s-avatar"><img src="' + MASCOT_ICON + '" alt=""><span class="fw-s-combo" aria-hidden="true"></span></span>' +
+        '<span class="fw-s-avatar"><img src="' + MASCOT_ICON + '" alt=""><span class="fw-s-lv" aria-hidden="true">Lv.1</span>' +
+          '<span class="fw-s-combo" aria-hidden="true"></span></span>' +
         '<span class="fw-s-main">' +
           '<span class="fw-s-row"><span class="fw-s-num">0</span><span class="fw-s-unit">ครั้ง</span></span>' +
           '<span class="fw-s-rank"></span>' +
@@ -835,6 +853,8 @@
 
     function renderBoard() {
       var li = levelOf(stats.total), L = LEVELS[li], next = LEVELS[li + 1];
+      applyLevelVars(board, L);
+      board.querySelector('.fw-s-lv').textContent = 'Lv.' + (li + 1);
       numEl.textContent = stats.total.toLocaleString('th-TH');
       numEl.classList.remove('bump'); void numEl.offsetWidth; numEl.classList.add('bump');
       rankEl.textContent = L.emoji + ' ' + L.title + (next ? ' · อีก ' + (next.at - stats.total) : '');
@@ -877,7 +897,11 @@
       var after = levelOf(stats.total);
       if (after > before) {
         var L = LEVELS[after];
-        lvlEl.textContent = 'เลเวลอัป! ' + L.emoji + ' ' + L.title;
+        applyLevelVars(lvlEl, L);
+        lvlEl.innerHTML = '<span class="fw-lvl-icon" aria-hidden="true">' + L.emoji + '</span>' +
+          '<span class="fw-lvl-t"><small>เลเวลอัป! Lv.' + (after + 1) + '</small>' + esc(L.title) + '</span>';
+        var tag = board.querySelector('.fw-s-lv');
+        tag.classList.remove('pop'); void tag.offsetWidth; tag.classList.add('pop');
         lvlEl.classList.remove('show'); void lvlEl.offsetWidth; lvlEl.classList.add('show');
         clearTimeout(lvlTimer);
         lvlTimer = setTimeout(function () { lvlEl.classList.remove('show'); }, 2500);
@@ -888,11 +912,158 @@
     }
 
     /* ── Share card (1080×1350, fits Facebook / IG / LINE / X) ── */
-    var THEME = {
-      firework: ['#003d28', '#006643', '#fdb022'],
-      lantern:  ['#5c1f04', '#b54708', '#fedf89'],
-      heart:    ['#8a0f45', '#d6246e', '#ffd1e3']
-    };
+    /* ── level backgrounds for the score card ── */
+    function star4(c, x, y, r) {
+      c.beginPath(); c.moveTo(x, y - r);
+      c.quadraticCurveTo(x, y, x + r, y); c.quadraticCurveTo(x, y, x, y + r);
+      c.quadraticCurveTo(x, y, x - r, y); c.quadraticCurveTo(x, y, x, y - r); c.closePath();
+    }
+    function star5(c, x, y, r) {
+      c.beginPath();
+      for (var i = 0; i < 10; i++) {
+        var a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * .45 : r;
+        c[i ? 'lineTo' : 'moveTo'](x + Math.cos(a) * rr, y + Math.sin(a) * rr);
+      }
+      c.closePath();
+    }
+    function glowAt(c, x, y, r, color) {
+      var g = c.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+      c.fillStyle = g; c.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+    function drawPattern(c, L, Wc, Hc, rnd) {
+      var i, x, y, r;
+      c.save();
+      switch (L.pattern) {
+        case 'confetti':
+          var conf = ['#fedf89', '#ffffff', '#7dd3fc', '#fda4af', '#bef264', '#fdb022'];
+          for (i = 0; i < 90; i++) {
+            x = rnd() * Wc; y = rnd() * Hc;
+            c.save(); c.translate(x, y); c.rotate(rnd() * Math.PI);
+            c.globalAlpha = .45 + rnd() * .4; c.fillStyle = conf[i % conf.length];
+            if (i % 3) c.fillRect(-7, -14, 14, 28); else { c.beginPath(); c.arc(0, 0, 8, 0, Math.PI * 2); c.fill(); }
+            c.restore();
+          }
+          break;
+        case 'sparkle':
+          for (i = 0; i < 55; i++) {
+            r = 6 + Math.pow(rnd(), 2.2) * 40;
+            c.globalAlpha = .35 + rnd() * .6; c.fillStyle = i % 4 ? '#ffffff' : L.ac[0];
+            c.shadowColor = L.ac[0]; c.shadowBlur = r;
+            star4(c, rnd() * Wc, rnd() * Hc, r); c.fill();
+          }
+          break;
+        case 'bursts':
+          var cols = palette.concat(['#ffffff']);
+          [[150, 170, 90], [930, 230, 110], [110, 760, 70], [975, 700, 80], [190, 1180, 60], [905, 1170, 70]].forEach(function (b) {
+            var col = cols[(rnd() * cols.length) | 0];
+            for (var k = 0; k < 22; k++) {
+              var a = Math.PI * 2 * k / 22;
+              for (var s = 1; s <= 4; s++) {
+                c.fillStyle = col; c.globalAlpha = .95 - s * .18;
+                c.beginPath(); c.arc(b[0] + Math.cos(a) * b[2] * s / 4, b[1] + Math.sin(a) * b[2] * s / 4, 5 - s * .7, 0, Math.PI * 2); c.fill();
+              }
+            }
+          });
+          break;
+        case 'rays':
+          c.translate(Wc / 2, 400);
+          for (i = 0; i < 28; i++) {
+            c.rotate(Math.PI * 2 / 28);
+            c.globalAlpha = i % 2 ? .07 : .13; c.fillStyle = L.ac[0];
+            c.beginPath(); c.moveTo(0, 0); c.lineTo(-60, -1400); c.lineTo(60, -1400); c.closePath(); c.fill();
+          }
+          c.setTransform(1, 0, 0, 1, 0, 0);
+          c.globalAlpha = .9; c.fillStyle = L.ac[0];
+          for (i = 0; i < 40; i++) { var a2 = Math.PI * 2 * i / 40; c.beginPath(); c.arc(Wc / 2 + Math.cos(a2) * 330, 400 + Math.sin(a2) * 330, 5, 0, Math.PI * 2); c.fill(); }
+          break;
+        case 'flames':
+          for (i = 0; i < 70; i++) {          /* embers */
+            c.globalAlpha = .3 + rnd() * .6; c.fillStyle = rnd() < .5 ? L.ac[0] : L.ac[1];
+            c.beginPath(); c.arc(rnd() * Wc, rnd() * Hc * .9, 2 + rnd() * 5, 0, Math.PI * 2); c.fill();
+          }
+          for (i = 0; i < 16; i++) {          /* flame wall along the bottom */
+            x = (i + .5) * Wc / 16 + (rnd() - .5) * 30; var h = 140 + rnd() * 170, w = 70 + rnd() * 60;
+            var fg = c.createLinearGradient(0, Hc - h, 0, Hc);
+            fg.addColorStop(0, 'rgba(255,209,102,0)'); fg.addColorStop(.35, 'rgba(255,170,40,.55)'); fg.addColorStop(1, 'rgba(255,90,0,.75)');
+            c.globalAlpha = 1; c.fillStyle = fg;
+            c.beginPath(); c.moveTo(x - w / 2, Hc);
+            c.quadraticCurveTo(x - w / 2, Hc - h * .45, x + (rnd() - .5) * 30, Hc - h);
+            c.quadraticCurveTo(x + w / 2, Hc - h * .45, x + w / 2, Hc); c.closePath(); c.fill();
+          }
+          break;
+        case 'royal':
+          c.globalAlpha = .06; c.fillStyle = '#ffffff';
+          for (x = -Hc; x < Wc; x += 80) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x + 40, 0); c.lineTo(x + 40 + Hc, Hc); c.lineTo(x + Hc, Hc); c.closePath(); c.fill(); }
+          c.globalAlpha = .9; c.strokeStyle = L.ac[0]; c.lineWidth = 4; c.strokeRect(28, 28, Wc - 56, Hc - 56);
+          c.lineWidth = 1.5; c.strokeRect(44, 44, Wc - 88, Hc - 88);
+          [[90, 90], [Wc - 90, 90], [90, Hc - 90], [Wc - 90, Hc - 90]].forEach(function (p) {   /* crowns in the corners */
+            c.fillStyle = L.ac[0]; c.globalAlpha = .95;
+            c.beginPath(); c.moveTo(p[0] - 34, p[1] + 18); c.lineTo(p[0] - 34, p[1] - 14); c.lineTo(p[0] - 17, p[1] + 2);
+            c.lineTo(p[0], p[1] - 24); c.lineTo(p[0] + 17, p[1] + 2); c.lineTo(p[0] + 34, p[1] - 14); c.lineTo(p[0] + 34, p[1] + 18); c.closePath(); c.fill();
+          });
+          for (i = 0; i < 40; i++) { c.globalAlpha = .3 + rnd() * .5; c.fillStyle = L.ac[0]; c.beginPath(); c.arc(80 + rnd() * (Wc - 160), 80 + rnd() * (Hc - 160), 2 + rnd() * 3, 0, Math.PI * 2); c.fill(); }
+          break;
+        case 'stars':
+          for (i = 0; i < 220; i++) { c.globalAlpha = .2 + rnd() * .8; c.fillStyle = '#ffffff'; c.beginPath(); c.arc(rnd() * Wc, rnd() * Hc, .6 + rnd() * 2, 0, Math.PI * 2); c.fill(); }
+          for (i = 0; i < 3; i++) {        /* shooting stars */
+            x = 100 + rnd() * 800; y = 80 + rnd() * 500;
+            var sg = c.createLinearGradient(x, y, x + 260, y + 120);
+            sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(1, 'rgba(255,255,255,.9)');
+            c.globalAlpha = 1; c.strokeStyle = sg; c.lineWidth = 3; c.beginPath(); c.moveTo(x, y); c.lineTo(x + 260, y + 120); c.stroke();
+          }
+          for (i = 0; i < 9; i++) {
+            r = 14 + rnd() * 26; c.globalAlpha = .9; c.fillStyle = L.ac[i % 2]; c.shadowColor = L.ac[0]; c.shadowBlur = 24;
+            star5(c, rnd() * Wc, rnd() * Hc, r); c.fill();
+          }
+          break;
+        case 'space':
+          c.globalAlpha = 1;
+          glowAt(c, 200, 330, 420, 'rgba(123,44,191,.55)');
+          glowAt(c, 900, 1000, 460, 'rgba(0,180,216,.35)');
+          glowAt(c, 860, 260, 300, 'rgba(255,77,141,.25)');
+          for (i = 0; i < 240; i++) { c.globalAlpha = .2 + rnd() * .8; c.fillStyle = i % 9 ? '#ffffff' : L.ac[0]; c.beginPath(); c.arc(rnd() * Wc, rnd() * Hc, .6 + rnd() * 2.2, 0, Math.PI * 2); c.fill(); }
+          /* ringed planet bottom-left + small moon top-right */
+          c.globalAlpha = 1;
+          var pg = c.createLinearGradient(40, 1060, 260, 1280);
+          pg.addColorStop(0, '#c084fc'); pg.addColorStop(1, '#3a0a5e');
+          c.fillStyle = pg; c.beginPath(); c.arc(150, 1170, 105, 0, Math.PI * 2); c.fill();
+          c.strokeStyle = L.ac[0]; c.lineWidth = 6; c.globalAlpha = .8;
+          c.beginPath(); c.ellipse(150, 1170, 190, 42, -.35, 0, Math.PI * 2); c.stroke();
+          c.globalAlpha = 1; var mg = c.createLinearGradient(920, 110, 1000, 190);
+          mg.addColorStop(0, '#7df9ff'); mg.addColorStop(1, '#1e3a8a');
+          c.fillStyle = mg; c.beginPath(); c.arc(955, 150, 42, 0, Math.PI * 2); c.fill();
+          break;
+      }
+      c.restore();
+    }
+
+    /* level medal (top-left of the card) */
+    function drawMedal(c, L, lvNo, x, y, FONT) {
+      c.save();
+      c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 18; c.shadowOffsetY = 6;
+      /* ribbon tails */
+      c.fillStyle = L.ac[1];
+      c.beginPath(); c.moveTo(x - 46, y + 50); c.lineTo(x - 70, y + 150); c.lineTo(x - 40, y + 132); c.lineTo(x - 22, y + 160); c.lineTo(x - 6, y + 70); c.closePath(); c.fill();
+      c.beginPath(); c.moveTo(x + 46, y + 50); c.lineTo(x + 70, y + 150); c.lineTo(x + 40, y + 132); c.lineTo(x + 22, y + 160); c.lineTo(x + 6, y + 70); c.closePath(); c.fill();
+      var ring = c.createLinearGradient(x - 95, y - 95, x + 95, y + 95);
+      ring.addColorStop(0, '#ffffff'); ring.addColorStop(.35, L.ac[0]); ring.addColorStop(1, L.ac[1]);
+      c.fillStyle = ring; c.beginPath(); c.arc(x, y, 92, 0, Math.PI * 2); c.fill();
+      c.shadowColor = 'transparent';
+      var face = c.createLinearGradient(x, y - 76, x, y + 76);
+      face.addColorStop(0, L.bg[1]); face.addColorStop(1, L.bg[0]);
+      c.fillStyle = face; c.beginPath(); c.arc(x, y, 76, 0, Math.PI * 2); c.fill();
+      c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.font = '78px ' + FONT; c.fillText(L.emoji, x, y - 8);
+      /* LV pill */
+      c.font = '800 30px ' + FONT;
+      var t = 'LV.' + lvNo, tw = c.measureText(t).width + 36;
+      c.fillStyle = L.ac[0]; c.beginPath();
+      if (c.roundRect) c.roundRect(x - tw / 2, y + 48, tw, 42, 21); else c.rect(x - tw / 2, y + 48, tw, 42);
+      c.fill();
+      c.fillStyle = L.bg[0]; c.fillText(t, x, y + 70);
+      c.restore();
+    }
     var mascotImg = null;
     function loadMascot() {
       if (mascotImg) return Promise.resolve(mascotImg);
@@ -919,33 +1090,26 @@
         cv.width = Wc; cv.height = Hc;
         var c = cv.getContext('2d');
         var FONT = "Anuphan, 'Noto Sans Thai', sans-serif";
-        /* theme = the mode the player used most */
+        /* the card's look follows the player's level; hearts are sprinkled on top if they mostly sent hearts */
         var top = ['firework', 'lantern', 'heart'].sort(function (a, b) { return stats[b] - stats[a]; })[0];
-        var th = THEME[top];
+        var li = levelOf(stats.total), LV = LEVELS[li];
 
         var bg = c.createLinearGradient(0, 0, Wc, Hc);
-        bg.addColorStop(0, th[0]); bg.addColorStop(1, th[1]);
+        bg.addColorStop(0, LV.bg[0]); bg.addColorStop(1, LV.bg[1]);
         c.fillStyle = bg; c.fillRect(0, 0, Wc, Hc);
         var glow = c.createRadialGradient(Wc / 2, 420, 40, Wc / 2, 420, 620);
         glow.addColorStop(0, 'rgba(255,255,255,.22)'); glow.addColorStop(1, 'rgba(255,255,255,0)');
         c.fillStyle = glow; c.fillRect(0, 0, Wc, Hc);
 
-        /* decorations: firework bursts / hearts sprinkled around */
-        var deco = top === 'heart' ? heartPalette : palette.concat(['#ffffff']);
-        var seed = 7;
+        var seed = 7 + li * 101;
         function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-        [[150, 170, 90], [930, 230, 110], [110, 760, 70], [975, 700, 80], [190, 1180, 60], [905, 1170, 70]].forEach(function (b) {
-          var col = deco[(rnd() * deco.length) | 0], rays = 22;
-          c.globalAlpha = .9;
-          for (var i = 0; i < rays; i++) {
-            var a = Math.PI * 2 * i / rays;
-            for (var k = 1; k <= 4; k++) {
-              c.fillStyle = col; c.globalAlpha = .95 - k * .18;
-              c.beginPath(); c.arc(b[0] + Math.cos(a) * b[2] * k / 4, b[1] + Math.sin(a) * b[2] * k / 4, 5 - k * .7, 0, Math.PI * 2); c.fill();
-            }
-          }
-        });
+        drawPattern(c, LV, Wc, Hc, rnd);
         c.globalAlpha = 1;
+        /* soft dark scrim so the footer text stays readable on every background */
+        var scrim = c.createLinearGradient(0, 1100, 0, Hc);
+        scrim.addColorStop(0, 'rgba(0,0,0,0)'); scrim.addColorStop(1, 'rgba(0,0,0,.45)');
+        c.fillStyle = scrim; c.fillRect(0, 1100, Wc, Hc - 1100);
+        var deco = heartPalette;
         if (top === 'heart') {
           for (var h = 0; h < 14; h++) {
             c.save(); c.translate(rnd() * Wc, 300 + rnd() * 1000); c.rotate((rnd() - .5) * .6);
@@ -965,20 +1129,22 @@
         text(top === 'heart' ? LABEL_HEART : LABEL, 120, 56, 700, '#ffffff');
         if (img) {
           var mw = 500, mh = mw * img.height / img.width;
-          c.drawImage(img, (Wc - mw) / 2, 160, mw, mh);
+          c.drawImage(img, (Wc - mw) / 2 + 60, 160, mw, mh);
         }
+        drawMedal(c, LV, li + 1, 200, 330, FONT);
+        c.shadowColor = 'rgba(0,0,0,.25)'; c.shadowBlur = 16; c.shadowOffsetY = 4;
         text('ฉันกดฉลองไปแล้ว', 700, 52, 600, 'rgba(255,255,255,.95)');
         /* big number with gold gradient */
         c.font = '800 220px ' + FONT;
         var numStr = stats.total.toLocaleString('th-TH');
         var gold = c.createLinearGradient(0, 740, 0, 930);
-        gold.addColorStop(0, '#fff6d8'); gold.addColorStop(.5, th[2]); gold.addColorStop(1, '#f79009');
+        gold.addColorStop(0, '#ffffff'); gold.addColorStop(.5, LV.ac[0]); gold.addColorStop(1, LV.ac[1]);
         text(numStr, 920, 220, 800, gold);
         c.shadowBlur = 10;
         text('ครั้ง', 990, 52, 600, '#ffffff');
 
         /* rank pill */
-        var L = LEVELS[levelOf(stats.total)], rank = L.emoji + ' ' + L.title;
+        var rank = LV.emoji + ' ' + LV.title;
         c.shadowColor = 'transparent';
         c.font = '700 46px ' + FONT;
         var pw = Math.min(980, c.measureText(rank).width + 96), px = (Wc - pw) / 2, py = 1030, ph = 84;
@@ -995,7 +1161,7 @@
         if (allowed.indexOf('heart') > -1 && stats.heart) parts.push('หัวใจ ' + stats.heart);
         parts.push('คอมโบสูงสุด x' + stats.bestCombo);
         text(parts.join('  ·  '), 1180, 34, 500, 'rgba(255,255,255,.85)');
-        text('คุณกดได้เท่าไหร่? มาแข่งกัน! 🔥', 1262, 48, 700, th[2]);
+        text('คุณกดได้เท่าไหร่? มาแข่งกัน! 🔥', 1262, 48, 700, LV.ac[0]);
         text('ทางรัฐ · ติดต่อรัฐง่ายแค่ปลายนิ้ว', 1318, 28, 500, 'rgba(255,255,255,.6)');
 
         return new Promise(function (res) {
