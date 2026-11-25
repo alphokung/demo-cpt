@@ -9,7 +9,7 @@
   "levels": [
     {
       "at": 0,
-      "title": "มือใหม่หัดกด",
+      "title": "มือใหม่หัดจุด",
       "emoji": "🐣",
       "icon": "icons/lv1.webp",
       "mascot": "mascots/lv1.webp",
@@ -18,7 +18,7 @@
     },
     {
       "at": 50,
-      "title": "สายฉลองฝึกหัด",
+      "title": "นักจุดฝึกหัด",
       "emoji": "✨",
       "icon": "icons/lv2.webp",
       "mascot": "mascots/lv2.webp",
@@ -27,7 +27,7 @@
     },
     {
       "at": 100,
-      "title": "นักฉลองตัวยง",
+      "title": "ผู้เชี่ยวชาญการจุด",
       "emoji": "🎇",
       "icon": "icons/lv3.webp",
       "mascot": "mascots/lv3.webp",
@@ -36,7 +36,7 @@
     },
     {
       "at": 200,
-      "title": "มือทองแห่งทางรัฐ",
+      "title": "นักจุดนิ้วทอง",
       "emoji": "🏅",
       "icon": "icons/lv4.webp",
       "mascot": "mascots/lv4.webp",
@@ -45,7 +45,7 @@
     },
     {
       "at": 400,
-      "title": "เซียนนิ้วไว",
+      "title": "ตำนานนักจุด",
       "emoji": "🔥",
       "icon": "icons/lv5.webp",
       "mascot": "mascots/lv5.webp",
@@ -54,7 +54,7 @@
     },
     {
       "at": 800,
-      "title": "ราชาแห่งความสุข",
+      "title": "เซียนนิ้วติดไฟ",
       "emoji": "👑",
       "icon": "icons/lv6.webp",
       "mascot": "mascots/lv6.webp",
@@ -63,7 +63,7 @@
     },
     {
       "at": 1600,
-      "title": "ตำนานดีเด่น",
+      "title": "จอมเวทแห่งไฟ",
       "emoji": "🌟",
       "icon": "icons/lv7.webp",
       "mascot": "mascots/lv7.webp",
@@ -72,7 +72,7 @@
     },
     {
       "at": 3200,
-      "title": "เทพเจ้าแห่งการกด",
+      "title": "จักรพรรดิแห่งพลุ",
       "emoji": "🚀",
       "icon": "icons/lv8.webp",
       "mascot": "mascots/lv8.webp",

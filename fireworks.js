@@ -947,14 +947,14 @@
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
                               mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
-      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
-      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
-      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
-      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
-      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว',        bg: ['#5c0d04', '#d9480f'], ac: ['#ffd166', '#ff7a00'], pattern: 'flames' },
-      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข',   bg: ['#2d0748', '#7b2cbf'], ac: ['#ffd700', '#d4a017'], pattern: 'royal' },
-      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
-      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
+      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดจุด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
+      { at: 50,   emoji: '✨', title: 'นักจุดฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
+      { at: 100,  emoji: '🎇', title: 'ผู้เชี่ยวชาญการจุด',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
+      { at: 200,  emoji: '🏅', title: 'นักจุดนิ้วทอง',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
+      { at: 400,  emoji: '🔥', title: 'ตำนานนักจุด',        bg: ['#5c0d04', '#d9480f'], ac: ['#ffd166', '#ff7a00'], pattern: 'flames' },
+      { at: 800,  emoji: '👑', title: 'เซียนนิ้วติดไฟ',   bg: ['#2d0748', '#7b2cbf'], ac: ['#ffd700', '#d4a017'], pattern: 'royal' },
+      { at: 1600, emoji: '🌟', title: 'จอมเวทแห่งไฟ',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
+      { at: 3200, emoji: '🚀', title: 'จักรพรรดิแห่งพลุ',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
     ];
     if (THEME && Array.isArray(THEME.levels) && THEME.levels.length) {
       var BASE_LEVELS = LEVELS;
