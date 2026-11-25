@@ -778,18 +778,26 @@
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด' },
-      { at: 10,   emoji: '✨', title: 'สายฉลองฝึกหัด' },
-      { at: 30,   emoji: '🎇', title: 'นักฉลองตัวยง' },
-      { at: 60,   emoji: '🏅', title: 'มือทองแห่งทางรัฐ' },
-      { at: 100,  emoji: '🔥', title: 'เซียนนิ้วไว' },
-      { at: 200,  emoji: '👑', title: 'ราชาแห่งความสุข' },
-      { at: 500,  emoji: '🌟', title: 'ตำนานดีเด่น' },
-      { at: 1000, emoji: '🚀', title: 'เทพเจ้าแห่งการกด' }
+      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด' },
+      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง' },
+      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ' },
+      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว' },
+      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข' },
+      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น' },
+      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด' }
     ];
     var stats = { total: 0, firework: 0, lantern: 0, heart: 0, combo: 0, bestCombo: 0, lastTap: 0 };
     function levelOf(n) { var i = 0; while (i + 1 < LEVELS.length && n >= LEVELS[i + 1].at) i++; return i; }
 
     var board = null, numEl, rankEl, barEl, comboEl, lvlEl, comboTimer, lvlTimer;
+    /* the board slides away 3 s after the last tap — but not while the user is
+       pointing at / focused on it or has the score card open */
+    var BOARD_HIDE_MS = 3000, boardTimer, boardHold = false;
+    function hideBoardLater() {
+      clearTimeout(boardTimer);
+      if (boardHold || modal) return;
+      boardTimer = setTimeout(function () { board.classList.remove('on'); }, BOARD_HIDE_MS);
+    }
     if (SCORE) {
       board = document.createElement('div');
       board.className = 'fw-score';
@@ -810,6 +818,14 @@
       barEl = board.querySelector('.fw-s-bar i');
       comboEl = board.querySelector('.fw-s-combo');
       board.querySelector('.fw-s-share').addEventListener('click', function () { haptic(10, true); openShare(); });
+      function hold(on) { boardHold = on; if (on) clearTimeout(boardTimer); else if (board.classList.contains('on')) hideBoardLater(); }
+      board.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hold(true); });
+      board.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hold(false); });
+      board.addEventListener('focusin', function (e) {      /* keyboard users only — a tap also focuses the button */
+        var kb = false; try { kb = e.target.matches(':focus-visible'); } catch (err) {}
+        if (kb) hold(true);
+      });
+      board.addEventListener('focusout', function () { hold(false); });
 
       lvlEl = document.createElement('div');
       lvlEl.className = 'fw-lvl';
@@ -848,6 +864,7 @@
       stats.lastTap = t;
       if (stats.combo > stats.bestCombo) stats.bestCombo = stats.combo;
       board.classList.add('on');
+      hideBoardLater();
       renderBoard();
 
       var big = stats.combo >= 5;
@@ -995,7 +1012,8 @@
       document.documentElement.style.overflow = '';
       document.removeEventListener('keydown', onKey);
       setTimeout(function () { m.remove(); if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; } }, 220);
-      if (lastFocus) lastFocus.focus();
+      if (lastFocus && lastFocus !== document.body) lastFocus.focus();
+      if (board) { boardHold = false; hideBoardLater(); }
     }
     function onKey(e) { if (e.key === 'Escape') closeShare(); }
 
