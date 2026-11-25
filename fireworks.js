@@ -33,6 +33,7 @@
  *   { "id", "label", "labelHeart", "sub" (string or {firework,lantern,heart}), "modes": [...], "mode",
  *     "greeting"|"score"|"sound"|"haptic"|"autoplay": true/false,
  *     "active": { "from": "YYYY-MM-DD", "to": "YYYY-MM-DD" }   (outside → nothing shows; add ?fw-preview to the URL to test)
+ *     "buttonIcon": "icons/button.webp"   image on the floating button (default: built-in น้องดีเด่น head)
  *     "particles": ["#hex", ...], "heartParticles": [...],
  *     "levels": [{ "at", "title", "emoji", "icon": "icons/lv1.svg", "card": "cards/lv1.webp",
  *                  "colors": { "bg": [dark, light], "accent": [light, dark] }, "pattern" }, ...],
@@ -125,6 +126,8 @@
       if (m.length) allowed = m;
     }
     mode = [saved, ds.mode || t.mode, allowed[0]].filter(function (k) { return k && allowed.indexOf(k) > -1; })[0];
+    /* image on the main "จุดพลุ" button (and the พลุ option / greeting badge) */
+    if (t.buttonIcon) MODES.firework.icon = '<img class="fw-mascot fw-btn" src="' + themePath(t.buttonIcon) + '" alt="">';
     function flag(name, cur) { return ds[name] == null && typeof t[name] === 'boolean' ? t[name] : cur; }
     GREETING = flag('greeting', GREETING); SCORE = flag('score', SCORE); SOUND = flag('sound', SOUND);
     HAPTIC = flag('haptic', HAPTIC); AUTOPLAY = flag('autoplay', AUTOPLAY);
@@ -166,6 +169,8 @@
     '.fw-fab-icon .material-symbols-outlined{font-size:22px;font-variation-settings:"FILL" 1;}' +
     '.fw-mascot{display:block;width:22px;height:22px;object-fit:contain;}' +
     '.fw-fab-icon .fw-mascot{width:38px;height:38px;margin:-8px -4px -8px -8px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}' +
+    /* theme buttonIcon: a wide cut-out (head + prop) keeps its own aspect ratio and may rise above the pill */
+    '.fw-fab-icon .fw-btn{width:auto;max-width:none;height:46px;margin:-12px -2px -10px -10px;}' +
     '.fw-g-badge .fw-mascot{width:46px;height:46px;}' +
 
     /* score board — one fixed design for every level; only the level icon changes */
@@ -293,6 +298,7 @@
 
     '@keyframes fw-twinkle{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(12deg) scale(1.12);}}' +
     '@media (max-width:479px){.fw-fab-text{display:none;}.fw-fab{width:48px;padding:0;justify-content:center;}' +
+      '.fw-fab-icon .fw-btn{height:34px;margin:0;}' +
       '.fw-g-title{font-size:22px;line-height:32px;}.fw-s-bar{width:96px;}.fw-s-share-t{display:none;}.fw-s-share{width:40px;padding:0;justify-content:center;}' +
       '.fw-greeting{padding:var(--spacing-5xl) var(--spacing-3xl) var(--spacing-2xl);}}' +
     '@media (min-width:1024px){.fw-dock{bottom:var(--spacing-3xl);}.fw-dock.fw-raised{bottom:calc(var(--spacing-3xl) + 60px);}}' +
@@ -493,7 +499,7 @@
     document.body.appendChild(greeting);
 
     var GREET = {
-      firework: { emoji: '<img class="fw-mascot" src="' + MASCOT_ICON + '" alt="">', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fdb022', '#fedf89', '#ffffff'] },
+      firework: { emoji: MODES.firework.icon, deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fdb022', '#fedf89', '#ffffff'] },
       lantern:  { emoji: '🏮', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fedf89', '#fdb022', '#ffffff'] },
       heart:    { emoji: '💖', deco: ['♥', '✦', '♥', '♥', '✦', '♥'], colors: ['#ffffff', '#ffd1e3', '#ffb3d1', '#fedf89'] }
     };
@@ -939,18 +945,19 @@
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
-         mascot: 'path.png' — big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma mascot/lvN, 500×405)
+         mascot: 'path.webp' — big น้องดีเด่น for this level (Figma mascot/lvN exported at 1x). Drawn at its natural size,
+                              centred in the card's mascot slot, so each level's mascot may have its own size
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
                               mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
-      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
-      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
-      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
-      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
-      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว',        bg: ['#5c0d04', '#d9480f'], ac: ['#ffd166', '#ff7a00'], pattern: 'flames' },
-      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข',   bg: ['#2d0748', '#7b2cbf'], ac: ['#ffd700', '#d4a017'], pattern: 'royal' },
-      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
-      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
+      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดจุด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
+      { at: 50,   emoji: '✨', title: 'นักจุดฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
+      { at: 100,  emoji: '🎇', title: 'ผู้เชี่ยวชาญการจุด',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
+      { at: 200,  emoji: '🏅', title: 'นักจุดนิ้วทอง',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
+      { at: 400,  emoji: '🔥', title: 'ตำนานนักจุด',        bg: ['#5c0d04', '#d9480f'], ac: ['#ffd166', '#ff7a00'], pattern: 'flames' },
+      { at: 800,  emoji: '👑', title: 'เซียนนิ้วติดไฟ',   bg: ['#2d0748', '#7b2cbf'], ac: ['#ffd700', '#d4a017'], pattern: 'royal' },
+      { at: 1600, emoji: '🌟', title: 'จอมเวทแห่งไฟ',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
+      { at: 3200, emoji: '🚀', title: 'จักรพรรดิแห่งพลุ',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
     ];
     if (THEME && Array.isArray(THEME.levels) && THEME.levels.length) {
       var BASE_LEVELS = LEVELS;
@@ -1266,7 +1273,9 @@
         : Promise.resolve();
       var li = levelOf(stats.total), LV = LEVELS[li];
       /* per-level big mascot (theme levels[].mascot) — falls back to the built-in น้องดีเด่น */
-      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { return m || loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
+      /* a designer mascot is exported 1:1 from Figma, so it is drawn at its natural size (sizes may differ per level) */
+      var mascotNatural = false;
+      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { if (m) { mascotNatural = true; return m; } return loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
                           loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
         var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
@@ -1280,8 +1289,9 @@
         if (designed) {
           c.drawImage(designed, 0, 0, Wc, Hc);
           if (img) {
-            var dmh = CARD_SLOTS.mascot.w * img.height / img.width;
-            c.drawImage(img, CARD_SLOTS.mascot.x, CARD_SLOTS.mascot.y + (CARD_SLOTS.mascot.h - dmh) / 2, CARD_SLOTS.mascot.w, dmh);
+            var MS = CARD_SLOTS.mascot;
+            var dmw = mascotNatural ? img.width : MS.w, dmh = mascotNatural ? img.height : MS.w * img.height / img.width;
+            c.drawImage(img, MS.x + (MS.w - dmw) / 2, MS.y + (MS.h - dmh) / 2, dmw, dmh);
           }
           drawScore(c, LV, FONT, Wc);
           drawCombo(c, FONT);
