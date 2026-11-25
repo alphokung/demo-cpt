@@ -30,6 +30,7 @@ A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digita
 | `ncb.html` | Credit bureau summary (NCB) |
 | `edge-cases.html` | System-state edge cases — maintenance, high-traffic |
 | `new-year.html` | New Year fireworks demo — floating button; add to any page with `<script src="fireworks.js" defer></script>` |
+| `valentine.html` | Valentine hearts demo — same `fireworks.js` with `data-modes="heart"` |
 
 ### Component Library
 

@@ -6,19 +6,22 @@
  *
  * - Floating button at the bottom-right (stacks above .back-to-top)
  * - A small switch above it lets the user choose what to release:
- *     พลุ (fireworks)  or  โคมลอย (sky lanterns)
+ *     พลุ (fireworks) · โคมลอย (sky lanterns) · หัวใจ (Valentine hearts)
  * - Click repeatedly for more; the overlay never blocks the page
  *
  * Optional attributes on the <script> tag:
  *   data-label="สวัสดีปีใหม่ 2570"    greeting shown on click
- *   data-mode="lantern"                default choice: "firework" (default) | "lantern"
- *   data-modes="lantern"               limit the choices (comma-separated); one value hides the switch
+ *   data-label-heart="..."             greeting for heart mode (default: สุขสันต์วันวาเลนไทน์)
+ *   data-mode="heart"                  default choice: "firework" (default) | "lantern" | "heart"
+ *   data-modes="heart"                 limit the choices (comma-separated); one value hides the switch
+ *                                      e.g. Valentine page → data-modes="heart"
+ *                                           New Year page  → data-modes="firework,lantern"
  *   data-autoplay="true"               release one round on page load
  *   data-haptic="false"                turn off vibration feedback
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
- *   thFireworks.fire('lantern')        release a specific type
+ *   thFireworks.fire('heart')          release a specific type
  *   thFireworks.setMode('firework')    change the current choice
  */
 (function () {
@@ -30,6 +33,7 @@
   var ds = (script && script.dataset) || {};
   var now = new Date();
   var LABEL = ds.label || 'สวัสดีปีใหม่ ' + (now.getFullYear() + 543 + (now.getMonth() >= 10 ? 1 : 0));
+  var LABEL_HEART = ds.labelHeart || 'สุขสันต์วันวาเลนไทน์';
   var AUTOPLAY = ds.autoplay === 'true';
   var HAPTIC = ds.haptic !== 'false';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -43,12 +47,13 @@
 
   var MODES = {
     firework: { label: 'พลุ',    action: 'จุดพลุ',    aria: 'จุดพลุฉลองปีใหม่', icon: '<span class="material-symbols-outlined">celebration</span>' },
-    lantern:  { label: 'โคมลอย', action: 'ปล่อยโคม', aria: 'ปล่อยโคมลอยฉลองปีใหม่', icon: LANTERN_SVG }
+    lantern:  { label: 'โคมลอย', action: 'ปล่อยโคม', aria: 'ปล่อยโคมลอยฉลองปีใหม่', icon: LANTERN_SVG },
+    heart:    { label: 'หัวใจ',  action: 'ส่งหัวใจ', aria: 'ส่งหัวใจวันวาเลนไทน์', icon: '<span class="material-symbols-outlined">favorite</span>' }
   };
-  var allowed = (ds.modes || 'firework,lantern').split(',')
+  var allowed = (ds.modes || 'firework,lantern,heart').split(',')
     .map(function (s) { return s.trim(); })
     .filter(function (m) { return MODES[m]; });
-  if (!allowed.length) allowed = ['firework', 'lantern'];
+  if (!allowed.length) allowed = ['firework', 'lantern', 'heart'];
 
   var STORE_KEY = 'thFireworksMode';
   var saved = null;
@@ -248,6 +253,9 @@
       .map(function (v) { return token(v, ''); })
       .filter(Boolean);
     if (!palette.length) palette = ['#fdb022', '#fedf89', '#f97066', '#5ed49a', '#5f88d3', '#36bffa'];
+    /* Valentine palette: brand reds + pinks/purples (no pink scale in the design tokens) */
+    var heartPalette = [token('--danger-40', '#d92d20'), token('--danger-60', '#f97066'),
+      '#ff4d8d', '#ff7eb6', '#ffb3d1', '#c084fc', '#a855f7', token('--warning-60', '#fdb022')];
     var WARM_DARK = token('--warning-40', '#dc6803');
     var WARM_MID = token('--warning-60', '#fdb022');
     var WARM_LIGHT = token('--warning-80', '#fedf89');
@@ -279,7 +287,44 @@
       }, delay || 0);
     }
 
+    function launchHeartRocket(delay) {
+      setTimeout(function () {
+        var x = rand(W * 0.2, W * 0.8);
+        rockets.push({ x: x, y: H + 10, tx: x + rand(-40, 40), ty: rand(H * 0.15, H * 0.42), color: pick(heartPalette), heart: true });
+        start();
+      }, delay || 0);
+    }
+
+    /* classic heart curve: x = 16 sin³t, y = 13 cos t − 5 cos 2t − 2 cos 3t − cos 4t */
+    function explodeHeart(r) {
+      var n = reduceMotion ? 40 : 90;
+      var scale = rand(0.17, 0.24) * Math.min(1, W / 500 + 0.4);
+      var rainbow = Math.random() < 0.5;                 /* half the hearts are multi-colour */
+      var c0 = (Math.random() * heartPalette.length) | 0;
+      for (var i = 0; i < n && sparks.length < MAX_SPARKS; i++) {
+        var t = (Math.PI * 2 * i) / n;
+        var hx = 16 * Math.pow(Math.sin(t), 3);
+        var hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        sparks.push({
+          x: r.x, y: r.y, vx: hx * scale, vy: hy * scale, life: 1,
+          decay: rand(0.011, 0.015), drag: 0.955, grav: 0.25,
+          size: rand(1.8, 2.8),
+          color: rainbow ? heartPalette[(c0 + Math.floor(i / n * heartPalette.length)) % heartPalette.length] : r.color,
+          flicker: Math.random() < 0.2
+        });
+      }
+      /* a little sparkle filling the middle */
+      for (var k = 0; k < (reduceMotion ? 0 : 18); k++) {
+        var a = rand(0, Math.PI * 2), sp = rand(0.3, 1.6);
+        sparks.push({ x: r.x, y: r.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: rand(0.02, 0.03),
+          drag: 0.96, grav: 0.3, size: rand(1.2, 2), color: '#ffffff', flicker: true });
+      }
+      sparks.push({ x: r.x, y: r.y, vx: 0, vy: 0, life: 1, decay: 0.08, drag: 1, size: 22, color: '#ffd1e3', flash: true });
+      haptic([20, 90, 30]);   /* heartbeat: ba-dum */
+    }
+
     function explode(r) {
+      if (r.heart) { explodeHeart(r); return; }
       var shape = pick(['ring', 'burst', 'burst', 'willow']);
       var n = reduceMotion ? 40 : (shape === 'ring' ? 70 : 110);
       var c2 = pick(palette);
@@ -317,7 +362,7 @@
       for (var j = sparks.length - 1; j >= 0; j--) {
         var p = sparks[j];
         p.vx *= Math.pow(p.drag, dt); p.vy *= Math.pow(p.drag, dt);
-        if (!p.flash) p.vy += GRAVITY * dt;
+        if (!p.flash) p.vy += GRAVITY * (p.grav == null ? 1 : p.grav) * dt;
         p.x += p.vx * dt; p.y += p.vy * dt;
         p.life -= p.decay * dt;
         if (p.life <= 0) { sparks.splice(j, 1); continue; }
@@ -425,6 +470,74 @@
       lctx.restore();
     }
 
+    /* ════════════ Floating hearts (หัวใจ) ════════════ */
+    var hearts = [];
+    var MAX_HEARTS = 160;
+
+    function launchHearts(n) {
+      for (var i = 0; i < n; i++) {
+        (function (d) {
+          setTimeout(function () {
+            if (hearts.length >= MAX_HEARTS) return;
+            var size = rand(12, 30);
+            hearts.push({
+              x: rand(W * 0.06, W * 0.94), y: H + size,
+              size: size, vy: rand(1.6, 3.2) * (0.7 + size / 60),
+              swayAmp: rand(0.3, 0.9), swayFreq: rand(0.03, 0.06), phase: rand(0, Math.PI * 2),
+              color: pick(heartPalette), t: 0, rot: 0
+            });
+            start();
+          }, d);
+        })(i * rand(40, 90));
+      }
+    }
+
+    function heartPath(c, s) {
+      /* heart centred on (0,0), about s wide */
+      c.beginPath();
+      c.moveTo(0, s * 0.35);
+      c.bezierCurveTo(-s * 0.62, -s * 0.05, -s * 0.42, -s * 0.62, 0, -s * 0.28);
+      c.bezierCurveTo(s * 0.42, -s * 0.62, s * 0.62, -s * 0.05, 0, s * 0.35);
+      c.closePath();
+    }
+
+    function drawHeart(h) {
+      var pop = Math.min(1, h.t / 12);                         /* pop-in */
+      var fade = h.y < H * 0.25 ? Math.max(0, h.y / (H * 0.25)) : 1;
+      if (fade <= 0) return;
+      var s = h.size * (0.4 + 0.6 * pop) * (1 + Math.sin(h.t * 0.18) * 0.06);   /* gentle beat */
+      lctx.save();
+      lctx.translate(h.x, h.y);
+      lctx.rotate(h.rot);
+      lctx.globalAlpha = 0.95 * fade;
+      lctx.fillStyle = h.color;
+      lctx.shadowColor = h.color;
+      lctx.shadowBlur = s * 0.35;
+      heartPath(lctx, s);
+      lctx.fill();
+      /* glossy highlight */
+      lctx.shadowBlur = 0;
+      lctx.globalAlpha = 0.45 * fade;
+      lctx.fillStyle = '#ffffff';
+      lctx.beginPath();
+      lctx.ellipse(-s * 0.2, -s * 0.22, s * 0.1, s * 0.06, -0.6, 0, Math.PI * 2);
+      lctx.fill();
+      lctx.restore();
+    }
+
+    function stepHearts(dt) {
+      for (var i = hearts.length - 1; i >= 0; i--) {
+        var h = hearts[i];
+        h.t += dt;
+        h.y -= h.vy * dt;
+        var sway = Math.sin(h.t * h.swayFreq + h.phase);
+        h.x += sway * h.swayAmp * dt;
+        h.rot = sway * 0.25;
+        if (h.y < -h.size) { hearts.splice(i, 1); continue; }
+        drawHeart(h);
+      }
+    }
+
     function stepLanterns(dt) {
       lctx.clearRect(0, 0, W, H);
       for (var i = lanterns.length - 1; i >= 0; i--) {
@@ -449,7 +562,8 @@
       last = t;
       stepFireworks(dt);
       stepLanterns(dt);
-      if (rockets.length || sparks.length || lanterns.length) {
+      stepHearts(dt);
+      if (rockets.length || sparks.length || lanterns.length || hearts.length) {
         requestAnimationFrame(step);
       } else {
         running = false;
@@ -471,6 +585,10 @@
       if (kind === 'lantern') {
         var n = reduceMotion ? 2 : 4;
         for (var i = 0; i < n; i++) launchLantern(i * 260);
+      } else if (kind === 'heart') {
+        var hb = reduceMotion ? 1 : 2;
+        for (var j = 0; j < hb; j++) launchHeartRocket(j * 260);
+        launchHearts(reduceMotion ? 4 : 12);
       } else {
         var v = reduceMotion ? 1 : 3;
         for (var k = 0; k < v; k++) launchFirework(k * 180);
@@ -478,7 +596,7 @@
       clicks++;
       countEl.textContent = clicks > 99 ? '99+' : clicks;
       countEl.classList.toggle('show', clicks > 1);
-      greeting.textContent = (kind === 'lantern' ? '🏮 ' : '🎉 ') + LABEL;
+      greeting.textContent = kind === 'heart' ? '💖 ' + LABEL_HEART : (kind === 'lantern' ? '🏮 ' : '🎉 ') + LABEL;
       greeting.classList.add('show');
       clearTimeout(greetTimer);
       greetTimer = setTimeout(function () { greeting.classList.remove('show'); }, 2600);
