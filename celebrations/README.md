@@ -10,6 +10,7 @@ celebrations/
     cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8)
     …
     cards/lv8.webp
+    mascots/lv1.webp  ← big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma component mascot/lvN, 500×405)
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
@@ -31,7 +32,7 @@ If the theme can't be loaded the script falls back to its built-in defaults.
 | `icons/lvN.webp` — level icon, Figma component `icon/lvN` (export @2x+, ~12 KB) | `cardSlots` if the red slots in Figma move | new effect modes (e.g. Songkran water) |
 
 Code draws only three things on top of a designer card, inside the red **CODE SLOTS** in Figma:
-the น้องดีเด่น mascot, the score number, and the player's best combo.
+the level's น้องดีเด่น (`mascot`), the score number, and the player's best combo.
 
 Figma template: “ทางรัฐ Celebration — Safe zone template” → page *Score cards — full design (8 levels)*.
 
@@ -53,7 +54,7 @@ Figma template: “ทางรัฐ Celebration — Safe zone template” → 
 | `greeting`, `score`, `sound`, `haptic`, `autoplay` | `false` | same as the `data-*` switches |
 | `active` | `{ "from": "2026-12-20", "to": "2027-01-10" }` | outside the window nothing shows; add `?fw-preview` to the URL to test |
 | `particles`, `heartParticles` | `["#fdb022", "#5ed49a"]` | firework / heart colours |
-| `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.svg", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
+| `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.webp", "mascot": "mascots/lv2.webp", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
 | `cardSlots` | `{ "score": { "x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220 } }` | must match the red slots in Figma |
 
 Paths are relative to `theme.json`. Files must be served from the same origin as the page

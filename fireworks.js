@@ -939,6 +939,7 @@
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
+         mascot: 'path.png' — big น้องดีเด่น for this level, drawn in the card's mascot slot (Figma mascot/lvN, 500×405)
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
                               mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
@@ -959,7 +960,7 @@
           at: typeof l.at === 'number' ? l.at : d.at,
           emoji: l.emoji || d.emoji, title: l.title || d.title,
           bg: col.bg || d.bg, ac: col.accent || d.ac, pattern: l.pattern || d.pattern,
-          icon: themePath(l.icon), card: themePath(l.card)
+          icon: themePath(l.icon), card: themePath(l.card), mascot: themePath(l.mascot)
         };
       }).sort(function (a, b) { return a.at - b.at; });
       LEVELS[0].at = 0;
@@ -1264,7 +1265,9 @@
         ? Promise.all(['800 200px Anuphan', '700 48px Anuphan', '500 32px Anuphan'].map(function (f) { return document.fonts.load(f).catch(function () {}); }))
         : Promise.resolve();
       var li = levelOf(stats.total), LV = LEVELS[li];
-      return Promise.all([fonts, loadImg(MASCOT_FULL), loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
+      /* per-level big mascot (theme levels[].mascot) — falls back to the built-in น้องดีเด่น */
+      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { return m || loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
+                          loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
         var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
         cv.width = Wc; cv.height = Hc;
