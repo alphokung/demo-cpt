@@ -29,7 +29,7 @@ A static-web prototype for the **ทางรัฐ (Thang Rat)** citizen digita
 | `mea-detail.html` | MEA electricity meter detail |
 | `ncb.html` | Credit bureau summary (NCB) |
 | `edge-cases.html` | System-state edge cases — maintenance, high-traffic |
-| `new-year.html` | New Year demo for `fireworks.js` — fireworks (น้องดีเด่น mascot icon) / sky lanterns / hearts, tap-count score board with levels & combo, downloadable score card. Add to any page with `<script src="fireworks.js" defer></script>` |
+| `new-year.html` | **Docs + demo for `fireworks.js`** — how to add it to any page, all `data-*` options, JavaScript API, score/levels/share-card, sound & haptics. Fireworks only on this page |
 | `valentine.html` | Valentine hearts demo — same `fireworks.js` with `data-modes="heart"` |
 
 ### Component Library
