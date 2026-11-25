@@ -24,9 +24,10 @@
  *   data-haptic="false"                turn off vibration feedback
  *   data-score="false"                 hide the score board / sharing
  *   data-greeting="false"              hide the greeting card in the middle of the screen
- *   data-sound="false"                 no sound effects (users can also mute with the speaker button)
+ *   data-sound="false"                 no sound effects
  *
  * Sound: synthesised live with the Web Audio API — no audio files are downloaded.
+ * There is no mute button: it follows the device (volume, and the silent switch on iPhone).
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
@@ -117,15 +118,6 @@
     '.fw-fab:hover{box-shadow:var(--shadow-custom-xl);transform:translateY(-2px);}' +
     '.fw-fab:active{transform:scale(.94);}' +
     '.fw-fab:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
-    '.fw-row{display:flex;align-items:center;gap:var(--spacing-md);}' +
-    '.fw-snd{flex:none;width:40px;height:40px;padding:0;border-radius:var(--radius-full);cursor:pointer;' +
-      'display:flex;align-items:center;justify-content:center;background:var(--neutral-100);color:var(--foreground-neutral-light);' +
-      'border:1px solid var(--stroke-neutral-lighter);box-shadow:var(--shadow-custom-lg);touch-action:manipulation;' +
-      '-webkit-tap-highlight-color:transparent;transition:transform .15s ease,color .15s ease;}' +
-    '.fw-snd:active{transform:scale(.92);}' +
-    '.fw-snd:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
-    '.fw-snd .material-symbols-outlined{font-size:20px;}' +
-    '.fw-snd[aria-pressed="true"]{color:var(--foreground-primary-default);}' +
     '.fw-fab-icon{display:flex;color:var(--warning-60);animation:fw-twinkle 1.6s ease-in-out infinite;}' +
     '.fw-fab-icon .material-symbols-outlined{font-size:22px;font-variation-settings:"FILL" 1;}' +
     '.fw-mascot{display:block;width:22px;height:22px;object-fit:contain;}' +
@@ -322,10 +314,9 @@
        Everything is synthesised with the Web Audio API (noise + oscillators),
        so there are no audio files to download. The AudioContext is created on
        the first tap (browsers only allow sound after a user gesture).
-       Note: on iPhone, Web Audio is silent while the ring/silent switch is on. */
-    var SND_KEY = 'thFireworksSound';
+       Volume follows the device; on iPhone it is silent while the ring/silent switch is on. */
     var soundOn = SOUND && !!(window.AudioContext || window.webkitAudioContext);
-    try { if (localStorage.getItem(SND_KEY) === 'off') soundOn = false; } catch (e) {}
+    try { localStorage.removeItem('thFireworksSound'); } catch (e) {}     /* clean up the old mute setting */
     var actx = null, master = null, noiseBuf = null, lastBoom = 0;
 
     function audio() {
@@ -333,6 +324,8 @@
       if (!actx) {
         var AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return null;
+        /* Safari 17+: "ambient" = obey the silent switch and don't stop the user's music */
+        try { if (navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch (e) {}
         try { actx = new AC(); } catch (e) { return null; }
         var comp = actx.createDynamicsCompressor();          /* keeps many booms from clipping */
         comp.threshold.value = -18; comp.ratio.value = 6;
@@ -456,35 +449,7 @@
     fab.innerHTML =
       '<span class="fw-fab-icon"></span>' +
       '<span class="fw-fab-text"></span>';
-    var fabRow = document.createElement('div');
-    fabRow.className = 'fw-row';
-    var sndBtn = null;
-    if (SOUND && (window.AudioContext || window.webkitAudioContext)) {
-      sndBtn = document.createElement('button');
-      sndBtn.type = 'button';
-      sndBtn.className = 'fw-snd';
-      fabRow.appendChild(sndBtn);
-    }
-    fabRow.appendChild(fab);
-    dock.appendChild(fabRow);
-
-    function renderSnd() {
-      if (!sndBtn) return;
-      sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-      sndBtn.setAttribute('aria-label', soundOn ? 'ปิดเสียง' : 'เปิดเสียง');
-      sndBtn.innerHTML = '<span class="material-symbols-outlined">' + (soundOn ? 'volume_up' : 'volume_off') + '</span>';
-    }
-    if (sndBtn) {
-      renderSnd();
-      sndBtn.addEventListener('click', function () {
-        soundOn = !soundOn;
-        try { localStorage.setItem(SND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
-        if (!soundOn && actx) actx.suspend();
-        renderSnd();
-        haptic(8, true);
-      });
-    }
-
+    dock.appendChild(fab);
     document.body.appendChild(dock);
 
     var greeting = document.createElement('div');
