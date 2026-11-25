@@ -12,6 +12,7 @@
  * Optional attributes on the <script> tag:
  *   data-label="สวัสดีปีใหม่ 2570"    greeting shown on click
  *   data-label-heart="..."             greeting for heart mode (default: สุขสันต์วันวาเลนไทน์)
+ *   data-sub="..." / data-sub-heart="..."  small second line under the greeting (set "" to hide)
  *   data-mode="heart"                  default choice: "firework" (default) | "lantern" | "heart"
  *   data-modes="heart"                 limit the choices (comma-separated); one value hides the switch
  *                                      e.g. Valentine page → data-modes="heart"
@@ -34,6 +35,11 @@
   var now = new Date();
   var LABEL = ds.label || 'สวัสดีปีใหม่ ' + (now.getFullYear() + 543 + (now.getMonth() >= 10 ? 1 : 0));
   var LABEL_HEART = ds.labelHeart || 'สุขสันต์วันวาเลนไทน์';
+  var SUB = {
+    firework: ds.sub != null ? ds.sub : 'ขอให้ปีใหม่เต็มไปด้วยความสุข',
+    lantern:  ds.sub != null ? ds.sub : 'ขอให้ทุกความหวังลอยขึ้นฟ้า',
+    heart:    ds.subHeart != null ? ds.subHeart : 'ส่งความรักให้คนที่คุณห่วงใย'
+  };
   var AUTOPLAY = ds.autoplay === 'true';
   var HAPTIC = ds.haptic !== 'false';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -100,19 +106,57 @@
       'line-height:20px;text-align:center;display:none;}' +
     '.fw-fab-count.show{display:inline-block;}' +
 
-    /* greeting */
-    '.fw-greeting{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);z-index:9999;pointer-events:none;' +
-      'padding:var(--spacing-lg) var(--spacing-3xl);border-radius:var(--radius-full);' +
-      'background:rgba(0,61,40,.82);color:var(--neutral-100);backdrop-filter:blur(6px);' +
-      'font-size:var(--font-size-headline-s);line-height:32px;font-weight:var(--font-weight-700);' +
-      'white-space:nowrap;box-shadow:var(--shadow-custom-xl);opacity:0;transition:opacity .4s ease,transform .4s cubic-bezier(.2,1.4,.4,1);}' +
-    '.fw-greeting.show{opacity:1;transform:translate(-50%,-50%) scale(1);}' +
+    /* greeting card */
+    '.fw-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}' +
+    '.fw-greeting{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.3);z-index:9999;pointer-events:none;' +
+      'box-sizing:border-box;width:max-content;max-width:min(88vw,440px);padding:var(--spacing-5xl) var(--spacing-4xl) var(--spacing-2xl);' +
+      'border-radius:var(--radius-4xl);border:2px solid rgba(255,255,255,.6);text-align:center;color:var(--neutral-100);' +
+      'opacity:0;--fw-a:var(--primary-20);--fw-b:var(--primary-30-base);--fw-glow:rgba(0,136,88,.45);' +
+      'background:linear-gradient(135deg,var(--fw-a),var(--fw-b));' +
+      'box-shadow:0 12px 40px var(--fw-glow),0 0 0 6px rgba(255,255,255,.18),var(--shadow-custom-xl);}' +
+    '.fw-greeting--heart{--fw-a:#d6246e;--fw-b:#9b4dea;--fw-glow:rgba(214,36,110,.5);' +
+      'background:linear-gradient(135deg,#d6246e 0%,#ff4d8d 48%,#9b4dea 100%);}' +
+    '.fw-greeting--lantern{--fw-glow:rgba(247,144,9,.5);' +
+      'background:linear-gradient(135deg,var(--warning-30,#b54708) 0%,var(--warning-40,#dc6803) 55%,#f79009 100%);}' +
+    '.fw-greeting--firework{border-color:var(--warning-60);--fw-glow:rgba(253,176,34,.4);}' +
+    '.fw-greeting.show{animation:fw-g-pop .6s cubic-bezier(.2,1.3,.4,1) forwards;}' +
+    '.fw-greeting.leave{animation:fw-g-out .35s ease-in forwards;}' +
+
+    '.fw-g-badge{position:absolute;left:50%;top:0;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:var(--radius-full);' +
+      'display:flex;align-items:center;justify-content:center;font-size:30px;line-height:1;background:var(--neutral-100);' +
+      'box-shadow:0 6px 18px var(--fw-glow),var(--shadow-custom-lg);animation:fw-g-beat 1s ease-in-out .5s infinite;}' +
+    '.fw-g-title{display:block;font-size:26px;line-height:36px;font-weight:var(--font-weight-700);' +
+      'text-shadow:0 2px 10px rgba(0,0,0,.28);}' +
+    '.fw-g-w{display:inline-block;white-space:nowrap;}' +
+    '.fw-g-ch{display:inline-block;animation:fw-g-in .5s calc(var(--i) * 40ms) cubic-bezier(.2,1.5,.4,1) both,' +
+      'fw-g-wave 1.2s calc(.7s + var(--i) * 80ms) ease-in-out infinite;}' +
+    '.fw-g-sub{display:block;margin-top:var(--spacing-xs);font-size:var(--font-size-title-s);line-height:var(--line-height-title-s);' +
+      'font-weight:var(--font-weight-500);opacity:0;color:rgba(255,255,255,.95);animation:fw-g-fade .5s .55s ease forwards;}' +
+    '.fw-g-sub:empty{display:none;}' +
+    '.fw-g-shine{position:absolute;inset:0;border-radius:inherit;overflow:hidden;}' +
+    '.fw-g-shine::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-40%;width:30%;transform:skewX(-20deg);' +
+      'background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:fw-g-sweep 1.6s .35s ease-in-out;}' +
+    '.fw-g-deco{position:absolute;left:var(--x);top:var(--y);font-size:var(--s,16px);line-height:1;color:var(--c,#fff);' +
+      'text-shadow:0 0 8px currentColor;opacity:0;animation:fw-g-twinkle 1.8s var(--d,0s) ease-in-out infinite;}' +
+
+    '@keyframes fw-g-pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-8deg);}' +
+      '55%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(2deg);}' +
+      '100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0);}}' +
+    '@keyframes fw-g-out{from{opacity:1;transform:translate(-50%,-50%) scale(1);}to{opacity:0;transform:translate(-50%,-62%) scale(.9);}}' +
+    '@keyframes fw-g-in{from{opacity:0;transform:translateY(-16px) scale(.5);}to{opacity:1;transform:none;}}' +
+    '@keyframes fw-g-wave{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}' +
+    '@keyframes fw-g-fade{from{opacity:0;transform:translateY(4px);}to{opacity:.95;transform:none;}}' +
+    '@keyframes fw-g-beat{0%,100%{transform:scale(1);}18%{transform:scale(1.18);}32%{transform:scale(1);}46%{transform:scale(1.12);}}' +
+    '@keyframes fw-g-sweep{from{left:-40%;}to{left:130%;}}' +
+    '@keyframes fw-g-twinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0);}45%{opacity:1;transform:scale(1.1) rotate(25deg);}}' +
 
     '@keyframes fw-twinkle{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(12deg) scale(1.12);}}' +
     '@media (max-width:479px){.fw-fab-text{display:none;}.fw-fab{width:48px;padding:0;justify-content:center;}' +
-      '.fw-fab-count{position:absolute;top:-4px;right:-4px;}.fw-greeting{font-size:var(--font-size-title-l);}}' +
+      '.fw-fab-count{position:absolute;top:-4px;right:-4px;}.fw-g-title{font-size:22px;line-height:32px;}' +
+      '.fw-greeting{padding:var(--spacing-5xl) var(--spacing-3xl) var(--spacing-2xl);}}' +
     '@media (min-width:1024px){.fw-dock{bottom:var(--spacing-3xl);}.fw-dock.fw-raised{bottom:calc(var(--spacing-3xl) + 60px);}}' +
-    '@media (prefers-reduced-motion:reduce){.fw-fab-icon{animation:none;}}';
+    '@media (prefers-reduced-motion:reduce){.fw-fab-icon,.fw-g-badge,.fw-g-deco,.fw-g-shine::after{animation:none;}' +
+      '.fw-g-ch{animation:fw-g-in .3s both;}.fw-g-deco{display:none;}}';
 
   var style = document.createElement('style');
   style.textContent = css;
@@ -220,6 +264,56 @@
     greeting.className = 'fw-greeting';
     greeting.setAttribute('role', 'status');
     document.body.appendChild(greeting);
+
+    var GREET = {
+      firework: { emoji: '🎉', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fdb022', '#fedf89', '#ffffff'] },
+      lantern:  { emoji: '🏮', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fedf89', '#fdb022', '#ffffff'] },
+      heart:    { emoji: '💖', deco: ['♥', '✦', '♥', '♥', '✦', '♥'], colors: ['#ffffff', '#ffd1e3', '#ffb3d1', '#fedf89'] }
+    };
+    var DECO_POS = [['-6%', '-8%', 0], ['94%', '-2%', .4], ['-9%', '58%', .9], ['98%', '52%', .2], ['12%', '104%', .6], ['84%', '102%', 1.1]];
+
+    function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+    /* split into words → letters (grapheme-safe so Thai vowels/tone marks stay attached) */
+    function waveText(text) {
+      if (!window.Intl || !Intl.Segmenter) return esc(text);
+      var words = new Intl.Segmenter('th', { granularity: 'word' });
+      var chars = new Intl.Segmenter('th', { granularity: 'grapheme' });
+      var i = 0, out = '';
+      Array.from(words.segment(text)).forEach(function (w) {
+        var inner = Array.from(chars.segment(w.segment)).map(function (g) {
+          if (!g.segment.trim()) return ' ';
+          return '<span class="fw-g-ch" style="--i:' + (i++) + '">' + esc(g.segment) + '</span>';
+        }).join('');
+        out += w.segment.trim() ? '<span class="fw-g-w">' + inner + '</span>' : ' ';
+      });
+      return out;
+    }
+
+    var leaveTimer, greetTimer;
+    function showGreeting(kind) {
+      var g = GREET[kind] || GREET.firework;
+      var text = kind === 'heart' ? LABEL_HEART : LABEL;
+      var decos = DECO_POS.map(function (d, i) {
+        return '<span class="fw-g-deco" aria-hidden="true" style="--x:' + d[0] + ';--y:' + d[1] + ';--d:' + d[2] + 's;--s:' + (12 + (i % 3) * 5) +
+          'px;--c:' + g.colors[i % g.colors.length] + '">' + g.deco[i] + '</span>';
+      }).join('');
+      greeting.className = 'fw-greeting fw-greeting--' + kind;
+      greeting.innerHTML =
+        '<span class="fw-g-shine" aria-hidden="true"></span>' + decos +
+        '<span class="fw-g-badge" aria-hidden="true">' + g.emoji + '</span>' +
+        '<span class="fw-sr">' + esc(text) + '</span>' +
+        '<span class="fw-g-title" aria-hidden="true">' + waveText(text) + '</span>' +
+        '<span class="fw-g-sub">' + esc(SUB[kind]) + '</span>';
+      void greeting.offsetWidth;                    /* restart the animations on every click */
+      greeting.classList.add('show');
+      clearTimeout(greetTimer); clearTimeout(leaveTimer);
+      greetTimer = setTimeout(function () {
+        greeting.classList.remove('show');
+        greeting.classList.add('leave');
+        leaveTimer = setTimeout(function () { greeting.className = 'fw-greeting'; }, 360);
+      }, 2800);
+    }
 
     function setMode(m) {
       if (!MODES[m] || allowed.indexOf(m) < 0) return;
@@ -579,7 +673,7 @@
     }
 
     /* ── Interaction ── */
-    var clicks = 0, greetTimer;
+    var clicks = 0;
     function fire(kind) {
       kind = MODES[kind] ? kind : mode;
       if (kind === 'lantern') {
@@ -596,10 +690,7 @@
       clicks++;
       countEl.textContent = clicks > 99 ? '99+' : clicks;
       countEl.classList.toggle('show', clicks > 1);
-      greeting.textContent = kind === 'heart' ? '💖 ' + LABEL_HEART : (kind === 'lantern' ? '🏮 ' : '🎉 ') + LABEL;
-      greeting.classList.add('show');
-      clearTimeout(greetTimer);
-      greetTimer = setTimeout(function () { greeting.classList.remove('show'); }, 2600);
+      showGreeting(kind);
     }
 
     fab.addEventListener('click', function () { haptic(12, true); fire(); });
