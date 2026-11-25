@@ -1,0 +1,71 @@
+{
+  "id": "newyear-2570",
+  "name": "ปีใหม่ 2570",
+  "label": "สวัสดีปีใหม่ 2570",
+  "sub": "ขอให้ปีใหม่เต็มไปด้วยความสุข",
+  "modes": ["firework"],
+  "greeting": false,
+  "levels": [
+    {
+      "at": 0,
+      "title": "มือใหม่หัดกด",
+      "emoji": "🐣",
+      "card": "cards/lv1.webp",
+      "colors": {"bg": ["#9d174d", "#ec4899"], "accent": ["#fde68a", "#f59e0b"]}
+    },
+    {
+      "at": 50,
+      "title": "สายฉลองฝึกหัด",
+      "emoji": "✨",
+      "card": "cards/lv2.webp",
+      "colors": {"bg": ["#0b4a5e", "#1aa3b5"], "accent": ["#b9f3ff", "#38bdf8"]}
+    },
+    {
+      "at": 100,
+      "title": "นักฉลองตัวยง",
+      "emoji": "🎇",
+      "card": "cards/lv3.webp",
+      "colors": {"bg": ["#003d28", "#00704a"], "accent": ["#fdb022", "#f79009"]}
+    },
+    {
+      "at": 200,
+      "title": "มือทองแห่งทางรัฐ",
+      "emoji": "🏅",
+      "card": "cards/lv4.webp",
+      "colors": {"bg": ["#14245c", "#3555b5"], "accent": ["#ffd36b", "#e0a800"]}
+    },
+    {
+      "at": 400,
+      "title": "เซียนนิ้วไว",
+      "emoji": "🔥",
+      "card": "cards/lv5.webp",
+      "colors": {"bg": ["#5c0d04", "#d9480f"], "accent": ["#ffd166", "#ff7a00"]}
+    },
+    {
+      "at": 800,
+      "title": "ราชาแห่งความสุข",
+      "emoji": "👑",
+      "card": "cards/lv6.webp",
+      "colors": {"bg": ["#2d0748", "#7b2cbf"], "accent": ["#ffd700", "#d4a017"]}
+    },
+    {
+      "at": 1600,
+      "title": "ตำนานดีเด่น",
+      "emoji": "🌟",
+      "card": "cards/lv7.webp",
+      "colors": {"bg": ["#070b2b", "#262c78"], "accent": ["#fff3b0", "#ffcf33"]}
+    },
+    {
+      "at": 3200,
+      "title": "เทพเจ้าแห่งการกด",
+      "emoji": "🚀",
+      "card": "cards/lv8.webp",
+      "colors": {"bg": ["#04010d", "#3a0a5e"], "accent": ["#7df9ff", "#c084fc"]}
+    }
+  ],
+  "cardSlots": {
+    "mascot": {"x": 290, "y": 160, "w": 500, "h": 405},
+    "score": {"x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220},
+    "combo": {"x": 60, "y": 1122, "w": 960, "h": 50, "size": 34}
+  }
+}

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ฉลองปีใหม่ (Theme) — ทางรัฐ</title>
+  <meta name="description" content="ตัวอย่างปุ่มจุดพลุฉลองปีใหม่ — ทางรัฐ">
+  <meta name="author" content="สำนักงานพัฒนารัฐบาลดิจิทัล (องค์การมหาชน)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://thangrath.apps.go.th/th">
+  <meta property="og:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="og:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="og:image" content="_media/og-image.png">
+  <meta property="og:site_name" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://thangrath.apps.go.th/th">
+  <meta property="twitter:title" content="ทางรัฐ ติดต่อรัฐง่ายแค่ปลายนิ้ว">
+  <meta property="twitter:description" content="ติดต่อรัฐง่ายแค่ปลายนิ้ว, ทางลัดถึงรัฐ ช่องทางเดียว ง่าย จบ ครบทุกช่วงวัย">
+  <meta property="twitter:image" content="_media/og-image.png">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* No double-tap zoom anywhere on this page (pinch-zoom still works for accessibility) */
+    html, body { touch-action: manipulation; }
+
+    /* docs: code samples wrap instead of stretching the page on phones */
+    .card { min-width: 0; }
+    .code-block { max-width: 100%; box-sizing: border-box; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
+    .data-table code, .details-value code { overflow-wrap: anywhere; }
+    .code-block code { background: transparent; padding: 0; color: inherit; font-size: inherit; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="main-layout">
+
+      <!-- Top Nav Bar -->
+      <div class="top-nav-bar">
+        <div class="top-nav-bar-content">
+          <a href="components.html" class="btn-back-circle" title="ย้อนกลับ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+          <div class="top-nav-bar-icon">
+            <span class="material-symbols-outlined">celebration</span>
+          </div>
+          <p class="top-nav-bar-title">ฉลองปีใหม่ · Theme</p>
+        </div>
+      </div>
+
+      <main>
+
+        <!-- ── Welcome Card ── -->
+        <div class="card welcome-card welcome-card--green mb-xl">
+          <h2>สวัสดีปีใหม่ 2570</h2>
+          <p>ทางรัฐ ขอให้ทุกท่านมีความสุขตลอดปี</p>
+          <p>กดปุ่ม “จุดพลุ” มุมขวาล่าง — กดซ้ำได้เรื่อย ๆ</p>
+        </div>
+
+        <!-- ── สารบัญ ── -->
+        <div class="card mb-xl">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">เอกสารการใช้งาน fireworks.js</h3>
+          </div>
+          <p style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">ลูกเล่นฉลองสำหรับเว็บทางรัฐ — กดปุ่มมุมขวาล่างเพื่อจุดพลุ ปล่อยโคมลอย หรือส่งหัวใจ พร้อมตัวนับคะแนน เลเวล และการ์ดคะแนนให้บันทึกไปแชร์ ใส่สคริปต์บรรทัดเดียว ไม่ต้องติดตั้งอะไรเพิ่ม</p>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--spacing-md);">
+            <a class="tag tag--primary" href="#theme">ระบบ Theme</a>
+            <a class="tag tag--primary" href="#start">เริ่มใช้งาน</a>
+            <a class="tag tag--primary" href="#modes">โหมด</a>
+            <a class="tag tag--primary" href="#options">ตัวเลือก</a>
+            <a class="tag tag--primary" href="#api">JavaScript API</a>
+            <a class="tag tag--primary" href="#score">คะแนน &amp; เลเวล</a>
+            <a class="tag tag--primary" href="#feel">เสียง · สั่น · เข้าถึง</a>
+            <a class="tag tag--primary" href="#notes">ข้อควรรู้</a>
+          </div>
+        </div>
+
+        <!-- ── ระบบ Theme ── -->
+        <div class="card mb-xl" id="theme" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--danger-40);"></div>
+            <h3 class="section-title">ระบบ Theme — หน้านี้ใช้ <code>newyear-2570</code></h3>
+          </div>
+          <p style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">ทุกอย่างที่เป็นของเทศกาล (ข้อความ โหมด เลเวล สี และการ์ดคะแนนที่ออกแบบใน Figma) อยู่ในโฟลเดอร์ theme แยกจากโค้ด เทศกาลใหม่แค่คัดลอกโฟลเดอร์ เปลี่ยนภาพ แล้วแก้ <code>theme.json</code> — ไม่ต้องแตะ <code>fireworks.js</code></p>
+          <pre class="code-block"><code>&lt;script src="fireworks.js"
+        data-theme="celebrations/newyear-2570/theme.json" defer&gt;&lt;/script&gt;</code></pre>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">โครงสร้างโฟลเดอร์</p>
+          <pre class="code-block"><code>celebrations/
+  README.md                 ← คู่มือ theme ฉบับเต็ม
+  newyear-2570/
+    theme.json              ← ข้อความ โหมด เลเวล สี ตำแหน่งช่องที่โค้ดวาด
+    cards/lv1.webp … lv8.webp   ← การ์ดทั้งใบจาก Figma (ใบละ ~32KB)
+    icons/lv1.svg …         ← (ไม่บังคับ) ไอคอนเลเวลบนบาร์คะแนน</code></pre>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">ใครแก้อะไร</p>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>ใคร</th><th>แก้อะไร</th><th>ที่ไหน</th></tr></thead>
+              <tbody>
+                <tr><td data-label="ใคร">Designer</td><td data-label="แก้อะไร">การ์ดทั้งใบของแต่ละเลเวล (พื้นหลัง ข้อความ ป้ายตำแหน่ง ไอคอนทางรัฐ) และไอคอนเลเวล</td><td data-label="ที่ไหน">Figma → export → <code>cards/</code>, <code>icons/</code></td></tr>
+                <tr><td data-label="ใคร">Content / Dev</td><td data-label="แก้อะไร">ข้อความอวยพร โหมด ชื่อและเกณฑ์เลเวล สีตัวเลข ช่วงวันที่เปิดใช้</td><td data-label="ที่ไหน"><code>theme.json</code></td></tr>
+                <tr><td data-label="ใคร">Dev</td><td data-label="แก้อะไร">เอฟเฟกต์ใหม่ ระบบคะแนน ปุ่มลอย</td><td data-label="ที่ไหน"><code>fireworks.js</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">สิ่งที่โค้ดวาดทับบนการ์ดจาก Figma (3 อย่าง)</p>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">น้องดีเด่น · ตัวเลขคะแนน · คอมโบสูงสุด</span>
+              <span class="details-value">วาดตามกรอบแดง “CODE SLOTS” ในไฟล์ Figma ตำแหน่งอยู่ที่ <code>cardSlots</code> ใน theme.json — ถ้า designer ย้ายกรอบแดง ให้แก้ตัวเลขใน theme.json ให้ตรง</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">สีตัวเลขคะแนน</span>
+              <span class="details-value">มาจาก <code>levels[].colors.accent</code> ของแต่ละเลเวล</span>
+            </div>
+          </div>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">ตัวอย่าง theme.json (ย่อ)</p>
+          <pre class="code-block"><code>{
+  "id": "newyear-2570",
+  "label": "สวัสดีปีใหม่ 2570",
+  "modes": ["firework"],
+  "greeting": false,
+  "active": { "from": "2026-12-20", "to": "2027-01-10" },   ← ไม่บังคับ
+  "levels": [
+    { "at": 0,  "title": "มือใหม่หัดกด", "emoji": "🐣",
+      "card": "cards/lv1.webp",
+      "colors": { "bg": ["#9d174d", "#ec4899"], "accent": ["#fde68a", "#f59e0b"] } },
+    …
+  ],
+  "cardSlots": { "mascot": {…}, "score": {…}, "combo": {…} }
+}</code></pre>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">เทศกาลใหม่ใน 4 ขั้น</p>
+          <div class="details-list">
+            <div class="details-item"><span class="details-label">1</span><span class="details-value">คัดลอกโฟลเดอร์ <code>newyear-2570/</code> เป็นชื่อใหม่ เช่น <code>songkran-2570/</code></span></div>
+            <div class="details-item"><span class="details-label">2</span><span class="details-value">Designer คัดลอกการ์ด 8 ใบใน Figma ออกแบบใหม่ แล้ว export ลง <code>cards/</code> (แปลงเป็น WebP คุณภาพ ~85)</span></div>
+            <div class="details-item"><span class="details-label">3</span><span class="details-value">แก้ <code>theme.json</code> — ข้อความ โหมด ชื่อเลเวล สี และ <code>active</code> (ถ้าต้องการให้เปิด-ปิดเองตามวันที่ · ทดสอบนอกช่วงวันได้ด้วย <code>?fw-preview</code>)</span></div>
+            <div class="details-item"><span class="details-label">4</span><span class="details-value">ชี้หน้าเว็บไปที่ theme ใหม่: <code>data-theme="celebrations/songkran-2570/theme.json"</code></span></div>
+          </div>
+          <p style="margin:var(--spacing-lg) 0 0;color:var(--foreground-neutral-lighter);font-size:var(--font-size-body-s);">ค่า <code>data-*</code> บนแท็ก script ยังมีผลเหนือ theme · ถ้าโหลด theme ไม่ได้ สคริปต์จะใช้ค่าเริ่มต้นแทน หน้าไม่พัง · ไฟล์ theme ต้องอยู่โดเมนเดียวกับหน้าเว็บ</p>
+        </div>
+
+        <div class="card mb-xl" id="start" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">เริ่มใช้งาน</h3>
+          </div>
+          <p class="" style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">ใส่บรรทัดเดียวก่อนปิด <code>&lt;/body&gt;</code> ของหน้าที่ต้องการ แล้วปุ่มจะขึ้นมุมขวาล่างทันที</p>
+          <pre class="code-block"><code>&lt;script src="fireworks.js" defer&gt;&lt;/script&gt;</code></pre>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);color:var(--foreground-neutral-default);">ข้อกำหนด</p>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">โหลด styles.css ของโปรเจกต์</span>
+              <span class="details-value">ปุ่ม การ์ด และสีทั้งหมดใช้ design token กับฟอนต์ Anuphan / ไอคอน Material Symbols จาก <code>styles.css</code> หน้าที่ใช้แพตเทิร์นหน้ามาตรฐานของโปรเจกต์มีครบอยู่แล้ว</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ใช้ <code>defer</code> เสมอ</span>
+              <span class="details-value">สคริปต์อ่านค่าสีและหาปุ่ม “กลับขึ้นด้านบน” ตอนหน้าโหลดเสร็จ ปุ่มจุดพลุจะขยับขึ้นหนีปุ่มนั้นเองเมื่อมันโผล่</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ไฟล์เดียวจบ</span>
+              <span class="details-value">ภาพน้องดีเด่นและไอคอนทางรัฐฝังอยู่ใน <code>fireworks.js</code> แล้ว ไม่ต้องคัดลอกไฟล์ภาพ ไม่มีไฟล์เสียงให้โหลด</span>
+            </div>
+          </div>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);color:var(--foreground-neutral-default);">ตัวอย่างการตั้งค่าที่ใช้บ่อย</p>
+          <pre class="code-block"><code>&lt;!-- หน้าปีใหม่: พลุอย่างเดียว --&gt;
+&lt;script src="fireworks.js" data-modes="firework"
+        data-label="สวัสดีปีใหม่ 2570" defer&gt;&lt;/script&gt;
+
+&lt;!-- หน้าวาเลนไทน์: หัวใจอย่างเดียว --&gt;
+&lt;script src="fireworks.js" data-modes="heart"
+        data-label-heart="สุขสันต์วันวาเลนไทน์" defer&gt;&lt;/script&gt;
+
+&lt;!-- ให้ผู้ใช้เลือกเองได้ทั้ง 3 แบบ (ค่าเริ่มต้น) --&gt;
+&lt;script src="fireworks.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- ไม่ต้องการคะแนน/เสียง/คำอวยพรกลางจอ --&gt;
+&lt;script src="fireworks.js" data-score="false" data-sound="false"
+        data-greeting="false" defer&gt;&lt;/script&gt;</code></pre>
+
+        </div>
+
+        <div class="card mb-xl" id="modes" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--secondary-40-main);"></div>
+            <h3 class="section-title">โหมดที่ปล่อยได้</h3>
+          </div>
+          <p class="" style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">มี 3 โหมด เลือกได้ด้วย <code>data-modes</code> ถ้าใส่มากกว่าหนึ่งโหมด จะมีแถบสลับ “พลุ / โคมลอย / หัวใจ” เหนือปุ่ม ระบบจำโหมดที่ผู้ใช้เลือกไว้ล่าสุดและใช้เป็นค่าตั้งต้นครั้งถัดไป</p>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>ค่า</th><th>ชื่อ</th><th>กดหนึ่งครั้งได้อะไร</th><th>เสียง</th></tr></thead>
+              <tbody>
+                <tr><td data-label="ค่า"><code>firework</code></td><td data-label="ชื่อ">พลุ</td><td data-label="กดหนึ่งครั้งได้อะไร">พลุ 3 ลูกพุ่งขึ้นแล้วแตกหลายทรง (วงแหวน ดอกไม้ ระย้า) ใช้ไอคอนน้องดีเด่น</td><td data-label="เสียง">เสียงฟิ้ว ตามด้วยเสียงตูมและประกายแตก</td></tr>
+                <tr><td data-label="ค่า"><code>lantern</code></td><td data-label="ชื่อ">โคมลอย</td><td data-label="กดหนึ่งครั้งได้อะไร">โคม 4 ดวงลอยขึ้นช้า ๆ โยกไปมา เปลวไฟกะพริบ ยิ่งสูงยิ่งเล็กและจางหาย</td><td data-label="เสียง">เสียงระฆังใส ๆ</td></tr>
+                <tr><td data-label="ค่า"><code>heart</code></td><td data-label="ชื่อ">หัวใจ</td><td data-label="กดหนึ่งครั้งได้อะไร">พลุรูปหัวใจหลากสี 2 ลูก และหัวใจดวงเล็ก 12 ดวงลอยขึ้น</td><td data-label="เสียง">เสียงตูมเบา กระดิ่ง และเสียงป๊อป</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="card mb-xl" id="options" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--warning-40);"></div>
+            <h3 class="section-title">ตัวเลือก (แอตทริบิวต์ที่แท็ก script)</h3>
+          </div>
+          <p class="" style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">ใส่เป็น <code>data-*</code> บนแท็ก <code>&lt;script&gt;</code> ทั้งหมดไม่บังคับ</p>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>แอตทริบิวต์</th><th>ค่าที่ใส่ได้</th><th>ค่าเริ่มต้น</th><th>ทำอะไร</th></tr></thead>
+              <tbody>
+                <tr><td data-label="แอตทริบิวต์"><code>data-modes</code></td><td data-label="ค่าที่ใส่ได้"><code>firework,lantern,heart</code> (คั่นด้วยจุลภาค)</td><td data-label="ค่าเริ่มต้น">ครบทั้ง 3</td><td data-label="ทำอะไร">เลือกว่าหน้านี้ให้ปล่อยอะไรได้บ้าง ใส่ค่าเดียวจะซ่อนแถบสลับ</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-mode</code></td><td data-label="ค่าที่ใส่ได้"><code>firework</code> · <code>lantern</code> · <code>heart</code></td><td data-label="ค่าเริ่มต้น">ตัวแรกใน data-modes</td><td data-label="ทำอะไร">โหมดตั้งต้นของหน้า ถ้าผู้ใช้เคยเลือกไว้แล้ว จะใช้ตามที่ผู้ใช้เลือก</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-label</code></td><td data-label="ค่าที่ใส่ได้">ข้อความ</td><td data-label="ค่าเริ่มต้น">สวัสดีปีใหม่ + ปี พ.ศ.</td><td data-label="ทำอะไร">ข้อความหัวการ์ดคะแนน และการ์ดทักทายของโหมดพลุ/โคมลอย</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-label-heart</code></td><td data-label="ค่าที่ใส่ได้">ข้อความ</td><td data-label="ค่าเริ่มต้น">สุขสันต์วันวาเลนไทน์</td><td data-label="ทำอะไร">ข้อความเดียวกัน แต่สำหรับโหมดหัวใจ</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-sub</code></td><td data-label="ค่าที่ใส่ได้">ข้อความ · <code>""</code> เพื่อซ่อน</td><td data-label="ค่าเริ่มต้น">ต่างกันตามโหมด</td><td data-label="ทำอะไร">บรรทัดเล็กใต้ข้อความทักทายของโหมดพลุ/โคมลอย</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-sub-heart</code></td><td data-label="ค่าที่ใส่ได้">ข้อความ · <code>""</code> เพื่อซ่อน</td><td data-label="ค่าเริ่มต้น">ส่งความรักให้คนที่คุณห่วงใย</td><td data-label="ทำอะไร">บรรทัดเล็กของโหมดหัวใจ</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-greeting</code></td><td data-label="ค่าที่ใส่ได้"><code>false</code></td><td data-label="ค่าเริ่มต้น">แสดง</td><td data-label="ทำอะไร">ซ่อนการ์ดคำอวยพรกลางจอ (หน้านี้ซ่อนอยู่) ไม่กระทบข้อความบนการ์ดคะแนน</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-score</code></td><td data-label="ค่าที่ใส่ได้"><code>false</code></td><td data-label="ค่าเริ่มต้น">แสดง</td><td data-label="ทำอะไร">ปิดกล่องคะแนน เลเวล คอมโบ และปุ่มบันทึกการ์ดทั้งหมด</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-sound</code></td><td data-label="ค่าที่ใส่ได้"><code>false</code></td><td data-label="ค่าเริ่มต้น">เปิด</td><td data-label="ทำอะไร">ปิดเสียงเอฟเฟกต์</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-haptic</code></td><td data-label="ค่าที่ใส่ได้"><code>false</code></td><td data-label="ค่าเริ่มต้น">เปิด</td><td data-label="ทำอะไร">ปิดการสั่นของเครื่อง</td></tr>
+                <tr><td data-label="แอตทริบิวต์"><code>data-autoplay</code></td><td data-label="ค่าที่ใส่ได้"><code>true</code></td><td data-label="ค่าเริ่มต้น">ปิด</td><td data-label="ทำอะไร">ปล่อยหนึ่งรอบอัตโนมัติ 0.6 วินาทีหลังโหลดหน้า (ไม่นับคะแนน และเสียงจะยังไม่ดังจนกว่าผู้ใช้จะแตะ)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="card mb-xl" id="api" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--info-40);"></div>
+            <h3 class="section-title">JavaScript API</h3>
+          </div>
+          <p class="" style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">สคริปต์สร้างอ็อบเจกต์ <code>window.thFireworks</code> ใช้สั่งจากโค้ดของหน้าเอง เช่น ผูกกับปุ่มอื่นหรือจังหวะอื่นในหน้า</p>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>เมธอด</th><th>ทำอะไร</th><th>ค่าที่คืน</th></tr></thead>
+              <tbody>
+                <tr><td data-label="เมธอด"><code>fire(kind?)</code></td><td data-label="ทำอะไร">ปล่อยหนึ่งรอบตามโหมดปัจจุบัน หรือระบุ <code>'firework'</code> / <code>'lantern'</code> / <code>'heart'</code> (ไม่นับคะแนน)</td><td data-label="ค่าที่คืน">—</td></tr>
+                <tr><td data-label="เมธอด"><code>setMode(mode)</code></td><td data-label="ทำอะไร">เปลี่ยนโหมด (ต้องอยู่ใน data-modes) และจำไว้ให้ผู้ใช้</td><td data-label="ค่าที่คืน">—</td></tr>
+                <tr><td data-label="เมธอด"><code>getMode()</code></td><td data-label="ทำอะไร">อ่านโหมดปัจจุบัน</td><td data-label="ค่าที่คืน"><code>'firework'</code> · <code>'lantern'</code> · <code>'heart'</code></td></tr>
+                <tr><td data-label="เมธอด"><code>getScore()</code></td><td data-label="ทำอะไร">อ่านคะแนนของผู้ใช้ในหน้านี้</td><td data-label="ค่าที่คืน"><code>{ total, firework, lantern, heart, bestCombo }</code></td></tr>
+                <tr><td data-label="เมธอด"><code>share()</code></td><td data-label="ทำอะไร">เปิดหน้าต่างการ์ดคะแนนให้บันทึกรูป (เปิดได้เมื่อกดอย่างน้อย 1 ครั้ง)</td><td data-label="ค่าที่คืน">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);color:var(--foreground-neutral-default);">ตัวอย่าง</p>
+          <pre class="code-block"><code>&lt;!-- ปุ่มของเราเอง: กดแล้วส่งหัวใจ --&gt;
+&lt;button onclick="thFireworks.fire('heart')"&gt;ส่งหัวใจ&lt;/button&gt;
+
+&lt;script&gt;
+  // ฉลองเมื่อชำระเงินสำเร็จ
+  function onPaid() { thFireworks.fire('firework'); }
+
+  // อ่านคะแนนไปแสดง/ส่งไปเก็บเอง
+  console.log(thFireworks.getScore());
+&lt;/script&gt;</code></pre>
+
+        </div>
+
+        <div class="card mb-xl" id="score" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--danger-40);"></div>
+            <h3 class="section-title">คะแนน เลเวล และการ์ดแชร์</h3>
+          </div>
+          <p class="" style="margin:0 0 var(--spacing-lg);color:var(--foreground-neutral-light);">ออกแบบให้ชวนคนมากดแข่งกัน แล้วบันทึกการ์ดไปโพสต์ต่อใน social</p>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">การนับ</span>
+              <span class="details-value">ทุกครั้งที่กดปุ่มหลักนับ 1 คะแนน รวมทุกโหมด <strong>เก็บไว้ในหน้าเท่านั้น รีเฟรชแล้วเริ่มนับใหม่จาก 0</strong></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">กล่องคะแนน</span>
+              <span class="details-value">เลื่อนลงมาจากด้านบนหลังกดครั้งแรก แสดงจำนวนครั้ง ตำแหน่ง แถบความคืบหน้า และ “อีกกี่ครั้ง” ถึงเลเวลถัดไป กล่องหน้าตาเดียวกันทุกเลเวล มีแค่ไอคอนเลเวลด้านซ้ายที่เปลี่ยน หายไปเองเมื่อไม่กดต่อ 3 วินาที (ไม่หายขณะเมาส์ชี้อยู่ หรือเปิดการ์ดคะแนนอยู่)</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">คอมโบ</span>
+              <span class="details-value">กดติดกันห่างไม่เกิน 0.65 วินาทีนับเป็นคอมโบ ตั้งแต่ x3 มีป้าย 🔥 ที่กล่อง ตั้งแต่ x5 มีข้อความ “+1 คอมโบ” ลอยจากปุ่ม ค่าคอมโบสูงสุดไปอยู่บนการ์ด</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เลเวลอัป</span>
+              <span class="details-value">มีป้ายแจ้ง กล่องคะแนนสว่างวาบ สั่นเป็นจังหวะ และปล่อยของแถมอีก 2 ชุด</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ภาพจาก designer (ไม่บังคับ)</span>
+              <span class="details-value">ใส่ใน <code>LEVELS</code> ของ <code>fireworks.js</code> ทีละเลเวล · <code>icon: 'icons/lv4.svg'</code> ไอคอนบนบาร์คะแนนและป้ายเลเวลอัป · <code>card: 'cards/lv4.png'</code> การ์ดทั้งใบที่ออกแบบใน Figma (กรอบ card/lvN) โค้ดจะวาดทับแค่น้องดีเด่น ตัวเลขคะแนน และคอมโบสูงสุดของผู้เล่น ตามช่องแดงในไฟล์ Figma · เลเวลที่ไม่ใส่จะใช้แบบที่โค้ดวาดเอง · ไฟล์ต้องอยู่โดเมนเดียวกับหน้าเว็บ</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">การ์ดคะแนน</span>
+              <span class="details-value">กดปุ่มแชร์บนกล่องคะแนน → ดูตัวอย่างการ์ดแล้วกด “บันทึกรูป” ได้ไฟล์ JPEG ขนาด 1080×1350 (ประมาณ 150KB) มีน้องดีเด่น จำนวนครั้ง ตำแหน่ง สถิติแยกโหมด คอมโบสูงสุด และไอคอนทางรัฐมุมขวาบน พื้นหลังเปลี่ยนตามเลเวล</span>
+            </div>
+          </div>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);color:var(--foreground-neutral-default);">ตารางเลเวล (8 ขั้น)</p>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>ระดับ</th><th>ตำแหน่ง</th><th>กดครบ (ครั้ง)</th><th>โทนสีการ์ด</th></tr></thead>
+              <tbody>
+                <tr><td data-label="ระดับ">Lv.1</td><td data-label="ตำแหน่ง">🐣 มือใหม่หัดกด</td><td data-label="กดครบ (ครั้ง)">0</td><td data-label="โทนสีการ์ด">ชมพูกุหลาบ</td></tr>
+                <tr><td data-label="ระดับ">Lv.2</td><td data-label="ตำแหน่ง">✨ สายฉลองฝึกหัด</td><td data-label="กดครบ (ครั้ง)">50</td><td data-label="โทนสีการ์ด">ฟ้าอมเขียว</td></tr>
+                <tr><td data-label="ระดับ">Lv.3</td><td data-label="ตำแหน่ง">🎇 นักฉลองตัวยง</td><td data-label="กดครบ (ครั้ง)">100</td><td data-label="โทนสีการ์ด">เขียวทางรัฐ</td></tr>
+                <tr><td data-label="ระดับ">Lv.4</td><td data-label="ตำแหน่ง">🏅 มือทองแห่งทางรัฐ</td><td data-label="กดครบ (ครั้ง)">200</td><td data-label="โทนสีการ์ด">น้ำเงิน</td></tr>
+                <tr><td data-label="ระดับ">Lv.5</td><td data-label="ตำแหน่ง">🔥 เซียนนิ้วไว</td><td data-label="กดครบ (ครั้ง)">400</td><td data-label="โทนสีการ์ด">แดงส้ม</td></tr>
+                <tr><td data-label="ระดับ">Lv.6</td><td data-label="ตำแหน่ง">👑 ราชาแห่งความสุข</td><td data-label="กดครบ (ครั้ง)">800</td><td data-label="โทนสีการ์ด">ม่วงทอง</td></tr>
+                <tr><td data-label="ระดับ">Lv.7</td><td data-label="ตำแหน่ง">🌟 ตำนานดีเด่น</td><td data-label="กดครบ (ครั้ง)">1,600</td><td data-label="โทนสีการ์ด">น้ำเงินกลางคืน</td></tr>
+                <tr><td data-label="ระดับ">Lv.8</td><td data-label="ตำแหน่ง">🚀 เทพเจ้าแห่งการกด</td><td data-label="กดครบ (ครั้ง)">3,200</td><td data-label="โทนสีการ์ด">ดำม่วงอวกาศ</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="card mb-xl" id="feel" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--primary-40);"></div>
+            <h3 class="section-title">เสียง · การสั่น · การเข้าถึง</h3>
+          </div>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">เสียง</span>
+              <span class="details-value">สร้างสดด้วย Web Audio API ไม่มีไฟล์เสียง ความดังตามเครื่อง (ไม่มีปุ่มปิดเสียงในหน้า) เสียงเริ่มดังหลังผู้ใช้แตะครั้งแรกเท่านั้น (ข้อกำหนดของเบราว์เซอร์) และหยุดเมื่อสลับแท็บ บน iPhone ถ้าเปิดสวิตช์เงียบจะไม่มีเสียง · ปิดด้วย <code>data-sound="false"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">การสั่น (Haptic)</span>
+              <span class="details-value"><strong>Android:</strong> สั่นเมื่อกด สั่นเมื่อพลุแตก (พลุหัวใจสั่นเป็นจังหวะหัวใจเต้น) และสั่นยาวเมื่อเลเวลอัป · <strong>iPhone (Safari / Chrome):</strong> สั่นเฉพาะตอนนิ้วแตะปุ่ม เพราะ iOS ให้เว็บสั่นได้ผ่านสวิตช์ที่ผู้ใช้แตะเองเท่านั้น ต้อง iOS 18 ขึ้นไปและเปิด System Haptics · ปิดด้วย <code>data-haptic="false"</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ไม่บังหน้าจอ</span>
+              <span class="details-value">พลุและโคมวาดบนเลเยอร์โปร่งใสที่ไม่รับการกด ผู้ใช้กดและเลื่อนหน้าได้ตามปกติ</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">กดรัวได้ ไม่ซูม</span>
+              <span class="details-value">ปุ่มของ fireworks.js กันการซูมจากการแตะสองครั้งติดกัน แต่ไม่ได้ปิดการซูมทั้งหน้า ถ้าต้องการให้ทั้งหน้าเป็นแบบเดียวกัน ใส่ <code>html, body { touch-action: manipulation; }</code> ที่หน้านั้น</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">ลดการเคลื่อนไหว</span>
+              <span class="details-value">ผู้ใช้ที่เปิด <code>prefers-reduced-motion</code> จะเห็นพลุ โคม หัวใจ น้อยลง และไม่มีแอนิเมชันตกแต่ง</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">โปรแกรมอ่านหน้าจอ</span>
+              <span class="details-value">ปุ่ม แถบสลับโหมด และหน้าต่างการ์ดมีป้ายกำกับ ปิดหน้าต่างได้ด้วยปุ่ม Esc</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card mb-xl" id="notes" style="scroll-margin-top:72px;">
+          <div class="section-title-container">
+            <div class="section-bar" style="background-color: var(--neutral-50);"></div>
+            <h3 class="section-title">ข้อควรรู้</h3>
+          </div>
+          <div class="details-list">
+            <div class="details-item">
+              <span class="details-label">ขนาดไฟล์</span>
+              <span class="details-value"><code>fireworks.js</code> ประมาณ 141KB (ส่งแบบบีบอัด gzip ประมาณ 73KB) ส่วนใหญ่เป็นภาพน้องดีเด่นกับไอคอนที่ฝังไว้ ไม่มีรูปหรือเสียงให้โหลดเพิ่ม ต้นฉบับภาพอยู่ที่ <code>_media/deeden-mascot.png</code>, <code>_media/deeden-icon.png</code>, <code>_media/thangrat-logo.png</code></span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">คะแนนไม่ใช่อันดับจริง</span>
+              <span class="details-value">คะแนนเก็บในเครื่องผู้เล่น ไม่มีระบบกลาง ใครจะแก้ตัวเลขก่อนบันทึกการ์ดก็ทำได้ ถ้าจะจัดอันดับจริงจังต้องเพิ่มระบบหลังบ้านเก็บคะแนน</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">แชร์ได้แค่รูป</span>
+              <span class="details-value">ปุ่มบนการ์ดบันทึกรูปลงเครื่องเท่านั้น ผู้ใช้นำรูปไปโพสต์เอง ไม่มีลิงก์แชร์ตรงไป Facebook / X / LINE</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">เบราว์เซอร์</span>
+              <span class="details-value">เบราว์เซอร์รุ่นปัจจุบันบนมือถือและเดสก์ท็อป (Chrome, Safari, Edge, Firefox) ต้องรองรับ Canvas และ Web Audio เบราว์เซอร์ที่ไม่รองรับ Web Audio จะแค่ไม่มีเสียง</span>
+            </div>
+            <div class="details-item">
+              <span class="details-label">หน้าตัวอย่าง</span>
+              <span class="details-value"><a href="valentine.html">valentine.html</a> — โหมดหัวใจอย่างเดียวสำหรับวันวาเลนไทน์ · หน้านี้ — โหมดพลุอย่างเดียวสำหรับปีใหม่</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Source Note -->
+        <div class="source-note">
+          <p class="source-note-text">
+            <span class="material-symbols-outlined source-note-icon">design_services</span>
+            ตัวอย่างและเอกสารลูกเล่นฉลอง<br>
+            อัปเดตล่าสุด: <span class="source-note-time"></span>
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Back to top FAB -->
+  <button class="back-to-top" id="back-to-top" aria-label="กลับขึ้นด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="material-symbols-outlined">arrow_upward</span>
+  </button>
+
+  <!-- Dynamic Thai date for source-note-time -->
+  <script>
+    (function() {
+      var m = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+               'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      var d = new Date();
+      var s = d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543)+
+              ' เวลา '+String(d.getHours()).padStart(2,'0')+':'+
+              String(d.getMinutes()).padStart(2,'0')+' น.';
+      document.querySelectorAll('.source-note-time').forEach(function(e){ e.textContent = s; });
+    })();
+  </script>
+  <script>
+    (function(){var b=document.getElementById('back-to-top');window.addEventListener('scroll',function(){b.classList.toggle('visible',window.pageYOffset>240);},{passive:true});})();
+  </script>
+
+  <!-- New Year fireworks gimmick — everything festival-specific comes from the theme pack -->
+  <script src="fireworks.js" data-theme="celebrations/newyear-2570/theme.json" defer></script>
+</body>
+</html>
