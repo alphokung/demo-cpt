@@ -9,8 +9,8 @@
  *     พลุ (fireworks) · โคมลอย (sky lanterns) · หัวใจ (Valentine hearts)
  * - Click repeatedly for more; the overlay never blocks the page
  * - Score board (gamification): counts the user's taps for this visit only
- *   (resets on refresh), levels + combo, and a share button that makes a
- *   score card image for social media
+ *   (resets on refresh), levels + combo, and a button that makes a
+ *   score card image to download and post on social media
  *
  * Optional attributes on the <script> tag:
  *   data-label="สวัสดีปีใหม่ 2570"    greeting shown on click
@@ -23,7 +23,6 @@
  *   data-autoplay="true"               release one round on page load
  *   data-haptic="false"                turn off vibration feedback
  *   data-score="false"                 hide the score board / sharing
- *   data-share-url="https://..."       link put in the share text (default: this page)
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
@@ -176,12 +175,6 @@
       'background:var(--neutral-96);box-shadow:var(--shadow-custom);}' +
     '.fw-sheet-hint{margin:var(--spacing-md) 0 0;text-align:center;font-size:var(--font-size-label-m);color:var(--foreground-neutral-lighter);}' +
     '.fw-sheet-actions{display:flex;flex-direction:column;gap:var(--spacing-md);margin-top:var(--spacing-lg);}' +
-    '.fw-sheet-row{display:flex;gap:var(--spacing-md);}' +
-    '.fw-sheet-row .btn{flex:1;width:auto;}' +
-    '.fw-social{display:flex;gap:var(--spacing-md);}' +
-    '.fw-social a{flex:1;display:flex;align-items:center;justify-content:center;height:40px;border-radius:var(--radius-full);' +
-      'font-size:var(--font-size-label-m);font-weight:var(--font-weight-600);color:#fff;text-decoration:none;}' +
-    '.fw-social .fb{background:#1877f2;}.fw-social .x{background:#000;}.fw-social .line{background:#06c755;}' +
 
     '@keyframes fw-s-bump{50%{transform:scale(1.28);}}' +
     '@keyframes fw-plus{from{opacity:1;transform:translate(-50%,0) scale(.8);}to{opacity:0;transform:translate(-50%,-64px) scale(1.15);}}' +
@@ -806,7 +799,7 @@
           '<span class="fw-s-rank"></span>' +
           '<span class="fw-s-bar" aria-hidden="true"><i></i></span>' +
         '</span>' +
-        '<button type="button" class="fw-s-share" aria-label="แชร์คะแนนไปโซเชียล">' +
+        '<button type="button" class="fw-s-share" aria-label="แชร์คะแนน — ดาวน์โหลดการ์ดคะแนน">' +
           '<span class="material-symbols-outlined">share</span><span class="fw-s-share-t">แชร์คะแนน</span></button>';
       document.body.appendChild(board);
       numEl = board.querySelector('.fw-s-num');
@@ -875,7 +868,6 @@
     }
 
     /* ── Share card (1080×1350, fits Facebook / IG / LINE / X) ── */
-    var SHARE_URL = ds.shareUrl || location.href.split('#')[0];
     var THEME = {
       firework: ['#003d28', '#006643', '#fdb022'],
       lantern:  ['#5c1f04', '#b54708', '#fedf89'],
@@ -987,7 +979,7 @@
         text('ทางรัฐ · ติดต่อรัฐง่ายแค่ปลายนิ้ว', 1318, 28, 500, 'rgba(255,255,255,.6)');
 
         return new Promise(function (res) {
-          cv.toBlob(function (blob) { res({ blob: blob, url: URL.createObjectURL(blob) }); }, 'image/png');
+          cv.toBlob(function (blob) { res({ blob: blob, url: URL.createObjectURL(blob) }); }, 'image/jpeg', 0.92);
         });
       });
     }
@@ -1007,27 +999,17 @@
     function openShare() {
       if (modal || !stats.total) return;
       lastFocus = document.activeElement;
-      var txt = shareText(), full = txt + ' ' + SHARE_URL;
-      var enc = encodeURIComponent;
+      var fileName = 'thangrat-score-' + stats.total + '.jpg';
       modal = document.createElement('div');
       modal.className = 'fw-modal';
       modal.innerHTML =
         '<div class="fw-sheet" role="dialog" aria-modal="true" aria-labelledby="fw-sheet-title">' +
-          '<div class="fw-sheet-head"><h2 class="fw-sheet-title" id="fw-sheet-title">แชร์คะแนนของคุณ</h2>' +
+          '<div class="fw-sheet-head"><h2 class="fw-sheet-title" id="fw-sheet-title">การ์ดคะแนนของคุณ</h2>' +
             '<button type="button" class="fw-sheet-close" aria-label="ปิด"><span class="material-symbols-outlined">close</span></button></div>' +
-          '<img class="fw-sheet-img" alt="การ์ดคะแนน: ' + esc(txt.split('\n')[0]) + '">' +
-          '<p class="fw-sheet-hint">กดค้างที่รูปเพื่อบันทึก หรือเลือกช่องทางด้านล่าง</p>' +
+          '<img class="fw-sheet-img" alt="การ์ดคะแนน: ' + esc(shareText().split('\n')[0]) + '">' +
+          '<p class="fw-sheet-hint">ดาวน์โหลดรูปแล้วนำไปโพสต์อวดเพื่อน ๆ ได้เลย</p>' +
           '<div class="fw-sheet-actions">' +
-            '<button type="button" class="btn btn-primary fw-do-share"><span class="material-symbols-outlined">ios_share</span>แชร์รูปนี้</button>' +
-            '<div class="fw-sheet-row">' +
-              '<button type="button" class="btn btn-secondary fw-do-save"><span class="material-symbols-outlined">download</span>บันทึกรูป</button>' +
-              '<button type="button" class="btn btn-secondary fw-do-copy"><span class="material-symbols-outlined">content_copy</span>คัดลอกข้อความ</button>' +
-            '</div>' +
-            '<div class="fw-social">' +
-              '<a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + enc(SHARE_URL) + '">Facebook</a>' +
-              '<a class="x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text=' + enc(txt) + '&url=' + enc(SHARE_URL) + '">X</a>' +
-              '<a class="line" target="_blank" rel="noopener" href="https://line.me/R/share?text=' + enc(full) + '">LINE</a>' +
-            '</div>' +
+            '<button type="button" class="btn btn-primary fw-do-save" disabled><span class="material-symbols-outlined">download</span>ดาวน์โหลดรูป</button>' +
           '</div>' +
         '</div>';
       document.body.appendChild(modal);
@@ -1038,37 +1020,20 @@
       requestAnimationFrame(function () { modal && modal.classList.add('open'); });
       modal.querySelector('.fw-sheet-close').focus();
 
-      var file = null;
-      var shareBtn = modal.querySelector('.fw-do-share');
-      shareBtn.disabled = true;
+      var saveBtn = modal.querySelector('.fw-do-save');
       var m = modal;
       drawCard().then(function (card) {
         if (m !== modal) { URL.revokeObjectURL(card.url); return; }
         cardUrl = card.url;
         m.querySelector('.fw-sheet-img').src = card.url;
-        try { file = new File([card.blob], 'thangrat-score-' + stats.total + '.png', { type: 'image/png' }); } catch (e) { file = null; }
-        shareBtn.disabled = false;
+        saveBtn.disabled = false;
       });
-
-      shareBtn.addEventListener('click', function () {
-        var data = file && navigator.canShare && navigator.canShare({ files: [file] })
-          ? { files: [file], text: full }
-          : (navigator.share ? { text: txt, url: SHARE_URL } : null);
-        if (data) navigator.share(data).catch(function () {});
-        else saveImg();
-      });
-      function saveImg() {
+      saveBtn.addEventListener('click', function () {
         if (!cardUrl) return;
         var a = document.createElement('a');
-        a.href = cardUrl; a.download = 'thangrat-score-' + stats.total + '.png';
+        a.href = cardUrl; a.download = fileName;
         document.body.appendChild(a); a.click(); a.remove();
-      }
-      modal.querySelector('.fw-do-save').addEventListener('click', saveImg);
-      modal.querySelector('.fw-do-copy').addEventListener('click', function () {
-        var btn = this;
-        function done() { btn.innerHTML = '<span class="material-symbols-outlined">check</span>คัดลอกแล้ว'; }
-        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(done, function () {});
-        else { var ta = document.createElement('textarea'); ta.value = full; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} ta.remove(); }
+        haptic(10, true);
       });
     }
 
@@ -1084,7 +1049,7 @@
     window.thFireworks = {
       fire: fire, setMode: setMode, getMode: function () { return mode; },
       getScore: function () { return { total: stats.total, firework: stats.firework, lantern: stats.lantern, heart: stats.heart, bestCombo: stats.bestCombo }; },
-      share: openShare
+      share: openShare   /* opens the download sheet */
     };
     if (AUTOPLAY) setTimeout(fire, 600);
   }
