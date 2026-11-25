@@ -10,7 +10,8 @@ celebrations/
     cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8)
     …
     cards/lv8.webp
-    icons/lv1.svg     ← (optional) level icon for the score bar / level-up badge
+    icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
+                        Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
 
 Use it on a page:
@@ -27,7 +28,7 @@ If the theme can't be loaded the script falls back to its built-in defaults.
 | Designer (Figma → files) | Content / dev (`theme.json`) | Dev (`fireworks.js`) |
 |---|---|---|
 | `cards/lvN.webp` — whole card: background, all text, rank badge, ทางรัฐ icon | greeting texts, modes, level titles & thresholds, colours | effects, layout of the floating UI, scoring |
-| `icons/lvN.svg` — level icon (optional) | `cardSlots` if the red slots in Figma move | new effect modes (e.g. Songkran water) |
+| `icons/lvN.webp` — level icon, Figma component `icon/lvN` (export @2x+, ~12 KB) | `cardSlots` if the red slots in Figma move | new effect modes (e.g. Songkran water) |
 
 Code draws only three things on top of a designer card, inside the red **CODE SLOTS** in Figma:
 the น้องดีเด่น mascot, the score number, and the player's best combo.

@@ -178,7 +178,7 @@
     '.fw-s-avatar{position:relative;flex:none;width:44px;height:44px;border-radius:var(--radius-full);' +
       'display:flex;align-items:center;justify-content:center;background:var(--background-primary-lighter);}' +
     '.fw-s-ico{display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:26px;line-height:1;}' +
-    '.fw-s-ico img{width:100%;height:100%;object-fit:contain;}' +
+    '.fw-s-ico img{flex:none;width:44px;height:44px;max-width:none;object-fit:contain;}' +   /* icon art fills the avatar circle */
     '.fw-s-ico.pop{animation:fw-s-pop .6s cubic-bezier(.2,1.6,.4,1);}' +
     '@keyframes fw-s-pop{0%{transform:scale(.3) rotate(-25deg);}60%{transform:scale(1.25) rotate(8deg);}100%{transform:none;}}' +
     '.fw-s-lv{position:absolute;left:-8px;bottom:-6px;height:18px;padding:0 5px;border-radius:var(--radius-full);' +
@@ -218,7 +218,7 @@
       'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));box-shadow:0 8px 24px rgba(220,104,3,.45);}' +
     '.fw-lvl-icon{flex:none;width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;' +
       'font-size:22px;line-height:1;background:var(--neutral-100);}' +
-    '.fw-lvl-icon img{width:26px;height:26px;object-fit:contain;}' +
+    '.fw-lvl-icon img{width:36px;height:36px;object-fit:contain;}' +
     '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:rgba(255,255,255,.9);}' +
     '.fw-lvl.show{animation:fw-lvl 2.4s ease forwards;}' +
 
