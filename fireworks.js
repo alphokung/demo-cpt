@@ -124,25 +124,22 @@
     '.fw-fab-icon .fw-mascot{width:38px;height:38px;margin:-8px -4px -8px -8px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}' +
     '.fw-g-badge .fw-mascot{width:46px;height:46px;}' +
 
-    /* score board */
+    /* score board — one fixed design for every level; only the level icon changes */
     '.fw-score{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:9997;box-sizing:border-box;' +
       'display:flex;align-items:center;gap:var(--spacing-lg);max-width:calc(100vw - 32px);padding:var(--spacing-md);' +
-      'background:linear-gradient(135deg,var(--lv-a,#9d174d),var(--lv-b,#ec4899));color:var(--neutral-100);' +
-      'border:2px solid var(--lv-c,#fde68a);border-radius:var(--radius-full);' +
-      'box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 16px color-mix(in srgb,var(--lv-c,#fde68a) 45%,transparent);' +
-      'opacity:0;transform:translate(-50%,-140%);pointer-events:none;' +
+      'background:var(--neutral-100);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-full);' +
+      'box-shadow:var(--shadow-custom-xl);opacity:0;transform:translate(-50%,-140%);pointer-events:none;' +
       'transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .3s ease;touch-action:manipulation;}' +
     '.fw-score.on{opacity:1;transform:translate(-50%,0);pointer-events:auto;}' +
-    '.fw-score.lvup{animation:fw-s-lvup .7s ease;}' +
-    '@keyframes fw-s-lvup{0%{filter:brightness(1);}30%{filter:brightness(1.6);}100%{filter:brightness(1);}}' +
     '.fw-s-avatar{position:relative;flex:none;width:44px;height:44px;border-radius:var(--radius-full);' +
-      'display:flex;align-items:center;justify-content:center;' +
-      'background:rgba(255,255,255,.92);box-shadow:0 0 0 2px var(--lv-c,#fde68a);}' +
+      'display:flex;align-items:center;justify-content:center;background:var(--background-primary-lighter);}' +
+    '.fw-s-ico{display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:26px;line-height:1;}' +
+    '.fw-s-ico img{width:100%;height:100%;object-fit:contain;}' +
+    '.fw-s-ico.pop{animation:fw-s-pop .6s cubic-bezier(.2,1.6,.4,1);}' +
+    '@keyframes fw-s-pop{0%{transform:scale(.3) rotate(-25deg);}60%{transform:scale(1.25) rotate(8deg);}100%{transform:none;}}' +
     '.fw-s-lv{position:absolute;left:-8px;bottom:-6px;height:18px;padding:0 5px;border-radius:var(--radius-full);' +
-      'border:2px solid var(--lv-a,#9d174d);background:var(--lv-c,#fde68a);color:var(--lv-a,#9d174d);' +
+      'border:2px solid var(--neutral-100);background:var(--primary-30-base);color:var(--neutral-100);' +
       'font-size:10px;line-height:14px;font-weight:800;white-space:nowrap;}' +
-    '.fw-s-lv.pop{animation:fw-s-bump .5s ease 2;}' +
-    '.fw-s-avatar img{width:40px;height:40px;object-fit:contain;}' +
     '.fw-s-combo{position:absolute;top:-10px;right:-14px;padding:0 var(--spacing-sm);height:20px;border-radius:var(--radius-full);' +
       'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));color:var(--neutral-100);' +
       'font-size:var(--font-size-label-s);line-height:20px;font-weight:var(--font-weight-700);white-space:nowrap;' +
@@ -151,33 +148,34 @@
     '.fw-s-main{display:flex;flex-direction:column;min-width:0;}' +
     '.fw-s-row{display:flex;align-items:baseline;gap:var(--spacing-xs);}' +
     '.fw-s-num{display:inline-block;font-size:24px;line-height:28px;font-weight:var(--font-weight-700);' +
-      'color:var(--lv-c,#fde68a);font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.3);}' +
+      'color:var(--foreground-primary-default);font-variant-numeric:tabular-nums;}' +
     '.fw-s-num.bump{animation:fw-s-bump .22s ease;}' +
-    '.fw-s-unit{font-size:var(--font-size-label-m);color:rgba(255,255,255,.85);}' +
+    '.fw-s-unit{font-size:var(--font-size-label-m);color:var(--foreground-neutral-light);}' +
     '.fw-s-rank{font-size:var(--font-size-label-m);line-height:16px;font-weight:var(--font-weight-600);' +
-      'color:var(--neutral-100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
+      'color:var(--foreground-neutral-default);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
     '.fw-s-bar{width:128px;max-width:100%;height:4px;margin-top:var(--spacing-xs);border-radius:var(--radius-full);' +
-      'background:rgba(255,255,255,.25);overflow:hidden;}' +
+      'background:var(--neutral-94);overflow:hidden;}' +
     '.fw-s-bar i{display:block;height:100%;width:0;border-radius:inherit;' +
-      'background:linear-gradient(90deg,var(--lv-c,#fde68a),var(--lv-d,#f59e0b));transition:width .25s ease;}' +
+      'background:linear-gradient(90deg,var(--warning-60),var(--danger-60));transition:width .25s ease;}' +
     '.fw-s-share{flex:none;display:flex;align-items:center;gap:var(--spacing-xs);height:40px;padding:0 var(--spacing-lg);' +
       'border:none;border-radius:var(--radius-full);cursor:pointer;font-family:inherit;font-size:var(--font-size-label-m);' +
-      'font-weight:var(--font-weight-700);color:var(--lv-a,#9d174d);background:var(--lv-c,#fde68a);' +
+      'font-weight:var(--font-weight-600);color:var(--neutral-100);background:var(--primary-30-base);' +
       'touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .15s ease;}' +
     '.fw-s-share:active{transform:scale(.94);}' +
-    '.fw-s-share:focus-visible{outline:3px solid var(--neutral-100);outline-offset:2px;}' +
+    '.fw-s-share:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
     '.fw-s-share .material-symbols-outlined{font-size:18px;}' +
     '.fw-plus{position:fixed;z-index:9999;pointer-events:none;font-weight:var(--font-weight-700);font-size:18px;white-space:nowrap;' +
       'color:var(--warning-40);text-shadow:0 1px 0 #fff,0 0 8px rgba(255,255,255,.9);animation:fw-plus .8s ease-out forwards;}' +
     '.fw-plus.big{font-size:22px;color:var(--danger-40);}' +
     '.fw-lvl{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 136px);z-index:9998;pointer-events:none;white-space:nowrap;' +
       'display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm) var(--spacing-xl) var(--spacing-sm) var(--spacing-sm);' +
-      'border-radius:var(--radius-full);border:2px solid var(--lv-c,#fde68a);color:var(--neutral-100);' +
+      'border-radius:var(--radius-full);color:var(--neutral-100);' +
       'font-size:var(--font-size-title-s);font-weight:var(--font-weight-700);opacity:0;transform:translate(-50%,0);' +
-      'background:linear-gradient(135deg,var(--lv-a,#9d174d),var(--lv-b,#ec4899));box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 18px var(--lv-c,#fde68a);}' +
+      'background:linear-gradient(135deg,var(--warning-40),var(--danger-60));box-shadow:0 8px 24px rgba(220,104,3,.45);}' +
     '.fw-lvl-icon{flex:none;width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;' +
-      'font-size:20px;background:var(--lv-c,#fde68a);box-shadow:inset 0 -2px 0 var(--lv-d,#f59e0b);}' +
-    '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:var(--lv-c,#fde68a);}' +
+      'font-size:22px;line-height:1;background:var(--neutral-100);}' +
+    '.fw-lvl-icon img{width:26px;height:26px;object-fit:contain;}' +
+    '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:rgba(255,255,255,.9);}' +
     '.fw-lvl.show{animation:fw-lvl 2.4s ease forwards;}' +
 
     /* share sheet */
@@ -892,7 +890,8 @@
     }
 
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
-    /* each level has its own colours (bg dark → light, accent, accent dark) and card background */
+    /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
+       To use designer artwork add  icon: 'path/or/data-uri.svg'  — the score bar and level-up badge show it. */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
       { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
@@ -903,11 +902,9 @@
       { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น',        bg: ['#070b2b', '#262c78'], ac: ['#fff3b0', '#ffcf33'], pattern: 'stars' },
       { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด',   bg: ['#04010d', '#3a0a5e'], ac: ['#7df9ff', '#c084fc'], pattern: 'space' }
     ];
-    function applyLevelVars(el, L) {
-      el.style.setProperty('--lv-a', L.bg[0]);
-      el.style.setProperty('--lv-b', L.bg[1]);
-      el.style.setProperty('--lv-c', L.ac[0]);
-      el.style.setProperty('--lv-d', L.ac[1]);
+    /* level icon: a designer SVG/PNG when LEVELS[i].icon is set, otherwise the emoji */
+    function levelIcon(L) {
+      return L.icon ? '<img src="' + esc(L.icon) + '" alt="">' : L.emoji;
     }
     var stats = { total: 0, firework: 0, lantern: 0, heart: 0, combo: 0, bestCombo: 0, lastTap: 0 };
     function levelOf(n) { var i = 0; while (i + 1 < LEVELS.length && n >= LEVELS[i + 1].at) i++; return i; }
@@ -927,7 +924,7 @@
       board.setAttribute('role', 'group');
       board.setAttribute('aria-label', 'คะแนนของคุณ');
       board.innerHTML =
-        '<span class="fw-s-avatar"><img src="' + MASCOT_ICON + '" alt=""><span class="fw-s-lv" aria-hidden="true">Lv.1</span>' +
+        '<span class="fw-s-avatar"><span class="fw-s-ico" aria-hidden="true"></span><span class="fw-s-lv" aria-hidden="true">Lv.1</span>' +
           '<span class="fw-s-combo" aria-hidden="true"></span></span>' +
         '<span class="fw-s-main">' +
           '<span class="fw-s-row"><span class="fw-s-num">0</span><span class="fw-s-unit">ครั้ง</span></span>' +
@@ -959,11 +956,12 @@
 
     function renderBoard() {
       var li = levelOf(stats.total), L = LEVELS[li], next = LEVELS[li + 1];
-      applyLevelVars(board, L);
+      var ico = board.querySelector('.fw-s-ico');
+      if (ico.dataset.lv !== String(li)) { ico.dataset.lv = li; ico.innerHTML = levelIcon(L); }
       board.querySelector('.fw-s-lv').textContent = 'Lv.' + (li + 1);
       numEl.textContent = stats.total.toLocaleString('th-TH');
       numEl.classList.remove('bump'); void numEl.offsetWidth; numEl.classList.add('bump');
-      rankEl.textContent = L.emoji + ' ' + L.title + (next ? ' · อีก ' + (next.at - stats.total) : '');
+      rankEl.textContent = L.title + (next ? ' · อีก ' + (next.at - stats.total) : '');
       barEl.style.width = (next ? (stats.total - L.at) / (next.at - L.at) * 100 : 100) + '%';
     }
 
@@ -1003,12 +1001,10 @@
       var after = levelOf(stats.total);
       if (after > before) {
         var L = LEVELS[after];
-        applyLevelVars(lvlEl, L);
-        lvlEl.innerHTML = '<span class="fw-lvl-icon" aria-hidden="true">' + L.emoji + '</span>' +
+        lvlEl.innerHTML = '<span class="fw-lvl-icon" aria-hidden="true">' + levelIcon(L) + '</span>' +
           '<span class="fw-lvl-t"><small>เลเวลอัป! Lv.' + (after + 1) + '</small>' + esc(L.title) + '</span>';
-        board.classList.remove('lvup'); void board.offsetWidth; board.classList.add('lvup');
-        var tag = board.querySelector('.fw-s-lv');
-        tag.classList.remove('pop'); void tag.offsetWidth; tag.classList.add('pop');
+        var icoEl = board.querySelector('.fw-s-ico');
+        icoEl.classList.remove('pop'); void icoEl.offsetWidth; icoEl.classList.add('pop');
         lvlEl.classList.remove('show'); void lvlEl.offsetWidth; lvlEl.classList.add('show');
         clearTimeout(lvlTimer);
         lvlTimer = setTimeout(function () { lvlEl.classList.remove('show'); }, 2500);
