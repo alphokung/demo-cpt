@@ -264,52 +264,43 @@
   function init() {
     /* ── Haptics ──
        Android (Chrome, Samsung, Firefox): Vibration API.
-       iOS (Safari AND Chrome/Edge/Firefox — all WebKit): no Vibration API, but on
-       iOS 18+ toggling an <input type="checkbox" switch> plays the system haptic.
-       We create a hidden switch, click its label, then remove it (same approach as
-       the ios-haptics library). Works in Safari, Chrome on iOS and home-screen apps.
-       Needs iOS 18+, and "System Haptics" turned on in Settings → Sounds & Haptics. */
+       iOS (Safari and Chrome/Edge on iPhone — all WebKit): no Vibration API. Since
+       iOS 18, the system plays a haptic when the user's own finger toggles an
+       <input type="checkbox" switch>. Clicking one from code does NOT work, so on
+       iOS we lay an invisible switch over each of our buttons: the tap lands on the
+       switch (haptic) and the click bubbles up to the button as normal.
+       Haptics from code (e.g. when a firework bursts) are therefore Android-only.
+       Needs iOS 18+ and Settings → Sounds & Haptics → System Haptics on. */
     var canVibrate = typeof navigator.vibrate === 'function';
     var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   /* iPadOS reports as Mac */
+    var IOS_SWITCH = HAPTIC && isIOS && !canVibrate;
 
-    function iosTick() {
-      var label = document.createElement('label');
-      label.setAttribute('aria-hidden', 'true');
-      label.style.display = 'none';
-      var input = document.createElement('input');
-      input.type = 'checkbox';
-      input.setAttribute('switch', '');
-      input.tabIndex = -1;
-      label.appendChild(input);
-      document.head.appendChild(label);
-      label.click();
-      document.head.removeChild(label);
-    }
-
-    /* pattern: ms number or [on, off, on, ...] like navigator.vibrate */
-    function iosPattern(pattern) {
-      if (typeof pattern === 'number') { iosTick(); return; }
-      var at = 0;
-      for (var i = 0; i < pattern.length; i++) {
-        if (i % 2 === 0) {
-          if (at === 0) iosTick(); else setTimeout(iosTick, at);
-        }
-        at += pattern[i];
-      }
+    function hapticTrigger(el) {
+      if (!IOS_SWITCH || !el || el.querySelector('.fw-hsw')) return;
+      var sw = document.createElement('input');
+      sw.type = 'checkbox';
+      sw.setAttribute('switch', '');
+      sw.className = 'fw-hsw';
+      sw.tabIndex = -1;                                   /* keyboard / screen readers use the real button */
+      sw.setAttribute('aria-hidden', 'true');
+      Object.assign(sw.style, {
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', margin: 0,
+        opacity: 0, cursor: 'pointer', clipPath: 'inset(0 round 999px)', touchAction: 'manipulation', zIndex: 2
+      });
+      sw.style.setProperty('-webkit-tap-highlight-color', 'transparent');
+      sw.style.setProperty('-webkit-appearance', 'none');
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      el.appendChild(sw);
     }
 
     var lastBuzz = 0;
     function haptic(pattern, fromGesture) {
-      if (!HAPTIC) return;
+      if (!HAPTIC || !canVibrate) return;                 /* iOS taps are handled by hapticTrigger() */
       var t = performance.now();
-      /* don't stack overlapping bursts (iOS ticks are stronger, so space them more) */
-      if (!fromGesture && t - lastBuzz < (canVibrate ? 90 : 140)) return;
+      if (!fromGesture && t - lastBuzz < 90) return;      /* don't stack overlapping bursts */
       lastBuzz = t;
-      try {
-        if (canVibrate) navigator.vibrate(pattern);
-        else if (isIOS) iosPattern(pattern);
-      } catch (e) {}
+      try { navigator.vibrate(pattern); } catch (e) {}
     }
 
     /* ── Sound ──
@@ -1308,6 +1299,7 @@
       modal.querySelector('.fw-sheet-close').focus();
 
       var saveBtn = modal.querySelector('.fw-do-save');
+      hapticTrigger(saveBtn);
       var m = modal;
       drawCard().then(function (card) {
         if (m !== modal) { URL.revokeObjectURL(card.url); return; }
@@ -1329,10 +1321,16 @@
     dock.addEventListener('dblclick', function (e) { e.preventDefault(); });
     var lastTouch = 0;
     dock.addEventListener('touchend', function (e) {
+      if (e.target.classList && e.target.classList.contains('fw-hsw')) return;   /* touch-action already stops zoom */
       var t = Date.now();
       if (t - lastTouch < 350) { e.preventDefault(); e.target.closest('button') && e.target.closest('button').click(); }
       lastTouch = t;
     }, { passive: false });
+    /* iOS: invisible haptic switches over our buttons */
+    hapticTrigger(fab);
+    if (modesEl) Array.prototype.forEach.call(modesEl.children, hapticTrigger);
+    if (board) hapticTrigger(board.querySelector('.fw-s-share'));
+
     window.thFireworks = {
       fire: fire, setMode: setMode, getMode: function () { return mode; },
       getScore: function () { return { total: stats.total, firework: stats.firework, lantern: stats.lantern, heart: stats.heart, bestCombo: stats.bestCombo }; },
