@@ -894,7 +894,7 @@
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
          card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
-                              mascot + score number on top (see CARD_SLOTS). Same-origin file or data URI. */
+                              mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
       { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
@@ -1163,8 +1163,19 @@
     /* slots that code draws into — must match the red "CODE SLOTS" frames in the Figma file */
     var CARD_SLOTS = {
       mascot: { x: 290, y: 160, w: 500, h: 405 },
-      score:  { x: 60, y: 745, w: 960, h: 190, baseline: 920, size: 220 }
+      score:  { x: 60, y: 745, w: 960, h: 190, baseline: 920, size: 220 },
+      combo:  { x: 60, y: 1122, w: 960, h: 50, size: 34 }      /* "🔥 คอมโบสูงสุด xN" — the player's best combo */
     };
+    function drawCombo(c, FONT) {
+      var S = CARD_SLOTS.combo, t = '🔥 คอมโบสูงสุด x' + Math.max(1, stats.bestCombo).toLocaleString('th-TH'), size = S.size;
+      c.save();
+      c.font = '600 ' + size + 'px ' + FONT;
+      while (c.measureText(t).width > S.w && size > 16) { size -= 2; c.font = '600 ' + size + 'px ' + FONT; }
+      c.shadowColor = 'rgba(0,0,0,.3)'; c.shadowBlur = 10; c.shadowOffsetY = 2;
+      c.fillStyle = 'rgba(255,255,255,.95)'; c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.fillText(t, S.x + S.w / 2, S.y + S.h / 2 + 2);
+      c.restore();
+    }
     function drawScore(c, LV, FONT, Wc) {
       var S = CARD_SLOTS.score, numStr = stats.total.toLocaleString('th-TH'), size = S.size;
       c.save();
@@ -1205,6 +1216,7 @@
             c.drawImage(img, CARD_SLOTS.mascot.x, CARD_SLOTS.mascot.y + (CARD_SLOTS.mascot.h - dmh) / 2, CARD_SLOTS.mascot.w, dmh);
           }
           drawScore(c, LV, FONT, Wc);
+          drawCombo(c, FONT);
           return toBlob(cv);
         }
 
