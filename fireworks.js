@@ -184,6 +184,8 @@
     '.fw-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:flex-end;justify-content:center;' +
       'background:rgba(16,24,40,.6);opacity:0;transition:opacity .2s ease;}' +
     '.fw-modal.open{opacity:1;}' +
+    /* buttons don't inherit the page font by default — make the sheet match the rest of the UI */
+    '.fw-modal button{font-family:inherit;}' +
     '.fw-sheet{box-sizing:border-box;width:100%;max-width:440px;max-height:94vh;overflow:auto;background:var(--neutral-100);' +
       'border-radius:var(--radius-4xl) var(--radius-4xl) 0 0;padding:var(--spacing-xl) var(--spacing-xl) calc(var(--spacing-xl) + env(safe-area-inset-bottom,0px));' +
       'transform:translateY(32px);transition:transform .25s ease;}' +
@@ -941,7 +943,7 @@
           '<span class="fw-s-rank"></span>' +
           '<span class="fw-s-bar" aria-hidden="true"><i></i></span>' +
         '</span>' +
-        '<button type="button" class="fw-s-share" aria-label="แชร์คะแนน — ดาวน์โหลดการ์ดคะแนน">' +
+        '<button type="button" class="fw-s-share" aria-label="แชร์คะแนน — บันทึกการ์ดคะแนน">' +
           '<span class="material-symbols-outlined">share</span><span class="fw-s-share-t">แชร์คะแนน</span></button>';
       document.body.appendChild(board);
       numEl = board.querySelector('.fw-s-num');
@@ -1292,9 +1294,9 @@
           '<div class="fw-sheet-head"><h2 class="fw-sheet-title" id="fw-sheet-title">การ์ดคะแนนของคุณ</h2>' +
             '<button type="button" class="fw-sheet-close" aria-label="ปิด"><span class="material-symbols-outlined">close</span></button></div>' +
           '<img class="fw-sheet-img" alt="การ์ดคะแนน: ' + esc(shareText().split('\n')[0]) + '">' +
-          '<p class="fw-sheet-hint">ดาวน์โหลดรูปแล้วนำไปโพสต์อวดเพื่อน ๆ ได้เลย</p>' +
+          '<p class="fw-sheet-hint">บันทึกรูปแล้วนำไปโพสต์อวดเพื่อน ๆ ได้เลย</p>' +
           '<div class="fw-sheet-actions">' +
-            '<button type="button" class="btn btn-primary fw-do-save" disabled><span class="material-symbols-outlined">download</span>ดาวน์โหลดรูป</button>' +
+            '<button type="button" class="btn btn-primary fw-do-save" disabled><span class="material-symbols-outlined">download</span>บันทึกรูป</button>' +
           '</div>' +
         '</div>';
       document.body.appendChild(modal);
