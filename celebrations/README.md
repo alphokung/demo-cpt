@@ -11,7 +11,7 @@ celebrations/
     …
     cards/lv8.webp
     mascots/lv1.webp  ← big น้องดีเด่น for this level (Figma component mascot/lvN, export PNG @1x). Drawn at its natural size, centred in the mascot slot
-    icons/button.webp ← icon on the floating จุดพลุ button — น้องดีเด่น Lv.7 (cropped from mascots/lv7.webp, 256×256; re-crop when the mascot changes)
+    icons/button.webp ← cut-out on the floating จุดพลุ button — น้องดีเด่น Lv.7 with the rocket, cropped tight to the artwork (192×160, keeps its own aspect ratio; re-cut from mascots/lv7.webp when the mascot changes)
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```

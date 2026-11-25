@@ -127,7 +127,7 @@
     }
     mode = [saved, ds.mode || t.mode, allowed[0]].filter(function (k) { return k && allowed.indexOf(k) > -1; })[0];
     /* image on the main "จุดพลุ" button (and the พลุ option / greeting badge) */
-    if (t.buttonIcon) MODES.firework.icon = '<img class="fw-mascot" src="' + themePath(t.buttonIcon) + '" alt="">';
+    if (t.buttonIcon) MODES.firework.icon = '<img class="fw-mascot fw-btn" src="' + themePath(t.buttonIcon) + '" alt="">';
     function flag(name, cur) { return ds[name] == null && typeof t[name] === 'boolean' ? t[name] : cur; }
     GREETING = flag('greeting', GREETING); SCORE = flag('score', SCORE); SOUND = flag('sound', SOUND);
     HAPTIC = flag('haptic', HAPTIC); AUTOPLAY = flag('autoplay', AUTOPLAY);
@@ -169,6 +169,8 @@
     '.fw-fab-icon .material-symbols-outlined{font-size:22px;font-variation-settings:"FILL" 1;}' +
     '.fw-mascot{display:block;width:22px;height:22px;object-fit:contain;}' +
     '.fw-fab-icon .fw-mascot{width:38px;height:38px;margin:-8px -4px -8px -8px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}' +
+    /* theme buttonIcon: a wide cut-out (head + prop) keeps its own aspect ratio and may rise above the pill */
+    '.fw-fab-icon .fw-btn{width:auto;max-width:none;height:46px;margin:-12px -2px -10px -10px;}' +
     '.fw-g-badge .fw-mascot{width:46px;height:46px;}' +
 
     /* score board — one fixed design for every level; only the level icon changes */
@@ -296,6 +298,7 @@
 
     '@keyframes fw-twinkle{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(12deg) scale(1.12);}}' +
     '@media (max-width:479px){.fw-fab-text{display:none;}.fw-fab{width:48px;padding:0;justify-content:center;}' +
+      '.fw-fab-icon .fw-btn{height:34px;margin:0;}' +
       '.fw-g-title{font-size:22px;line-height:32px;}.fw-s-bar{width:96px;}.fw-s-share-t{display:none;}.fw-s-share{width:40px;padding:0;justify-content:center;}' +
       '.fw-greeting{padding:var(--spacing-5xl) var(--spacing-3xl) var(--spacing-2xl);}}' +
     '@media (min-width:1024px){.fw-dock{bottom:var(--spacing-3xl);}.fw-dock.fw-raised{bottom:calc(var(--spacing-3xl) + 60px);}}' +
