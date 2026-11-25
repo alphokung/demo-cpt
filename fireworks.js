@@ -891,7 +891,10 @@
 
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
-       To use designer artwork add  icon: 'path/or/data-uri.svg'  — the score bar and level-up badge show it. */
+       Designer artwork (optional, per level):
+         icon: 'path.svg'   — shown in the score bar and the level-up badge
+         card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
+                              mascot + score number on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
       { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
@@ -1157,19 +1160,56 @@
         '\nคุณกดได้เท่าไหร่? มาแข่งกัน 👉';
     }
 
+    /* slots that code draws into — must match the red "CODE SLOTS" frames in the Figma file */
+    var CARD_SLOTS = {
+      mascot: { x: 290, y: 160, w: 500, h: 405 },
+      score:  { x: 60, y: 745, w: 960, h: 190, baseline: 920, size: 220 }
+    };
+    function drawScore(c, LV, FONT, Wc) {
+      var S = CARD_SLOTS.score, numStr = stats.total.toLocaleString('th-TH'), size = S.size;
+      c.save();
+      c.font = '800 ' + size + 'px ' + FONT;
+      while (c.measureText(numStr).width > S.w && size > 60) { size -= 4; c.font = '800 ' + size + 'px ' + FONT; }
+      var gold = c.createLinearGradient(0, S.y, 0, S.y + S.h);
+      gold.addColorStop(0, '#ffffff'); gold.addColorStop(.5, LV.ac[0]); gold.addColorStop(1, LV.ac[1]);
+      c.shadowColor = 'rgba(0,0,0,.25)'; c.shadowBlur = 16; c.shadowOffsetY = 4;
+      c.fillStyle = gold; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+      c.fillText(numStr, S.x + S.w / 2, S.baseline);
+      c.restore();
+    }
+    function toBlob(cv) {
+      return new Promise(function (res) {
+        cv.toBlob(function (blob) { res({ blob: blob, url: URL.createObjectURL(blob) }); }, 'image/jpeg', 0.92);
+      });
+    }
+
     function drawCard() {
       var fonts = document.fonts && document.fonts.load
         ? Promise.all(['800 200px Anuphan', '700 48px Anuphan', '500 32px Anuphan'].map(function (f) { return document.fonts.load(f).catch(function () {}); }))
         : Promise.resolve();
-      return Promise.all([fonts, loadImg(MASCOT_FULL), loadImg(LOGO)]).then(function (r) {
-        var img = r[1], logo = r[2];
+      var li = levelOf(stats.total), LV = LEVELS[li];
+      return Promise.all([fonts, loadImg(MASCOT_FULL), loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
+        var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
         cv.width = Wc; cv.height = Hc;
         var c = cv.getContext('2d');
         var FONT = "Anuphan, 'Noto Sans Thai', sans-serif";
+
+        /* ── Designer card (Figma "card/lvN" export): the image already holds the background,
+           all text, the rank badge and the ทางรัฐ icon. Code adds only the mascot and the score,
+           inside the same slots as the red "CODE SLOTS" frames in Figma. ── */
+        if (designed) {
+          c.drawImage(designed, 0, 0, Wc, Hc);
+          if (img) {
+            var dmh = CARD_SLOTS.mascot.w * img.height / img.width;
+            c.drawImage(img, CARD_SLOTS.mascot.x, CARD_SLOTS.mascot.y + (CARD_SLOTS.mascot.h - dmh) / 2, CARD_SLOTS.mascot.w, dmh);
+          }
+          drawScore(c, LV, FONT, Wc);
+          return toBlob(cv);
+        }
+
         /* the card's look follows the player's level; hearts are sprinkled on top if they mostly sent hearts */
         var top = ['firework', 'lantern', 'heart'].sort(function (a, b) { return stats[b] - stats[a]; })[0];
-        var li = levelOf(stats.total), LV = LEVELS[li];
 
         var bg = c.createLinearGradient(0, 0, Wc, Hc);
         bg.addColorStop(0, LV.bg[0]); bg.addColorStop(1, LV.bg[1]);
@@ -1221,12 +1261,7 @@
           c.drawImage(img, (Wc - mw) / 2, 160, mw, mh);
         }
         text('ฉันกดฉลองไปแล้ว', 700, 52, 600, 'rgba(255,255,255,.95)');
-        /* big number with gold gradient */
-        c.font = '800 220px ' + FONT;
-        var numStr = stats.total.toLocaleString('th-TH');
-        var gold = c.createLinearGradient(0, 740, 0, 930);
-        gold.addColorStop(0, '#ffffff'); gold.addColorStop(.5, LV.ac[0]); gold.addColorStop(1, LV.ac[1]);
-        text(numStr, 920, 220, 800, gold);
+        drawScore(c, LV, FONT, Wc);
         c.shadowBlur = 10;
         text('ครั้ง', 990, 52, 600, '#ffffff');
 
@@ -1251,9 +1286,7 @@
         text('คุณกดได้เท่าไหร่? มาแข่งกัน! 🔥', 1262, 48, 700, LV.ac[0]);
         text('ทางรัฐ · ติดต่อรัฐง่ายแค่ปลายนิ้ว', 1318, 28, 500, 'rgba(255,255,255,.6)');
 
-        return new Promise(function (res) {
-          cv.toBlob(function (blob) { res({ blob: blob, url: URL.createObjectURL(blob) }); }, 'image/jpeg', 0.92);
-        });
+        return toBlob(cv);
       });
     }
 
