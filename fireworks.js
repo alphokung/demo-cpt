@@ -778,13 +778,13 @@
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด' },
-      { at: 10,   emoji: '✨', title: 'สายฉลองฝึกหัด' },
-      { at: 30,   emoji: '🎇', title: 'นักฉลองตัวยง' },
-      { at: 60,   emoji: '🏅', title: 'มือทองแห่งทางรัฐ' },
-      { at: 100,  emoji: '🔥', title: 'เซียนนิ้วไว' },
-      { at: 200,  emoji: '👑', title: 'ราชาแห่งความสุข' },
-      { at: 500,  emoji: '🌟', title: 'ตำนานดีเด่น' },
-      { at: 1000, emoji: '🚀', title: 'เทพเจ้าแห่งการกด' }
+      { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด' },
+      { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง' },
+      { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ' },
+      { at: 400,  emoji: '🔥', title: 'เซียนนิ้วไว' },
+      { at: 800,  emoji: '👑', title: 'ราชาแห่งความสุข' },
+      { at: 1600, emoji: '🌟', title: 'ตำนานดีเด่น' },
+      { at: 3200, emoji: '🚀', title: 'เทพเจ้าแห่งการกด' }
     ];
     var stats = { total: 0, firework: 0, lantern: 0, heart: 0, combo: 0, bestCombo: 0, lastTap: 0 };
     function levelOf(n) { var i = 0; while (i + 1 < LEVELS.length && n >= LEVELS[i + 1].at) i++; return i; }
