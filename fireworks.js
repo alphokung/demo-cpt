@@ -1108,14 +1108,14 @@
         /* ทางรัฐ logo — white rounded tile, top-right */
         var logoW = 0;
         if (logo) {
-          var lh = 100, lw = lh * logo.width / logo.height, pad = 16;
-          var bw = lw + pad * 2, bh = lh + pad * 2, bx = Wc - 64 - bw, by = 64;
+          var lh = 60, lw = lh * logo.width / logo.height, pad = 12;
+          var bw = lw + pad * 2, bh = lh + pad * 2, bx = Wc - 56 - bw, by = 56;
           logoW = bw;
           c.save();
           c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 20; c.shadowOffsetY = 6;
           c.fillStyle = '#ffffff';
           c.beginPath();
-          if (c.roundRect) c.roundRect(bx, by, bw, bh, 28); else c.rect(bx, by, bw, bh);
+          if (c.roundRect) c.roundRect(bx, by, bw, bh, 20); else c.rect(bx, by, bw, bh);
           c.fill();
           c.shadowColor = 'transparent';
           c.drawImage(logo, bx + pad, by + pad, lw, lh);
@@ -1123,7 +1123,7 @@
         }
         c.shadowColor = 'rgba(0,0,0,.25)'; c.shadowBlur = 16; c.shadowOffsetY = 4;
         /* centred title must not run under the logo */
-        var titleMax = logoW ? 2 * (Wc - 64 - logoW - 28 - Wc / 2) : 960;
+        var titleMax = logoW ? 2 * (Wc - 56 - logoW - 28 - Wc / 2) : 960;
         text(top === 'heart' ? LABEL_HEART : LABEL, 120, 56, 700, '#ffffff', titleMax);
         if (img) {
           var mw = 500, mh = mw * img.height / img.width;
