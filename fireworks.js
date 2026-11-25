@@ -23,6 +23,7 @@
  *   data-autoplay="true"               release one round on page load
  *   data-haptic="false"                turn off vibration feedback
  *   data-score="false"                 hide the score board / sharing
+ *   data-greeting="false"              hide the greeting card in the middle of the screen
  *
  * JavaScript:
  *   thFireworks.fire()                 release using the current choice
@@ -47,6 +48,7 @@
   var AUTOPLAY = ds.autoplay === 'true';
   var HAPTIC = ds.haptic !== 'false';
   var SCORE = ds.score !== 'false';
+  var GREETING = ds.greeting !== 'false';
 
   /* น้องดีเด่น mascot — embedded so this stays a single drop-in file and the share
      card can be drawn on a canvas on any page (source files: _media/deeden-*.png) */
@@ -374,6 +376,7 @@
       }, 2800);
     }
     function showGreeting(kind) {
+      if (!GREETING) return;
       /* rapid tapping: keep the card that is already up instead of restarting its animation */
       if (greetKind === kind && greeting.classList.contains('show')) { hideGreetingLater(); return; }
       greetKind = kind;
