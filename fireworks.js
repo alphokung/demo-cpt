@@ -33,6 +33,7 @@
  *   { "id", "label", "labelHeart", "sub" (string or {firework,lantern,heart}), "modes": [...], "mode",
  *     "greeting"|"score"|"sound"|"haptic"|"autoplay": true/false,
  *     "active": { "from": "YYYY-MM-DD", "to": "YYYY-MM-DD" }   (outside → nothing shows; add ?fw-preview to the URL to test)
+ *     "buttonIcon": "icons/button.webp"   image on the floating button (default: built-in น้องดีเด่น head)
  *     "particles": ["#hex", ...], "heartParticles": [...],
  *     "levels": [{ "at", "title", "emoji", "icon": "icons/lv1.svg", "card": "cards/lv1.webp",
  *                  "colors": { "bg": [dark, light], "accent": [light, dark] }, "pattern" }, ...],
@@ -125,6 +126,8 @@
       if (m.length) allowed = m;
     }
     mode = [saved, ds.mode || t.mode, allowed[0]].filter(function (k) { return k && allowed.indexOf(k) > -1; })[0];
+    /* image on the main "จุดพลุ" button (and the พลุ option / greeting badge) */
+    if (t.buttonIcon) MODES.firework.icon = '<img class="fw-mascot" src="' + themePath(t.buttonIcon) + '" alt="">';
     function flag(name, cur) { return ds[name] == null && typeof t[name] === 'boolean' ? t[name] : cur; }
     GREETING = flag('greeting', GREETING); SCORE = flag('score', SCORE); SOUND = flag('sound', SOUND);
     HAPTIC = flag('haptic', HAPTIC); AUTOPLAY = flag('autoplay', AUTOPLAY);
@@ -493,7 +496,7 @@
     document.body.appendChild(greeting);
 
     var GREET = {
-      firework: { emoji: '<img class="fw-mascot" src="' + MASCOT_ICON + '" alt="">', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fdb022', '#fedf89', '#ffffff'] },
+      firework: { emoji: MODES.firework.icon, deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fdb022', '#fedf89', '#ffffff'] },
       lantern:  { emoji: '🏮', deco: ['✦', '✧', '✦', '✧', '✦', '✧'], colors: ['#fedf89', '#fdb022', '#ffffff'] },
       heart:    { emoji: '💖', deco: ['♥', '✦', '♥', '♥', '✦', '♥'], colors: ['#ffffff', '#ffd1e3', '#ffb3d1', '#fedf89'] }
     };

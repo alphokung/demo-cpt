@@ -11,6 +11,7 @@ celebrations/
     …
     cards/lv8.webp
     mascots/lv1.webp  ← big น้องดีเด่น for this level (Figma component mascot/lvN, export PNG @1x). Drawn at its natural size, centred in the mascot slot
+    icons/button.webp ← icon on the floating จุดพลุ button — น้องดีเด่น Lv.7 (cropped from mascots/lv7.webp, 256×256; re-crop when the mascot changes)
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
@@ -53,6 +54,7 @@ Figma template: “ทางรัฐ Celebration — Safe zone template” → 
 | `modes`, `mode` | `["firework"]`, `"firework"` | which effects the page offers |
 | `greeting`, `score`, `sound`, `haptic`, `autoplay` | `false` | same as the `data-*` switches |
 | `active` | `{ "from": "2026-12-20", "to": "2027-01-10" }` | outside the window nothing shows; add `?fw-preview` to the URL to test |
+| `buttonIcon` | `"icons/button.webp"` | image on the floating button; default is the built-in น้องดีเด่น head |
 | `particles`, `heartParticles` | `["#fdb022", "#5ed49a"]` | firework / heart colours |
 | `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.webp", "mascot": "mascots/lv2.webp", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
 | `cardSlots` | `{ "score": { "x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220 } }` | must match the red slots in Figma |

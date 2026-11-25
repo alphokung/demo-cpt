@@ -5,6 +5,7 @@
   "sub": "ขอให้ปีใหม่เต็มไปด้วยความสุข",
   "modes": ["firework"],
   "greeting": false,
+  "buttonIcon": "icons/button.webp",
   "levels": [
     {
       "at": 0,
