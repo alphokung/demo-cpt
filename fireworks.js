@@ -120,16 +120,19 @@
     /* score board */
     '.fw-score{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:9997;box-sizing:border-box;' +
       'display:flex;align-items:center;gap:var(--spacing-lg);max-width:calc(100vw - 32px);padding:var(--spacing-md);' +
-      'background:var(--neutral-100);border:1px solid var(--stroke-neutral-lighter);border-radius:var(--radius-full);' +
-      'box-shadow:var(--shadow-custom-xl);opacity:0;transform:translate(-50%,-140%);pointer-events:none;' +
+      'background:linear-gradient(135deg,var(--lv-a,#9d174d),var(--lv-b,#ec4899));color:var(--neutral-100);' +
+      'border:2px solid var(--lv-c,#fde68a);border-radius:var(--radius-full);' +
+      'box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 16px color-mix(in srgb,var(--lv-c,#fde68a) 45%,transparent);' +
+      'opacity:0;transform:translate(-50%,-140%);pointer-events:none;' +
       'transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .3s ease;touch-action:manipulation;}' +
     '.fw-score.on{opacity:1;transform:translate(-50%,0);pointer-events:auto;}' +
+    '.fw-score.lvup{animation:fw-s-lvup .7s ease;}' +
+    '@keyframes fw-s-lvup{0%{filter:brightness(1);}30%{filter:brightness(1.6);}100%{filter:brightness(1);}}' +
     '.fw-s-avatar{position:relative;flex:none;width:44px;height:44px;border-radius:var(--radius-full);' +
       'display:flex;align-items:center;justify-content:center;' +
-      'background:linear-gradient(135deg,var(--lv-a,#0b6b45),var(--lv-b,#22b07d));box-shadow:0 0 0 2px var(--lv-c,#fedf89);' +
-      'transition:background .4s ease,box-shadow .4s ease;}' +
+      'background:rgba(255,255,255,.92);box-shadow:0 0 0 2px var(--lv-c,#fde68a);}' +
     '.fw-s-lv{position:absolute;left:-8px;bottom:-6px;height:18px;padding:0 5px;border-radius:var(--radius-full);' +
-      'border:2px solid var(--neutral-100);background:var(--lv-c,#fedf89);color:var(--lv-a,#0b6b45);' +
+      'border:2px solid var(--lv-a,#9d174d);background:var(--lv-c,#fde68a);color:var(--lv-a,#9d174d);' +
       'font-size:10px;line-height:14px;font-weight:800;white-space:nowrap;}' +
     '.fw-s-lv.pop{animation:fw-s-bump .5s ease 2;}' +
     '.fw-s-avatar img{width:40px;height:40px;object-fit:contain;}' +
@@ -141,33 +144,33 @@
     '.fw-s-main{display:flex;flex-direction:column;min-width:0;}' +
     '.fw-s-row{display:flex;align-items:baseline;gap:var(--spacing-xs);}' +
     '.fw-s-num{display:inline-block;font-size:24px;line-height:28px;font-weight:var(--font-weight-700);' +
-      'color:var(--foreground-primary-default);font-variant-numeric:tabular-nums;}' +
+      'color:var(--lv-c,#fde68a);font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.3);}' +
     '.fw-s-num.bump{animation:fw-s-bump .22s ease;}' +
-    '.fw-s-unit{font-size:var(--font-size-label-m);color:var(--foreground-neutral-light);}' +
+    '.fw-s-unit{font-size:var(--font-size-label-m);color:rgba(255,255,255,.85);}' +
     '.fw-s-rank{font-size:var(--font-size-label-m);line-height:16px;font-weight:var(--font-weight-600);' +
-      'color:var(--foreground-neutral-default);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
+      'color:var(--neutral-100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
     '.fw-s-bar{width:128px;max-width:100%;height:4px;margin-top:var(--spacing-xs);border-radius:var(--radius-full);' +
-      'background:var(--neutral-94);overflow:hidden;}' +
+      'background:rgba(255,255,255,.25);overflow:hidden;}' +
     '.fw-s-bar i{display:block;height:100%;width:0;border-radius:inherit;' +
-      'background:linear-gradient(90deg,var(--lv-b,#22b07d),var(--lv-d,#f79009));transition:width .25s ease;}' +
+      'background:linear-gradient(90deg,var(--lv-c,#fde68a),var(--lv-d,#f59e0b));transition:width .25s ease;}' +
     '.fw-s-share{flex:none;display:flex;align-items:center;gap:var(--spacing-xs);height:40px;padding:0 var(--spacing-lg);' +
       'border:none;border-radius:var(--radius-full);cursor:pointer;font-family:inherit;font-size:var(--font-size-label-m);' +
-      'font-weight:var(--font-weight-600);color:var(--neutral-100);background:var(--primary-30-base);' +
+      'font-weight:var(--font-weight-700);color:var(--lv-a,#9d174d);background:var(--lv-c,#fde68a);' +
       'touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .15s ease;}' +
     '.fw-s-share:active{transform:scale(.94);}' +
-    '.fw-s-share:focus-visible{outline:3px solid var(--primary-80);outline-offset:2px;}' +
+    '.fw-s-share:focus-visible{outline:3px solid var(--neutral-100);outline-offset:2px;}' +
     '.fw-s-share .material-symbols-outlined{font-size:18px;}' +
     '.fw-plus{position:fixed;z-index:9999;pointer-events:none;font-weight:var(--font-weight-700);font-size:18px;white-space:nowrap;' +
       'color:var(--warning-40);text-shadow:0 1px 0 #fff,0 0 8px rgba(255,255,255,.9);animation:fw-plus .8s ease-out forwards;}' +
     '.fw-plus.big{font-size:22px;color:var(--danger-40);}' +
     '.fw-lvl{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 136px);z-index:9998;pointer-events:none;white-space:nowrap;' +
       'display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm) var(--spacing-xl) var(--spacing-sm) var(--spacing-sm);' +
-      'border-radius:var(--radius-full);border:2px solid var(--lv-c,#fedf89);color:var(--neutral-100);' +
+      'border-radius:var(--radius-full);border:2px solid var(--lv-c,#fde68a);color:var(--neutral-100);' +
       'font-size:var(--font-size-title-s);font-weight:var(--font-weight-700);opacity:0;transform:translate(-50%,0);' +
-      'background:linear-gradient(135deg,var(--lv-a,#0b6b45),var(--lv-b,#22b07d));box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 18px var(--lv-c,#fedf89);}' +
+      'background:linear-gradient(135deg,var(--lv-a,#9d174d),var(--lv-b,#ec4899));box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 18px var(--lv-c,#fde68a);}' +
     '.fw-lvl-icon{flex:none;width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;' +
-      'font-size:20px;background:var(--lv-c,#fedf89);box-shadow:inset 0 -2px 0 var(--lv-d,#f79009);}' +
-    '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:var(--lv-c,#fedf89);}' +
+      'font-size:20px;background:var(--lv-c,#fde68a);box-shadow:inset 0 -2px 0 var(--lv-d,#f59e0b);}' +
+    '.fw-lvl-t small{display:block;font-size:var(--font-size-label-s);line-height:14px;font-weight:var(--font-weight-600);color:var(--lv-c,#fde68a);}' +
     '.fw-lvl.show{animation:fw-lvl 2.4s ease forwards;}' +
 
     /* share sheet */
@@ -788,7 +791,7 @@
     /* ════════════ Score board (this visit only — resets on refresh) ════════════ */
     /* each level has its own colours (bg dark → light, accent, accent dark) and card background */
     var LEVELS = [
-      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#0b6b45', '#22b07d'], ac: ['#fedf89', '#f79009'], pattern: 'confetti' },
+      { at: 0,    emoji: '🐣', title: 'มือใหม่หัดกด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
       { at: 50,   emoji: '✨', title: 'สายฉลองฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
       { at: 100,  emoji: '🎇', title: 'นักฉลองตัวยง',      bg: ['#003d28', '#00704a'], ac: ['#fdb022', '#f79009'], pattern: 'bursts' },
       { at: 200,  emoji: '🏅', title: 'มือทองแห่งทางรัฐ',   bg: ['#14245c', '#3555b5'], ac: ['#ffd36b', '#e0a800'], pattern: 'rays' },
@@ -900,6 +903,7 @@
         applyLevelVars(lvlEl, L);
         lvlEl.innerHTML = '<span class="fw-lvl-icon" aria-hidden="true">' + L.emoji + '</span>' +
           '<span class="fw-lvl-t"><small>เลเวลอัป! Lv.' + (after + 1) + '</small>' + esc(L.title) + '</span>';
+        board.classList.remove('lvup'); void board.offsetWidth; board.classList.add('lvup');
         var tag = board.querySelector('.fw-s-lv');
         tag.classList.remove('pop'); void tag.offsetWidth; tag.classList.add('pop');
         lvlEl.classList.remove('show'); void lvlEl.offsetWidth; lvlEl.classList.add('show');
