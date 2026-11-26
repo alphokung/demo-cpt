@@ -97,24 +97,23 @@
   README.md                 ← คู่มือ theme ฉบับเต็ม
   newyear-2570/
     theme.json              ← ข้อความ โหมด เลเวล สี ตำแหน่งช่องที่โค้ดวาด
-    cards/lv1.webp … lv8.webp   ← การ์ดทั้งใบจาก Figma (ใบละ ~32KB)
-    mascots/lv1.webp … lv8.webp ← น้องดีเด่นตัวใหญ่ประจำเลเวล ที่โค้ดวาดลงช่องบนการ์ด
+    cards/lv1.webp … lv8.webp   ← การ์ดทั้งใบจาก Figma — ภาพน้องดีเด่นประจำเลเวลฝังอยู่ในพื้นหลังแล้ว
     icons/lv1.webp … lv8.webp   ← ไอคอนน้องดีเด่นประจำเลเวล (บาร์คะแนน · ป้ายเลเวลอัป · ป้ายตำแหน่งบนการ์ด)</code></pre>
           <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">ใครแก้อะไร</p>
           <div class="data-table-wrap">
             <table class="data-table">
               <thead><tr><th>ใคร</th><th>แก้อะไร</th><th>ที่ไหน</th></tr></thead>
               <tbody>
-                <tr><td data-label="ใคร">Designer</td><td data-label="แก้อะไร">การ์ดทั้งใบของแต่ละเลเวล (พื้นหลัง ข้อความ ป้ายตำแหน่ง ไอคอนทางรัฐ) และไอคอนเลเวล</td><td data-label="ที่ไหน">Figma → export → <code>cards/</code>, <code>icons/</code></td></tr>
+                <tr><td data-label="ใคร">Designer</td><td data-label="แก้อะไร">การ์ดทั้งใบของแต่ละเลเวล (พื้นหลังพร้อมภาพน้องดีเด่น ข้อความ ป้ายตำแหน่ง ไอคอนทางรัฐ) และไอคอนเลเวล</td><td data-label="ที่ไหน">Figma → export → <code>cards/</code>, <code>icons/</code></td></tr>
                 <tr><td data-label="ใคร">Content / Dev</td><td data-label="แก้อะไร">ข้อความอวยพร โหมด ชื่อและเกณฑ์เลเวล สีตัวเลข ช่วงวันที่เปิดใช้</td><td data-label="ที่ไหน"><code>theme.json</code></td></tr>
                 <tr><td data-label="ใคร">Dev</td><td data-label="แก้อะไร">เอฟเฟกต์ใหม่ ระบบคะแนน ปุ่มลอย</td><td data-label="ที่ไหน"><code>fireworks.js</code></td></tr>
               </tbody>
             </table>
           </div>
-          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">สิ่งที่โค้ดวาดทับบนการ์ดจาก Figma (3 อย่าง)</p>
+          <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">สิ่งที่โค้ดวาดทับบนการ์ดจาก Figma (2 อย่าง)</p>
           <div class="details-list">
             <div class="details-item">
-              <span class="details-label">น้องดีเด่น · ตัวเลขคะแนน · คอมโบสูงสุด</span>
+              <span class="details-label">ตัวเลขคะแนน · คอมโบสูงสุด</span>
               <span class="details-value">วาดตามกรอบแดง “CODE SLOTS” ในไฟล์ Figma ตำแหน่งอยู่ที่ <code>cardSlots</code> ใน theme.json — ถ้า designer ย้ายกรอบแดง ให้แก้ตัวเลขใน theme.json ให้ตรง</span>
             </div>
             <div class="details-item">
@@ -135,7 +134,7 @@
       "colors": { "bg": ["#9d174d", "#ec4899"], "accent": ["#fde68a", "#f59e0b"] } },
     …
   ],
-  "cardSlots": { "mascot": {…}, "score": {…}, "combo": {…} }
+  "cardSlots": { "score": {…}, "combo": {…} }
 }</code></pre>
           <p style="margin:var(--spacing-xl) 0 var(--spacing-md);font-weight:var(--font-weight-600);">เทศกาลใหม่ใน 4 ขั้น</p>
           <div class="details-list">

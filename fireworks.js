@@ -37,7 +37,7 @@
  *     "particles": ["#hex", ...], "heartParticles": [...],
  *     "levels": [{ "at", "title", "emoji", "icon": "icons/lv1.svg", "card": "cards/lv1.webp",
  *                  "colors": { "bg": [dark, light], "accent": [light, dark] }, "pattern" }, ...],
- *     "cardSlots": { "mascot": {x,y,w,h}, "score": {x,y,w,h,baseline,size}, "combo": {x,y,w,h,size} } }
+ *     "cardSlots": { "score": {x,y,w,h,baseline,size}, "combo": {x,y,w,h,size} } }
  *   Paths are relative to theme.json. Files must be same-origin (or CORS-enabled) for the score card to save.
  *
  * Sound: synthesised live with the Web Audio API — no audio files are downloaded.
@@ -945,10 +945,8 @@
     /* each level: threshold, emoji (placeholder) + optional icon file, and the colours / pattern of its score card.
        Designer artwork (optional, per level):
          icon: 'path.svg'   — shown in the score bar and the level-up badge
-         mascot: 'path.webp' — big น้องดีเด่น for this level (Figma mascot/lvN exported at 1x). Drawn at its natural size,
-                              centred in the card's mascot slot, so each level's mascot may have its own size
-         card: 'path.png'   — full score card exported from Figma (card/lvN); code then draws only the
-                              mascot, score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
+         card: 'path.png'   — full score card exported from Figma (card/lvN), น้องดีเด่น already baked into the background;
+                              code then draws only the score number and best combo on top (see CARD_SLOTS). Same-origin file or data URI. */
     var LEVELS = [
       { at: 0,    emoji: '🐣', title: 'มือใหม่หัดจุด',      bg: ['#9d174d', '#ec4899'], ac: ['#fde68a', '#f59e0b'], pattern: 'confetti' },
       { at: 50,   emoji: '✨', title: 'นักจุดฝึกหัด',     bg: ['#0b4a5e', '#1aa3b5'], ac: ['#b9f3ff', '#38bdf8'], pattern: 'sparkle' },
@@ -967,7 +965,7 @@
           at: typeof l.at === 'number' ? l.at : d.at,
           emoji: l.emoji || d.emoji, title: l.title || d.title,
           bg: col.bg || d.bg, ac: col.accent || d.ac, pattern: l.pattern || d.pattern,
-          icon: themePath(l.icon), card: themePath(l.card), mascot: themePath(l.mascot)
+          icon: themePath(l.icon), card: themePath(l.card)
         };
       }).sort(function (a, b) { return a.at - b.at; });
       LEVELS[0].at = 0;
@@ -1230,7 +1228,6 @@
 
     /* slots that code draws into — must match the red "CODE SLOTS" frames in the Figma file */
     var CARD_SLOTS = {
-      mascot: { x: 290, y: 160, w: 500, h: 405 },
       score:  { x: 60, y: 745, w: 960, h: 190, baseline: 920, size: 220 },
       combo:  { x: 60, y: 1122, w: 960, h: 50, size: 34 }      /* "🔥 คอมโบสูงสุด xN" — the player's best combo */
     };
@@ -1272,10 +1269,8 @@
         ? Promise.all(['800 200px Anuphan', '700 48px Anuphan', '500 32px Anuphan'].map(function (f) { return document.fonts.load(f).catch(function () {}); }))
         : Promise.resolve();
       var li = levelOf(stats.total), LV = LEVELS[li];
-      /* per-level big mascot (theme levels[].mascot) — falls back to the built-in น้องดีเด่น */
-      /* a designer mascot is exported 1:1 from Figma, so it is drawn at its natural size (sizes may differ per level) */
-      var mascotNatural = false;
-      return Promise.all([fonts, LV.mascot ? loadImg(LV.mascot).then(function (m) { if (m) { mascotNatural = true; return m; } return loadImg(MASCOT_FULL); }) : loadImg(MASCOT_FULL),
+      /* a designer card already has น้องดีเด่น in its background, so the built-in mascot is only needed for the procedural card */
+      return Promise.all([fonts, LV.card ? null : loadImg(MASCOT_FULL),
                           loadImg(LOGO), LV.card ? loadImg(LV.card) : null]).then(function (r) {
         var img = r[1], logo = r[2], designed = r[3];
         var Wc = 1080, Hc = 1350, cv = document.createElement('canvas');
@@ -1284,15 +1279,10 @@
         var FONT = "Anuphan, 'Noto Sans Thai', sans-serif";
 
         /* ── Designer card (Figma "card/lvN" export): the image already holds the background,
-           all text, the rank badge and the ทางรัฐ icon. Code adds only the mascot and the score,
+           น้องดีเด่น, all text, the rank badge and the ทางรัฐ icon. Code adds only the score and the best combo,
            inside the same slots as the red "CODE SLOTS" frames in Figma. ── */
         if (designed) {
           c.drawImage(designed, 0, 0, Wc, Hc);
-          if (img) {
-            var MS = CARD_SLOTS.mascot;
-            var dmw = mascotNatural ? img.width : MS.w, dmh = mascotNatural ? img.height : MS.w * img.height / img.width;
-            c.drawImage(img, MS.x + (MS.w - dmw) / 2, MS.y + (MS.h - dmh) / 2, dmw, dmh);
-          }
           drawScore(c, LV, FONT, Wc);
           drawCombo(c, FONT);
           return toBlob(cv);

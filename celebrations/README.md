@@ -7,11 +7,10 @@ you copy a folder, swap the artwork and edit `theme.json`.
 celebrations/
   newyear-2570/
     theme.json        ← texts, modes, levels, colours, card slots
-    cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8)
+    cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8) — the level's น้องดีเด่น is part of the background
     …
     cards/lv8.webp
-    mascots/lv1.webp  ← big น้องดีเด่น for this level (Figma component mascot/lvN, export PNG @1x). Drawn at its natural size, centred in the mascot slot
-    icons/button.webp ← cut-out on the floating จุดพลุ button — น้องดีเด่น Lv.7 with the rocket, cropped tight to the artwork (192×160, keeps its own aspect ratio; re-cut from mascots/lv7.webp when the mascot changes)
+    icons/button.webp ← cut-out on the floating จุดพลุ button — น้องดีเด่น Lv.7 with the rocket, cropped tight to the artwork (192×160, keeps its own aspect ratio; re-cut from the Lv.7 mascot in Figma when it changes)
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
@@ -29,11 +28,11 @@ If the theme can't be loaded the script falls back to its built-in defaults.
 
 | Designer (Figma → files) | Content / dev (`theme.json`) | Dev (`fireworks.js`) |
 |---|---|---|
-| `cards/lvN.webp` — whole card: background, all text, rank badge, ทางรัฐ icon | greeting texts, modes, level titles & thresholds, colours | effects, layout of the floating UI, scoring |
+| `cards/lvN.webp` — whole card: background with น้องดีเด่น, all text, rank badge, ทางรัฐ icon | greeting texts, modes, level titles & thresholds, colours | effects, layout of the floating UI, scoring |
 | `icons/lvN.webp` — level icon, Figma component `icon/lvN` (export @2x+, ~12 KB) | `cardSlots` if the red slots in Figma move | new effect modes (e.g. Songkran water) |
 
-Code draws only three things on top of a designer card, inside the red **CODE SLOTS** in Figma:
-the level's น้องดีเด่น (`mascot`), the score number, and the player's best combo.
+Code draws only two things on top of a designer card, inside the red **CODE SLOTS** in Figma:
+the score number and the player's best combo. น้องดีเด่น is designed into each card's background in Figma.
 
 Figma template: “ทางรัฐ Celebration — Safe zone template” → page *Score cards — full design (8 levels)*.
 
@@ -56,7 +55,7 @@ Figma template: “ทางรัฐ Celebration — Safe zone template” → 
 | `active` | `{ "from": "2026-12-20", "to": "2027-01-10" }` | outside the window nothing shows; add `?fw-preview` to the URL to test |
 | `buttonIcon` | `"icons/button.webp"` | image on the floating button; default is the built-in น้องดีเด่น head |
 | `particles`, `heartParticles` | `["#fdb022", "#5ed49a"]` | firework / heart colours |
-| `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.webp", "mascot": "mascots/lv2.webp", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
+| `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.webp", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
 | `cardSlots` | `{ "score": { "x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220 } }` | must match the red slots in Figma |
 
 Paths are relative to `theme.json`. Files must be served from the same origin as the page
