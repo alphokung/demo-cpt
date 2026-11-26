@@ -5,7 +5,10 @@
   "sub": "ขอให้ปีใหม่เต็มไปด้วยความสุข",
   "modes": ["firework"],
   "greeting": false,
-  "buttonIcon": "icons/button.webp",
+  "buttonIcon": "icons/button.gif",
+  "buttonIconStill": "icons/button-still.webp",
+  "buttonStyle": "light",
+  "buttonText": false,
   "levels": [
     {
       "at": 0,

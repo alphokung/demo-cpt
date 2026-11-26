@@ -33,7 +33,10 @@
  *   { "id", "label", "labelHeart", "sub" (string or {firework,lantern,heart}), "modes": [...], "mode",
  *     "greeting"|"score"|"sound"|"haptic"|"autoplay": true/false,
  *     "active": { "from": "YYYY-MM-DD", "to": "YYYY-MM-DD" }   (outside → nothing shows; add ?fw-preview to the URL to test)
- *     "buttonIcon": "icons/button.webp"   image on the floating button (default: built-in น้องดีเด่น head)
+ *     "buttonIcon": "icons/button.gif"    image on the floating button, may be animated (default: built-in น้องดีเด่น head)
+ *     "buttonIconStill": "icons/button-still.webp"   still frame shown instead when the user prefers reduced motion
+ *     "buttonStyle": "light"              white floating button instead of the green one
+ *     "buttonText": false                 round icon-only button (no "จุดพลุ" label; screen readers still get it)
  *     "particles": ["#hex", ...], "heartParticles": [...],
  *     "levels": [{ "at", "title", "emoji", "icon": "icons/lv1.svg", "card": "cards/lv1.webp",
  *                  "colors": { "bg": [dark, light], "accent": [light, dark] }, "pattern" }, ...],
@@ -84,6 +87,8 @@
       '<ellipse cx="12" cy="21" rx="1.3" ry="1.8" fill="currentColor" opacity=".9"/>' +
     '</svg>';
 
+  var BUTTON_LIGHT = false;   /* theme buttonStyle "light" → white floating button */
+  var BUTTON_TEXT = true;     /* theme buttonText false → round icon-only button */
   var MODES = {
     firework: { label: 'พลุ',    action: 'จุดพลุ',    aria: 'จุดพลุฉลองปีใหม่', icon: '<img class="fw-mascot" src="' + MASCOT_ICON + '" alt="">' },
     lantern:  { label: 'โคมลอย', action: 'ปล่อยโคม', aria: 'ปล่อยโคมลอยฉลองปีใหม่', icon: LANTERN_SVG },
@@ -127,7 +132,12 @@
     }
     mode = [saved, ds.mode || t.mode, allowed[0]].filter(function (k) { return k && allowed.indexOf(k) > -1; })[0];
     /* image on the main "จุดพลุ" button (and the พลุ option / greeting badge) */
-    if (t.buttonIcon) MODES.firework.icon = '<img class="fw-mascot fw-btn" src="' + themePath(t.buttonIcon) + '" alt="">';
+    if (t.buttonIcon) {
+      var still = t.buttonIconStill ? '<source srcset="' + themePath(t.buttonIconStill) + '" media="(prefers-reduced-motion: reduce)">' : '';
+      MODES.firework.icon = '<picture class="fw-pic">' + still + '<img class="fw-mascot fw-btn" src="' + themePath(t.buttonIcon) + '" alt=""></picture>';
+    }
+    if (t.buttonStyle === 'light') BUTTON_LIGHT = true;
+    if (t.buttonText === false) BUTTON_TEXT = false;
     function flag(name, cur) { return ds[name] == null && typeof t[name] === 'boolean' ? t[name] : cur; }
     GREETING = flag('greeting', GREETING); SCORE = flag('score', SCORE); SOUND = flag('sound', SOUND);
     HAPTIC = flag('haptic', HAPTIC); AUTOPLAY = flag('autoplay', AUTOPLAY);
@@ -172,6 +182,17 @@
     /* theme buttonIcon: a wide cut-out (head + prop) keeps its own aspect ratio and may rise above the pill */
     '.fw-fab-icon .fw-btn{width:auto;max-width:none;height:46px;margin:-12px -2px -10px -10px;}' +
     '.fw-g-badge .fw-mascot{width:46px;height:46px;}' +
+    '.fw-pic{display:contents;}' +
+    /* an image button icon (often animated) moves on its own — no extra wobble */
+    '.fw-fab-icon:has(.fw-btn){animation:none;}' +
+    /* theme buttonStyle "light": white pill that lets the orange น้องดีเด่น stand out */
+    '.fw-fab-light{color:var(--foreground-neutral-default);background:var(--neutral-100);box-shadow:var(--shadow-custom-lg),inset 0 0 0 1px var(--neutral-92);}' +
+    '.fw-fab-light:hover{box-shadow:var(--shadow-custom-xl),inset 0 0 0 1px var(--neutral-92);}' +
+    '.fw-fab-light .fw-fab-icon .fw-mascot{filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));}' +
+    /* theme buttonText false: round, icon only (the label stays in aria-label) */
+    '.fw-fab.fw-fab-iconly{width:56px;height:56px;padding:0;justify-content:center;}' +
+    '.fw-fab-iconly .fw-fab-text{display:none;}' +
+    '.fw-fab-iconly .fw-fab-icon .fw-btn{height:44px;margin:0;}' +
 
     /* score board — one fixed design for every level; only the level icon changes */
     '.fw-score{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:9997;box-sizing:border-box;' +
@@ -299,6 +320,7 @@
     '@keyframes fw-twinkle{0%,100%{transform:rotate(0) scale(1);}50%{transform:rotate(12deg) scale(1.12);}}' +
     '@media (max-width:479px){.fw-fab-text{display:none;}.fw-fab{width:48px;padding:0;justify-content:center;}' +
       '.fw-fab-icon .fw-btn{height:34px;margin:0;}' +
+      '.fw-fab.fw-fab-iconly{width:52px;height:52px;}.fw-fab-iconly .fw-fab-icon .fw-btn{height:40px;}' +
       '.fw-g-title{font-size:22px;line-height:32px;}.fw-s-bar{width:96px;}.fw-s-share-t{display:none;}.fw-s-share{width:40px;padding:0;justify-content:center;}' +
       '.fw-greeting{padding:var(--spacing-5xl) var(--spacing-3xl) var(--spacing-2xl);}}' +
     '@media (min-width:1024px){.fw-dock{bottom:var(--spacing-3xl);}.fw-dock.fw-raised{bottom:calc(var(--spacing-3xl) + 60px);}}' +
@@ -486,7 +508,7 @@
 
     var fab = document.createElement('button');
     fab.type = 'button';
-    fab.className = 'fw-fab';
+    fab.className = 'fw-fab' + (BUTTON_LIGHT ? ' fw-fab-light' : '') + (BUTTON_TEXT ? '' : ' fw-fab-iconly');
     fab.innerHTML =
       '<span class="fw-fab-icon"></span>' +
       '<span class="fw-fab-text"></span>';

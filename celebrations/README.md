@@ -10,7 +10,8 @@ celebrations/
     cards/lv1.webp    ← full score card per level, exported from Figma (card/lv1 … card/lv8) — the level's น้องดีเด่น is part of the background
     …
     cards/lv8.webp
-    icons/button.webp ← cut-out on the floating จุดพลุ button — น้องดีเด่น Lv.7 with the rocket, cropped tight to the artwork (192×160, keeps its own aspect ratio; re-cut from the Lv.7 mascot in Figma when it changes)
+    icons/button.gif  ← animated น้องดีเด่น (party hat) on the floating จุดพลุ button — 123×112, height 112 px is 2× the drawn size
+    icons/button-still.webp ← first frame of button.gif, shown when the user prefers reduced motion
     icons/lv1.webp    ← level icon (น้องดีเด่น + level badge) for the score bar / level-up badge —
                         Figma component icon/lvN, also placed in the rank badge of card/lvN
 ```
@@ -53,7 +54,10 @@ Figma template: “ทางรัฐ Celebration — Safe zone template” → 
 | `modes`, `mode` | `["firework"]`, `"firework"` | which effects the page offers |
 | `greeting`, `score`, `sound`, `haptic`, `autoplay` | `false` | same as the `data-*` switches |
 | `active` | `{ "from": "2026-12-20", "to": "2027-01-10" }` | outside the window nothing shows; add `?fw-preview` to the URL to test |
-| `buttonIcon` | `"icons/button.webp"` | image on the floating button; default is the built-in น้องดีเด่น head |
+| `buttonIcon` | `"icons/button.gif"` | image on the floating button (GIF / animated WebP OK); default is the built-in น้องดีเด่น head |
+| `buttonIconStill` | `"icons/button-still.webp"` | still version of `buttonIcon` for users who prefer reduced motion |
+| `buttonStyle` | `"light"` | white floating button instead of the default green |
+| `buttonText` | `false` | round icon-only button, no "จุดพลุ" label (screen readers still hear it) |
 | `particles`, `heartParticles` | `["#fdb022", "#5ed49a"]` | firework / heart colours |
 | `levels[]` | `{ "at": 50, "title": "…", "emoji": "✨", "card": "cards/lv2.webp", "icon": "icons/lv2.webp", "colors": { "bg": [dark, light], "accent": [light, dark] } }` | `accent` colours the score number; `bg` is used when a level has no `card` |
 | `cardSlots` | `{ "score": { "x": 60, "y": 745, "w": 960, "h": 190, "baseline": 920, "size": 220 } }` | must match the red slots in Figma |
